@@ -30,11 +30,23 @@
 (require-package 'diminish)
 (require-package 'scratch)
 
+(require 'init-misc)
 (require 'init-themes)
+(require 'init-ligature)
+(require 'init-face)
 (require 'init-uniquify)
 (require 'init-ibuffer)
+(require 'init-which-key)
+(require 'init-linum-mode)
+(require 'init-org)
+
 (require 'init-ivy)
+(require 'init-projectile)
+
+(require 'init-prog)
+(require 'init-company)
+(require 'init-lsp)
+
 (require 'init-evil)
-(require 'init-misc)
 (provide 'init)
 ;;; init.el ends here

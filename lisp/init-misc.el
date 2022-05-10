@@ -2,9 +2,10 @@
 ;;; Commentary:
 ;;; Code:
 
-(tool-bar-mode nil)
-(menu-bar-mode nil)
-(toggle-scroll-bar nil)
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(setq make-backup-files nil)
 
 (provide 'init-misc)
 ;;; init-misc.el ends here

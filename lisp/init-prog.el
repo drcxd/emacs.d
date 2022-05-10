@@ -2,6 +2,7 @@
 ;;; Commentary:
 ;;; Code:
 (add-hook 'prog-mode-hook (lambda () (display-fill-column-indicator-mode t)))
+(add-hook 'prog-mode-hook (lambda () (setq show-trailing-whitespace t)))
 
 (require-package 'clang-format)
 (require-package 'inheritenv)

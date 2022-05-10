@@ -47,6 +47,7 @@
 (require 'init-company)
 (require 'init-lsp)
 
+(require 'init-key-binding)
 (require 'init-evil)
 (provide 'init)
 ;;; init.el ends here

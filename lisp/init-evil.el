@@ -16,6 +16,9 @@
 (evil-define-key 'normal 'global (kbd "<leader>x2") 'split-window-vertically)
 (evil-define-key 'normal 'global (kbd "<leader>x3") 'split-window-horizontally)
 (evil-define-key 'normal 'global (kbd "<leader>xo") 'ace-window)
+(evil-define-key 'normal 'global (kbd "<leader>x0") 'delete-window)
+(evil-define-key 'normal 'global (kbd "M-,") 'xref-pop-marker-stack)
+(evil-define-key 'normal 'global (kbd "M-.") 'xref-find-definitions)
 
 ;;; projectile key bindings
 (evil-define-key 'normal 'global (kbd "<leader>pf") 'projectile-find-file)
@@ -28,6 +31,7 @@
 (evil-define-key 'normal 'global (kbd "<leader>lo") 'lsp-clangd-find-other-file)
 (evil-define-key 'normal 'global (kbd "<leader>lw") 'lsp-workspace-restart)
 (evil-define-key 'normal 'global (kbd "<leader>ls") 'lsp-workspace-shutdown)
+(evil-define-key 'normal 'global (kbd "<leader>li") 'lsp-find-definition)
 
 (evil-mode 1)
 (provide 'init-evil)

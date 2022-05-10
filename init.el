@@ -33,6 +33,8 @@
 (require 'init-themes)
 (require 'init-uniquify)
 (require 'init-ibuffer)
+(require 'init-ivy)
+(require 'init-evil)
 (require 'init-misc)
 (provide 'init)
 ;;; init.el ends here

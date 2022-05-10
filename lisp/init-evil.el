@@ -11,7 +11,7 @@
 (evil-define-key 'normal 'global (kbd "<leader>xb") 'counsel-switch-buffer)
 (evil-define-key 'normal 'global (kbd "<leader>xs") 'save-buffer)
 (evil-define-key 'normal 'global (kbd "<leader>xm") 'counsel-M-x)
-(evil-define-key 'normal 'global (kbd "<leader>kb") 'kill-buffer)
+(evil-define-key 'normal 'global (kbd "<leader>xk") 'kill-buffer)
 (evil-define-key 'normal 'global (kbd "<leader>x1") 'delete-other-windows)
 (evil-define-key 'normal 'global (kbd "<leader>x2") 'split-window-vertically)
 (evil-define-key 'normal 'global (kbd "<leader>x3") 'split-window-horizontally)

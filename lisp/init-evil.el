@@ -4,6 +4,8 @@
 (require-package 'evil)
 (require 'evil)
 
+(evil-set-undo-system 'undo-redo)
+
 (evil-set-initial-state 'dired-mode 'emacs)
 (evil-set-initial-state 'compilation-mode 'emacs)
 
@@ -22,6 +24,7 @@
 (evil-define-key '(normal visual) 'global (kbd "<leader>sc") 'shell-command)
 (evil-define-key '(normal visual) 'global (kbd "M-,") 'xref-pop-marker-stack)
 (evil-define-key '(normal visual) 'global (kbd "M-.") 'xref-find-definitions)
+(evil-define-key '(normal visual) 'global (kbd "<leader>xh") 'mark-whole-buffer)
 
 ;;; projectile key bindings
 (evil-define-key '(normal visual) 'global (kbd "<leader>pf") 'projectile-find-file)
@@ -35,6 +38,7 @@
 (evil-define-key '(normal visual) 'global (kbd "<leader>lw") 'lsp-workspace-restart)
 (evil-define-key '(normal visual) 'global (kbd "<leader>ls") 'lsp-workspace-shutdown)
 (evil-define-key '(normal visual) 'global (kbd "<leader>li") 'lsp-find-definition)
+(evil-define-key '(normal visual) 'global (kbd "<leader>la") 'lsp-execute-code-action)
 
 ;; evil-nerd-commenter keys
 (evil-define-key '(normal visual) 'global (kbd "<leader>ci") 'evilnc-comment-or-uncomment-lines)

@@ -41,5 +41,8 @@
 (require-package 'wgrep)
 (require 'wgrep)
 
+;; auto save
+(auto-save-visited-mode)
+
 (provide 'init-misc)
 ;;; init-misc.el ends here

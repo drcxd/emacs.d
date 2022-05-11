@@ -43,11 +43,13 @@
 (require 'init-org)
 (require 'init-ivy)
 (require 'init-projectile)
+(require 'init-dired)
 
 (require 'init-prog)
 (require 'init-company)
 (require 'init-lsp)
 (require 'init-lua-mode)
+(require 'init-magit)
 
 (require 'init-key-binding)
 (require 'init-evil)

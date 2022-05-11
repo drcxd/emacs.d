@@ -46,5 +46,9 @@
 		(c-mode    . doxygen)
 		(c++-mode  . doxygen)))
 
+;; evil-nerd-commenter
+(require-package 'evil-nerd-commenter)
+
+
 (provide 'init-prog)
 ;;; init-prog.el ends here

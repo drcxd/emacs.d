@@ -20,13 +20,26 @@
 
 (setq inhibit-splash-screen t)
 
+;;; useful packages
 (require-package 'ripgrep)
 (require-package 'powershell)
 (require-package 'ace-window)
 
+;;; unicode
 (require-package 'unicode-fonts)
 (require 'unicode-fonts)
 (unicode-fonts-setup)
+
+;;; hide dos eol
+(defun remove-dos-eol ()
+  "Do not show ^M in files containing mixed UNIX and DOS line endings."
+  (interactive)
+  (setq buffer-display-table (make-display-table))
+  (aset buffer-display-table ?\^M []))
+
+;; wgrep
+(require-package 'wgrep)
+(require 'wgrep)
 
 (provide 'init-misc)
 ;;; init-misc.el ends here

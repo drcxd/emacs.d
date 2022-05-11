@@ -39,5 +39,12 @@
 (require-package 'git-gutter)
 (add-hook 'prog-mode-hook 'git-gutter-mode)
 
+;; doxygen documentation style
+(setq-default c-doc-comment-style
+	      '((java-mode . javadoc)
+		(pike-mode . autodoc)
+		(c-mode    . doxygen)
+		(c++-mode  . doxygen)))
+
 (provide 'init-prog)
 ;;; init-prog.el ends here

@@ -5,6 +5,8 @@
 (require 'evil)
 
 (evil-set-initial-state 'dired-mode 'emacs)
+(evil-set-initial-state 'compilation-mode 'emacs)
+
 (evil-set-leader 'normal (kbd "<SPC>"))
 (evil-define-key 'normal 'global (kbd "<leader>xf") 'counsel-find-file)
 (evil-define-key 'normal 'global (kbd "<leader>xc") 'save-buffers-kill-emacs)
@@ -17,6 +19,7 @@
 (evil-define-key 'normal 'global (kbd "<leader>x3") 'split-window-horizontally)
 (evil-define-key 'normal 'global (kbd "<leader>xo") 'ace-window)
 (evil-define-key 'normal 'global (kbd "<leader>x0") 'delete-window)
+(evil-define-key 'normal 'global (kbd "<leader>sc") 'shell-command)
 (evil-define-key 'normal 'global (kbd "M-,") 'xref-pop-marker-stack)
 (evil-define-key 'normal 'global (kbd "M-.") 'xref-find-definitions)
 

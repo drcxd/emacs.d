@@ -35,7 +35,7 @@
         ;; ("org"   . "https://gitlab.com/d12frosted/elpa-mirror/raw/master/org/")
         ;; ("gnu"   . "https://gitlab.com/d12frosted/elpa-mirror/raw/master/gnu/")
         ))
-
+(package-initialize)
 ;;; On-demand installation of packages
 
 (defun require-package (package &optional min-version no-refresh)
@@ -45,5 +45,6 @@ If NO-REFRESH is nil, `package-refresh-contents' is called."
     (unless (or (assoc package package-archive-contents) no-refresh)
       (package-refresh-contents))
     (package-install package)))
+
 (provide 'init-elpa)
 ;;; init-elpa.el ends here

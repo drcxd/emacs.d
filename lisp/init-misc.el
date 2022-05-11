@@ -24,5 +24,9 @@
 (require-package 'powershell)
 (require-package 'ace-window)
 
+(require-package 'unicode-fonts)
+(require 'unicode-fonts)
+(unicode-fonts-setup)
+
 (provide 'init-misc)
 ;;; init-misc.el ends here

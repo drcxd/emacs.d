@@ -49,6 +49,8 @@
 ;; evil-nerd-commenter
 (require-package 'evil-nerd-commenter)
 
+;; highlight symbol
+(require-package 'highlight-symbol)
 
 (provide 'init-prog)
 ;;; init-prog.el ends here

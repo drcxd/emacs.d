@@ -37,12 +37,16 @@
  "ld" 'lsp-find-definition
  "lo" 'lsp-clangd-find-other-file
  "lr" 'lsp-workspace-restart
- "ls" 'lsp-workspace-shutdown
+ "lp" 'lsp-workspace-shutdown
  "li" 'lsp-find-definition
  "la" 'lsp-execute-code-action
+ "ls" 'lsp-ivy-workspace-symbol
 
  "ci" 'evilnc-comment-or-uncomment-lines
  "cc" 'evilnc-copy-and-comment-lines
+
+ "hs" 'highlight-symbol
+ "hr" 'highlight-symbol-remove-all
 
  "gg" 'magit
  )

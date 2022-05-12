@@ -11,6 +11,7 @@
 (require 'lsp-clangd)
 (setq lsp-clients-clangd-args
       '("--completion-style=detailed"
+	"--header-insertion=never"
         "-j=32"))
 
 (require 'lsp-ui-doc)

@@ -8,6 +8,7 @@
 
 (evil-set-initial-state 'dired-mode 'emacs)
 (evil-set-initial-state 'compilation-mode 'emacs)
+(evil-set-initial-state 'xref--xref-buffer-mode 'emacs)
 
 ;; use general to bind keys
 ;; (evil-set-leader '(normal visual) (kbd "<SPC>"))

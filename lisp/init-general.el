@@ -25,6 +25,7 @@
  "x3" 'split-window-horizontally
  "x0" 'delete-window
  "sc" 'shell-command
+ "ss" 'counsel-grep-or-swiper
  "xh" 'mark-whole-buffer
  "xo" 'ace-window
  "ws" 'ace-swap-window

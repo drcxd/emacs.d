@@ -25,6 +25,10 @@
 (require-package 'powershell)
 (require-package 'ace-window)
 
+;;; ace-window
+(require 'ace-window)
+(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+
 ;;; unicode
 (require-package 'unicode-fonts)
 (require 'unicode-fonts)

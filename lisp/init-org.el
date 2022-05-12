@@ -14,5 +14,10 @@
             "\\(" fix-regexp "\\) *\n *\\(" fix-regexp "\\)") "\\1\\2" origin-contents)))
     (ad-set-arg 1 fixed-contents)))
 
+(setq org-todo-keywords
+      (quote
+       ((sequence "TODO(t)" "STARTED(s!)" "|" "DONE(d!/!)")
+	(sequence "WAITING(w@/!)" "SOMEDAY(S)" "PROJECT(P@)" "|" "CANCELLED(c@/!)"))))
+
 (provide 'init-org)
 ;;; init-org.el ends here

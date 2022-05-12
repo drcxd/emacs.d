@@ -53,6 +53,7 @@
 
 (require 'init-key-binding)
 (require 'init-evil)
+(require 'init-general)
 
 (provide 'init)
 ;;; init.el ends here

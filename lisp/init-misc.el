@@ -47,6 +47,7 @@
 
 ;; auto save
 (auto-save-visited-mode)
+(setq auto-save-visited-interval 2)
 
 (provide 'init-misc)
 ;;; init-misc.el ends here

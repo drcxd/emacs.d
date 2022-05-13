@@ -49,6 +49,13 @@
 ;; ;; magit keys
 ;; (evil-define-key '(normal visual) 'global (kbd "<leader>gg") 'magit)
 
+;; evil-escape
+(require-package 'evil-escape)
+(require 'evil-escape)
+(setq-default evil-escape-key-sequence "jk")
+(setq-default evil-escape-delay 0.1)
+(evil-escape-mode)
+
 (evil-mode 1)
 (provide 'init-evil)
 ;;; init-evil.el ends here

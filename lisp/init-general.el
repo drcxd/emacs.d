@@ -12,7 +12,8 @@
 (general-define-key
  :keymaps '(normal visual insert emacs motion)
  :prefix "SPC"
- :non-normal-prefix "C-,"
+ ;; :non-normal-prefix "C-,"
+ :non-normal-prefix "M-SPC"
  "" nil
  "xf" 'counsel-find-file
  "xc" 'save-buffers-kill-emacs

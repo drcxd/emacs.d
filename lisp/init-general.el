@@ -36,13 +36,14 @@
  "pi" 'projectile-invalidate-cache
 
  "ll" 'lsp
- "ld" 'lsp-find-definition
+ "ld" 'lsp-find-declaration
  "lo" 'lsp-clangd-find-other-file
  "lr" 'lsp-workspace-restart
  "lp" 'lsp-workspace-shutdown
  "li" 'lsp-find-definition
  "la" 'lsp-execute-code-action
  "ls" 'lsp-ivy-workspace-symbol
+ "ln" 'lsp-rename
 
  "ci" 'evilnc-comment-or-uncomment-lines
  "cc" 'evilnc-copy-and-comment-lines

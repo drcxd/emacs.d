@@ -15,6 +15,8 @@
 ;; (global-set-key (kbd "<f1> l") 'counsel-find-library)
 ;; (global-set-key (kbd "C-x b") 'counsel-switch-buffer)
 
+(setq ivy-use-selectable-prompt t)
+
 (ivy-mode 1)
 (provide 'init-ivy)
 ;;; init-ivy.el ends here

@@ -6,5 +6,7 @@
   "Setup dired."
   (dired-hide-details-mode 1))
 (add-hook 'dired-mode-hook 'dired-mode-setup)
+(with-eval-after-load 'dired
+  (require 'dired-x))
 (provide 'init-dired)
 ;;; init-dired.el ends here

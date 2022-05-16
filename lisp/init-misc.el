@@ -49,5 +49,8 @@
 (auto-save-visited-mode)
 (setq auto-save-visited-interval 2)
 
+;; no tabs
+(setq-default indent-tabs-mode nil)
+
 (provide 'init-misc)
 ;;; init-misc.el ends here

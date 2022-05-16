@@ -52,6 +52,13 @@
  "hr" 'highlight-symbol-remove-all
 
  "gg" 'magit
+
+ "vs" 'vc-dir
+ "vg" 'vc-annotate
+ "vl" 'vc-print-log
+ "ve" 'vc-ediff
+ "vu" 'vc-revert
+ "vd" 'vc-diff
  )
 
 (general-define-key

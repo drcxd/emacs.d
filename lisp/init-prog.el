@@ -1,9 +1,11 @@
 ;;; init-prog --- summary
 ;;; Commentary:
 ;;; Code:
-(add-hook 'prog-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-(add-hook 'prog-mode-hook (lambda () (setq show-trailing-whitespace t)))
-(add-hook 'prog-mode-hook (lambda () (electric-pair-mode t)))
+(defun prog-mode-setup ()
+  (display-fill-column-indicator-mode t)
+  (setq show-trailing-whitespace t)
+  (electric-pair-mode t))
+(add-hook 'prog-mode-hook 'prog-mode-setup)
 
 (require-package 'clang-format)
 (require-package 'inheritenv)

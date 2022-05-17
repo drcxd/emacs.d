@@ -40,7 +40,12 @@
 
 ;; git-gutter
 (require-package 'git-gutter)
+(require 'git-gutter)
 (add-hook 'prog-mode-hook 'git-gutter-mode)
+;; or diff-hl if git-gutter does not work
+(require-package 'diff-hl)
+(require 'diff-hl)
+(add-hook 'prog-mode-hook 'diff-hl-mode)
 
 ;; doxygen documentation style
 (setq-default c-doc-comment-style

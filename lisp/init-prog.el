@@ -39,9 +39,10 @@
         ("BUG" error bold)))
 
 ;; git-gutter
-(require-package 'git-gutter)
-(require 'git-gutter)
-(add-hook 'prog-mode-hook 'git-gutter-mode)
+;; (require-package 'git-gutter)
+;; (require 'git-gutter)
+;; (setq git-gutter:handled-backends '(git svn))
+;; (add-hook 'prog-mode-hook 'git-gutter-mode)
 ;; or diff-hl if git-gutter does not work
 (require-package 'diff-hl)
 (require 'diff-hl)

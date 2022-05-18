@@ -55,5 +55,8 @@
 ;; recentf
 (recentf-mode 1)
 
+;; olivetti
+(require-package 'olivetti)
+
 (provide 'init-misc)
 ;;; init-misc.el ends here

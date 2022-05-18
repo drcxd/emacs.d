@@ -4,6 +4,7 @@
 
 (set-face-attribute 'default nil :font "Cascadia Code-16")
 (set-face-attribute 'fixed-pitch nil :font "Cascadia Code-16")
+(set-face-attribute 'variable-pitch nil :font "FiraGo-18")
 
 ;; italic
 (set-face-attribute 'italic nil

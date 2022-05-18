@@ -11,7 +11,10 @@
 (require-package 'inheritenv)
 (require-package 'language-id)
 (require-package 'format-all)
+
+;; flycheck
 (require-package 'flycheck)
+;; (global-flycheck-mode)
 
 ;; (require-package 'citre)
 

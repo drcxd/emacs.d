@@ -31,7 +31,6 @@
 (require-package 'scratch)
 
 (require 'init-misc)
-(require 'init-themes)
 (require 'init-ligature)
 (require 'init-face)
 (require 'init-uniquify)
@@ -54,6 +53,7 @@
 (require 'init-key-binding)
 (require 'init-evil)
 (require 'init-general)
+(require 'init-themes)
 
 ;; Allow access from emacsclient
 (add-hook 'after-init-hook

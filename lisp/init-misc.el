@@ -58,5 +58,19 @@
 ;; olivetti
 (require-package 'olivetti)
 
+(define-minor-mode my-focus-mode
+  "My focus mode."
+  :init-value nil
+  :global nil
+  (if my-focus-mode
+      (progn
+        (olivetti-mode 1)
+        (unless (derived-mode-p 'prog-mode)
+          (variable-pitch-mode 1)))
+    (olivetti-mode -1)
+    (variable-pitch-mode -1)
+    (unless (derived-mode-p 'prog-mode)
+      (variable-pitch-mode -1))))
+
 (provide 'init-misc)
 ;;; init-misc.el ends here

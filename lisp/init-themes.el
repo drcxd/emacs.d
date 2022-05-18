@@ -21,7 +21,11 @@
   (modus-themes-with-colors
     (custom-set-faces
      `(git-gutter:added ((,class :background ,green-fringe-bg :foreground ,green-fringe-bg)))
+     `(git-gutter:deleted ((,class :background ,red-fringe-bg :foreground ,red-fringe-bg)))
+     `(git-gutter:modified ((,class :background ,yellow-fringe-bg :foreground ,yellow-fringe-bg)))
      `(flycheck-fringe-error ((,class :background ,bg-main :foreground ,red-fringe-bg)))
+     `(flycheck-fringe-info ((,class :background ,bg-main :foreground ,cyan-fringe-bg)))
+     `(flycheck-fringe-warning ((,class :background ,bg-main :foreground ,yellow-fringe-bg)))
      )))
 (add-hook 'modus-themes-after-load-theme-hook #'my-modus-setup)
 ;; (modus-themes-load-themes)

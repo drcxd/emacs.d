@@ -19,10 +19,12 @@
  "x2" 'split-window-vertically
  "x3" 'split-window-horizontally
  "x0" 'delete-window
- "sc" 'shell-command
- "ss" 'counsel-grep-or-swiper
  "xh" 'mark-whole-buffer
  "xo" 'ace-window
+
+ "sc" 'shell-command
+ "ss" 'counsel-grep-or-swiper
+
  "ws" 'ace-swap-window
 
  "pf" 'projectile-find-file
@@ -53,6 +55,8 @@
  "ve" 'vc-ediff
  "vu" 'vc-revert
  "vd" 'vc-diff
+
+ "rf" 'counsel-recentf
  )
 
 (general-define-key

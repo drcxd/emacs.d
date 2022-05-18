@@ -52,5 +52,8 @@
 ;; no tabs
 (setq-default indent-tabs-mode nil)
 
+;; recentf
+(recentf-mode 1)
+
 (provide 'init-misc)
 ;;; init-misc.el ends here

@@ -3,12 +3,6 @@
 ;;; Code:
 (require-package 'general)
 
-;; (general-define-key
-;;  :keymaps 'motion
-;;  :prefix "SPC"
-;;  "" nil
-;;  )
-
 (general-define-key
  :keymaps '(normal visual insert emacs motion)
  :prefix "SPC"
@@ -72,6 +66,18 @@
  :keymaps 'org-mode-map
  "TAB" 'org-cycle
  )
+
+(general-define-key
+ :states '(normal insert visual emacs)
+ :keymaps 'org-mode-map
+ :prefix "SPC"
+ :non-normal-prefix "M-SPC"
+ "" nil
+ "oe" 'org-export-dispatch
+ "od" 'org-todo
+ "op" 'org-insert-structure-template
+ "ot" 'org-time-stamp
+ "oh" 'org-entities-help)
 
 (general-define-key
  "C-s" 'counsel-grep-or-swiper

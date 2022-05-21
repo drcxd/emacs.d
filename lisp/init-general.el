@@ -32,13 +32,13 @@
  "pi" 'projectile-invalidate-cache
 
  "ll" 'lsp
- "ld" 'lsp-find-declaration
+ "ldc" 'lsp-find-declaration
+ "ldf" 'lsp-find-definition
  "lo" 'lsp-clangd-find-other-file
- "lr" 'lsp-workspace-restart
- "lp" 'lsp-workspace-shutdown
- "li" 'lsp-find-definition
- "la" 'lsp-execute-code-action
+ "lwr" 'lsp-workspace-restart
+ "lws" 'lsp-workspace-shutdown
  "ls" 'lsp-ivy-workspace-symbol
+ "la" 'lsp-execute-code-action
  "ln" 'lsp-rename
 
  "ci" 'evilnc-comment-or-uncomment-lines
@@ -57,6 +57,11 @@
  "vd" 'vc-diff
 
  "rf" 'counsel-recentf
+
+ "tt" 'modus-themes-toggle
+ "ts" 'text-scale-adjust
+
+ "fm" 'my-focus-mode
  )
 
 (general-define-key
@@ -77,11 +82,11 @@
  :prefix "SPC"
  :non-normal-prefix "M-SPC"
  "" nil
- "oe" 'org-export-dispatch
- "od" 'org-todo
- "op" 'org-insert-structure-template
- "ot" 'org-time-stamp
- "oh" 'org-entities-help)
+ "me" 'org-export-dispatch
+ "mtp" 'org-insert-structure-template
+ "mtd" 'org-todo
+ "mts" 'org-time-stamp
+ "mh" 'org-entities-help)
 
 (general-define-key
  "C-s" 'counsel-grep-or-swiper

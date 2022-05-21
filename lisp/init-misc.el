@@ -49,6 +49,9 @@
 (auto-save-visited-mode)
 (setq auto-save-visited-interval 2)
 
+;; auto revert
+(global-auto-revert-mode)
+
 ;; no tabs
 (setq-default indent-tabs-mode nil)
 

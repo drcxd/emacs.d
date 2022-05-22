@@ -43,6 +43,7 @@
 (require 'init-ivy)
 (require 'init-projectile)
 (require 'init-dired)
+(require 'init-prescient)
 
 (require 'init-prog)
 (require 'init-company)

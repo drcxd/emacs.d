@@ -2,6 +2,9 @@
 ;;; Commentary:
 ;;; Code:
 
+(add-to-list 'default-frame-alist '(font . "Cascadia Code-16"))
+(set-fontset-font "fontset-default" 'han "Microsoft Yahei-18")
+
 (set-face-attribute 'default nil :font "Cascadia Code-16")
 (set-face-attribute 'fixed-pitch nil :font "Cascadia Code-16")
 (set-face-attribute 'variable-pitch nil :font "FiraGo-18")
@@ -10,12 +13,10 @@
 (set-face-attribute 'italic nil
                     :slant 'italic
                     :underline nil)
-
-;; markdown
-;; (require-package 'markdown-mode)
-;; (require 'markdown-mode)
-;; (set-face-attribute 'markdown-code-face nil
-;;                     :family "Cascadia Code")
+;;; unicode
+(require-package 'unicode-fonts)
+(require 'unicode-fonts)
+(unicode-fonts-setup)
 
 (provide 'init-face)
 ;;; init-face.el ends here

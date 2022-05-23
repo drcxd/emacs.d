@@ -8,9 +8,6 @@
 
 (setq make-backup-files nil)
 
-(add-to-list 'default-frame-alist '(font . "Cascadia Code-16"))
-(set-fontset-font "fontset-default" 'han "Microsoft Yahei-18")
-
 ;; if use hunspell in windows, uncomment this block
 ;; (setq ispell-local-dictionary "hunspelldict")
 ;; (setq ispell-local-dictionary-alist
@@ -28,11 +25,6 @@
 ;;; ace-window
 (require 'ace-window)
 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-
-;;; unicode
-(require-package 'unicode-fonts)
-(require 'unicode-fonts)
-(unicode-fonts-setup)
 
 ;;; hide dos eol
 (defun remove-dos-eol ()

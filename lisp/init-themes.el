@@ -10,7 +10,8 @@
 (require 'modus-themes)
 (setq modus-themes-italic-constructs t
       modus-themes-bold-constructs nil
-      modus-themes-mixed-fonts t)
+      modus-themes-mixed-fonts t
+      modus-themes-headings '((t . (rainbow overline background))))
 ;; (defun my-modus-setup ()
 ;;   "Doc string."
 ;;   (set-face-attribute 'git-gutter:added nil

@@ -49,6 +49,7 @@
 (require 'init-lua-mode)
 (require 'init-magit)
 (require 'init-yasnippet)
+(require 'init-tree-sitter)
 
 (require 'init-key-binding)
 (require 'init-evil)

@@ -4,6 +4,7 @@
 !.gitignore
 !*.el
 !*.yas
+!*.org
 custom.el
 
 elpa

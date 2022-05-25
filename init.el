@@ -48,6 +48,7 @@
 (require 'init-lsp)
 (require 'init-lua-mode)
 (require 'init-magit)
+(require 'init-yasnippet)
 
 (require 'init-key-binding)
 (require 'init-evil)

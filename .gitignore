@@ -1,6 +1,10 @@
 *
+!*/
+
 !.gitignore
-!lisp
-!site-lisp
 !*.el
+!*.yas
 custom.el
+
+elpa
+transient

@@ -3,10 +3,20 @@
 ;;; Code:
 (require-package 'lsp-mode)
 (require-package 'lsp-ui)
-(require-package 'lsp-ivy)
+;; (require-package 'lsp-ivy)
 
 (require 'lsp)
 (setq lsp-headerline-breadcrumb-enable nil)
+
+;; corfu completion setup
+(setq lsp-completion-provider :none)
+(defun corfu-lsp-setup ()
+  (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+        '(orderless)))
+(add-hook 'lsp-completion-mode-hook #'corfu-lsp-setup)
+
+;; consult-lsp
+(require-package 'consult-lsp)
 
 (require 'lsp-clangd)
 (setq lsp-clients-clangd-args

@@ -9,11 +9,11 @@
  ;; :non-normal-prefix "C-,"
  :non-normal-prefix "M-SPC"
  "" nil
- "xf" 'counsel-find-file
+ "xf" 'find-file
  "xc" 'save-buffers-kill-emacs
- "xb" 'counsel-switch-buffer
+ "xb" 'switch-to-buffer
  "xs" 'save-buffer
- "xm" 'counsel-M-x
+ "xm" 'execute-extended-command
  "xk" 'kill-buffer
  "x1" 'delete-other-windows
  "x2" 'split-window-vertically
@@ -23,7 +23,7 @@
  "xo" 'ace-window
 
  "sc" 'shell-command
- "ss" 'counsel-grep-or-swiper
+ "ss" 'consult-line
 
  "ws" 'ace-swap-window
 
@@ -37,7 +37,7 @@
  "lo" 'lsp-clangd-find-other-file
  "lwr" 'lsp-workspace-restart
  "lws" 'lsp-workspace-shutdown
- "ls" 'lsp-ivy-workspace-symbol
+ "ls" 'consult-lsp-symbols
  "la" 'lsp-execute-code-action
  "ln" 'lsp-rename
 
@@ -56,7 +56,7 @@
  "vu" 'vc-revert
  "vd" 'vc-diff
 
- "rf" 'counsel-recentf
+ "rf" 'consult-recent-file
 
  "tt" 'modus-themes-toggle
  "ts" 'text-scale-adjust
@@ -89,14 +89,7 @@
  "mh" 'org-entities-help)
 
 (general-define-key
- "C-s" 'counsel-grep-or-swiper
- "M-x" 'counsel-M-x
- "C-x C-f" 'counsel-find-file
- "<f1> f" 'counsel-describe-function
- "<f1> v" 'counsel-describe-variable
- "<f1> o" 'counsel-describe-symbol
- "<f1> l" 'counsel-find-library
- "C-x b" 'counsel-switch-buffer
+ "C-c C-o" 'embark-export
  )
 
 

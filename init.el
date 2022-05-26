@@ -38,23 +38,28 @@
 (require 'init-which-key)
 (require 'init-linum-mode)
 (require 'init-org)
+
 ;; (require 'init-ivy)
+;; (require 'init-prescient)
 (require 'init-vertico)
 (require 'init-orderless)
 (require 'init-marginalia)
 (require 'init-projectile)
 (require 'init-dired)
 (require 'init-embark)
+
+;; (require 'init-company)
 (require 'init-corfu)
-;; (require 'init-prescient)
+(require 'init-cape)
 
 (require 'init-prog)
-;; (require 'init-company)
 (require 'init-lsp)
 (require 'init-lua-mode)
 (require 'init-magit)
 (require 'init-yasnippet)
 (require 'init-tree-sitter)
+
+(require 'init-corfu-lsp)
 
 (require 'init-key-binding)
 (require 'init-evil)

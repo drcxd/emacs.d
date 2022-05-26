@@ -48,9 +48,9 @@
 (require 'init-dired)
 (require 'init-embark)
 
-;; (require 'init-company)
-(require 'init-corfu)
-(require 'init-cape)
+(require 'init-company)
+;; (require 'init-corfu)
+;; (require 'init-cape)
 
 (require 'init-prog)
 (require 'init-lsp)
@@ -59,7 +59,7 @@
 (require 'init-yasnippet)
 (require 'init-tree-sitter)
 
-(require 'init-corfu-lsp)
+;; (require 'init-corfu-lsp)
 
 (require 'init-key-binding)
 (require 'init-evil)

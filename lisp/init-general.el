@@ -88,10 +88,7 @@
  "mts" 'org-time-stamp
  "mh" 'org-entities-help)
 
-(general-define-key
- "C-c C-o" 'embark-export
- )
-
+(general-define-key "<f5>" 'embark-act)
 
 (require 'general)
 (provide 'init-general)

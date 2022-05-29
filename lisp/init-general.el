@@ -62,6 +62,10 @@
  "ts" 'text-scale-adjust
 
  "fm" 'my-focus-mode
+
+ "ev" 'eval-region
+ "el" 'eval-last-sexp
+ "ee" 'eval-expression
  )
 
 (general-define-key

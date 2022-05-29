@@ -4,7 +4,7 @@
 (require-package 'corfu)
 (global-corfu-mode)
 (setq corfu-auto t
-      corfu-cycle t
+      corfu-cycle nil
       corfu-quit-at-boundary nil
       corfu-quit-no-match t
       corfu-preview-current nil)

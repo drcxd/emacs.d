@@ -44,9 +44,11 @@
 (require 'init-vertico)
 (require 'init-orderless)
 (require 'init-marginalia)
+(require 'init-embark)
+(require 'init-consult)
+
 (require 'init-projectile)
 (require 'init-dired)
-(require 'init-embark)
 
 ;; (require 'init-company)
 (require 'init-corfu)

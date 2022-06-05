@@ -40,6 +40,7 @@
  "ls" 'consult-lsp-symbols
  "la" 'lsp-execute-code-action
  "ln" 'lsp-rename
+ "lg" 'lsp-ui-doc-glance
 
  "ci" 'evilnc-comment-or-uncomment-lines
  "cc" 'evilnc-copy-and-comment-lines

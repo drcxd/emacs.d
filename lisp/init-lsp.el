@@ -15,10 +15,11 @@
 (setq lsp-clients-clangd-args
       '("--completion-style=detailed"
 	"--header-insertion=never"
+        "--function-arg-placeholders=0"
         "-j=32"))
 
 (require 'lsp-ui-doc)
-(setq lsp-ui-doc-show-with-cursor t)
+;; (setq lsp-ui-doc-show-with-cursor nil)
 
 (add-to-list 'safe-local-eval-forms '(lsp))
 

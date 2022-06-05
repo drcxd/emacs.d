@@ -11,7 +11,7 @@
  "" nil
  "xf" 'find-file
  "xc" 'save-buffers-kill-emacs
- "xb" 'switch-to-buffer
+ "xb" 'consult-buffer
  "xs" 'save-buffer
  "xm" 'execute-extended-command
  "xk" 'kill-buffer
@@ -32,18 +32,11 @@
  "pi" 'projectile-invalidate-cache
 
  "ll" 'lsp
- "ldc" 'lsp-find-declaration
- "ldf" 'lsp-find-definition
- "lo" 'lsp-clangd-find-other-file
- "lwr" 'lsp-workspace-restart
- "lws" 'lsp-workspace-shutdown
- "ls" 'consult-lsp-symbols
- "la" 'lsp-execute-code-action
- "ln" 'lsp-rename
- "lg" 'lsp-ui-doc-glance
 
  "ci" 'evilnc-comment-or-uncomment-lines
  "cc" 'evilnc-copy-and-comment-lines
+ "co" 'compile
+ "cr" 'consult-ripgrep
 
  "hs" 'highlight-symbol
  "hr" 'highlight-symbol-remove-all
@@ -84,16 +77,44 @@
 (general-define-key
  :states '(normal insert visual emacs)
  :keymaps 'org-mode-map
- :prefix "SPC"
- :non-normal-prefix "M-SPC"
+ :prefix "SPC m"
+ :non-normal-prefix "M-SPC m"
  "" nil
- "me" 'org-export-dispatch
- "mtp" 'org-insert-structure-template
- "mtd" 'org-todo
- "mts" 'org-time-stamp
- "mh" 'org-entities-help)
+ "e" 'org-export-dispatch
+ "tp" 'org-insert-structure-template
+ "td" 'org-todo
+ "ts" 'org-time-stamp
+ "h" 'org-entities-help)
 
 (general-define-key "<f5>" 'embark-act)
+
+(general-define-key
+ :definer 'minor-mode
+ :states '(normal insert visual emacs)
+ :keymaps 'lsp-mode
+ :prefix "SPC m"
+ :non-normal-prefix "M-SPC m"
+ "" nil
+ "dc" 'lsp-find-declaration
+ "df" 'lsp-find-definition
+ "dg" 'consult-lsp-diagnostics
+ "o" 'lsp-clangd-find-other-file
+ "wr" 'lsp-workspace-restart
+ "ws" 'lsp-workspace-shutdown
+ "s" 'consult-lsp-symbols
+ "a" 'lsp-execute-code-action
+ "n" 'lsp-rename
+ "g" 'lsp-ui-doc-glance
+ )
+
+(general-define-key
+ :states '(normal insert visual emacs)
+ :keymaps 'lua-mode-map
+ :prefix "SPC m"
+ :non-normal-prefix "M-SPC m"
+ "" nil
+ "m" 'lua-goto-matching-block
+ )
 
 (require 'general)
 (provide 'init-general)

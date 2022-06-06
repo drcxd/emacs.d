@@ -7,6 +7,7 @@
   (dired-hide-details-mode 1)
   (auto-revert-mode) ;; global-auto-revert-mode does not work for
                      ;; dired
+  (hl-line-mode 1)
   )
 (add-hook 'dired-mode-hook 'dired-mode-setup)
 (with-eval-after-load 'dired

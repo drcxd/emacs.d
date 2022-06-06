@@ -67,8 +67,5 @@
     (unless (derived-mode-p 'prog-mode)
       (variable-pitch-mode -1))))
 
-;; hl-line-mode
-(global-hl-line-mode 1)
-
 (provide 'init-misc)
 ;;; init-misc.el ends here

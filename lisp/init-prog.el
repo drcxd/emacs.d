@@ -4,7 +4,8 @@
 (defun prog-mode-setup ()
   (display-fill-column-indicator-mode t)
   (setq show-trailing-whitespace t)
-  (electric-pair-mode t))
+  (electric-pair-mode t)
+  (hs-minor-mode 1))
 (add-hook 'prog-mode-hook 'prog-mode-setup)
 
 (require-package 'clang-format)

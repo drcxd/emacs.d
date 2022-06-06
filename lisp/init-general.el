@@ -4,7 +4,7 @@
 (require-package 'general)
 
 (general-define-key
- :keymaps '(normal visual insert emacs motion)
+ :states '(normal visual insert emacs motion)
  :prefix "SPC"
  ;; :non-normal-prefix "C-,"
  :non-normal-prefix "M-SPC"

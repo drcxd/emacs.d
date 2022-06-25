@@ -35,7 +35,7 @@
      )))
 (add-hook 'modus-themes-after-load-theme-hook #'my-modus-setup)
 ;; (modus-themes-load-themes)
-(modus-themes-load-vivendi)
+(modus-themes-load-operandi)
 
 ;; Don't prompt to confirm theme safety. This avoids problems with
 ;; first-time startup on Emacs > 26.3.
@@ -43,7 +43,7 @@
 
 ;; If you don't customize it, this is the theme you get.
 ;; (setq-default custom-enabled-themes '(gruvbox))
-(setq-default custom-enabled-themes '(modus-vivendi))
+(setq-default custom-enabled-themes '(modus-operandi))
 
 ;; Ensure that themes will be applied even if they have not been
 ;; customized

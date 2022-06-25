@@ -84,7 +84,9 @@
  "tp" 'org-insert-structure-template
  "td" 'org-todo
  "ts" 'org-time-stamp
- "h" 'org-entities-help)
+ "h" 'org-entities-help
+ "p" 'org-previous-visible-heading
+ "n" 'org-next-visible-heading)
 
 (general-define-key "<f5>" 'embark-act)
 

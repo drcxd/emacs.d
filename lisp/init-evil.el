@@ -56,6 +56,7 @@
 (require 'evil-escape)
 (setq-default evil-escape-key-sequence "jk")
 (setq-default evil-escape-delay 0.1)
+(setq evil-escape-unordered-key-sequence t)
 (evil-escape-mode)
 
 (evil-mode 1)

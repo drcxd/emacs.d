@@ -118,6 +118,17 @@
  "m" 'lua-goto-matching-block
  )
 
+(general-define-key
+ :states 'insert
+ :keymaps 'corfu-map
+ "C-n" 'corfu-next
+ "C-p" 'corfu-previous
+ "TAB" 'corfu-next
+ "S-TAB" 'corfu-previous
+ "<escape>" 'corfu-quit
+ "C-g" 'corfu-quit)
+(general-add-advice '(corfu--setup corfu--teardown) :after 'evil-normalize-keymaps)
+
 (require 'general)
 (provide 'init-general)
 ;;; init-general.el ends here

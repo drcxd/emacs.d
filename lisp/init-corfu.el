@@ -4,8 +4,8 @@
 (require-package 'corfu)
 (global-corfu-mode)
 (setq corfu-auto t
-      corfu-cycle nil
-      corfu-quit-at-boundary nil
+      corfu-cycle t
+      corfu-quit-at-boundary 'separator
       corfu-quit-no-match t
       corfu-preview-current nil)
 
@@ -14,10 +14,6 @@
   (when (where-is-internal #'completion-at-point (list (current-local-map)))
     (corfu-mode 1)))
 (add-hook 'minibuffer-setup-hook #'corfu-enable-in-minibuffer)
-
-(define-key corfu-map "\C-p" #'corfu-previous)
-(define-key corfu-map "\C-n" #'corfu-next)
-(define-key corfu-map (kbd "<escape>") #'corfu-quit)
 
 (provide 'init-corfu)
 ;;; init-corfu.el ends here

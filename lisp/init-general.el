@@ -126,7 +126,9 @@
  "TAB" 'corfu-next
  "S-TAB" 'corfu-previous
  "<escape>" 'corfu-quit
- "C-g" 'corfu-quit)
+ "C-g" 'corfu-quit
+ "SPC" 'corfu-insert-separator
+ )
 (general-add-advice '(corfu--setup corfu--teardown) :after 'evil-normalize-keymaps)
 
 (require 'general)

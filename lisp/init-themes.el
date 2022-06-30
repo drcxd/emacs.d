@@ -11,7 +11,7 @@
 (setq modus-themes-italic-constructs t
       modus-themes-bold-constructs nil
       modus-themes-mixed-fonts t
-      modus-themes-headings '((t . (rainbow overline background)))
+      ;; modus-themes-headings '((t . (rainbow overline background)))
       modus-themes-hl-line '(accented intense)
       )
 ;; (defun my-modus-setup ()
@@ -36,6 +36,9 @@
 (add-hook 'modus-themes-after-load-theme-hook #'my-modus-setup)
 ;; (modus-themes-load-themes)
 (modus-themes-load-operandi)
+
+(require-package 'org-modern)
+(global-org-modern-mode)
 
 ;; Don't prompt to confirm theme safety. This avoids problems with
 ;; first-time startup on Emacs > 26.3.

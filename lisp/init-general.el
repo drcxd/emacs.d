@@ -123,8 +123,8 @@
  :keymaps 'corfu-map
  "C-n" 'corfu-next
  "C-p" 'corfu-previous
- "TAB" 'corfu-next
- "S-TAB" 'corfu-previous
+ "<tab>" 'corfu-next
+ "S-<tab>" 'corfu-previous
  "<escape>" 'corfu-quit
  "C-g" 'corfu-quit
  "SPC" 'corfu-insert-separator

@@ -15,5 +15,9 @@
     (corfu-mode 1)))
 (add-hook 'minibuffer-setup-hook #'corfu-enable-in-minibuffer)
 
+(define-key corfu-map "\C-p" #'corfu-previous)
+(define-key corfu-map "\C-n" #'corfu-next)
+(define-key corfu-map (kbd "<escape>") #'corfu-quit)
+
 (provide 'init-corfu)
 ;;; init-corfu.el ends here

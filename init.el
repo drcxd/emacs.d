@@ -67,6 +67,8 @@
 (require 'init-evil)
 (require 'init-general)
 
+(require 'init-corfu-evil)
+
 (require 'init-face)
 (require 'init-themes)
 (require 'init-ligature)

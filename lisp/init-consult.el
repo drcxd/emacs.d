@@ -5,7 +5,7 @@
 (setq xref-show-xrefs-function #'consult-xref
       xref-show-definitions-function #'consult-xref)
 
-(if (eq system-type 'ms-dos)
+(if (eq system-type 'windows-nt)
     (add-to-list 'process-coding-system-alist
                  '("[rR][gG]" . (utf-8 . gbk-dos))))
 

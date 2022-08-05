@@ -22,6 +22,7 @@
   (setcar (nthcdr 4 org-emphasis-regexp-components) 5)
   (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
   )
+(add-hook 'org-mode-hook 'my-focus-mode)
 
 (provide 'init-org)
 ;;; init-org.el ends here

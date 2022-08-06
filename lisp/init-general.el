@@ -69,6 +69,13 @@
  )
 
 (general-define-key
+ :states 'emacs
+ :keymaps 'dired-mode-map
+ :non-normal-prefix "M-SPC"
+ "at" 'org-attach-dired-to-subtree
+ )
+
+(general-define-key
  :states 'normal
  :keymaps 'org-mode-map
  "TAB" 'org-cycle
@@ -85,8 +92,12 @@
  "td" 'org-todo
  "ts" 'org-time-stamp
  "h" 'org-entities-help
- "p" 'org-previous-visible-heading
- "n" 'org-next-visible-heading)
+ "ph" 'org-previous-visible-heading
+ "nh" 'org-next-visible-heading
+ "at" 'org-attach
+ "ag" 'org-agenda
+ "pm" 'org-do-promote
+ "dm" 'org-do-demote)
 
 (general-define-key "<f5>" 'embark-act)
 

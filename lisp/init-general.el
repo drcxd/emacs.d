@@ -60,6 +60,11 @@
  "ev" 'eval-region
  "el" 'eval-last-sexp
  "ee" 'eval-expression
+
+ "bs" 'bookmark-set
+ "bj" 'bookmark-jump
+ "br" 'bookmark-rename
+ "bd" 'bookmark-delete
  )
 
 (general-define-key

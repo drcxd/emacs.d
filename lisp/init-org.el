@@ -21,6 +21,7 @@
 	  (sequence "WAITING(w@/!)" "SOMEDAY(S)" "PROJECT(P@)" "|" "CANCELLED(c@/!)"))))
   (setcar (nthcdr 4 org-emphasis-regexp-components) 5)
   (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
+  (setq org-ellipsis "⤵")
   )
 (add-hook 'org-mode-hook 'my-focus-mode)
 

@@ -65,6 +65,16 @@
  "bj" 'bookmark-jump
  "br" 'bookmark-rename
  "bd" 'bookmark-delete
+
+ "orf" 'org-roam-node-find
+ "ori" 'org-roam-node-insert
+ "ora" 'org-roam-tag-add
+ "orr" 'org-roam-tag-remove
+
+ "dn" 'denote
+ "dl" 'denote-link
+ "db" 'denote-link-backlinks
+ "df" 'denote-link-find-file
  )
 
 (general-define-key

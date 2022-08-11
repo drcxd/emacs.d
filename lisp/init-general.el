@@ -78,6 +78,8 @@
  "dl" 'denote-link
  "db" 'denote-link-backlinks
  "df" 'denote-link-find-file
+
+ "n" 'hydra-navigation/body
  )
 
 (general-define-key

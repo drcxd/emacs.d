@@ -25,6 +25,7 @@
  "sc" 'shell-command
 
  "ws" 'ace-swap-window
+ "wa" 'hydra-window-adjust/body
 
  "pf" 'projectile-find-file
  "ps" 'projectile-switch-project

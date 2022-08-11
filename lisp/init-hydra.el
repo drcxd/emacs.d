@@ -18,5 +18,14 @@
   ("f" evil-scroll-page-down "scroll-page-down")
   ("b" evil-scroll-page-up "scroll-page-up")
   ("q" nil "quit"))
+
+(defhydra hydra-window-adjust ()
+  "hydra-window-adjust"
+  ("k" enlarge-window "enlarge-window")
+  ("l" enlarge-window-horizontally "enlarge-window-horizontally")
+  ("j" shrink-window "shrink-window")
+  ("h" shrink-window-horizontally "shrink-window-horizontally")
+  )
+
 (provide 'init-hydra)
 ;;; init-hydra.el ends here

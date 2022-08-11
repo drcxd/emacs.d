@@ -25,6 +25,7 @@
   ("l" enlarge-window-horizontally "enlarge-window-horizontally")
   ("j" shrink-window "shrink-window")
   ("h" shrink-window-horizontally "shrink-window-horizontally")
+  ("q" nil "quit")
   )
 
 (provide 'init-hydra)

@@ -16,6 +16,7 @@
       org-roam-ui-open-on-start nil)
 
 (require-package 'denote)
+(require 'denote)
 (setq denote-known-keywords (append denote-known-keywords '("computer-science" "hardware")))
 
 (provide 'init-note)

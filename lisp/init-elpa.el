@@ -20,7 +20,7 @@
         ;; ;; {{ Option 1: 163 mirror repository:
         ("gnu" . "https://mirrors.163.com/elpa/gnu/")
         ("melpa" . "https://mirrors.163.com/elpa/melpa/")
-        ("melpa-stable" . "https://mirrors.163.com/elpa/stable-melpa/")
+        ;; ("melpa-stable" . "https://mirrors.163.com/elpa/stable-melpa/")
         ;; ;; }}
 
         ;; ;; {{ Option 2: tsinghua mirror repository

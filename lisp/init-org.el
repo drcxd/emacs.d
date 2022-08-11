@@ -25,9 +25,5 @@
   )
 (add-hook 'org-mode-hook 'my-focus-mode)
 
-(require-package 'org-roam)
-(setq org-roam-directory (file-truename "~/PublicRoam/"))
-(org-roam-db-autosync-mode)
-
 (provide 'init-org)
 ;;; init-org.el ends here

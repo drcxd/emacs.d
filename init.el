@@ -65,6 +65,7 @@
 
 (require 'init-key-binding)
 (require 'init-evil)
+(require 'init-hydra)
 (require 'init-general)
 
 (require 'init-face)

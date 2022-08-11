@@ -23,7 +23,6 @@
  "xo" 'ace-window
 
  "sc" 'shell-command
- "ss" 'consult-line
 
  "ws" 'ace-swap-window
 
@@ -36,12 +35,17 @@
  "ci" 'evilnc-comment-or-uncomment-lines
  "cc" 'evilnc-copy-and-comment-lines
  "co" 'compile
- "cr" 'consult-ripgrep
+
+ "cg" 'consult-ripgrep
+ "cl" 'consult-line
+ "cr" 'consult-recent-file
 
  "hs" 'highlight-symbol
  "hr" 'highlight-symbol-remove-all
 
- "gg" 'magit
+ "mg" 'magit
+
+ "gg" 'git-gutter
 
  "vs" 'vc-dir
  "vg" 'vc-annotate
@@ -49,8 +53,6 @@
  "ve" 'vc-ediff
  "vu" 'vc-revert
  "vd" 'vc-diff
-
- "rf" 'consult-recent-file
 
  "tt" 'modus-themes-toggle
  "ts" 'text-scale-adjust
@@ -66,10 +68,11 @@
  "br" 'bookmark-rename
  "bd" 'bookmark-delete
 
- "orf" 'org-roam-node-find
- "ori" 'org-roam-node-insert
- "ora" 'org-roam-tag-add
- "orr" 'org-roam-tag-remove
+ "of" 'org-roam-node-find
+ "oi" 'org-roam-node-insert
+ "oa" 'org-roam-tag-add
+ "or" 'org-roam-tag-remove
+ ;; "or" 'hydra-org-roam/body
 
  "dn" 'denote
  "dl" 'denote-link
@@ -123,13 +126,13 @@
  :prefix "SPC m"
  :non-normal-prefix "M-SPC m"
  "" nil
+ "s" 'consult-lsp-symbols
+ "dg" 'consult-lsp-diagnostics
  "dc" 'lsp-find-declaration
  "df" 'lsp-find-definition
- "dg" 'consult-lsp-diagnostics
  "o" 'lsp-clangd-find-other-file
  "wr" 'lsp-workspace-restart
  "ws" 'lsp-workspace-shutdown
- "s" 'consult-lsp-symbols
  "a" 'lsp-execute-code-action
  "n" 'lsp-rename
  "g" 'lsp-ui-doc-glance

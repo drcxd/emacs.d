@@ -2,6 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 (require-package 'hydra)
+(require 'hydra)
+
 (defhydra hydra-org-roam (:exit t)
   "org-roam"
   ("f" org-roam-node-find "node-find")

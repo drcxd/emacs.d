@@ -65,9 +65,10 @@
 (require 'init-corfu-lsp)
 
 (require 'init-key-binding)
-(require 'init-evil)
+;; (require 'init-evil)
 (require 'init-hydra)
-(require 'init-general)
+;; (require 'init-general)
+(require 'init-meow)
 
 (require 'init-face)
 (require 'init-themes)

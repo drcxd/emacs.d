@@ -6,10 +6,21 @@
 ;; (require-package 'lsp-ivy)
 
 (require 'lsp)
+(require 'lsp-mode)
 (setq lsp-headerline-breadcrumb-enable nil)
+(define-key lsp-mode-map (kbd "C-c lc") 'lsp-find-declaration)
+(define-key lsp-mode-map (kbd "C-c lf") 'lsp-find-definition)
+(define-key lsp-mode-map (kbd "C-c lo") 'lsp-clangd-find-other-file)
+(define-key lsp-mode-map (kbd "C-c lr") 'lsp-workspace-restart)
+(define-key lsp-mode-map (kbd "C-c ld") 'lsp-workspace-shutdown)
+(define-key lsp-mode-map (kbd "C-c la") 'lsp-execute-code-action)
+(define-key lsp-mode-map (kbd "C-c ln") 'lsp-rename)
+(define-key lsp-mode-map (kbd "C-c lg") 'lsp-ui-doc-glance)
 
 ;; consult-lsp
 (require-package 'consult-lsp)
+(define-key lsp-mode-map (kbd "C-c ls") 'consult-lsp-symbols)
+(define-key lsp-mode-map (kbd "C-c li") 'consult-lsp-diagnostics)
 
 (require 'lsp-clangd)
 (setq lsp-clients-clangd-args

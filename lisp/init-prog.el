@@ -48,6 +48,7 @@
 (require 'git-gutter)
 (setq git-gutter:handled-backends '(git svn))
 (add-hook 'prog-mode-hook 'git-gutter-mode)
+(global-set-key (kbd "C-c ng") 'git-gutter)
 
 (require-package 'git-gutter-fringe)
 
@@ -65,9 +66,13 @@
 
 ;; evil-nerd-commenter
 (require-package 'evil-nerd-commenter)
+(global-set-key (kbd "C-c ni") 'evilnc-comment-or-uncomment-lines)
+(global-set-key (kbd "C-c nc") 'evilnc-copy-and-comment-lines)
 
 ;; highlight symbol
 (require-package 'highlight-symbol)
+(global-set-key (kbd "C-c ns") 'highlight-symbol)
+(global-set-key (kbd "C-c nr") 'highlight-symbol-remove-all)
 
 (provide 'init-prog)
 ;;; init-prog.el ends here

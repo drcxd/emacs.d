@@ -25,6 +25,8 @@
 ;;; ace-window
 (require 'ace-window)
 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+(global-set-key (kbd "C-x o") 'ace-window)
+(global-set-key (kbd "C-c ws") 'ace-swap-window)
 
 ;;; hide dos eol
 (defun remove-dos-eol ()

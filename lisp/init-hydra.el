@@ -15,8 +15,8 @@
   "hydra-navigation"
   ("j" evil-next-line "next-line")
   ("k" evil-previous-line "previous-line")
-  ("f" evil-scroll-page-down "scroll-page-down")
-  ("b" evil-scroll-page-up "scroll-page-up")
+  ("f" scroll-up-command "page-down")
+  ("b" scroll-down-command "page-up")
   ("q" nil "quit"))
 
 (defhydra hydra-window-adjust ()

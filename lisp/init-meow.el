@@ -89,14 +89,42 @@
    '("'" . repeat)
    '("<escape>" . ignore)))
 
-(global-set-key (kbd "C-x C-b") 'switch-to-buffer)
-(global-set-key (kbd "C-x b") 'ibuffer)
-(global-set-key (kbd "C-x o") 'delete-blank-lines)
-(global-set-key (kbd "C-x C-o") 'other-window)
+;; (global-set-key (kbd "C-x C-b") 'switch-to-buffer)
+;; (global-set-key (kbd "C-x b") 'ibuffer)
+;; (global-set-key (kbd "C-x o") 'delete-blank-lines)
+;; (global-set-key (kbd "C-x C-o") 'other-window)
 
 (require 'meow)
 (meow-setup)
 (meow-global-mode 1)
+
+(defvar my-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "ci" 'evilnc-comment-or-uncomment-lines)
+    (define-key map "cc" 'evilnc-copy-and-comment-lines)
+    (define-key map "xb" 'switch-to-buffer)
+    (define-key map "xo" 'other-window)
+    (define-key map "co" 'compile)
+    (define-key map "cg" 'consult-ripgrep)
+    (define-key map "cl" 'consult-line)
+    (define-key map "cr" 'consult-recent-file)
+    (define-key map "lc" 'lsp-find-declaration)
+    (define-key map "lf" 'lsp-find-definition)
+    (define-key map "lo" 'lsp-clangd-find-other-file)
+    (define-key map "lr" 'lsp-workspace-restart)
+    (define-key map "ld" 'lsp-workspace-shutdown)
+    (define-key map "la" 'lsp-execute-code-action)
+    (define-key map "ln" 'lsp-rename)
+    (define-key map "lg" 'lsp-ui-doc-glance)
+    (define-key map "ls" 'consult-lsp-symbols)
+    (define-key map "li" 'consult-lsp-diagnostics)
+    map)
+  "My key map.")
+
+(meow-define-keys
+    'normal
+  (cons "m" my-map)
+  )
 
 (provide 'init-meow)
 ;;; init-meow.el ends here

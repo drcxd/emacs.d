@@ -2,6 +2,6 @@
 ;;; Commentary:
 ;;; Code:
 (require-package 'magit)
-(global-set-key (kbd "C-c nm") 'magit)
+(global-set-key (kbd "C-c v m") 'magit)
 (provide 'init-magit)
 ;;; init-magit.el ends here

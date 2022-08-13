@@ -10,9 +10,9 @@
                  '("[rR][gG]" . (utf-8 . gbk-dos))))
 
 (define-key (current-global-map) [remap switch-to-buffer] 'consult-buffer)
-(global-set-key (kbd "C-c ng") 'consult-ripgrep)
-(global-set-key (kbd "C-c nl") 'consult-line)
-(global-set-key (kbd "C-c nr") 'consult-recent-file)
+(global-set-key (kbd "C-c c g") 'consult-ripgrep)
+(global-set-key (kbd "C-c c l") 'consult-line)
+(global-set-key (kbd "C-c c r") 'consult-recent-file)
 
 (provide 'init-consult)
 ;;; init-consult.el ends here

@@ -20,6 +20,7 @@
 (define-key corfu-map (kbd "<tab>") 'corfu-next)
 (define-key corfu-map (kbd "S-<tab>") 'corfu-previous)
 (define-key corfu-map (kbd "C-g") 'corfu-quit)
+(define-key corfu-map (kbd "<escape>") 'corfu-quit)
 (define-key corfu-map (kbd "SPC") 'corfu-insert-separator)
 
 (provide 'init-corfu)

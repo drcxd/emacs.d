@@ -89,8 +89,12 @@
    '("'" . repeat)
    '("<escape>" . ignore)))
 
+(global-set-key (kbd "C-x C-b") 'switch-to-buffer)
+(global-set-key (kbd "C-x b") 'ibuffer)
+
 (require 'meow)
 (meow-setup)
 (meow-global-mode 1)
+
 (provide 'init-meow)
 ;;; init-meow.el ends here

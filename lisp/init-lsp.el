@@ -8,6 +8,7 @@
 (require 'lsp)
 (require 'lsp-mode)
 (setq lsp-headerline-breadcrumb-enable nil)
+(global-set-key (kbd "C-c ll") 'lsp)
 (define-key lsp-mode-map (kbd "C-c lc") 'lsp-find-declaration)
 (define-key lsp-mode-map (kbd "C-c lf") 'lsp-find-definition)
 (define-key lsp-mode-map (kbd "C-c lo") 'lsp-clangd-find-other-file)

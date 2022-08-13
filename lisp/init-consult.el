@@ -9,7 +9,7 @@
     (add-to-list 'process-coding-system-alist
                  '("[rR][gG]" . (utf-8 . gbk-dos))))
 
-(global-set-key (kbd "C-x b") 'consult-buffer)
+(define-key (current-global-map) [remap switch-to-buffer] 'consult-buffer)
 (global-set-key (kbd "C-c ng") 'consult-ripgrep)
 (global-set-key (kbd "C-c nl") 'consult-line)
 (global-set-key (kbd "C-c nr") 'consult-recent-file)

@@ -176,9 +176,9 @@
   (cons "SPC" my-map)
   )
 
-;; Or use SPC as keypad
-;; (meow-leader-define-key
-;;  (cons "SPC" my-map))
+;; Access my-map within keypad
+(meow-leader-define-key
+ (cons "SPC" my-map))
 
 (provide 'init-meow)
 ;;; init-meow.el ends here

@@ -89,25 +89,37 @@
    '("'" . repeat)
    '("<escape>" . ignore)))
 
-;; (global-set-key (kbd "C-x C-b") 'switch-to-buffer)
-;; (global-set-key (kbd "C-x b") 'ibuffer)
-;; (global-set-key (kbd "C-x o") 'delete-blank-lines)
-;; (global-set-key (kbd "C-x C-o") 'other-window)
-
 (require 'meow)
 (meow-setup)
 (meow-global-mode 1)
 
 (defvar my-map
   (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "bs") 'bookmark-set)
+    (define-key map (kbd "bj") 'bookmark-jump)
+    (define-key map (kbd "br") 'bookmark-rename)
+    (define-key map (kbd "bd") 'bookmark-delete)
+
     (define-key map (kbd "ci") 'evilnc-comment-or-uncomment-lines)
     (define-key map (kbd "cc") 'evilnc-copy-and-comment-lines)
-    (define-key map (kbd "xb") 'switch-to-buffer)
-    (define-key map (kbd "xo") 'other-window)
     (define-key map (kbd "co") 'compile)
     (define-key map (kbd "cg") 'consult-ripgrep)
     (define-key map (kbd "cl") 'consult-line)
     (define-key map (kbd "cr") 'consult-recent-file)
+
+    (define-key map (kbd "dn") 'denote)
+    (define-key map (kbd "dl") 'denote-link)
+    (define-key map (kbd "db") 'denote-link-backlinks)
+    (define-key map (kbd "df") 'denote-link-find-file)
+
+    (define-key map (kbd "ev") 'eval-region)
+
+    (define-key map (kbd "gg") 'git-gutter)
+
+    (define-key map (kbd "hs") 'highlight-symbol)
+    (define-key map (kbd "hr") 'highlight-symbol-remove-all)
+
+    (define-key map (kbd "ll") 'lsp)
     (define-key map (kbd "lc") 'lsp-find-declaration)
     (define-key map (kbd "lf") 'lsp-find-definition)
     (define-key map (kbd "lo") 'lsp-clangd-find-other-file)
@@ -118,20 +130,55 @@
     (define-key map (kbd "lg") 'lsp-ui-doc-glance)
     (define-key map (kbd "ls") 'consult-lsp-symbols)
     (define-key map (kbd "li") 'consult-lsp-diagnostics)
+
+    (define-key map (kbd "n") 'hydra-navigation/body)
+
+    (define-key map (kbd "of") 'org-roam-node-find)
+    (define-key map (kbd "oi") 'org-roam-node-insert)
+    (define-key map (kbd "ot") 'org-roam-tag-add)
+
+    (define-key map (kbd "pf") 'projectile-find-file)
+    (define-key map (kbd "ps") 'projectile-switch-project)
+    (define-key map (kbd "pi") 'projectile-invalidate-cache)
+
+    (define-key map (kbd "sc") 'shell-command)
+
+    (define-key map (kbd "vm") 'magit)
+    (define-key map (kbd "vs") 'vc-dir)
+    (define-key map (kbd "vg") 'vc-annotate)
+    (define-key map (kbd "vl") 'vc-print-log)
+    (define-key map (kbd "ve") 'vc-ediff)
+    (define-key map (kbd "vu") 'vc-revert)
+    (define-key map (kbd "vd") 'vc-diff)
+
+    (define-key map (kbd "ws") 'ace-swap-window)
+    (define-key map (kbd "wa") 'hydra-window-adjust/body)
+
+    (define-key map (kbd "xb") 'switch-to-buffer)
+    (define-key map (kbd "xs") 'save-buffer)
+    (define-key map (kbd "xo") 'other-window)
+    (define-key map (kbd "xk") 'kill-buffer)
+    (define-key map (kbd "xf") 'find-file)
+    (define-key map (kbd "xc") 'save-buffers-kill-emacs)
+    (define-key map (kbd "xm") 'execute-extended-command)
+    (define-key map (kbd "x1") 'delete-other-windows)
+    (define-key map (kbd "x2") 'split-window-vertically)
+    (define-key map (kbd "x3") 'split-window-horizontally)
+    (define-key map (kbd "x0") 'delete-window)
+
     (define-key map (kbd "<SPC>") 'meow-keypad)
-    (define-key map (kbd "gg") 'git-gutter)
     map)
   "My key map.")
 
 ;; Use SPC as my-map
-;; (meow-define-keys
-;;     'normal
-;;   (cons "SPC" my-map)
-;;   )
+(meow-define-keys
+    'normal
+  (cons "SPC" my-map)
+  )
 
 ;; Or use SPC as keypad
-(meow-leader-define-key
- (cons "SPC" my-map))
+;; (meow-leader-define-key
+;;  (cons "SPC" my-map))
 
 (provide 'init-meow)
 ;;; init-meow.el ends here

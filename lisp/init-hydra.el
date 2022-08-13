@@ -11,6 +11,7 @@
   ("f" scroll-up-command "page-down")
   ("b" scroll-down-command "page-up")
   ("q" nil "quit"))
+(global-set-key (kbd "C-c nn") 'hydra-navigation/body)
 
 (defhydra hydra-window-adjust ()
   "hydra-window-adjust"
@@ -20,6 +21,7 @@
   ("h" shrink-window-horizontally "shrink-window-horizontally")
   ("q" nil "quit")
   )
+(global-set-key (kbd "C-c wa") 'hydra-window-adjust/body)
 
 (provide 'init-hydra)
 ;;; init-hydra.el ends here

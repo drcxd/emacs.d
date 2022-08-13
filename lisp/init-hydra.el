@@ -8,8 +8,10 @@
   "hydra-navigation"
   ("j" next-line "next-line")
   ("k" previous-line "previous-line")
-  ("f" scroll-up-command "page-down")
-  ("b" scroll-down-command "page-up")
+  ("u" scroll-up-command "page-down")
+  ("i" scroll-down-command "page-up")
+  ("m" backward-paragraph "backward-paragraph")
+  ("," forward-paragraph "forward-paragraph")
   ("q" nil "quit"))
 (global-set-key (kbd "C-c nn") 'hydra-navigation/body)
 

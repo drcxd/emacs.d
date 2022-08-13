@@ -100,31 +100,38 @@
 
 (defvar my-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "ci" 'evilnc-comment-or-uncomment-lines)
-    (define-key map "cc" 'evilnc-copy-and-comment-lines)
-    (define-key map "xb" 'switch-to-buffer)
-    (define-key map "xo" 'other-window)
-    (define-key map "co" 'compile)
-    (define-key map "cg" 'consult-ripgrep)
-    (define-key map "cl" 'consult-line)
-    (define-key map "cr" 'consult-recent-file)
-    (define-key map "lc" 'lsp-find-declaration)
-    (define-key map "lf" 'lsp-find-definition)
-    (define-key map "lo" 'lsp-clangd-find-other-file)
-    (define-key map "lr" 'lsp-workspace-restart)
-    (define-key map "ld" 'lsp-workspace-shutdown)
-    (define-key map "la" 'lsp-execute-code-action)
-    (define-key map "ln" 'lsp-rename)
-    (define-key map "lg" 'lsp-ui-doc-glance)
-    (define-key map "ls" 'consult-lsp-symbols)
-    (define-key map "li" 'consult-lsp-diagnostics)
+    (define-key map (kbd "ci") 'evilnc-comment-or-uncomment-lines)
+    (define-key map (kbd "cc") 'evilnc-copy-and-comment-lines)
+    (define-key map (kbd "xb") 'switch-to-buffer)
+    (define-key map (kbd "xo") 'other-window)
+    (define-key map (kbd "co") 'compile)
+    (define-key map (kbd "cg") 'consult-ripgrep)
+    (define-key map (kbd "cl") 'consult-line)
+    (define-key map (kbd "cr") 'consult-recent-file)
+    (define-key map (kbd "lc") 'lsp-find-declaration)
+    (define-key map (kbd "lf") 'lsp-find-definition)
+    (define-key map (kbd "lo") 'lsp-clangd-find-other-file)
+    (define-key map (kbd "lr") 'lsp-workspace-restart)
+    (define-key map (kbd "ld") 'lsp-workspace-shutdown)
+    (define-key map (kbd "la") 'lsp-execute-code-action)
+    (define-key map (kbd "ln") 'lsp-rename)
+    (define-key map (kbd "lg") 'lsp-ui-doc-glance)
+    (define-key map (kbd "ls") 'consult-lsp-symbols)
+    (define-key map (kbd "li") 'consult-lsp-diagnostics)
+    (define-key map (kbd "<SPC>") 'meow-keypad)
+    (define-key map (kbd "gg") 'git-gutter)
     map)
   "My key map.")
 
-(meow-define-keys
-    'normal
-  (cons "m" my-map)
-  )
+;; Use SPC as my-map
+;; (meow-define-keys
+;;     'normal
+;;   (cons "SPC" my-map)
+;;   )
+
+;; Or use SPC as keypad
+(meow-leader-define-key
+ (cons "SPC" my-map))
 
 (provide 'init-meow)
 ;;; init-meow.el ends here

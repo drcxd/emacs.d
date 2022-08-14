@@ -171,14 +171,46 @@
   "My key map.")
 
 ;; Use SPC as my-map
-(meow-define-keys
-    'normal
-  (cons "SPC" my-map)
-  )
+;; (meow-define-keys
+;;     'normal
+;;   (cons "SPC" my-map)
+;;   )
+
+;; (meow-define-keys
+;;     'motion
+;;   (cons "SPC" my-map))
 
 ;; Access my-map within keypad
+;; (meow-leader-define-key
+;;  (cons "SPC" my-map))
+
+(global-set-key (kbd "C-c b") 'switch-to-buffer)
+(global-set-key (kbd "C-c o") 'other-window)
+(global-set-key (kbd "C-c k") 'kill-buffer)
+(global-set-key (kbd "C-c d") 'delete-window)
+(global-set-key (kbd "C-c s") 'shell-command)
+(global-set-key (kbd "C-c w1") 'delete-other-windows)
+(global-set-key (kbd "C-c w2") 'split-window-horizontally)
+(global-set-key (kbd "C-c w3") 'split-window-vertically)
+(global-set-key (kbd "C-c w0") 'delete-window)
+
+(defvar my-lsp-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "l") 'lsp)
+    (define-key map (kbd "c") 'lsp-find-declaration)
+    (define-key map (kbd "f") 'lsp-find-definition)
+    (define-key map (kbd "o") 'lsp-clangd-find-other-file)
+    (define-key map (kbd "r") 'lsp-workspace-restart)
+    (define-key map (kbd "d") 'lsp-workspace-shutdown)
+    (define-key map (kbd "a") 'lsp-execute-code-action)
+    (define-key map (kbd "n") 'lsp-rename)
+    (define-key map (kbd "g") 'lsp-ui-doc-glance)
+    (define-key map (kbd "s") 'consult-lsp-symbols)
+    (define-key map (kbd "i") 'consult-lsp-diagnostics)
+    map)
+  "My LSP map")
 (meow-leader-define-key
- (cons "SPC" my-map))
+ (cons "l" my-lsp-map))
 
 (provide 'init-meow)
 ;;; init-meow.el ends here

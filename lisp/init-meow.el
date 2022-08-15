@@ -212,5 +212,17 @@
 (meow-leader-define-key
  (cons "l" my-lsp-map))
 
+(setq meow-mode-state-list
+      '((diff-mode . motion)
+        (ediff-mode . motion)
+        (help-mode . motion)
+        (json-mode . normal)
+        (occur-edit-mode . normal)
+        (prog-mode . normal)
+        (text-mode . normal)
+        (grep-mode . normal)
+        (Custom-mode . normal)
+        ))
+
 (provide 'init-meow)
 ;;; init-meow.el ends here

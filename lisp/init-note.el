@@ -17,7 +17,7 @@
 (global-set-key (kbd "C-c ni") 'org-roam-node-insert)
 (global-set-key (kbd "C-c nf") 'org-roam-node-find)
 (global-set-key (kbd "C-c nt") 'org-roam-tag-add)
-(global-set-key (kbd "C-c nr") 'org-roam-tag-remove)
+(global-set-key (kbd "C-c nT") 'org-roam-tag-remove)
 
 (require-package 'denote)
 (require 'denote)

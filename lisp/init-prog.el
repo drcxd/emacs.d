@@ -48,7 +48,7 @@
 (require 'git-gutter)
 (setq git-gutter:handled-backends '(git svn))
 (add-hook 'prog-mode-hook 'git-gutter-mode)
-(global-set-key (kbd "C-c e g") 'git-gutter)
+(global-set-key (kbd "C-c G") 'git-gutter)
 
 (require-package 'git-gutter-fringe)
 

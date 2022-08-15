@@ -66,7 +66,7 @@
 
 ;; evil-nerd-commenter
 (require-package 'evil-nerd-commenter)
-(global-set-key (kbd "C-c e t") 'evilnc-comment-or-uncomment-lines)
+(global-set-key (kbd "C-c d") 'evilnc-comment-or-uncomment-lines)
 (global-set-key (kbd "C-c e c") 'evilnc-copy-and-comment-lines)
 
 ;; highlight symbol

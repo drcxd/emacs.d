@@ -5,7 +5,7 @@
 (require 'org-roam)
 (org-roam-db-autosync-mode)
 (setq org-roam-node-display-template
-      (concat "${title:80} "
+      (concat "${title} "
               (propertize "${tags:*}" 'face 'org-tag)))
 
 (require-package 'org-roam-ui)

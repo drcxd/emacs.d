@@ -18,13 +18,15 @@
 (global-set-key (kbd "C-c nf") 'org-roam-node-find)
 (global-set-key (kbd "C-c nt") 'org-roam-tag-add)
 (global-set-key (kbd "C-c nT") 'org-roam-tag-remove)
+(global-set-key (kbd "C-c nb") 'org-roam-buffer-display-dedicated)
+(global-set-key (kbd "C-c nB") 'org-roam-buffer-toggle)
 
 (require-package 'denote)
 (require 'denote)
 (setq denote-known-keywords (append denote-known-keywords '("computer-science" "hardware")))
 (global-set-key (kbd "C-c nd") 'denote)
 (global-set-key (kbd "C-c nl") 'denote-link)
-(global-set-key (kbd "C-c nb") 'denote-link-backlinks)
+(global-set-key (kbd "C-c nL") 'denote-link-backlinks)
 (global-set-key (kbd "C-c no") 'denote-link-find-file)
 
 (provide 'init-note)

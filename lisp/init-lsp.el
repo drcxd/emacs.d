@@ -8,6 +8,7 @@
 (require 'lsp)
 (require 'lsp-mode)
 (setq lsp-headerline-breadcrumb-enable nil)
+(add-hook 'lsp-mode-hook 'lsp-semantic-tokens-mode)
 ;; (global-set-key (kbd "C-c ll") 'lsp)
 (define-key lsp-mode-map (kbd "C-c lc") 'lsp-find-declaration)
 (define-key lsp-mode-map (kbd "C-c lf") 'lsp-find-definition)
@@ -17,6 +18,7 @@
 (define-key lsp-mode-map (kbd "C-c la") 'lsp-execute-code-action)
 (define-key lsp-mode-map (kbd "C-c ln") 'lsp-rename)
 (define-key lsp-mode-map (kbd "C-c lg") 'lsp-ui-doc-glance)
+(define-key lsp-mode-map (kbd "C-c lt") 'lsp-semantic-tokens-mode)
 
 ;; consult-lsp
 (require-package 'consult-lsp)

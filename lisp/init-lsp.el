@@ -8,7 +8,15 @@
 (require 'lsp)
 (require 'lsp-mode)
 (setq lsp-headerline-breadcrumb-enable nil)
-(add-hook 'lsp-mode-hook 'lsp-semantic-tokens-mode)
+
+(defun my-syntax-highlighting ()
+  "Setup syntax highlighting"
+  (lsp-semantic-tokens-mode 1)
+  (if tree-sitter-hl-mode
+      (tree-sitter-hl-mode -1)))
+
+(add-hook 'lsp-mode-hook 'my-syntax-highlighting)
+
 ;; (global-set-key (kbd "C-c ll") 'lsp)
 (define-key lsp-mode-map (kbd "C-c lc") 'lsp-find-declaration)
 (define-key lsp-mode-map (kbd "C-c lf") 'lsp-find-definition)

@@ -10,7 +10,6 @@
                 logos-hide-fringe t
                 logos-variable-pitch t
                 logos-buffer-read-only nil
-                logos-scroll-lock t
                 logos-olivetti t))
 
 (provide 'init-logos)

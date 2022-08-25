@@ -26,6 +26,7 @@
 
 ;; Allow users to provide an optional "init-preload-local.el"
 ;; (require 'init-preload-local nil t)
+(require 'init-benchmark)
 
 (require-package 'diminish)
 (require-package 'scratch)
@@ -33,7 +34,6 @@
 (require 'init-misc)
 (require 'init-uniquify)
 (require 'init-ibuffer)
-(require 'init-modeline)
 
 (require 'init-which-key)
 (require 'init-linum-mode)
@@ -73,6 +73,7 @@
 (require 'init-face)
 (require 'init-themes)
 (require 'init-ligature)
+(require 'init-modeline)
 
 ;; Allow access from emacsclient
 (add-hook 'after-init-hook

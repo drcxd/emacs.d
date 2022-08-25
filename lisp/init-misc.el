@@ -20,11 +20,11 @@
 ;;; useful packages
 (require-package 'ripgrep)
 (require-package 'powershell)
-(require-package 'ace-window)
 
 ;;; ace-window
-(require 'ace-window)
-(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+(require-package 'ace-window)
+(with-eval-after-load 'ace-window
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 (define-key (current-global-map) [remap other-window] 'ace-window)
 (global-set-key (kbd "C-c ws") 'ace-swap-window)
 
@@ -37,7 +37,6 @@
 
 ;; wgrep
 (require-package 'wgrep)
-(require 'wgrep)
 
 ;; auto save
 (auto-save-visited-mode)

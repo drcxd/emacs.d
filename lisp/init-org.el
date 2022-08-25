@@ -1,6 +1,9 @@
 ;;; init-org --- summary
 ;;; Commentary:
 ;;; Code:
+
+(require-package 'org-modern)
+
 ;; org Chinese
 (defadvice org-html-paragraph (before org-html-paragraph-advice
 				      (paragraph contents info) activate)
@@ -22,6 +25,7 @@
   (setcar (nthcdr 4 org-emphasis-regexp-components) 5)
   (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
   (setq org-ellipsis "⤵")
+  (global-org-modern-mode)
   )
 (add-hook 'org-mode-hook 'my-focus-mode)
 

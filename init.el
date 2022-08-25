@@ -74,6 +74,7 @@
 (require 'init-themes)
 (require 'init-ligature)
 (require 'init-modeline)
+(require 'init-logos)
 
 ;; Allow access from emacsclient
 (add-hook 'after-init-hook

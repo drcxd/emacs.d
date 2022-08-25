@@ -27,7 +27,6 @@
   (setq org-ellipsis "⤵")
   (global-org-modern-mode)
   )
-(add-hook 'org-mode-hook 'my-focus-mode)
 
 (provide 'init-org)
 ;;; init-org.el ends here

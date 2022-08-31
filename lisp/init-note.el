@@ -39,5 +39,10 @@
         `(("Notes" ?n ,denote-directory))))
 (global-set-key (kbd "C-c nc") 'consult-notes)
 
+(require 'init-note-helper)
+(with-eval-after-load 'init-note-helper
+  (require 'denote))
+(global-set-key (kbd "C-c nc") 'my-consult-note)
+
 (provide 'init-note)
 ;;; init-note.el ends here

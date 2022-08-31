@@ -39,9 +39,13 @@
         `(("Notes" ?n ,denote-directory))))
 (global-set-key (kbd "C-c nc") 'consult-notes)
 
-(require 'init-note-helper)
-(with-eval-after-load 'init-note-helper
-  (require 'denote))
+(require 'denote)
+(defun my-consult-note (keyword)
+  "Find note using keyword recursively."
+  (interactive
+   (list (completing-read "Note: "
+                          (directory-files-recursively denote-directory "."))))
+  (find-file keyword))
 (global-set-key (kbd "C-c nc") 'my-consult-note)
 
 (provide 'init-note)

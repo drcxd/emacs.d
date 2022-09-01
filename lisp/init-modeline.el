@@ -24,6 +24,8 @@
 
 (require-package 'doom-modeline)
 
+(defvar my-mode-line-solution "mini")
+
 (setq doom-modeline-buffer-file-name-style 'buffer-name)
 (setq doom-modeline-icon nil)
 ;; (doom-modeline-mode 1)
@@ -54,10 +56,14 @@
        '(:eval (my-compute-buffer-encoding))
        meow--indicator))
 
-(setq-default mode-line-format my-mode-line-format)
+;; (setq-default mode-line-format my-mode-line-format)
 
 (setq-default mini-modeline-r-format my-mode-line-format)
-(mini-modeline-mode)
+;; (mini-modeline-mode)
+
+(cond ((string= my-mode-line-solution "doom") (doom-modeline-mode))
+      ((string= my-mode-line-solution "native") (setq-default mode-line-format my-mode-line-format))
+      ((string= my-mode-line-solution "mini") (mini-modeline-mode)))
 
 (setq display-time-24hr-format t)
 (display-time)

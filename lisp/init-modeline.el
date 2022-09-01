@@ -48,7 +48,7 @@
        '(:eval (when (and (buffer-modified-p) buffer-file-name) "*"))
        '(:eval (when buffer-read-only "%%"))
        mode-line-buffer-identification " "
-       mode-name " "
+       '(:eval mode-name) " "
        mode-line-position " "
        " " mode-line-misc-info " "
        '(:eval (my-compute-buffer-encoding))

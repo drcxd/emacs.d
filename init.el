@@ -35,7 +35,6 @@
 (require 'init-uniquify)
 (require 'init-ibuffer)
 
-(require 'init-which-key)
 (require 'init-linum-mode)
 (require 'init-org)
 (require 'init-note)
@@ -69,6 +68,7 @@
 (require 'init-hydra)
 ;; (require 'init-general)
 (require 'init-meow)
+(require 'init-which-key)
 
 (require 'init-face)
 (require 'init-themes)

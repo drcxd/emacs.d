@@ -23,6 +23,8 @@
 (setq-default mini-modeline-r-format
               (list
                "%e"
+               '(:eval (when (and (buffer-modified-p) buffer-file-name) "*"))
+               '(:eval (when buffer-read-only "%%"))
                mode-line-buffer-identification " "
                mode-name " "
                mode-line-position " "

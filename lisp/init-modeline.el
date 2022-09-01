@@ -1,5 +1,25 @@
 ;;; init-modeline --- summary
 ;;; Commentary:
+
+;;; Setup mode line. 3 solutions offered:
+;;; 1. Doom modeline
+;;; 2. native mode line
+;;; 3. mini-modeline
+
+;;; Doom modeline is big and slow, taking more screen space, but it
+;;; provides more support for many packages and modes.
+
+;;; Native mode line configuration is minimal but fast.
+
+;;; Mini-mode-line has some issues with meow KEYPAD and does not work
+;;; in server mode. It also has other minor issues, for example, since
+;;; the background color of echo area is differnt than that of mode
+;;; line, some symbol becomes difficult to recognize when displayed in
+;;; echo area.
+
+;;; Reference:
+;;; https://emacs-fu.blogspot.com/2011/08/customizing-mode-line.html
+
 ;;; Code:
 
 (require-package 'doom-modeline)
@@ -20,17 +40,23 @@
     (upcase (symbol-name sym))
     )
   )
-(setq-default mini-modeline-r-format
-              (list
-               "%e"
-               '(:eval (when (and (buffer-modified-p) buffer-file-name) "*"))
-               '(:eval (when buffer-read-only "%%"))
-               mode-line-buffer-identification " "
-               mode-name " "
-               mode-line-position " "
-               mode-line-misc-info " "
-               '(:eval (my-compute-buffer-encoding))
-               meow--indicator))
+
+(setq my-mode-line-format
+      (list
+       "%e"
+       mode-line-front-space
+       '(:eval (when (and (buffer-modified-p) buffer-file-name) "*"))
+       '(:eval (when buffer-read-only "%%"))
+       mode-line-buffer-identification " "
+       mode-name " "
+       mode-line-position " "
+       " " mode-line-misc-info " "
+       '(:eval (my-compute-buffer-encoding))
+       meow--indicator))
+
+(setq-default mode-line-format my-mode-line-format)
+
+(setq-default mini-modeline-r-format my-mode-line-format)
 (mini-modeline-mode)
 
 (setq display-time-24hr-format t)

@@ -22,9 +22,10 @@
 (global-set-key (kbd "C-c nb") 'org-roam-buffer-display-dedicated)
 (global-set-key (kbd "C-c nB") 'org-roam-buffer-toggle)
 
+(defvar my-denote-directory "~/notes/")
 (require-package 'denote)
 (with-eval-after-load 'denote
-  (setq denote-directory "~/notes/")
+  (setq denote-directory my-denote-directory)
   (setq denote-known-keywords '("emacs")))
 
 (global-set-key (kbd "C-c nd") 'denote)
@@ -39,12 +40,11 @@
         `(("Notes" ?n ,denote-directory))))
 (global-set-key (kbd "C-c nc") 'consult-notes)
 
-(require 'denote)
 (defun my-consult-note (keyword)
   "Find note using keyword recursively."
   (interactive
    (list (completing-read "Note: "
-                          (directory-files-recursively denote-directory "."))))
+                          (directory-files-recursively (if (boundp 'denote-directory) denote-directory my-denote-directory) "."))))
   (find-file keyword))
 (global-set-key (kbd "C-c nc") 'my-consult-note)
 

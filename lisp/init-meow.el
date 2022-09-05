@@ -134,5 +134,12 @@
         (Custom-mode . normal)
         ))
 
+(setq meow-replace-state-name-list
+      '((normal . "[N]")
+        (motion . "[M]")
+        (keypad . "[K]")
+        (insert . "[I]")
+        (beacon . "[B]")))
+
 (provide 'init-meow)
 ;;; init-meow.el ends here

@@ -48,14 +48,14 @@
       (list
        "%e"
        mode-line-front-space
+       '(:eval (meow-indicator))
        '(:eval (when (and (buffer-modified-p) buffer-file-name) "*"))
        '(:eval (when buffer-read-only "%%"))
        mode-line-buffer-identification " "
        '(:eval mode-name) " "
        mode-line-position " "
        " " mode-line-misc-info " "
-       '(:eval (my-compute-buffer-encoding))
-       meow--indicator))
+       '(:eval (my-compute-buffer-encoding))))
 
 ;; (setq-default mode-line-format my-mode-line-format)
 

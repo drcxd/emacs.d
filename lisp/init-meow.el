@@ -126,6 +126,7 @@
       '((diff-mode . motion)
         (ediff-mode . motion)
         (help-mode . motion)
+        (org-roam-mode . motion)
         (json-mode . normal)
         (occur-edit-mode . normal)
         (prog-mode . normal)

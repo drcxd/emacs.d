@@ -27,6 +27,7 @@
 (with-eval-after-load 'denote
   (setq denote-directory my-denote-directory)
   (setq denote-known-keywords '("emacs")))
+(autoload 'denote "denote" "Autoload for denote" t)
 
 (global-set-key (kbd "C-c nd") 'denote)
 (global-set-key (kbd "C-c nl") 'denote-link)
@@ -45,7 +46,9 @@
   (interactive
    (list (completing-read "Note: "
                           (directory-files-recursively (if (boundp 'denote-directory) denote-directory my-denote-directory) "."))))
-  (find-file keyword))
+  (if (file-exists-p keyword)
+      (find-file keyword)
+    (denote keyword (denote--keywords-prompt))))
 (global-set-key (kbd "C-c nc") 'my-consult-note)
 
 (provide 'init-note)

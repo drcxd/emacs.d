@@ -6,13 +6,13 @@
 (defun meow-setup ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   (meow-motion-overwrite-define-key
-   '("j" . meow-next)
-   '("k" . meow-prev)
+   ;; '("j" . meow-next)
+   ;; '("k" . meow-prev)
    '("<escape>" . ignore))
   (meow-leader-define-key
    ;; SPC j/k will run the original command in MOTION state.
-   '("j" . "H-j")
-   '("k" . "H-k")
+   ;; '("j" . "H-j")
+   ;; '("k" . "H-k")
    ;; Use SPC (0-9) for digit arguments.
    '("1" . meow-digit-argument)
    '("2" . meow-digit-argument)
@@ -101,7 +101,7 @@
 (global-set-key (kbd "C-c w2") 'split-window-vertically)
 (global-set-key (kbd "C-c w3") 'split-window-horizontally)
 (global-set-key (kbd "C-c w0") 'delete-window)
-(global-set-key (kbd "<f2>") 'meow-keypad)
+(global-set-key (kbd "<f7>") 'meow-keypad)
 
 (defvar my-lsp-map
   (let ((map (make-sparse-keymap)))

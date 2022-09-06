@@ -26,7 +26,8 @@
 (require-package 'denote)
 (with-eval-after-load 'denote
   (setq denote-directory my-denote-directory)
-  (setq denote-known-keywords '("emacs")))
+  (setq denote-known-keywords '("emacs"))
+  (setq denote-prompts '(title keywords subdirectory)))
 (autoload 'denote "denote" "Autoload for denote" t)
 
 (global-set-key (kbd "C-c nd") 'denote)
@@ -48,7 +49,10 @@
                           (directory-files-recursively (if (boundp 'denote-directory) denote-directory my-denote-directory) "."))))
   (if (file-exists-p keyword)
       (find-file keyword)
-    (denote keyword (denote--keywords-prompt))))
+    (denote keyword
+            (denote--keywords-prompt)
+            nil
+            (denote--subdirs-prompt))))
 (global-set-key (kbd "C-c nc") 'my-consult-note)
 
 (provide 'init-note)

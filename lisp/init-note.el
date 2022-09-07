@@ -30,10 +30,19 @@
   (setq denote-prompts '(title keywords subdirectory)))
 (autoload 'denote "denote" "Autoload for denote" t)
 
+(defun my-denote-journal ()
+  "Create an entry tagged 'journal'."
+  (interactive)
+  (denote (denote--title-prompt)
+          '("journal")
+          "text"
+          (denote--subdirs-prompt)))
+
 (global-set-key (kbd "C-c nd") 'denote)
 (global-set-key (kbd "C-c nl") 'denote-link)
 (global-set-key (kbd "C-c nL") 'denote-link-backlinks)
 (global-set-key (kbd "C-c no") 'denote-link-find-file)
+(global-set-key (kbd "C-c nj") 'my-denote-journal)
 
 (require-package 'consult-notes)
 (with-eval-after-load 'consult-notes

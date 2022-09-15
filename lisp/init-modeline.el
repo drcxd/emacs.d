@@ -24,8 +24,8 @@
 
 (require-package 'doom-modeline)
 
-;; (defvar my-mode-line-solution "doom")
-(defvar my-mode-line-solution "native")
+(defvar my-mode-line-solution "doom")
+;; (defvar my-mode-line-solution "native")
 
 (setq doom-modeline-buffer-file-name-style 'buffer-name)
 (setq doom-modeline-icon nil)

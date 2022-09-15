@@ -51,5 +51,9 @@
 ;; recentf
 (recentf-mode 1)
 
+;; windows specific settings
+(if (eq system-type 'windows-nt)
+    (setq find-program "C:/msys64/usr/bin/find.exe"))
+
 (provide 'init-misc)
 ;;; init-misc.el ends here

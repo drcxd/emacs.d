@@ -33,7 +33,7 @@
 (defun my-denote-journal ()
   "Create an entry tagged 'journal'."
   (interactive)
-  (denote (denote--title-prompt)
+  (denote (format-time-string "%A %e %B %Y")
           '("journal")
           "text"
           (denote--subdirs-prompt)))

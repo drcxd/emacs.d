@@ -62,10 +62,7 @@
                           (directory-files-recursively (if (boundp 'denote-directory) denote-directory my-denote-directory) "."))))
   (if (file-exists-p keyword)
       (find-file keyword)
-    (denote keyword
-            (denote--keywords-prompt)
-            nil
-            (denote--subdirs-prompt))))
+    (denote keyword (denote--keywords-prompt))))
 (global-set-key (kbd "C-c nc") 'my-consult-note)
 
 (provide 'init-note)

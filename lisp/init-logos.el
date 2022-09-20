@@ -15,10 +15,10 @@
   (if (boundp 'modus-themes-after-load-theme-hook)
       (add-hook 'modus-themes-after-load-theme-hook #'logos-update-fringe-in-buffers)))
 
-(global-set-key "C-c tl" 'logos-focus-mode)
-(global-set-key "C-c tn" 'logos-narrow-dwim)
-(global-set-key "C-c tf" 'logos-forward-page-dwim)
-(global-set-key "C-c tb" 'logos-backward-page-dwim)
+(global-set-key (kbd "C-c tl") 'logos-focus-mode)
+(global-set-key (kbd "C-c tn") 'logos-narrow-dwim)
+(global-set-key (kbd "C-c tf") 'logos-forward-page-dwim)
+(global-set-key (kbd "C-c tb") 'logos-backward-page-dwim)
 
 (provide 'init-logos)
 ;;; init-logos.el ends here

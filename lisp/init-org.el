@@ -18,13 +18,16 @@
     (ad-set-arg 1 fixed-contents)))
 
 (with-eval-after-load 'org
-  (setq org-todo-keywords
-	(quote
-	 ((sequence "TODO(t)" "STARTED(s!)" "|" "DONE(d!/!)")
-	  (sequence "WAITING(w@/!)" "SOMEDAY(S)" "PROJECT(P@)" "|" "CANCELLED(c@/!)"))))
   (setcar (nthcdr 4 org-emphasis-regexp-components) 5)
   (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
-  (setq org-ellipsis "⤵")
+  (setq org-ellipsis "⤵"
+        org-auto-align-tags nil
+        org-tags-column 0
+        org-catch-invisible-edits 'show-and-error
+        org-special-ctrl-a/e t
+        org-insert-heading-respect-content t
+        org-hide-emphasis-markers t
+        org-pretty-entities t)
   (global-org-modern-mode)
   )
 

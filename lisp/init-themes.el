@@ -29,5 +29,7 @@
 (add-hook 'modus-themes-after-load-theme-hook #'my-modus-setup)
 (modus-themes-load-operandi)
 
+(global-set-key (kbd "C-c tt") 'modus-themes-toggle)
+
 (provide 'init-themes)
 ;;; init-themes.el ends here

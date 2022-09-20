@@ -27,7 +27,7 @@
 (with-eval-after-load 'denote
   (setq denote-directory my-denote-directory)
   (setq denote-known-keywords '("emacs"))
-  (setq denote-prompts '(title keywords subdirectory)))
+  (setq denote-prompts '(title keywords)))
 (autoload 'denote "denote" "Autoload for denote" t)
 
 (defun my-denote-journal ()
@@ -39,6 +39,8 @@
           (denote--subdirs-prompt)))
 
 (global-set-key (kbd "C-c nd") 'denote)
+(global-set-key (kbd "C-c ns") 'denote-subdirectory)
+(global-set-key (kbd "C-c nt") 'denote-type)
 (global-set-key (kbd "C-c nl") 'denote-link)
 (global-set-key (kbd "C-c nL") 'denote-link-backlinks)
 (global-set-key (kbd "C-c no") 'denote-link-find-file)

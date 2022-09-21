@@ -27,6 +27,7 @@
 (defvar my-mode-line-solution "doom")
 ;; (defvar my-mode-line-solution "native")
 
+(setq doom-modeline-height 1)
 (setq doom-modeline-buffer-file-name-style 'buffer-name)
 (setq doom-modeline-icon nil)
 ;; (doom-modeline-mode 1)

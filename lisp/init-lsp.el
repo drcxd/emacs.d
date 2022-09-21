@@ -18,11 +18,6 @@
   (define-key lsp-mode-map (kbd "C-c lt") 'lsp-semantic-tokens-mode)
   )
 
-(with-eval-after-load 'lsp-semantic-tokens
-  (set-face-attribute 'lsp-face-semhl-interface nil :inherit 'lsp-face-semhl-method)
-  (set-face-attribute 'lsp-face-semhl-class nil :inherit 'lsp-face-semhl-variable)
-  )
-
 (defun my-syntax-highlighting ()
   "Setup syntax highlighting"
   (lsp-semantic-tokens-mode 1)

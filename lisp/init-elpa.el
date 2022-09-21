@@ -12,7 +12,10 @@
         ;; ("gnu" . "https://elpa.gnu.org/packages/")
         ;; ("melpa" . "https://melpa.org/packages/")
         ;; ("melpa-stable" . "https://stable.melpa.org/packages/")
-	    ;; ("local-melpa" . "~/elpa-mirror-master/melpa/")
+
+        ;; use local repository
+	;; ("local-melpa" . "~/elpa-mirror-master/melpa/")
+        ;; ("local-gnu" . "~/elpa-mirror-master/gnu/")
 
         ;; Use either 163 or tsinghua mirror repository when official melpa
         ;; is slow or shutdown.

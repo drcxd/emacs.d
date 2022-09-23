@@ -87,7 +87,9 @@
    '("Y" . meow-sync-grab)
    '("z" . meow-pop-selection)
    '("'" . repeat)
-   '("<escape>" . ignore)))
+   '("<escape>" . ignore)
+   '("=" . indent-region)
+   '("`" . delete-horizontal-space)))
 
 (require 'meow)
 (meow-setup)

@@ -6,8 +6,12 @@
 (set-fontset-font "fontset-default" 'han "Microsoft Yahei")
 
 (set-face-attribute 'default nil :font "Cascadia Code-16")
-(set-face-attribute 'fixed-pitch nil :font "Cascadia Code")
-(set-face-attribute 'variable-pitch nil :font "FiraGo")
+(set-face-attribute 'fixed-pitch nil
+                    :font "Cascadia Code"
+                    :height 1.0)
+(set-face-attribute 'variable-pitch nil
+                    :font "FiraGo"
+                    :height 1.0)
 
 ;; italic
 (set-face-attribute 'italic nil

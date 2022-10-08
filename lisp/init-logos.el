@@ -13,7 +13,9 @@
                 logos-buffer-read-only nil
                 logos-olivetti t)
   (if (boundp 'modus-themes-after-load-theme-hook)
-      (add-hook 'modus-themes-after-load-theme-hook #'logos-update-fringe-in-buffers)))
+      (add-hook 'modus-themes-after-load-theme-hook #'logos-update-fringe-in-buffers))
+  (if (boundp 'ef-themes-post-load-hook)
+      (add-hook 'ef-themes-post-load-hook #'logos-update-fringe-in-buffers)))
 
 (global-set-key (kbd "C-c tl") 'logos-focus-mode)
 (global-set-key (kbd "C-c tn") 'logos-narrow-dwim)

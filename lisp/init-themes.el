@@ -28,7 +28,7 @@
      `(flycheck-fringe-info ((,class :background ,bg-main :foreground ,fg-lang-note)))
      `(flycheck-fringe-warning ((,class :background ,bg-main :foreground ,fg-lang-warning)))
      )))
-(add-hook 'modus-themes-after-load-theme-hook #'my-modus-setup)
+;; (add-hook 'modus-themes-after-load-theme-hook #'my-modus-setup)
 
 (defun my-use-modus-themes ()
   (modus-themes-load-operandi)

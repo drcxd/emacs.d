@@ -34,8 +34,6 @@
   (modus-themes-load-operandi)
   (global-set-key (kbd "C-c tt") 'modus-themes-toggle))
 
-;; (my-use-modus-themes)
-
 ;; ef themes
 (require-package 'ef-themes)
 
@@ -62,6 +60,7 @@
   )
 
 (my-use-ef-themes)
+;; (my-use-modus-themes)
 
 (provide 'init-themes)
 ;;; init-themes.el ends here

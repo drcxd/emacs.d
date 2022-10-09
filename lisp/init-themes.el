@@ -14,6 +14,7 @@
         modus-themes-mixed-fonts t
         modus-themes-variable-pitch-ui t
         modus-themes-hl-line '(accented intense)
+        modus-themes-mode-line '(accented borderless)
         ))
 
 (defun my-modus-setup ()
@@ -38,12 +39,21 @@
 ;; ef themes
 (require-package 'ef-themes)
 
+;;; make the modeline like the modus-themes default
+(defun my-ef-themes-mode-line ()
+  "Tweak the style of the mode lines."
+  (ef-themes-with-colors
+    (custom-set-faces
+     `(mode-line ((,c :background ,bg-active :foreground ,fg-main :box (:line-width 1 :color ,fg-dim))))
+     `(mode-line-inactive ((,c :box (:line-width 1 :color ,bg-active)))))))
+
 (with-eval-after-load 'ef-themes
   (setq
    ef-themes-to-toggle '(ef-bio ef-frost)
    ef-themes-mixed-fonts t
    ef-themes-variable-pitch-ui t
    )
+  ;; (add-hook 'ef-themes-post-load-hook #'my-ef-themes-mode-line)
   )
 
 (defun my-use-ef-themes ()

@@ -21,7 +21,7 @@
 (defun my-syntax-highlighting ()
   "Setup syntax highlighting"
   (lsp-semantic-tokens-mode 1)
-  (if tree-sitter-hl-mode
+  (if (boundp tree-sitter-hl-mode)
       (tree-sitter-hl-mode -1)))
 
 (add-hook 'lsp-mode-hook 'my-syntax-highlighting)

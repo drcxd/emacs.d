@@ -28,7 +28,6 @@
 ;; (require 'init-preload-local nil t)
 (require 'init-benchmark)
 
-(require-package 'diminish)
 (require-package 'scratch)
 
 (require 'init-misc)
@@ -75,6 +74,8 @@
 (require 'init-ligature)
 (require 'init-modeline)
 (require 'init-logos)
+
+(require 'init-diminish)
 
 ;; Allow access from emacsclient
 (add-hook 'after-init-hook

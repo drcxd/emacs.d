@@ -68,9 +68,9 @@
 (setq-default mini-modeline-r-format my-mode-line-format)
 ;; (mini-modeline-mode)
 
-(cond ((string= my-mode-line-solution "doom") (doom-modeline-mode))
-      ((string= my-mode-line-solution "native") (my-set-mode-line))
-      ((string= my-mode-line-solution "mini") (mini-modeline-mode)))
+;; (cond ((string= my-mode-line-solution "doom") (doom-modeline-mode))
+;;       ((string= my-mode-line-solution "native") (my-set-mode-line))
+;;       ((string= my-mode-line-solution "mini") (mini-modeline-mode)))
 
 (setq display-time-24hr-format t)
 (display-time)

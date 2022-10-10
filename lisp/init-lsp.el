@@ -60,7 +60,8 @@
 ;; consult-lsp
 (require-package 'consult-lsp)
 (with-eval-after-load 'lsp-mode
-  (define-key lsp-mode-map (kbd "C-c ls") 'consult-lsp-symbols)
+  (define-key lsp-mode-map (kbd "C-c lS") 'consult-lsp-symbols)
+  (define-key lsp-mode-map (kbd "C-c ls") 'consult-lsp-file-symbols)
   (define-key lsp-mode-map (kbd "C-c li") 'consult-lsp-diagnostics)
   )
 

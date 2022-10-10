@@ -18,6 +18,35 @@
   (define-key lsp-mode-map (kbd "C-c lt") 'lsp-semantic-tokens-mode)
   )
 
+(with-eval-after-load 'lsp-ui
+  ;; Fix lsp-ui-sideline font scaling issue
+  ;; See https://github.com/emacs-lsp/lsp-ui/issues/561
+
+  ;;
+  ;; 2022-03-28 - fix sideline height computation
+  ;;
+  (defun lsp-ui-sideline--compute-height nil
+    "Return a fixed size for text in sideline."
+    (let ((fontHeight (face-attribute 'lsp-ui-sideline-global :height)))
+      (if (null text-scale-mode-remapping)
+          '(height
+            (if (floatp fontHeight) fontHeight
+              (/ (face-attribute 'lsp-ui-sideline-global :height) 100.0)
+              )
+            ;; Readjust height when text-scale-mode is used
+            (list 'height
+                  (/ 1 (or (plist-get (cdr text-scale-mode-remapping) :height)
+                           1)))))))
+
+  ;;
+  ;; 2022-03-28 - fix sideline alignment
+  ;;
+  (defun lsp-ui-sideline--align (&rest lengths)
+    "Align sideline string by LENGTHS from the right of the window."
+    (list (* (window-font-width nil 'lsp-ui-sideline-global)
+             (+ (apply '+ lengths) (if (display-graphic-p) 1 2)))))
+  )
+
 (defun my-syntax-highlighting ()
   "Setup syntax highlighting"
   (lsp-semantic-tokens-mode 1)

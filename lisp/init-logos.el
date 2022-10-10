@@ -3,7 +3,7 @@
 ;;; Code:
 (require-package 'olivetti)
 (require-package 'logos)
-;; (autoload 'logos-focus-mode "logos" "Toggle focus mode" t)
+
 (with-eval-after-load 'logos
   (setq logos-outlines-are-pages t)
   (setq-default logos-hide-mode-line nil

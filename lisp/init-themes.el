@@ -52,6 +52,8 @@
    ef-themes-mixed-fonts t
    ef-themes-variable-pitch-ui t
    )
+  (with-eval-after-load 'tree-sitter
+    (set-face-attribute 'tree-sitter-hl-face:punctuation nil :inherit nil))
   ;; (add-hook 'ef-themes-post-load-hook #'my-ef-themes-mode-line)
   )
 

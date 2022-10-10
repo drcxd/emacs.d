@@ -32,6 +32,7 @@
 
 (defun my-use-modus-themes ()
   (interactive)
+  (mapc #'disable-theme custom-enabled-themes)
   (modus-themes-load-operandi)
   (global-set-key (kbd "C-c tt") 'modus-themes-toggle))
 
@@ -59,6 +60,7 @@
 
 (defun my-use-ef-themes ()
   (interactive)
+  (mapc #'disable-theme custom-enabled-themes)
   (ef-themes-select 'ef-bio)
   (global-set-key (kbd "C-c tt") 'ef-themes-toggle)
   )

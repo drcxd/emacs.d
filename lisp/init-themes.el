@@ -31,6 +31,7 @@
 ;; (add-hook 'modus-themes-after-load-theme-hook #'my-modus-setup)
 
 (defun my-use-modus-themes ()
+  (interactive)
   (modus-themes-load-operandi)
   (global-set-key (kbd "C-c tt") 'modus-themes-toggle))
 
@@ -55,6 +56,7 @@
   )
 
 (defun my-use-ef-themes ()
+  (interactive)
   (ef-themes-select 'ef-bio)
   (global-set-key (kbd "C-c tt") 'ef-themes-toggle)
   )

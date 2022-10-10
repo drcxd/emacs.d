@@ -45,6 +45,9 @@
     "Align sideline string by LENGTHS from the right of the window."
     (list (* (window-font-width nil 'lsp-ui-sideline-global)
              (+ (apply '+ lengths) (if (display-graphic-p) 1 2)))))
+
+  ;; This is necessary for the alignment fix works
+  (set-face-attribute 'lsp-ui-sideline-global nil :inherit 'default)
   )
 
 (defun my-syntax-highlighting ()

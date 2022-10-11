@@ -23,5 +23,10 @@
 (define-key corfu-map (kbd "<escape>") 'corfu-quit)
 (define-key corfu-map (kbd "SPC") 'corfu-insert-separator)
 
+(unless (display-graphic-p)
+  (progn
+    (require-package 'corfu-terminal)
+    (corfu-terminal-mode +1)))
+
 (provide 'init-corfu)
 ;;; init-corfu.el ends here

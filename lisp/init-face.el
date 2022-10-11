@@ -3,7 +3,8 @@
 ;;; Code:
 
 ;; (add-to-list 'default-frame-alist '(font . "Cascadia Code-16"))
-(set-fontset-font "fontset-default" 'han "Microsoft Yahei")
+(if (display-graphic-p)
+    (set-fontset-font "fontset-default" 'han "Microsoft Yahei"))
 
 (set-face-attribute 'default nil :font "Cascadia Code-16")
 (set-face-attribute 'fixed-pitch nil

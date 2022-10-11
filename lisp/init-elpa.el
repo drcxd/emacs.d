@@ -12,6 +12,7 @@
         ;; ("gnu" . "https://elpa.gnu.org/packages/")
         ;; ("melpa" . "https://melpa.org/packages/")
         ;; ("melpa-stable" . "https://stable.melpa.org/packages/")
+        ;; ("nongnu" . "https://elpa.nongnu.org/nongnu/")
 
         ;; use local repository
 	;; ("local-melpa" . "~/elpa-mirror-master/melpa/")
@@ -24,6 +25,7 @@
         ("gnu" . "https://mirrors.163.com/elpa/gnu/")
         ("melpa" . "https://mirrors.163.com/elpa/melpa/")
         ;; ("melpa-stable" . "https://mirrors.163.com/elpa/stable-melpa/")
+        ("nongnu" . "https://mirrors.163.com/elpa/nongnu/")
         ;; ;; }}
 
         ;; ;; {{ Option 2: tsinghua mirror repository

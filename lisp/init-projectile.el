@@ -6,6 +6,7 @@
 (global-set-key (kbd "C-c pf") 'projectile-find-file)
 (global-set-key (kbd "C-c pi") 'projectile-invalidate-cache)
 (global-set-key (kbd "C-c ps") 'projectile-switch-project)
+(global-set-key (kbd "C-c pd") 'projectile-dired)
 
 (with-eval-after-load 'projectile
   (projectile-global-mode))

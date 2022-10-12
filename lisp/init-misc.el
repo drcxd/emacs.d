@@ -51,6 +51,11 @@
 ;; recentf
 (recentf-mode 1)
 
+;; zoom
+(require-package 'zoom)
+(with-eval-after-load 'zoom
+  (setq zoom-size '(0.618 . 0.618)))
+
 ;; windows specific settings
 (if (eq system-type 'windows-nt)
     (setq find-program "C:/msys64/usr/bin/find.exe"))

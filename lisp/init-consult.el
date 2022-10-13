@@ -13,7 +13,7 @@
       ;; https://github.com/minad/consult/issues/601
       (setq consult-find-args (concat find-program " . "))))
 
-(setq consult-preview-excluded-files (".*org"))
+(setq consult-preview-excluded-files '(".*org"))
 (define-key (current-global-map) [remap switch-to-buffer] 'consult-buffer)
 (global-set-key (kbd "C-c i") 'consult-line)
 (global-set-key (kbd "C-c r") 'consult-ripgrep)

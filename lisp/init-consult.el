@@ -17,6 +17,7 @@
 (define-key (current-global-map) [remap switch-to-buffer] 'consult-buffer)
 (global-set-key (kbd "C-c i") 'consult-line)
 (global-set-key (kbd "C-c r") 'consult-ripgrep)
+(global-set-key (kbd "C-c I") 'consult-imenu)
 ;; (global-set-key (kbd "C-c f") 'consult-recent-file)
 
 (defvar consult--fd-command nil)

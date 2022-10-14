@@ -60,5 +60,15 @@
 (if (eq system-type 'windows-nt)
     (setq find-program "C:/msys64/usr/bin/find.exe"))
 
+;; hide title bar but still allow drag to resize
+;; see https://www.reddit.com/r/emacs/comments/b2r2oj/is_it_possible_to_disable_or_hide_the_titlebar_in/
+(add-to-list 'default-frame-alist '(undecorated . t))
+(add-to-list 'default-frame-alist '(drag-internal-border . 1))
+(add-to-list 'default-frame-alist '(internal-border-width . 5))
+(add-to-list 'default-frame-alist '(width . 1.0))
+(add-to-list 'default-frame-alist '(height . 0.5))
+(add-to-list 'default-frame-alist '(top . 0.25))
+(add-to-list 'default-frame-alist '(left . 0.0))
+
 (provide 'init-misc)
 ;;; init-misc.el ends here

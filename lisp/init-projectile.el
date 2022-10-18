@@ -7,6 +7,7 @@
 (global-set-key (kbd "C-c pi") 'projectile-invalidate-cache)
 (global-set-key (kbd "C-c ps") 'projectile-switch-project)
 (global-set-key (kbd "C-c pd") 'projectile-dired)
+(global-set-key (kbd "C-c pr") 'projectile-ripgrep)
 
 (with-eval-after-load 'projectile
   (projectile-global-mode))

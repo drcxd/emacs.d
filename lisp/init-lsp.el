@@ -53,6 +53,7 @@
 (defun my-syntax-highlighting ()
   "Setup syntax highlighting"
   (lsp-semantic-tokens-mode 1)
+  (setq lsp-semantic-tokens-apply-modifiers nil)
   (if (boundp tree-sitter-hl-mode)
       (tree-sitter-hl-mode -1)))
 

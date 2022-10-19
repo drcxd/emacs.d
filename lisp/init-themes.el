@@ -34,7 +34,7 @@
   (interactive)
   (mapc #'disable-theme custom-enabled-themes)
   (modus-themes-load-operandi)
-  (global-set-key (kbd "C-c tt") 'modus-themes-toggle))
+  (global-set-key (kbd "C-c tg") 'modus-themes-toggle))
 
 ;; ef themes
 (require-package 'ef-themes)
@@ -62,7 +62,7 @@
   (interactive)
   (mapc #'disable-theme custom-enabled-themes)
   (ef-themes-select 'ef-bio)
-  (global-set-key (kbd "C-c tt") 'ef-themes-toggle)
+  (global-set-key (kbd "C-c tg") 'ef-themes-toggle)
   )
 
 (my-use-ef-themes)

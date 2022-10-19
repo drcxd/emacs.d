@@ -37,6 +37,7 @@
 (require 'init-linum-mode)
 (require 'init-org)
 (require 'init-note)
+(require 'init-timer)
 
 ;; (require 'init-ivy)
 ;; (require 'init-prescient)

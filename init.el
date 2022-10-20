@@ -46,6 +46,7 @@
 (require 'init-marginalia)
 (require 'init-embark)
 (require 'init-consult)
+(require 'init-tempel)
 
 (require 'init-projectile)
 (require 'init-dired)

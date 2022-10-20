@@ -6,6 +6,7 @@
 !*.yas
 !*.org
 !.yas-parents
+!templates
 custom.el
 
 elpa

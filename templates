@@ -1,0 +1,39 @@
+fundamental-mode
+
+(today (format-time-string "%Y-%m-%d"))
+
+prog-mode
+
+(fixme (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "FIXME: ")
+(todo (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "TODO: ")
+(bug (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "BUG: ")
+(hack (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "HACK: ")
+
+emacs-lisp-mode
+
+(el ";;; " (p "module-name" mname) " --- summary" n
+    ";;; Commentary:" n
+    ";;; Code:" n
+    q n
+    "(provide '" (s mname) ")" n
+    ";;; " (s mname) ".el ends here" n)
+
+c-mode c++-mode
+
+(main "int main(int argc, char* argv[]) {" n
+      q n
+      "return 0;" n
+      "}" n)
+
+(i "#include " q n)
+
+c++-mode
+
+(class "class " (p "ClassName&InheritanceList") n
+       "{" n
+       q n
+       "};" n)
+
+;; Local Variables:
+;; mode: lisp-data
+;; End:

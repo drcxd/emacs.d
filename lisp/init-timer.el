@@ -3,9 +3,6 @@
 ;;; Code:
 (require-package 'pomm)
 (with-eval-after-load 'pomm
-  (setq pomm-work-period 40
-        pomm-short-break-period 10
-        pomm-long-break-period 20)
   (pomm-mode-line-mode))
 (global-set-key (kbd "C-c tp") 'pomm)
 

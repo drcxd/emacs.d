@@ -22,7 +22,7 @@
 ;; (global-set-key (kbd "C-c nb") 'org-roam-buffer-display-dedicated)
 ;; (global-set-key (kbd "C-c nB") 'org-roam-buffer-toggle)
 
-(defvar my-denote-directory "~/notes/")
+(defvar my-denote-directory "~/note/")
 (require-package 'denote)
 (with-eval-after-load 'denote
   (setq denote-directory my-denote-directory)

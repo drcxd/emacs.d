@@ -69,10 +69,10 @@
 (global-set-key (kbd "C-c d") 'evilnc-comment-or-uncomment-lines)
 (global-set-key (kbd "C-c D") 'evilnc-copy-and-comment-lines)
 
-;; highlight symbol
-(require-package 'highlight-symbol)
-(global-set-key (kbd "C-c e s") 'highlight-symbol)
-(global-set-key (kbd "C-c e a") 'highlight-symbol-remove-all)
+;; symbol overlay
+(require-package 'symbol-overlay)
+(global-set-key (kbd "C-c e p") 'symbol-overlay-put)
+(global-set-key (kbd "C-c e r") 'symbol-overlay-remove-all)
 
 (provide 'init-prog)
 ;;; init-prog.el ends here

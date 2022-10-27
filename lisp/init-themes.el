@@ -47,6 +47,14 @@
      `(mode-line ((,c :background ,bg-active :foreground ,fg-main :box (:line-width 1 :color ,fg-dim))))
      `(mode-line-inactive ((,c :box (:line-width 1 :color ,bg-active)))))))
 
+(defun my-ef-themes-custom-faces ()
+  "My customizations on top of Ef themes.
+This function is added to the `ef-themes-post-load-hook'."
+  (with-eval-after-load 'lsp-ui
+    (ef-themes-with-colors
+      (custom-set-faces
+       `(lsp-ui-doc-background ((,c :background ,bg-alt)))))))
+
 (with-eval-after-load 'ef-themes
   (setq
    ef-themes-to-toggle '(ef-bio ef-frost)
@@ -55,7 +63,7 @@
    )
   (with-eval-after-load 'tree-sitter
     (add-hook 'tree-sitter-hl-mode-hook (lambda () (set-face-attribute 'tree-sitter-hl-face:punctuation nil :inherit nil))))
-  ;; (add-hook 'ef-themes-post-load-hook #'my-ef-themes-mode-line)
+  (add-hook 'ef-themes-post-load-hook #'my-ef-themes-custom-faces)
   )
 
 (defun my-use-ef-themes ()

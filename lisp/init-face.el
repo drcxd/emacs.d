@@ -8,6 +8,7 @@
                     :font "Iosevka Comfy Motion"
                     :height 160)
 (set-face-attribute 'fixed-pitch nil
+                    :font "Iosevka Comfy Motion"
                     :height 1.0)
 (set-face-attribute 'variable-pitch nil
                     :font "Iosevka Comfy Motion Duo"

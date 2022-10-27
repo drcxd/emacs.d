@@ -2,15 +2,15 @@
 ;;; Commentary:
 ;;; Code:
 
-;; (add-to-list 'default-frame-alist '(font . "Cascadia Code-16"))
 (set-fontset-font "fontset-default" 'han "Microsoft Yahei")
 
-(set-face-attribute 'default nil :font "Cascadia Code-16")
+(set-face-attribute 'default nil
+                    :font "Iosevka Comfy Motion"
+                    :height 160)
 (set-face-attribute 'fixed-pitch nil
-                    :font "Cascadia Code"
                     :height 1.0)
 (set-face-attribute 'variable-pitch nil
-                    :font "FiraGo"
+                    :font "Iosevka Comfy Motion Duo"
                     :height 1.0)
 
 ;; italic

@@ -71,8 +71,8 @@
 
 ;; symbol overlay
 (require-package 'symbol-overlay)
-(global-set-key (kbd "C-c e p") 'symbol-overlay-put)
-(global-set-key (kbd "C-c e r") 'symbol-overlay-remove-all)
+(global-set-key (kbd "C-c s p") 'symbol-overlay-put)
+(global-set-key (kbd "C-c s r") 'symbol-overlay-remove-all)
 
 (provide 'init-prog)
 ;;; init-prog.el ends here

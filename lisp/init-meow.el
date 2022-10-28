@@ -98,15 +98,6 @@
 (meow-setup)
 (meow-global-mode 1)
 
-(global-set-key (kbd "C-c b") 'switch-to-buffer)
-(global-set-key (kbd "C-c o") 'other-window)
-(global-set-key (kbd "C-c q") 'kill-buffer)
-(global-set-key (kbd "C-c s") 'shell-command)
-(global-set-key (kbd "C-c w1") 'delete-other-windows)
-(global-set-key (kbd "C-c w2") 'split-window-vertically)
-(global-set-key (kbd "C-c w3") 'split-window-horizontally)
-(global-set-key (kbd "C-c w0") 'delete-window)
-(global-set-key (kbd "C-c z") 'hs-toggle-hiding)
 (global-set-key (kbd "C-.") 'meow-keypad)
 
 (defvar my-lsp-map

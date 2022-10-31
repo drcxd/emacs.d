@@ -90,11 +90,13 @@ For templates, refer to `denote-templates'."
 (global-set-key (kbd "C-c ns") 'denote-open-or-create-with-subdirectory)
 (global-set-key (kbd "C-c nt") 'denote-open-or-create-with-type)
 (global-set-key (kbd "C-c nl") 'denote-link-or-create)
-(global-set-key (kbd "C-c nL") 'denote-link-backlinks)
+(global-set-key (kbd "C-c nL") 'denote-link-find-backlink)
 (global-set-key (kbd "C-c no") 'denote-link-find-file)
-(global-set-key (kbd "C-c nr") 'denote-rename-file)
-(global-set-key (kbd "C-c nR") 'denote-rename-file-using-front-matter)
+(global-set-key (kbd "C-c nN") 'denote-rename-file)
+(global-set-key (kbd "C-c nn") 'denote-rename-file-using-front-matter)
 (global-set-key (kbd "C-c nj") 'my-denote-journal)
+(global-set-key (kbd "C-c na") 'denote-keywords-add)
+(global-set-key (kbd "C-c nr") 'denote-keywords-remove)
 
 (require-package 'consult-notes)
 (with-eval-after-load 'consult-notes

@@ -13,7 +13,7 @@
   ("m" backward-paragraph "backward-paragraph")
   ("," forward-paragraph "forward-paragraph")
   ("q" nil "quit"))
-(global-set-key (kbd "C-c nn") 'hydra-navigation/body)
+;; (global-set-key (kbd "C-c nn") 'hydra-navigation/body)
 
 (defhydra hydra-window-adjust ()
   "hydra-window-adjust"

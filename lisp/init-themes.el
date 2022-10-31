@@ -13,8 +13,7 @@
         modus-themes-bold-constructs nil
         modus-themes-mixed-fonts t
         modus-themes-variable-pitch-ui t
-        modus-themes-hl-line '(accented intense)
-        modus-themes-mode-line '(accented borderless)
+        modus-themes-mode-line '(borderless)
         ))
 
 (defun my-modus-setup ()

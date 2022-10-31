@@ -49,10 +49,10 @@
 (defun my-ef-themes-custom-faces ()
   "My customizations on top of Ef themes.
 This function is added to the `ef-themes-post-load-hook'."
-  (with-eval-after-load 'lsp-ui
-    (ef-themes-with-colors
-      (custom-set-faces
-       `(lsp-ui-doc-background ((,c :background ,bg-alt)))))))
+  (if (and (boundp 'lsp-ui-mode) lsp-ui-mode)
+      (ef-themes-with-colors
+        (custom-set-faces
+         `(lsp-ui-doc-background ((,c :background ,bg-alt)))))))
 
 (with-eval-after-load 'ef-themes
   (setq

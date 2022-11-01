@@ -129,7 +129,7 @@
         (occur-edit-mode . normal)
         (prog-mode . normal)
         (text-mode . normal)
-        (grep-mode . normal)
+        (grep-mode . motion)
         (Custom-mode . normal)
         ))
 

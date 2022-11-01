@@ -49,10 +49,9 @@
 (defun my-ef-themes-custom-faces ()
   "My customizations on top of Ef themes.
 This function is added to the `ef-themes-post-load-hook'."
-  (if (and (boundp 'lsp-ui-mode) lsp-ui-mode)
-      (ef-themes-with-colors
-        (custom-set-faces
-         `(lsp-ui-doc-background ((,c :background ,bg-alt)))))))
+  (ef-themes-with-colors
+    (custom-set-faces
+     `(lsp-ui-doc-background ((,c :background ,bg-alt))))))
 
 (with-eval-after-load 'ef-themes
   (setq
@@ -68,7 +67,7 @@ This function is added to the `ef-themes-post-load-hook'."
 (defun my-use-ef-themes ()
   (interactive)
   (mapc #'disable-theme custom-enabled-themes)
-  (ef-themes-select 'ef-bio)
+  (ef-themes-select 'ef-cyprus)
   (global-set-key (kbd "C-c tg") 'ef-themes-toggle)
   )
 

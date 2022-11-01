@@ -8,26 +8,25 @@
 ;;; modus themes
 (require-package 'modus-themes)
 
+(defun my-modus-setup ()
+  "Override some modus themes faces."
+  (modus-themes-with-colors
+    (custom-set-faces
+     ;; `(git-gutter:added ((,class :background ,green-fringe-bg :foreground ,green-fringe-bg)))
+     ;; `(git-gutter:deleted ((,class :background ,red-fringe-bg :foreground ,red-fringe-bg)))
+     ;; `(git-gutter:modified ((,class :background ,yellow-fringe-bg :foreground ,yellow-fringe-bg)))
+     ;; `(flycheck-fringe-error ((,class :background ,bg-alt :foreground ,fg-lang-error)))
+     ;; `(flycheck-fringe-info ((,class :background ,bg-alt :foreground ,fg-lang-note)))
+     ;; `(flycheck-fringe-warning ((,class :background ,bg-alt :foreground ,fg-lang-warning)))
+     `(lsp-ui-doc-background ((,class :background ,bg-alt))))))
+
 (with-eval-after-load 'modus-themes
   (setq modus-themes-italic-constructs t
         modus-themes-bold-constructs nil
         modus-themes-mixed-fonts t
         modus-themes-variable-pitch-ui t
-        modus-themes-mode-line '(borderless)
-        ))
-
-(defun my-modus-setup ()
-  "Override some modus themes faces."
-  (modus-themes-with-colors
-    (custom-set-faces
-     `(git-gutter:added ((,class :background ,green-fringe-bg :foreground ,green-fringe-bg)))
-     `(git-gutter:deleted ((,class :background ,red-fringe-bg :foreground ,red-fringe-bg)))
-     `(git-gutter:modified ((,class :background ,yellow-fringe-bg :foreground ,yellow-fringe-bg)))
-     `(flycheck-fringe-error ((,class :background ,bg-main :foreground ,fg-lang-error)))
-     `(flycheck-fringe-info ((,class :background ,bg-main :foreground ,fg-lang-note)))
-     `(flycheck-fringe-warning ((,class :background ,bg-main :foreground ,fg-lang-warning)))
-     )))
-;; (add-hook 'modus-themes-after-load-theme-hook #'my-modus-setup)
+        modus-themes-mode-line '(borderless))
+  (add-hook 'modus-themes-after-load-theme-hook #'my-modus-setup))
 
 (defun my-use-modus-themes ()
   (interactive)

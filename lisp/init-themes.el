@@ -54,7 +54,7 @@ This function is added to the `ef-themes-post-load-hook'."
 
 (with-eval-after-load 'ef-themes
   (setq
-   ef-themes-to-toggle '(ef-bio ef-frost)
+   ef-themes-to-toggle '(ef-day ef-night)
    ef-themes-mixed-fonts t
    ef-themes-variable-pitch-ui t
    )
@@ -66,7 +66,7 @@ This function is added to the `ef-themes-post-load-hook'."
 (defun my-use-ef-themes ()
   (interactive)
   (mapc #'disable-theme custom-enabled-themes)
-  (ef-themes-select 'ef-cyprus)
+  (ef-themes-select 'ef-day)
   (global-set-key (kbd "C-c tg") 'ef-themes-toggle)
   )
 

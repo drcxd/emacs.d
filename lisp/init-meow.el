@@ -95,7 +95,9 @@
    '("`" . delete-horizontal-space)
    '("{" . backward-paragraph)
    '("}" . forward-paragraph)
-   '("/" . hs-toggle-hiding)))
+   '("/" . hs-toggle-hiding)
+   '("M" . magit)
+   '("S" . shell-command)))
 
 (require 'meow)
 (meow-setup)

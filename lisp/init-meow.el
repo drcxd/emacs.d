@@ -97,8 +97,7 @@
    '("}" . forward-paragraph)
    '("/" . hs-toggle-hiding)
    '("M" . magit)
-   '("S" . shell-command)
-   '("%" . goto-match-paren)))
+   '("S" . shell-command)))
 
 (require 'meow)
 (meow-setup)

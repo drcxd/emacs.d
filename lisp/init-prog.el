@@ -74,5 +74,13 @@
 (global-set-key (kbd "C-c s p") 'symbol-overlay-put)
 (global-set-key (kbd "C-c s r") 'symbol-overlay-remove-all)
 
+;; paren match
+(defun goto-match-paren (arg)
+  "Go to the matching parenthesis if on parenthesis.
+vi style of % jumping to matching brace."
+  (interactive "p")
+  (cond ((looking-at "\\s\(") (forward-list 1) (backward-char 1))
+        ((looking-at "\\s\)") (forward-char 1) (backward-list 1))))
+
 (provide 'init-prog)
 ;;; init-prog.el ends here

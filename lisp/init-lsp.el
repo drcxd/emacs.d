@@ -16,6 +16,7 @@
   (define-key lsp-mode-map (kbd "C-c ln") 'lsp-rename)
   (define-key lsp-mode-map (kbd "C-c lg") 'lsp-ui-doc-glance)
   (define-key lsp-mode-map (kbd "C-c lt") 'lsp-semantic-tokens-mode)
+  (define-key lsp-mode-map (kbd "C-c lF") 'lsp-ui-doc-focus-frame)
   )
 
 (with-eval-after-load 'lsp-ui
@@ -48,6 +49,7 @@
 
   ;; This is necessary for the alignment fix works
   (set-face-attribute 'lsp-ui-sideline-global nil :inherit 'default)
+  (setq lsp-ui-doc-show-with-mouse nil)
   )
 
 (defun my-syntax-highlighting ()

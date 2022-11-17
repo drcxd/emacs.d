@@ -120,6 +120,7 @@
     (define-key map (kbd "s") 'consult-lsp-file-symbols)
     (define-key map (kbd "i") 'consult-lsp-diagnostics)
     (define-key map (kbd "t") 'lsp-semantic-tokens-mode)
+    (define-key map (kbd "F") 'lsp-ui-doc-focus-frame)
     map)
   "My LSP map")
 (meow-leader-define-key

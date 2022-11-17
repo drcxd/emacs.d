@@ -5,6 +5,11 @@
 (setq xref-show-xrefs-function #'consult-xref
       xref-show-definitions-function #'consult-xref)
 
+;; uncomment this and set the variable to an appropriate value to
+;; improve performance of `consult-line'
+
+;; (setq consult-fontify-max-size 262144) ;; 262144 = 2 ^ 18
+
 (if (eq system-type 'windows-nt)
     (progn
       ;; https://github.com/minad/consult/issues/572

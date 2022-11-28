@@ -35,7 +35,6 @@
   (interactive)
   (denote (format-time-string "%A %e %B %Y")
           '("journal")
-          "text"
           (denote-file-type-prompt)
           (denote-subdirectory-prompt)))
 

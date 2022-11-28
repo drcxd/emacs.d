@@ -36,7 +36,8 @@
   (denote (format-time-string "%A %e %B %Y")
           '("journal")
           "text"
-          (denote--subdirs-prompt)))
+          (denote-file-type-prompt)
+          (denote-subdirectory-prompt)))
 
 ;;;###autoload
 (defun denote-open-or-create-with-date ()
@@ -112,7 +113,7 @@ For templates, refer to `denote-templates'."
                           (directory-files-recursively (if (boundp 'denote-directory) denote-directory my-denote-directory) "."))))
   (if (file-exists-p keyword)
       (find-file keyword)
-    (denote keyword (denote--keywords-prompt))))
+    (denote keyword (denote-keywords-prompt))))
 (global-set-key (kbd "C-c nc") 'my-consult-note)
 
 (provide 'init-note)

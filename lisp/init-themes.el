@@ -70,8 +70,23 @@ This function is added to the `ef-themes-post-load-hook'."
   (global-set-key (kbd "C-c tg") 'ef-themes-toggle)
   )
 
-(my-use-ef-themes)
+(require-package 'standard-themes)
+(with-eval-after-load 'standard-themes
+  (setq standard-themes-bold-constructs t
+        standard-themes-italic-constructs t
+        standard-themes-mixed-fonts t
+        standard-themes-variable-pitch-ui t
+        standard-themes-fringes 'subtle))
+
+(defun my-use-standard-themes ()
+  (interactive)
+  (mapc #'disable-theme custom-enabled-themes)
+  (load-theme 'standard-light :no-confirm)
+  (global-set-key (kbd "C-c tg") 'standard-themes-toggle))
+
+;; (my-use-ef-themes)
 ;; (my-use-modus-themes)
+(my-use-standard-themes)
 
 (provide 'init-themes)
 ;;; init-themes.el ends here

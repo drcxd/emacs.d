@@ -8,6 +8,8 @@
 ;;; modus themes
 (require-package 'modus-themes)
 
+(setq vc-annotate-background-mode nil)
+
 (defun my-modus-setup ()
   "Override some modus themes faces."
   (modus-themes-with-colors

@@ -1,0 +1,323 @@
+#+property: header-args:elisp :tangle output.el
+
+* Abstract
+
+Trying literate programming with my emacs configuration. This is
+inspired by http://alhassy.com/emacs.d/.
+
+* TODO Garbage Collection Settings
+
+Adjust garbage collection thresholds during startup, and
+thereafter. This piece of code only works with lexical binding. I have
+not figured out how to enable it in the tangled file.
+
+#+begin_src elisp :lexical t :tangle no
+  (let ((normal-gc-cons-threshold (* 20 1024 1024))
+        (init-gc-cons-threshold (* 128 1024 1024)))
+    (setq gc-cons-threshold init-gc-cons-threshold)
+    (add-hook 'emacs-startup-hook
+              (lambda () (setq gc-cons-threshold normal-gc-cons-threshold))))
+#+end_src
+
+* Package
+
+Since I am currently located in China, sometimes the connection to
+melpa is not stable. As a result, I have to use lcoal package archive
+repository or some mirror sites.
+
+#+begin_src elisp
+  (require 'package)
+  (setq package-archives
+        '(
+          ;; ("gnu" . "https://elpa.gnu.org/packages/")
+          ;; ("melpa" . "https://melpa.org/packages/")
+          ;; ("melpa-stable" . "https://stable.melpa.org/packages/")
+          ;; ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+
+          ;; use local repository
+          ;; ("local-melpa" . "~/elpa-mirror-master/melpa/")
+          ;; ("local-gnu" . "~/elpa-mirror-master/gnu/")
+
+          ;; Use either 163 or tsinghua mirror repository when official melpa
+          ;; is slow or shutdown.
+
+          ;; ;; {{ Option 1: 163 mirror repository:
+          ("gnu" . "https://mirrors.163.com/elpa/gnu/")
+          ("melpa" . "https://mirrors.163.com/elpa/melpa/")
+          ;; ("melpa-stable" . "https://mirrors.163.com/elpa/stable-melpa/")
+          ("nongnu" . "https://mirrors.163.com/elpa/nongnu/")
+          ;; ;; }}
+
+          ;; ;; {{ Option 2: tsinghua mirror repository
+          ;; ;; @see https://mirror.tuna.tsinghua.edu.cn/help/elpa/ on usage:
+          ;; ;; ("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+          ;; ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+          ;; ("melpa-stable" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/stable-melpa/")
+          ;; }}
+
+          ;; gitlab mirror
+          ;; ("melpa" . "https://gitlab.com/d12frosted/elpa-mirror/raw/master/melpa/")
+          ;; ("org"   . "https://gitlab.com/d12frosted/elpa-mirror/raw/master/org/")
+          ;; ("gnu"   . "https://gitlab.com/d12frosted/elpa-mirror/raw/master/gnu/")
+          ))
+  (package-refresh-contents)
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
+  (require 'use-package)
+  (setq use-package-always-ensure t)
+#+end_src
+
+* Benchmark
+
+Some Emacs users don't care about bootstrap time, they claim that they
+only launch emacs once and never close it until they turn off the
+computer. However, I prefer to maintain a reasonable startup
+time. It's always a good idea not to pay for what you are not
+using.
+
+#+begin_src elisp
+  (use-package benchmark-init
+               :hook (after-init . benchmark-init/deactivate))
+#+end_src
+
+* Who am I?
+
+#+begin_src elisp
+  (setq user-full-name "Chang Xiaoduan"
+        user-mail-address "drcxd@sina.com")
+#+end_src
+
+* Custom File Location
+
+It is good to place the custom file in =.emacs.d= directory. This way,
+we have all the files related to Emacs in one single directory.
+
+#+begin_src elisp
+  (setq custom-file (locate-user-emacs-file "custom.el"))
+#+end_src
+
+* Diminish
+
+I am using the built-in modeline, and it displays a symbol for all the
+activated minor modes. This could makes the modeline messy, because
+usually we have lots of minor modes turned on but we do not need the
+visual cue on the modeline to tell us they are enabled. Diminish is a
+good package to solve this problem.
+
+#+begin_src elisp
+  (use-package diminish)
+#+end_src
+
+* Appearance
+
+** Built-in Appearance Settings
+
+*** Menu Bar, Tool Bar, and Scroll Bar
+
+By default, Emacs shows the scroll bar, the menu bar and the tool
+bar. They take much screen space but are not used most of the time. It
+is natural to hide them to make more space for the content that we
+really care about.
+
+#+begin_src elisp
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+#+end_src
+
+*** Title Bar
+
+I mostly use a standalone Emacs with GUI, so it comes with a title bar
+with its main frame. The color of the title bar is determined by the
+operating system and it may produce a bizarre visual effect with my
+favorite theme. According to this [[https://www.reddit.com/r/emacs/comments/b2r2oj/is_it_possible_to_disable_or_hide_the_titlebar_in/][post]], we could adjust [[https://www.reddit.com/r/emacs/comments/b2r2oj/is_it_possible_to_disable_or_hide_the_titlebar_in/][frame
+parameters]] to hide the title bar, but this makes it difficult to drag
+and resize the frame. Anyway, I prefer to hide the title bar to
+achieve a better visual effect and this also take better advantage of
+screen space.
+
+#+begin_src elisp
+  (add-to-list 'default-frame-alist '(undecorated . t))
+  (add-to-list 'default-frame-alist '(drag-internal-border . 1))
+  (add-to-list 'default-frame-alist '(internal-border-width . 5))
+  (add-to-list 'default-frame-alist '(width . 1.0))
+  (add-to-list 'default-frame-alist '(height . 0.5))
+  (add-to-list 'default-frame-alist '(top . 0.25))
+  (add-to-list 'default-frame-alist '(left . 0.0))
+#+end_src
+
+* General Behavior
+
+** Auto Backup
+
+By default, Emacs will automatically generate a backup file every time
+you edit an existing file. If your file name is =fname.txt=, then it
+generates a backup file named =fname.txt~=. This can quickly make the
+directory messy, so I prefer disable this feature.
+
+#+begin_src elisp
+  (setq make-backup-files nil)
+#+end_src
+
+** Splash Screen
+
+By default, Emacs shows a welcome screen every time it is
+launched. This might be useful to new Emacs users, but for experienced
+users, displaying the =*scratch*= buffer by default may be more
+productive. You could also execute the command =about-emacs= to display
+the splash screen manually.
+
+#+begin_src elisp
+  (setq inhibit-splash-screen t)
+#+end_src
+
+** Auto Save
+
+Emacs can automatically save edited files after some certain idle
+time. This feature is disabled by default. I would like to enable it
+to prevent accidental loss of data. The idle time should not be too
+short since this would incur frequently disk I/O.
+
+Note: I found that changing the value of ~auto-save-visited-interval~
+does not change the behavior of Emacs. This might be a
+platform-specific bug.
+
+#+begin_src elisp
+  (auto-save-visited-mode 1)
+  (setq auto-save-visited-interval 5)
+#+end_src
+
+** Auto Revert
+
+I turn on auto-revert-mode because sometimes when a file is edited by
+some external programs, edit it again and save it in Emacs will
+confict with the external changes. Enable auto-revert-mode eliminate
+the chances of such problems.
+
+#+begin_src elisp
+  (global-auto-revert-mode)
+#+end_src
+
+** No Tab Character
+
+Tab could be translated to different length spaces by different
+editors. To avoid such a difference, simply avoid using tab.
+
+#+begin_src elisp
+  (setq-default indent-tabs-mode nil)
+#+end_src
+
+** Recent Files
+
+It would be convenient to quickly open the file you have edited in
+your last Emacs session. With recentf-mode, you do not have to input
+the location of the file every time you visit it, but choose from a
+maintained recent file list.
+
+#+begin_src elisp
+  (recentf-mode 1)
+#+end_src
+
+* Utiliy Packages
+
+** ripgrep
+
+ripgrep is a multi-threaded version of grep. It is quite useful when
+searching for certain text.
+
+#+begin_src elisp
+  (use-package ripgrep)
+#+end_src
+
+** powershell
+
+Since I mostly use Emacs on Windows platform, I need this package to
+interact nicely with the OS. Emacs built-in eshell mode and term mode
+does not work properly on Windows. This package also comes with a
+powershell mode to help editing powershell script files.
+
+#+begin_src elisp
+  (use-package powershell)
+#+end_src
+
+** ace-window
+
+By default, to switch between windows, you have to use the built in
+command =other-window=. This would iterate through all displayed windows
+and make one of them active a time. When there are more than two
+windows displayed, this process becomes daunting. ace-windows makes
+this process easier by allowing use specify which window should become
+the next active window directly.
+
+#+begin_src elisp
+  (use-package ace-window
+               :init
+               (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+               :bind
+               (([remap other-window] . ace-window)
+                ("C-c w s" . ace-swap-window)))
+#+end_src
+
+** wgrep
+
+wgrep allows users to modify grep/ripgrep outputs and save the changes
+to each output's original location. It is a really powerful
+interactive text file editing tool.
+
+#+begin_src elisp
+  (use-package wgrep)
+#+end_src
+
+** zoom
+
+By default, when multiple windows are displayed, Emacs split the
+screen evenly among them. However, sometimes, this not what I
+like. For example, when I am editing one buffer while reading the
+content of another buffer, I may want to make the edited buffer takes
+up most of the screen space. Emacs has a serie of built-in commands
+such as =enlarge-window= which allow users to adjust the window size as
+they want. However, this process is repetitive and boring, because it
+usually only enlarge/shrink the window by one row/column. zoom helps
+me conveniently change the ration of windows sizes by simply execute
+one single command.
+
+#+begin_src elisp
+  (use-package zoom
+               :init
+               (setq zoom-size '(0.618 . 0.618)))
+#+end_src
+
+** scratch
+
+
+
+* Utility Functions
+
+** Hide Dos EOL
+
+When working on Windows, sometimes I encounter files containing mixed
+EOL characters. This would make some lines ended with additional
+=^M=. To hide these anoyying characters, I use the following function.
+
+#+begin_src elisp
+  (defun remove-dos-eol ()
+    "Do not show ^M in files containing mixed UNIX and DOS line endings."
+    (interactive)
+    (setq buffer-display-table (make-display-table))
+    (aset buffer-display-table ?\^M []))
+#+end_src
+
+* OS Dependencies
+
+** Find
+
+Windows provides a find program which accepts different arguments than
+the Linux one. Emacs works out-of-the-box with Linux find program, so
+on Windows I have to tell Emacs where the find program, which accepts
+Linux find program conventional arugments, is.
+
+#+begin_src elisp
+  (if (eq system-type 'windows-nt)
+      (setq find-program "C:/msys64/usr/bin/find.exe"))
+#+end_src
+

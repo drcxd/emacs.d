@@ -65,10 +65,10 @@
 (add-to-list 'default-frame-alist '(undecorated . t))
 (add-to-list 'default-frame-alist '(drag-internal-border . 1))
 (add-to-list 'default-frame-alist '(internal-border-width . 5))
-(add-to-list 'default-frame-alist '(width . 1.0))
+(add-to-list 'default-frame-alist '(width . 0.5))
 (add-to-list 'default-frame-alist '(height . 0.5))
 (add-to-list 'default-frame-alist '(top . 0.25))
-(add-to-list 'default-frame-alist '(left . 0.0))
+(add-to-list 'default-frame-alist '(left . 0.25))
 
 (provide 'init-misc)
 ;;; init-misc.el ends here

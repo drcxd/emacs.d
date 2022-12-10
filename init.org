@@ -1,4 +1,4 @@
-#+property: header-args:elisp :tangle output.el
+#+property: header-args:elisp :tangle init.el :comments org
 
 * Abstract
 
@@ -60,7 +60,7 @@ repository or some mirror sites.
           ;; ("org"   . "https://gitlab.com/d12frosted/elpa-mirror/raw/master/org/")
           ;; ("gnu"   . "https://gitlab.com/d12frosted/elpa-mirror/raw/master/gnu/")
           ))
-  (package-refresh-contents)
+  ;; (package-refresh-contents)
   (unless (package-installed-p 'use-package)
     (package-install 'use-package))
   (require 'use-package)
@@ -77,6 +77,8 @@ using.
 
 #+begin_src elisp
   (use-package benchmark-init
+               :init
+               (require 'benchmark-init)
                :hook (after-init . benchmark-init/deactivate))
 #+end_src
 
@@ -105,14 +107,22 @@ visual cue on the modeline to tell us they are enabled. Diminish is a
 good package to solve this problem.
 
 #+begin_src elisp
-  (use-package diminish)
+  (use-package
+   diminish
+   :config
+   (diminish 'abbrev-mode)
+   (diminish 'visual-line-mode)
+   (diminish 'eldoc-mode)
+   :hook
+   ((hs-minor-mode . (lambda () (diminish 'hs-minor-mode)))
+    (auto-revert-mode . (lambda () (diminish 'olivetti-mode)))
+    (logos-focus-mode . (lambda () (diminish 'buffer-face-mode)))
+    (yas-minor-mode . (lambda () (diminish 'yas-minor-mode)))))
 #+end_src
 
 * Appearance
 
-** Built-in Appearance Settings
-
-*** Menu Bar, Tool Bar, and Scroll Bar
+** Menu Bar, Tool Bar, and Scroll Bar
 
 By default, Emacs shows the scroll bar, the menu bar and the tool
 bar. They take much screen space but are not used most of the time. It
@@ -125,7 +135,7 @@ really care about.
   (scroll-bar-mode -1)
 #+end_src
 
-*** Title Bar
+** Title Bar
 
 I mostly use a standalone Emacs with GUI, so it comes with a title bar
 with its main frame. The color of the title bar is determined by the
@@ -140,10 +150,288 @@ screen space.
   (add-to-list 'default-frame-alist '(undecorated . t))
   (add-to-list 'default-frame-alist '(drag-internal-border . 1))
   (add-to-list 'default-frame-alist '(internal-border-width . 5))
-  (add-to-list 'default-frame-alist '(width . 1.0))
+  (add-to-list 'default-frame-alist '(width . 0.5))
   (add-to-list 'default-frame-alist '(height . 0.5))
   (add-to-list 'default-frame-alist '(top . 0.25))
-  (add-to-list 'default-frame-alist '(left . 0.0))
+  (add-to-list 'default-frame-alist '(left . 0.25))
+#+end_src
+
+** Uniquify
+
+When two buffers of the same name are opened, Emacs has to uniquify
+them so you can distinguish between them.
+
+#+begin_src elisp
+  (require 'uniquify)
+
+  (setq uniquify-buffer-name-style 'reverse)
+  (setq uniquify-separator " • ")
+  (setq uniquify-after-kill-buffer-p t)
+  (setq uniquify-ignore-buffers-re "^\\*")
+#+end_src
+
+** ibuffer
+
+ibuffer is a buffer list all opened buffers in Emacs. You can use it
+to manage these buffers just as you manage files in dired.
+
+#+begin_src elisp
+  (with-eval-after-load 'ibuffer
+    ;; Use human readable Size column instead of original one
+    (define-ibuffer-column size-h
+      (:name "Size" :inline t)
+      (cond
+       ((> (buffer-size) 1000000)
+        (format "%7.1fM" (/ (buffer-size) 1000000.0)))
+       ((> (buffer-size) 1000)
+        (format "%7.1fk" (/ (buffer-size) 1000.0)))
+       (t
+        (format "%8d" (buffer-size)))))
+
+    (setq ibuffer-expert t
+          ibuffer-show-empty-filter-groups nil
+          ibuffer-display-summary nil)
+
+    (setq ibuffer-saved-filter-groups
+          (quote (("default"
+                   ("code" (or (mode . emacs-lisp-mode)
+                               (mode . cperl-mode)
+                               (mode . c-mode)
+                               (mode . java-mode)
+                               (mode . idl-mode)
+                               (mode . web-mode)
+                               (mode . lisp-mode)
+                               (mode . js2-mode)
+                               (mode . c++-mode)
+                               (mode . lua-mode)
+                               (mode . cmake-mode)
+                               (mode . ruby-mode)
+                               (mode . css-mode)
+                               (mode . objc-mode)
+                               (mode . sql-mode)
+                               (mode . python-mode)
+                               (mode . php-mode)
+                               (mode . sh-mode)
+                               (mode . json-mode)
+                               (mode . scala-mode)
+                               (mode . go-mode)
+                               (mode . erlang-mode)))
+
+                   ("dired" (or (mode . dired-mode)
+                                (mode . sr-mode)))
+
+                   ("erc" (mode . erc-mode))
+
+                   ("planner" (or (name . "^\\*Calendar\\*$")
+                                  (name . "^diary$")
+                                  (mode . muse-mode)
+                                  (mode . org-mode)
+                                  (mode . org-agenda-mode)))
+
+                   ("emacs" (or (name . "^\\*scratch\\*$")
+                                (name . "^\\*Messages\\*$")))
+
+                   ("gnus" (or (mode . message-mode)
+                               (mode . bbdb-mode)
+                               (mode . mail-mode)
+                               (mode . gnus-group-mode)
+                               (mode . gnus-summary-mode)
+                               (mode . gnus-article-mode)
+                               (name . "^\\.bbdb$")
+                               (name . "^\\.newsrc-dribble")))))))
+    (defun ibuffer-mode-hook-setup ()
+      (unless (eq ibuffer-sorting-mode 'filename/process)
+        (ibuffer-do-sort-by-filename/process))
+      (ibuffer-switch-to-saved-filter-groups "default"))
+
+    (add-hook 'ibuffer-mode-hook 'ibuffer-mode-hook-setup)
+
+    ;; Modify the default ibuffer-formats
+    (setq ibuffer-formats
+          '((mark modified read-only " "
+                  (name 18 18 :left :elide)
+                  " "
+                  (size-h 9 -1 :right)
+                  " "
+                  (mode 16 16 :left :elide)
+                  " "
+                  filename-and-process)))
+
+    (setq ibuffer-filter-group-name-face 'font-lock-doc-face))
+
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+#+end_src
+
+** Fonts and Faces
+
+#+begin_src elisp
+  (set-fontset-font "fontset-default" 'han "Microsoft Yahei")
+
+  (set-face-attribute 'default nil
+                      :font "Iosevka Comfy"
+                      :height 160)
+  (set-face-attribute 'fixed-pitch nil
+                      :font "Iosevka Comfy"
+                      :height 1.0)
+  (set-face-attribute 'variable-pitch nil
+                      :font "Iosevka Comfy Duo"
+                      :height 1.0)
+
+  ;; italic
+  (set-face-attribute 'italic nil
+                      :slant 'italic
+                      :underline nil)
+#+end_src
+
+** Unicode Support
+
+#+begin_src elisp
+  (use-package
+   unicode-fonts
+   :config
+   (unicode-fonts-setup))
+#+end_src
+
+** Themes
+
+#+begin_src elisp
+  (use-package
+   modus-themes
+   :defer t
+   :init
+   (defun my-modus-setup ()
+     "Override some modus themes faces."
+     (modus-themes-with-colors
+      (custom-set-faces
+       ;; `(git-gutter:added ((,class :background ,green-fringe-bg :foreground ,green-fringe-bg)))
+       ;; `(git-gutter:deleted ((,class :background ,red-fringe-bg :foreground ,red-fringe-bg)))
+       ;; `(git-gutter:modified ((,class :background ,yellow-fringe-bg :foreground ,yellow-fringe-bg)))
+       ;; `(flycheck-fringe-error ((,class :background ,bg-alt :foreground ,fg-lang-error)))
+       ;; `(flycheck-fringe-info ((,class :background ,bg-alt :foreground ,fg-lang-note)))
+       ;; `(flycheck-fringe-warning ((,class :background ,bg-alt :foreground ,fg-lang-warning)))
+       `(lsp-ui-doc-background ((,class :background ,bg-alt))))))
+   (defun my-use-modus-themes ()
+     (interactive)
+     (mapc #'disable-theme custom-enabled-themes)
+     (modus-themes-load-operandi)
+     (global-set-key (kbd "C-c tg") 'modus-themes-toggle))
+   :config
+   (setq modus-themes-italic-constructs t
+         modus-themes-bold-constructs nil
+         modus-themes-mixed-fonts t
+         modus-themes-variable-pitch-ui t
+         modus-themes-mode-line '(borderless))
+   :hook
+   (modus-themes-after-load-theme . my-modus-setup))
+
+  (use-package
+   ef-themes
+   :defer t
+   :init
+   (defun my-ef-themes-custom-faces ()
+     "My customizations on top of Ef themes.
+  This function is added to the `ef-themes-post-load-hook'."
+     (ef-themes-with-colors
+      (custom-set-faces
+       `(lsp-ui-doc-background ((,c :background ,bg-alt))))))
+   (defun my-use-ef-themes ()
+     (interactive)
+     (mapc #'disable-theme custom-enabled-themes)
+     (ef-themes-select 'ef-light)
+     (global-set-key (kbd "C-c tg") 'ef-themes-toggle)
+     )
+   :config
+   (setq
+    ef-themes-to-toggle '(ef-light ef-dark)
+    ef-themes-mixed-fonts t
+    ef-themes-variable-pitch-ui t)
+   (with-eval-after-load 'tree-sitter
+     (add-hook 'tree-sitter-hl-mode-hook
+               (lambda () (set-face-attribute
+                           'tree-sitter-hl-face:punctuation
+                           nil
+                           :inherit nil))))
+   :hook
+   (ef-themes-post-load-hook . my-ef-themes-custom-faces))
+
+  (use-package
+   standard-themes
+   :defer t
+   :init
+   (defun my-use-standard-themes ()
+    (interactive)
+    (mapc #'disable-theme custom-enabled-themes)
+    (load-theme 'standard-light :no-confirm)
+    (global-set-key (kbd "C-c tg") 'standard-themes-toggle))
+   :config
+   (setq standard-themes-bold-constructs t
+          standard-themes-italic-constructs t
+          standard-themes-mixed-fonts t
+          standard-themes-variable-pitch-ui t
+          standard-themes-fringes 'subtle))
+
+  ;; (my-use-ef-themes)
+  ;; (my-use-modus-themes)
+  (my-use-standard-themes)
+#+end_src
+
+** Ligature
+
+#+begin_src elisp
+  (use-package
+   ligature
+   :config
+   (ligature-set-ligatures
+    'prog-mode
+    `("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
+      ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
+      "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
+      "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
+      "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
+      "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
+      "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
+      "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
+      ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
+      "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
+      "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
+      "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
+      "\\\\" "://" ("=" ,(rx (+ "=")))))
+   (global-ligature-mode t))
+#+end_src
+
+** modeline
+
+#+begin_src elisp
+  (setq display-time-24hr-format t)
+  (display-time)
+  (column-number-mode)
+#+end_src
+
+** logos
+
+#+begin_src elisp
+  (use-package olivetti :defer t :diminish)
+  (use-package
+   logos
+   :diminish
+   :defer t
+   :config
+   (setq logos-outlines-are-pages t)
+   (setq-default logos-hide-mode-line nil
+                 logos-hide-buffer-boundaries nil
+                 logos-hide-fringe t
+                 logos-variable-pitch t
+                 logos-buffer-read-only nil
+                 logos-olivetti t)
+   (with-eval-after-load 'modus-themes
+     (add-hook 'modus-themes-after-load-theme-hook #'logos-update-fringe-in-buffers))
+   (with-eval-after-load 'ef-themes
+     (add-hook 'ef-themes-post-load-hook #'logos-update-fringe-in-buffers))
+   :bind
+   (("C-c s l" . logos-focus-mode)
+    ("C-c s n" . logos-narrow-dwim)
+    ("C-c s k" . logos-forward-page-dwim)
+    ("C-c s j" . logos-backward-page-dwim)))
 #+end_src
 
 * General Behavior
@@ -168,7 +456,7 @@ productive. You could also execute the command =about-emacs= to display
 the splash screen manually.
 
 #+begin_src elisp
-  (setq inhibit-splash-screen t)
+  (setq inhibit-splash-screen t)
 #+end_src
 
 ** Auto Save
@@ -218,6 +506,25 @@ maintained recent file list.
   (recentf-mode 1)
 #+end_src
 
+** Dired
+
+dired is the facility Emacs uses to manage directories, its like the
+file explorer of an operating system, you can perform any file related
+operations in dired.
+
+#+begin_src elisp
+  (setq dired-kill-when-opening-new-dired-buffer t)
+  (defun dired-mode-setup ()
+    "Setup dired."
+    (dired-hide-details-mode 1)
+    ;; global-auto-revert-mode does not work for dired
+    (auto-revert-mode)
+    (hl-line-mode 1))
+  (add-hook 'dired-mode-hook 'dired-mode-setup)
+  (with-eval-after-load 'dired
+    (require 'dired-x))
+#+end_src
+
 * Utiliy Packages
 
 ** ripgrep
@@ -226,7 +533,7 @@ ripgrep is a multi-threaded version of grep. It is quite useful when
 searching for certain text.
 
 #+begin_src elisp
-  (use-package ripgrep)
+  (use-package ripgrep :defer t)
 #+end_src
 
 ** powershell
@@ -237,7 +544,7 @@ does not work properly on Windows. This package also comes with a
 powershell mode to help editing powershell script files.
 
 #+begin_src elisp
-  (use-package powershell)
+  (use-package powershell :defer t)
 #+end_src
 
 ** ace-window
@@ -251,7 +558,8 @@ the next active window directly.
 
 #+begin_src elisp
   (use-package ace-window
-               :init
+               :defer t
+               :config
                (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
                :bind
                (([remap other-window] . ace-window)
@@ -265,7 +573,7 @@ to each output's original location. It is a really powerful
 interactive text file editing tool.
 
 #+begin_src elisp
-  (use-package wgrep)
+  (use-package wgrep :defer t)
 #+end_src
 
 ** zoom
@@ -283,13 +591,43 @@ one single command.
 
 #+begin_src elisp
   (use-package zoom
-               :init
+               :defer t
+               :config
                (setq zoom-size '(0.618 . 0.618)))
 #+end_src
 
 ** scratch
 
+This program allows user to create a scratch buffer of a certain mode,
+so you can write anything in it.
 
+#+begin_src elisp
+  (use-package scratch :defer t)
+#+end_src
+
+** tmr & pomm
+
+Sometimes you want to set a timer, or you simply want to practice the
+[[Pomodo][pomodoro technique]]. tmr helps you set and manage timers. pomm provide
+pomodoro functions.
+
+#+begin_src elisp
+  (use-package pomm
+               :defer t
+               :config
+               (pomm-mode-line-mode)
+               :bind
+               ("C-c t p" . pomm))
+
+  (use-package tmr
+               :defer t
+               :bind
+               (("C-c t T" . tmr)
+                ("C-c t t" . tmr-with-description)
+                ("C-c t r" . tmr-remove-finished)
+                ("C-c t R" . tmr-remove)
+                ("C-c t l" . tmr-tabulated-view)))
+#+end_src
 
 * Utility Functions
 
@@ -321,3 +659,897 @@ Linux find program conventional arugments, is.
       (setq find-program "C:/msys64/usr/bin/find.exe"))
 #+end_src
 
+* Programming
+
+** linum-mode
+
+linum-mode displays line number on the side of the buffer, which is a
+good visual hint when programming. It helps you locate warning and
+error information generated by the compiler. It is also useful when
+working with version control tools or communicating with other
+programmers.
+
+#+begin_src elisp
+  (defvar my-linum-inhibit-modes
+    '(eshell-mode
+      shell-mode
+      dired-mode
+      help-mode
+      text-mode
+      fundamental-mode
+      compilation-mode
+      woman-mode
+      Info-mode
+      calc-mode
+      calc-trail-mode
+      org-mode
+      vc-git-log-edit-mode
+      log-edit-mode
+      term-mode
+      speedbar-mode
+      gnus-summary-mode
+      gnus-article-mode
+      calendar-mode)
+    "Major modes without line number.")
+
+  (defun display-line-numbers-mode-hook-setup ()
+    (setq display-line-numbers (not (memq major-mode my-linum-inhibit-modes))))
+
+  (add-hook 'display-line-numbers-mode-hook 'display-line-numbers-mode-hook-setup)
+
+  (global-display-line-numbers-mode)
+#+end_src
+
+** Templates or Snippets
+
+When programming, we have to write some boilerplate code: the
+structure of the piece of code is conventional, we only need to
+replace some key text in it, for example, the name of the variable.
+
+There is a well-known package for this task: yasnippet. However, this
+package is not maintained actively for more than two years (today is
+2022-12-10, and its last commit time is 2020-06-04). Thus, I switch to
+another package, tempel. Though it is a new package, it has its own
+advantages. First, it relies on Emacs built-in Tempo library. Second,
+its simple enough to learn and work with. Third, it is maintained
+actively. However, since yasnippet is well-known, some other packages,
+such as lsp-mode, depends on it somehow, so I still install it.
+
+#+begin_src elisp
+  (use-package
+   tempel
+   :defer t
+   :init
+   ;; Setup completion at point
+   (defun tempel-setup-capf ()
+     ;; Add the Tempel Capf to `completion-at-point-functions'.
+     ;; `tempel-expand' only triggers on exact matches. Alternatively use
+     ;; `tempel-complete' if you want to see all matches, but then you
+     ;; should also configure `tempel-trigger-prefix', such that Tempel
+     ;; does not trigger too often when you don't expect it. NOTE: We add
+     ;; `tempel-expand' *before* the main programming mode Capf, such
+     ;; that it will be tried first.
+     (setq-local completion-at-point-functions
+                 (cons #'tempel-expand
+                       completion-at-point-functions)))
+   :bind
+   (("M-+" . tempel-insert)
+    ("M-*" . tempel-complete))
+   :hook
+   ((prog-mode . tempel-setup-capf)
+    (text-mode . tempel-setup-capf)))
+
+  (use-package
+   yasnippet
+   :diminish
+   :defer t
+   :hook
+   (prog-mode . yas-minor-mode)
+   :bind
+   ("C-c Y" . yas-reload-all))
+#+end_src
+
+** Completion
+
+Completion is an important feature of modern IDE. With the help of
+language server protocol, Emacs could also provide such service to
+programmers.
+
+*** corfu
+
+corfu is a completion front end package. That is, it is responsible to
+display the completion condidates on the screen.
+
+#+begin_src elisp
+  (use-package
+   corfu
+   :defer t
+   :init
+   (setq corfu-auto t
+         corfu-cycle t
+         corfu-quit-at-boundary 'separator
+         corfu-quit-no-match t
+         corfu-preview-current nil)
+   (defun corfu-enable-in-minibuffer ()
+    "Enable Corfu in the minibuffer if `completion-at-point' is bound."
+    (when (where-is-internal #'completion-at-point (list (current-local-map)))
+      (corfu-mode 1)))
+   :hook
+   (minibuffer-setup . corfu-enable-in-minibuffer)
+   :bind
+   (:map corfu-map
+         ("C-n" . corfu-next)
+         ("C-p" . corfu-previous)
+         ("<tab>" . corfu-next)
+         ("S-<tab>" . corfu-previous)
+         ("C-g" . corfu-quit)
+         ("<escape>" . corfu-quit)
+         ("SPC" . corfu-insert-separator))
+   )
+
+  (unless (display-graphic-p)
+    (progn
+      (use-package corfu-terminal :defer t)
+      (corfu-terminal-mode +1)))
+
+  (global-corfu-mode)
+#+end_src
+
+*** cape
+
+cape provides a set of completion backends. A compeltion back ends
+decides what are the completion condidates.
+
+#+begin_src elisp
+  (use-package company :defer t)
+  (use-package
+   cape
+   :defer t
+   :init
+   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+   (add-to-list 'completion-at-point-functions #'cape-file)
+   (require 'company-clang)
+   (add-to-list 'completion-at-point-functions #'company-clang))
+#+end_src
+
+** General Settings
+
+#+begin_src elisp
+  (defun prog-mode-setup ()
+    (display-fill-column-indicator-mode t)
+    (setq show-trailing-whitespace t)
+    (electric-pair-mode t)
+    (hs-minor-mode 1)
+    (hl-line-mode 1))
+  (add-hook 'prog-mode-hook 'prog-mode-setup)
+#+end_src
+
+** Code Formatting
+
+If the code keeps a consistent and easy-to-read format, it will be
+much easier to read and maintain. However, manually formatting the
+code cannot assure consistency and is also a boring process. We can
+use our time to think about more valuable problems. Thus, using a nice
+code formatting tool is necessary.
+
+#+begin_src elisp
+  (use-package clang-format :defer t)
+  (use-package inheritenv :defer t)
+  (use-package language-id :defer t)
+  (use-package format-all :defer t)
+#+end_src
+
+** flycheck
+
+flycheck is an error checking package, which displays inline visual
+hint for possible code warnning or error. Currently, I only use it as
+a facility for lsp.
+
+#+begin_src elisp
+  (use-package flycheck :defer t :diminish)
+#+end_src
+
+** hl-todo
+
+This package highlighs certain keywords in comments and string literals.
+
+#+begin_src elisp
+  (use-package
+   hl-todo
+   :defer t
+   :config
+   (setq hl-todo-highlight-punctuation ":"
+        hl-todo-keyword-faces
+        `(("TODO" warning bold)
+          ("FIXME" error bold)
+          ("HACK" font-lock-constant-face bold)
+          ("REVIEW" font-lock-keyword-face bold)
+          ("NOTE" success bold)
+          ("DEPRECATED" font-lock-doc-face bold)
+          ("BUG" error bold)))
+   :hook (prog-mode . hl-todo-mode))
+#+end_src
+
+** git-gutter
+
+This packages add visual hint on the fringe to indicate which part of
+the file is added/deleted/modified agianst the latest version in the
+version control system.
+
+#+begin_src elisp
+  (use-package
+   git-gutter
+   :diminish
+   :defer t
+   :config
+   (setq git-gutter:handled-backends '(git svn))
+   :hook
+   (prog-mode . git-gutter-mode)
+   :bind
+   ("C-c G" . git-gutter))
+#+end_src
+
+** Documentation Style
+
+Emacs 28 supports syntax highlighting for documentations in comments.
+
+#+begin_src elisp
+  (setq-default c-doc-comment-style
+                '((java-mode . javadoc)
+                  (pike-mode . autodoc)
+                  (c-mode    . doxygen)
+                  (c++-mode  . doxygen)))
+#+end_src
+
+** evil-nerd-commenter
+
+Commenting a piece of code might be one of the most frequent
+operations a programmer performs. Thus, we need a convenient and smart
+package to help us perform this task. evil-nerd-commenter fits my
+need.
+
+#+begin_src elisp
+  (use-package
+   evil-nerd-commenter
+   :defer t
+   :bind
+   (("C-c d" . evilnc-comment-or-uncomment-lines)
+    ("C-c D" . evilnc-copy-and-comment-lines)))
+#+end_src
+
+** Symbol Highlighting
+
+When inspecting a piece of code, I need to highlight some of the
+symbols to help me quickly locate the places they are referenced.
+symbol-overlay is the best package I have knonw for this task.
+
+#+begin_src elisp
+  (use-package
+   symbol-overlay
+   :defer t
+   :bind
+   (("C-c s p" . symbol-overlay-put)
+    ("C-c s r" . symbol-overlay-remove-all))
+   :config
+   (setq symbol-overlay-inhibit-map t))
+#+end_src
+
+** lsp
+
+Language server protocol is a powerful tool. It enables Eamcs provide
+IDE-like functions, such as auto-completion,
+jump-to-definition/declaraction, find-references and even
+variable-rename.
+
+#+begin_src elisp
+  (use-package
+   lsp-mode
+   :defer t
+   :init
+   (defun my-syntax-highlighting ()
+     "Setup syntax highlighting"
+     (lsp-semantic-tokens-mode 1)
+     (if (and (boundp 'tree-sitter-hl-mode) tree-sitter-hl-mode)
+         (tree-sitter-hl-mode -1)))
+   (defun corfu-lsp-setup ()
+     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+           '(orderless))
+     (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible))
+   :config
+   (setq lsp-headerline-breadcrumb-enable nil
+         lsp-semantic-tokens-apply-modifiers nil)
+   (if (and (package-installed-p corfu) (package-installed-p cape))
+       (progn
+         (add-hook 'lsp-completion-mode-hook #'corfu-lsp-setup)
+         (setq lsp-completion-provider :none)))
+   :hook
+   (lsp-mode . my-syntax-highlighting)
+   :bind
+   (("C-c l l" . lsp)
+    :map lsp-mode-map
+    ("C-c l c" . lsp-find-declaration)
+    ("C-c l f" . lsp-find-definition)
+    ("C-c l o" . lsp-clangd-find-other-file)
+    ("C-c l r" . lsp-workspace-restart)
+    ("C-c l d" . lsp-workspace-shutdown)
+    ("C-c l a" . lsp-execute-code-action)
+    ("C-c l n" . lsp-rename)
+    ("C-c l t" . lsp-semantic-tokens-mode)))
+
+  (use-package
+   lsp-ui
+   :defer t
+   :bind
+   (:map lsp-ui-mode-map
+         ("C-c l g" . lsp-ui-doc-glance)
+         ("C-c l F" . lsp-ui-doc-focus-frame))
+   :config
+   (setq lsp-ui-doc-show-with-mouse nil))
+
+  (use-package
+   consult-lsp
+   :defer t
+   :bind
+   (:map lsp-mode-map
+         ("C-c l S" . consult-lsp-symbols)
+         ("C-c l s" . consult-lsp-file-symbols)
+         ("C-c l i" . consult-lsp-diagnostics)))
+
+  (with-eval-after-load 'lsp-clangd
+    (setq lsp-clients-clangd-args
+          '("--completion-style=detailed"
+            "--header-insertion=never"
+            "--function-arg-placeholders=0"
+            "-j=32")))
+
+  (add-to-list 'safe-local-eval-forms '(lsp))
+#+end_src
+
+** Syntax Highlighting
+
+Eamcs has built-in syntax highlighting support, however it is based on
+regular expression. This means it would not be correct in every
+situation.
+
+lsp also provides syntax highlighting support. This requires a backend
+server, and sometimes it is too heavy to practice. What if we are
+editing a simple one-file program but still want better syntax
+highlighing?
+
+I find the package tree-sitter. Its solution is better than regular
+expression but still not a full functional compiler. This means it is
+better than the built-in syntax highlighting solution but still not
+totally correct. However, it is light-weight enough, so it is still a
+viable choice.
+
+#+begin_src elisp
+  (use-package
+   tree-sitter
+   :diminish
+   :defer t
+   :hook
+   ((c-mode . tree-sitter-mode)
+    (c++-mode . tree-sitter-mode)
+    (lua-mode . tree-sitter-mode)
+    (tree-sitter-after-on . tree-sitter-hl-mode)))
+
+  (use-package
+   tree-sitter-langs
+   :defer t)
+#+end_src
+
+* Languages
+
+** Lua
+
+#+begin_src elisp
+  (use-package lua-mode :defer t)
+#+end_src
+* org-mode
+
+#+begin_src elisp
+  (use-package org
+               :defer t
+               :config
+               (setq org-ellipsis "⤵"
+                     org-auto-align-tags nil
+                     org-tags-column 0
+                     org-catch-invisible-edits 'show-and-error
+                     org-special-ctrl-a/e t
+                     org-insert-heading-respect-content t
+                     org-hide-emphasis-markers t
+                     org-pretty-entities t))
+#+end_src
+
+** Appearance
+
+org-modern is a package that beautify org-mode. It changes the
+appearance of header line, table, time stamp and other things.
+
+#+begin_src elisp
+  (use-package org-modern
+               :defer t
+               :hook (org-mode . global-org-modern-mode))
+#+end_src
+
+** Exporting Chinese Paragraph to HTML
+
+Due to the difference between English and Chinese, there are some
+extra spaces in exported Chinese paragraph when exporting to
+HTML. These spaces are necessary since English uses spaces to separate
+words, but Chinese don't. We have to override this behavior.
+
+#+begin_src elisp
+  (defadvice org-html-paragraph (before org-html-paragraph-advice
+                                        (paragraph contents info) activate)
+    "Join consecutive Chinese lines into a single long line without
+     unwanted space when exporting org-mode to html."
+    (let* ((origin-contents (ad-get-arg 1))
+           (fix-regexp "[[:multibyte:]]")
+           (fixed-contents
+            (replace-regexp-in-string
+             (concat
+              "\\(" fix-regexp "\\) *\n *\\(" fix-regexp "\\)") "\\1\\2" origin-contents)))
+      (ad-set-arg 1 fixed-contents)))
+#+end_src
+
+** Markups Last More Lines
+
+org-mode has built-in support for inline emphasis markups. By default,
+these markups only works when the content inside only contain one
+newline character. To make it works with more newlines in it, use the
+following code:
+
+#+begin_src elisp
+  (use-package org
+               :defer t
+               :config
+               (setcar (nthcdr 4 org-emphasis-regexp-components) 5)
+               (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components))
+#+end_src
+
+* Taking Notes
+
+As a text editor, Emacs is a good place to take notes. There are also
+packages helps you orgnize your notes. The most popular one is
+org-roam. However, it requires a database to work. I prefer a
+light-weight package denote. It only works with native file
+systems. These two packages are often used to practice a note-taking
+methodology called [[https://zettelkasten.de/introduction/][Zettelkasten]].
+
+#+begin_src elisp
+  (use-package denote
+               :defer t
+               :config
+               (setq denote-directory "~/note"
+                     denote-known-keywords '("emacs")
+                     denote-prompts '(title keywords))
+               :bind
+               (("C-c n d" . denote-open-or-create)
+                ("C-c n s" . denote-open-or-create-with-subdirectory)
+                ("C-c n t" . denote-open-or-create-with-type)
+                ("C-c n l" . denote-link-or-create)
+                ("C-c n L" . denote-link-find-backlink)
+                ("C-c n o" . denote-link-find-file)
+                ("C-c n N" . denote-rename-file)
+                ("C-c n n" . denote-rename-file-using-front-matter)
+                ("C-c n j" . my-denote-journal)
+                ("C-c n a" . denote-keywords-add)
+                ("C-c n r" . denote-keywords-remove)))
+
+  (defun my-denote-journal ()
+    "Create an entry tagged 'journal'."
+    (interactive)
+    (denote (format-time-string "%A %e %B %Y")
+            '("journal")
+            (denote-file-type-prompt)
+            (denote-subdirectory-prompt)))
+
+  ;;;###autoload
+  (defun denote-open-or-create-with-date ()
+    "Invoke `denote-open-or-create' but also prompt for date.
+
+  The date can be in YEAR-MONTH-DAY notation like 2022-06-30 or
+  that plus the time: 2022-06-16 14:30.  When the user option
+  `denote-date-prompt-use-org-read-date' is non-nil, the date
+  prompt uses the more powerful Org+calendar system.
+
+  This is the equivalent to calling `denote-open-or-create' when
+  `denote-prompts' is set to \\='(date title keywords)."
+    (declare (interactive-only t))
+    (interactive)
+    (let ((denote-prompts '(date title keywords)))
+      (call-interactively #'denote-open-or-create)))
+
+  ;;;###autoload
+  (defun denote-open-or-create-with-type ()
+    "Invoke `denote-open-or-create' but also prompt for file type.
+  This is the equivalent to calling `denote-open-or-create' when
+  `denote-prompts' is set to \\='(type title keywords)."
+    (declare (interactive-only t))
+    (interactive)
+    (let ((denote-prompts '(type title keywords)))
+      (call-interactively #'denote-open-or-create)))
+
+  ;;;###autoload
+  (defun denote-open-or-create-with-subdirectory ()
+    "Invoke `denote-open-or-create' but also prompt for subdirectory.
+  This is the equivalent to calling `denote-open-or-create' when
+  `denote-prompts' is set to \\='(subdirectory title keywords)."
+    (declare (interactive-only t))
+    (interactive)
+    (let ((denote-prompts '(subdirectory title keywords)))
+      (call-interactively #'denote-open-or-create)))
+
+  ;;;###autoload
+  (defun denote-open-or-create-with-template ()
+    "Invoke `denote-open-or-create' but also prompt for template.
+  This is the equivalent to calling `denote-open-or-create' when
+  `denote-prompts' is set to \\='(template title keywords).
+
+  For templates, refer to `denote-templates'."
+    (declare (interactive-only t))
+    (interactive)
+    (let ((denote-prompts '(template title keywords)))
+      (call-interactively #'denote-open-or-create)))
+#+end_src
+
+* Completion
+
+** vertico
+
+Emacs has a tons of variables, commands and documents. When you
+exploring them, vertico provides a much more informative interface for
+you to browse those information.
+
+#+begin_src elisp
+  (use-package vertico
+               :defer t
+               :config
+               (setq read-extended-command-predicate #'command-completion-default-include-p
+                     enable-recursive-minibuffers t))
+  (vertico-mode)
+#+end_src
+
+** orderless
+
+orderless allows the completion systems using a different completion
+strategy. The default completion systems complets based on prefix
+matching. orderless enable it to use a fuzzy matching strategy. This
+is quite useful because you do not always remember exactly what you
+want to search. Sometimes, you do not even know if the things in your
+head exist or not, but you want to use the completions system as a
+tool to verify your assumption. Orderless completion is really helpful
+in these situation.
+
+#+begin_src elisp
+  (use-package orderless
+               :config
+               (setq completion-styles '(orderless basic)
+                     completion-category-defaults nil
+                     completion-category-overrides '((file (styles partial-completion)))))
+#+end_src
+
+** marginalia
+
+Marginalia works together with vertico, it provides more information
+of a variable or function in the completion interface. This may help
+you locate your target more quickly.
+
+#+begin_src elisp
+  (use-package marginalia :defer t)
+  (marginalia-mode)
+#+end_src
+
+** consult
+
+consult works together with vertico. It helps you complete among lots
+of things, such as buffers, file contents, grep results, find results,
+etc..
+
+#+begin_src elisp
+  (use-package
+   consult
+   :defer t
+   :init
+   (setq xref-show-xrefs-function #'consult-xref
+         xref-show-definitions-function #'consult-xref)
+   (defun consult-ripgrep-with-prefix ()
+     (interactive)
+     (let ((current-prefix-arg '(4)))
+       (call-interactively 'consult-ripgrep)))
+   (defvar consult--fd-command nil)
+   (defun consult--fd-builder (input)
+     (unless consult--fd-command
+       (setq consult--fd-command
+             (if (eq 0 (call-process-shell-command "fdfind"))
+                 "fdfind"
+               "fd")))
+     (pcase-let* ((`(,arg . ,opts) (consult--command-split input))
+                  (`(,re . ,hl) (funcall consult--regexp-compiler
+                                         arg 'extended t)))
+       (when re
+         (list :command (append
+                         (list consult--fd-command
+                               "--color=never" "--full-path"
+                               (consult--join-regexps re 'extended))
+                         opts)
+               :highlight hl))))
+
+   (defun consult-fd (&optional dir initial)
+     (interactive "P")
+     (let* ((prompt-dir (consult--directory-prompt "Fd" dir))
+            (default-directory (cdr prompt-dir)))
+       (find-file (consult--find (car prompt-dir) #'consult--fd-builder initial))))
+   :config
+   (setq consult-fontify-max-size 262144 ;; 262144 = 2 ^ 18
+         consult-preview-excluded-files '(".*org"))
+   ;; this handles problems when consult results contains
+   ;; Chinese characters
+   (if (eq system-type 'windows-nt)
+       (progn
+         ;; https://github.com/minad/consult/issues/572
+         (add-to-list 'process-coding-system-alist
+                      '("[rR][gG]" . (utf-8 . gbk-dos)))
+         ;; https://github.com/minad/consult/issues/601
+         (setq consult-find-args (concat find-program " . "))))
+   :bind
+   (([remap switch-to-buffer] . consult-buffer)
+    ("C-c i" . consult-line)
+    ("C-c r" . consult-ripgrep-with-prefix)
+    ("C-c R" . consult-ripgrep)
+    ("C-c I" . consult-imenu)
+    ("C-c f" . consult-fd))
+   )
+#+end_src
+
+** embark
+
+embark allows users perform certain tasks in the completion
+interface. This reduces the number of operations users have to
+perform. For example, when you are trying to delete a certain file,
+you have to =find-file= to open the directory the file is located. Then
+mark the file to be deleted in dired and finally execute the delete
+operation. With embark, you can simply browse to the file in
+completion system and then execute =embark-act= then use its delete file
+function to delete the current completion condidate. Much more
+convenient.
+
+#+begin_src elisp
+  (use-package embark
+               :defer t
+               :bind ("<f5>" . embark-act))
+  (use-package embark-consult :defer t)
+#+end_src
+
+* Project Management
+
+Project can be applied to orgnize anything you are working on. Not
+only programming project, but also writing project, note-taking
+project, etc.. projectile helps you browse project files, search
+contents in project and even run and test project (if it is a
+programming project).
+
+#+begin_src elisp
+  (use-package
+   projectile
+   :diminish
+   :defer t
+   :bind
+   (("C-c p f" . projectile-find-file)
+    ("C-c p i" . projectile-invalidate-cache)
+    ("C-c p s" . projectile-switch-project)
+    ("C-c p d" . projectile-dired)
+    ("C-c p r" . projectile-ripgrep))
+   :config
+   (projectile-global-mode))
+#+end_src
+
+* Version Control
+
+** magit
+
+magit is the well-known Emacs interface for git.
+
+#+begin_src elisp
+  (use-package
+   magit
+   :defer t
+   :bind
+   ("C-c M" . magit))
+#+end_src
+
+* Key Binding
+
+** Native Command Key Bindings
+
+#+begin_src elisp
+  (global-set-key (kbd "C-c E") 'eval-region)
+  (global-set-key (kbd "C-c C") 'compile)
+  (global-set-key (kbd "C-c b") 'switch-to-buffer)
+  (global-set-key (kbd "C-c o") 'other-window)
+  (global-set-key (kbd "C-c k") 'kill-buffer)
+  (global-set-key (kbd "C-c S") 'shell-command)
+  (global-set-key (kbd "C-c w1") 'delete-other-windows)
+  (global-set-key (kbd "C-c w2") 'split-window-vertically)
+  (global-set-key (kbd "C-c w3") 'split-window-horizontally)
+  (global-set-key (kbd "C-c w0") 'delete-window)
+  (global-set-key (kbd "C-c z") 'hs-toggle-hiding)
+#+end_src
+
+** meow
+
+meow is a modal editing package. It looks like evil, but I think it
+suits Emacs more than evil. meow provides supports for many Emacs
+packages native key bindings, such as org-mode. For example, when
+using meow, you can execute the command =org-babel-tangle= by pressing
+=SPC c v t= out-of-the-box, while its original key binding is =C-c C-v
+t=. It also works well with my own native key bindings. When using
+meow, I do not have to change my original key binding settings. I only
+add some additional configuration specific to meow.
+
+#+begin_src elisp
+  (use-package
+   meow
+   :init
+   (defun meow-setup ()
+     (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
+     (meow-motion-overwrite-define-key
+      ;; '("j" . meow-next)
+      ;; '("k" . meow-prev)
+      '("<escape>" . ignore))
+     (meow-leader-define-key
+      ;; SPC j/k will run the original command in MOTION state.
+      ;; '("j" . "H-j")
+      ;; '("k" . "H-k")
+      ;; Use SPC (0-9) for digit arguments.
+      '("1" . meow-digit-argument)
+      '("2" . meow-digit-argument)
+      '("3" . meow-digit-argument)
+      '("4" . meow-digit-argument)
+      '("5" . meow-digit-argument)
+      '("6" . meow-digit-argument)
+      '("7" . meow-digit-argument)
+      '("8" . meow-digit-argument)
+      '("9" . meow-digit-argument)
+      '("0" . meow-digit-argument)
+      '("/" . meow-keypad-describe-key)
+      '("?" . meow-cheatsheet))
+     (meow-normal-define-key
+      '("0" . meow-expand-0)
+      '("9" . meow-expand-9)
+      '("8" . meow-expand-8)
+      '("7" . meow-expand-7)
+      '("6" . meow-expand-6)
+      '("5" . meow-expand-5)
+      '("4" . meow-expand-4)
+      '("3" . meow-expand-3)
+      '("2" . meow-expand-2)
+      '("1" . meow-expand-1)
+      '("-" . negative-argument)
+      '(";" . meow-reverse)
+      '("," . meow-inner-of-thing)
+      '("." . meow-bounds-of-thing)
+      '("[" . meow-beginning-of-thing)
+      '("]" . meow-end-of-thing)
+      '("a" . meow-append)
+      '("A" . meow-open-below)
+      '("b" . meow-back-word)
+      '("B" . meow-back-symbol)
+      '("c" . meow-change)
+      '("d" . meow-delete)
+      '("D" . meow-backward-delete)
+      '("e" . meow-next-word)
+      '("E" . meow-next-symbol)
+      '("f" . meow-find)
+      '("g" . meow-cancel-selection)
+      '("G" . meow-grab)
+      '("h" . meow-left)
+      '("H" . meow-left-expand)
+      '("i" . meow-insert)
+      '("I" . meow-open-above)
+      '("j" . meow-next)
+      '("J" . meow-next-expand)
+      '("k" . meow-prev)
+      '("K" . meow-prev-expand)
+      '("l" . meow-right)
+      '("L" . meow-right-expand)
+      '("m" . meow-join)
+      '("n" . meow-search)
+      '("o" . meow-block)
+      '("O" . meow-to-block)
+      '("p" . meow-yank)
+      '("P" . meow-yank-pop)
+      ;; '("q" . meow-quit)
+      ;; '("Q" . meow-goto-line)
+      '("q" . evilnc-comment-or-uncomment-lines)
+      '("Q" . evilnc-copy-and-comment-lines)
+      '("r" . meow-replace)
+      '("R" . meow-swap-grab)
+      '("s" . meow-kill)
+      '("t" . meow-till)
+      '("u" . meow-undo)
+      '("U" . meow-undo-in-selection)
+      '("v" . meow-visit)
+      '("w" . meow-mark-word)
+      '("W" . meow-mark-symbol)
+      '("x" . meow-line)
+      '("X" . meow-goto-line)
+      '("y" . meow-save)
+      '("Y" . meow-sync-grab)
+      '("z" . meow-pop-selection)
+      '("'" . repeat)
+      '("<escape>" . ignore)
+      '("=" . indent-region)
+      '("`" . delete-horizontal-space)
+      '("{" . backward-paragraph)
+      '("}" . forward-paragraph)
+      '("/" . hs-toggle-hiding)
+      '("M" . magit)
+      '("S" . shell-command)))
+   :config
+   (meow-setup)
+   (meow-global-mode 1)
+   (defvar my-lsp-map
+     (let ((map (make-sparse-keymap)))
+       (define-key map (kbd "l") 'lsp)
+       (define-key map (kbd "c") 'lsp-find-declaration)
+       (define-key map (kbd "f") 'lsp-find-definition)
+       (define-key map (kbd "o") 'lsp-clangd-find-other-file)
+       (define-key map (kbd "r") 'lsp-workspace-restart)
+       (define-key map (kbd "d") 'lsp-workspace-shutdown)
+       (define-key map (kbd "a") 'lsp-execute-code-action)
+       (define-key map (kbd "n") 'lsp-rename)
+       (define-key map (kbd "g") 'lsp-ui-doc-glance)
+       (define-key map (kbd "S") 'consult-lsp-symbols)
+       (define-key map (kbd "s") 'consult-lsp-file-symbols)
+       (define-key map (kbd "i") 'consult-lsp-diagnostics)
+       (define-key map (kbd "t") 'lsp-semantic-tokens-mode)
+       (define-key map (kbd "F") 'lsp-ui-doc-focus-frame)
+       map)
+     "My LSP map")
+   (meow-leader-define-key
+    (cons "l" my-lsp-map))
+   (setq meow-mode-state-list
+         '((diff-mode . motion)
+           (ediff-mode . motion)
+           (help-mode . motion)
+           (org-roam-mode . motion)
+           (json-mode . normal)
+           (occur-edit-mode . normal)
+           (prog-mode . normal)
+           (text-mode . normal)
+           (grep-mode . motion)
+           (Custom-mode . normal)))
+   (setq meow-replace-state-name-list
+        '((normal . "[N]")
+          (motion . "[M]")
+          (keypad . "[K]")
+          (insert . "[I]")
+          (beacon . "[B]"))))
+#+end_src
+
+** which-key
+
+With so many key bindings, it is impossible to memorize all of
+them. which-key is a package that displays all viable commands and
+their key bindings when you are in the middle of a sequence of key
+binding.
+
+#+begin_src elisp
+  (use-package
+   which-key
+   :diminish
+   :config
+   (which-key-mode))
+#+end_src
+
+* Load Custom File
+
+Finally, after all the other settings have been done, we load the
+local customization file.
+
+#+begin_src elisp
+  (when (file-exists-p custom-file)
+    (load custom-file))
+#+end_src

@@ -805,11 +805,11 @@ decides what are the completion condidates.
   (use-package
    cape
    :defer t
-   :init
+   :config
    (add-to-list 'completion-at-point-functions #'cape-dabbrev)
    (add-to-list 'completion-at-point-functions #'cape-file)
    (require 'company-clang)
-   (add-to-list 'completion-at-point-functions #'company-clang))
+   (add-to-list 'completion-at-point-functions (cape-company-to-capf #'company-clang)))
 #+end_src
 
 ** General Settings
@@ -958,7 +958,7 @@ variable-rename.
    :config
    (setq lsp-headerline-breadcrumb-enable nil
          lsp-semantic-tokens-apply-modifiers nil)
-   (if (and (package-installed-p corfu) (package-installed-p cape))
+   (if (and (package-installed-p 'corfu) (package-installed-p 'cape))
        (progn
          (add-hook 'lsp-completion-mode-hook #'corfu-lsp-setup)
          (setq lsp-completion-provider :none)))
@@ -1022,7 +1022,7 @@ better than the built-in syntax highlighting solution but still not
 totally correct. However, it is light-weight enough, so it is still a
 viable choice.
 
-#+begin_src elisp
+#+begin_src elisp :tangle no
   (use-package
    tree-sitter
    :diminish

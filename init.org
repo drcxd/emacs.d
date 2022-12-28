@@ -804,7 +804,6 @@ decides what are the completion condidates.
   (use-package company :defer t)
   (use-package
    cape
-   :defer t
    :config
    (add-to-list 'completion-at-point-functions #'cape-dabbrev)
    (add-to-list 'completion-at-point-functions #'cape-file)
@@ -1299,7 +1298,8 @@ etc..
     ("C-c r" . consult-ripgrep-with-prefix)
     ("C-c R" . consult-ripgrep)
     ("C-c I" . consult-imenu)
-    ("C-c f" . consult-fd))
+    ("C-c f" . consult-fd)
+    ("C-c H" . consult-org-heading))
    )
 #+end_src
 

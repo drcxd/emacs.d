@@ -297,7 +297,7 @@ to manage these buffers just as you manage files in dired.
 #+begin_src elisp
   (use-package
     modus-themes
-    :defer t
+    ;; :defer t
     :init
     (defun my-use-modus-themes ()
       (interactive)

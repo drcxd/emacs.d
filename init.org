@@ -371,8 +371,8 @@ to manage these buffers just as you manage files in dired.
           standard-themes-fringes 'subtle))
 
   ;; (my-use-ef-themes)
-  ;; (my-use-modus-themes)
-  (my-use-standard-themes)
+  (my-use-modus-themes)
+  ;; (my-use-standard-themes)
 #+end_src
 
 ** Ligature

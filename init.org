@@ -296,75 +296,63 @@ to manage these buffers just as you manage files in dired.
 
 #+begin_src elisp
   (use-package
-   modus-themes
-   :defer t
-   :init
-   (defun my-modus-setup ()
-     "Override some modus themes faces."
-     (modus-themes-with-colors
-      (custom-set-faces
-       ;; `(git-gutter:added ((,class :background ,green-fringe-bg :foreground ,green-fringe-bg)))
-       ;; `(git-gutter:deleted ((,class :background ,red-fringe-bg :foreground ,red-fringe-bg)))
-       ;; `(git-gutter:modified ((,class :background ,yellow-fringe-bg :foreground ,yellow-fringe-bg)))
-       ;; `(flycheck-fringe-error ((,class :background ,bg-alt :foreground ,fg-lang-error)))
-       ;; `(flycheck-fringe-info ((,class :background ,bg-alt :foreground ,fg-lang-note)))
-       ;; `(flycheck-fringe-warning ((,class :background ,bg-alt :foreground ,fg-lang-warning)))
-       `(lsp-ui-doc-background ((,class :background ,bg-alt))))))
-   (defun my-use-modus-themes ()
-     (interactive)
-     (mapc #'disable-theme custom-enabled-themes)
-     (modus-themes-load-operandi)
-     (global-set-key (kbd "C-c tg") 'modus-themes-toggle))
-   :config
-   (setq modus-themes-italic-constructs t
-         modus-themes-bold-constructs nil
-         modus-themes-mixed-fonts t
-         modus-themes-variable-pitch-ui t
-         modus-themes-mode-line '(borderless))
-   :hook
-   (modus-themes-after-load-theme . my-modus-setup))
+    modus-themes
+    :defer t
+    :init
+    (defun my-use-modus-themes ()
+      (interactive)
+      (mapc #'disable-theme custom-enabled-themes)
+      (modus-themes-load-theme 'modus-operandi-tinted)
+      (global-set-key (kbd "C-c tg") 'modus-themes-select))
+    :config
+    (setq modus-themes-italic-constructs t
+          modus-themes-bold-constructs nil
+          modus-themes-mixed-fonts t
+          modus-themes-variable-pitch-ui t
+          modus-themes-mode-line '(borderless))
+    )
 
   (use-package
-   ef-themes
-   :defer t
-   :init
-   (defun my-ef-themes-custom-faces ()
-     "My customizations on top of Ef themes.
+    ef-themes
+    :defer t
+    :init
+    (defun my-ef-themes-custom-faces ()
+      "My customizations on top of Ef themes.
   This function is added to the `ef-themes-post-load-hook'."
-     (ef-themes-with-colors
-      (custom-set-faces
-       `(lsp-ui-doc-background ((,c :background ,bg-alt))))))
-   (defun my-use-ef-themes ()
-     (interactive)
-     (mapc #'disable-theme custom-enabled-themes)
-     (ef-themes-select 'ef-light)
-     (global-set-key (kbd "C-c tg") 'ef-themes-toggle)
-     )
-   :config
-   (setq
-    ef-themes-to-toggle '(ef-light ef-dark)
-    ef-themes-mixed-fonts t
-    ef-themes-variable-pitch-ui t)
-   (with-eval-after-load 'tree-sitter
-     (add-hook 'tree-sitter-hl-mode-hook
-               (lambda () (set-face-attribute
-                           'tree-sitter-hl-face:punctuation
-                           nil
-                           :inherit nil))))
-   :hook
-   (ef-themes-post-load-hook . my-ef-themes-custom-faces))
+      (ef-themes-with-colors
+       (custom-set-faces
+        `(lsp-ui-doc-background ((,c :background ,bg-alt))))))
+    (defun my-use-ef-themes ()
+      (interactive)
+      (mapc #'disable-theme custom-enabled-themes)
+      (ef-themes-select 'ef-light)
+      (global-set-key (kbd "C-c tg") 'ef-themes-toggle)
+      )
+    :config
+    (setq
+     ef-themes-to-toggle '(ef-light ef-dark)
+     ef-themes-mixed-fonts t
+     ef-themes-variable-pitch-ui t)
+    (with-eval-after-load 'tree-sitter
+      (add-hook 'tree-sitter-hl-mode-hook
+                (lambda () (set-face-attribute
+                            'tree-sitter-hl-face:punctuation
+                            nil
+                            :inherit nil))))
+    :hook
+    (ef-themes-post-load-hook . my-ef-themes-custom-faces))
 
   (use-package
-   standard-themes
-   :defer t
-   :init
-   (defun my-use-standard-themes ()
-    (interactive)
-    (mapc #'disable-theme custom-enabled-themes)
-    (load-theme 'standard-light :no-confirm)
-    (global-set-key (kbd "C-c tg") 'standard-themes-toggle))
-   :config
-   (setq standard-themes-bold-constructs t
+    standard-themes
+    :defer t
+    :init
+    (defun my-use-standard-themes ()
+      (interactive)
+      (mapc #'disable-theme custom-enabled-themes)
+      (load-theme 'standard-light :no-confirm)
+      (global-set-key (kbd "C-c tg") 'standard-themes-toggle))
+    :config
+    (setq standard-themes-bold-constructs t
           standard-themes-italic-constructs t
           standard-themes-mixed-fonts t
           standard-themes-variable-pitch-ui t
@@ -1083,19 +1071,20 @@ https://gitlab.com/emacs-geiser/chicken/-/issues/23
 
 #+begin_src elisp
   (use-package org
-               :defer t
-               :config
-               (setq org-ellipsis "⤵"
-                     org-auto-align-tags nil
-                     org-tags-column 0
-                     org-catch-invisible-edits 'show-and-error
-                     org-special-ctrl-a/e t
-                     org-insert-heading-respect-content t
-                     org-hide-emphasis-markers t
-                     org-pretty-entities t)
-               (add-to-list 'org-babel-load-languages '(C . t))
-               ;; (add-to-list 'org-babel-load-languages '(scheme . t))
-               (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
+    :defer t
+    :config
+    (setq org-ellipsis "⤵"
+          org-auto-align-tags nil
+          org-tags-column 0
+          org-catch-invisible-edits 'show-and-error
+          org-special-ctrl-a/e t
+          org-insert-heading-respect-content t
+          org-hide-emphasis-markers t
+          org-pretty-entities t
+          org-babel-C-compiler "clang")
+    (add-to-list 'org-babel-load-languages '(C . t))
+    ;; (add-to-list 'org-babel-load-languages '(scheme . t))
+    (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
 #+end_src
 
 ** Appearance

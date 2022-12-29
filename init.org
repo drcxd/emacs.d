@@ -1058,7 +1058,7 @@ built-in support is easy.
 To execute scheme code in org-mode, I still have to check the
 [[https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-scheme.html][documents]] of ob-doc-scheme.
 
-#+begin_src elisp :tangle no
+#+begin_src elisp
   (use-package geiser)
 
   (use-package geiser-chicken)
@@ -1066,6 +1066,15 @@ To execute scheme code in org-mode, I still have to check the
 
 https://www.mail-archive.com/emacs-orgmode@gnu.org/msg142485.html
 https://gitlab.com/emacs-geiser/chicken/-/issues/23
+
+According to the two links above. It seems that we have to:
+
+1. Do what the chicken [[https://wiki.call-cc.org/emacs#geiser][wiki]] has said.
+2. Install org-mode 9.6 or higher version.
+
+Then we can normally execute code using org-babel. However, on
+Windows, =chicken-install= does not work properly and I still can't find
+the solution of this problem.
 
 * org-mode
 
@@ -1083,7 +1092,7 @@ https://gitlab.com/emacs-geiser/chicken/-/issues/23
           org-pretty-entities t
           org-babel-C-compiler "clang")
     (add-to-list 'org-babel-load-languages '(C . t))
-    ;; (add-to-list 'org-babel-load-languages '(scheme . t))
+    (add-to-list 'org-babel-load-languages '(scheme . t))
     (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
 #+end_src
 

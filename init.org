@@ -297,7 +297,6 @@ to manage these buffers just as you manage files in dired.
 #+begin_src emacs-lisp
   (use-package
     modus-themes
-    ;; :defer t
     :init
     (defun my-use-modus-themes ()
       (interactive)
@@ -750,7 +749,6 @@ display the completion condidates on the screen.
 #+begin_src emacs-lisp
   (use-package
    corfu
-   :defer t
    :init
    (setq corfu-auto t
          corfu-cycle t
@@ -1261,7 +1259,6 @@ you to browse those information.
 
 #+begin_src emacs-lisp
   (use-package vertico
-               :defer t
                :config
                (setq read-extended-command-predicate #'command-completion-default-include-p
                      enable-recursive-minibuffers t))
@@ -1307,7 +1304,6 @@ etc..
 #+begin_src emacs-lisp
   (use-package
    consult
-   :defer t
    :init
    (setq xref-show-xrefs-function #'consult-xref
          xref-show-definitions-function #'consult-xref)

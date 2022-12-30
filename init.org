@@ -1,4 +1,4 @@
-#+property: header-args:elisp :tangle init.el :comments org
+#+property: header-args:emacs-lisp :tangle init.el :comments org
 
 * Abstract
 
@@ -11,7 +11,7 @@ Adjust garbage collection thresholds during startup, and
 thereafter. This piece of code only works with lexical binding. I have
 not figured out how to enable it in the tangled file.
 
-#+begin_src elisp :lexical t :tangle no
+#+begin_src emacs-lisp :lexical t :tangle no
   (let ((normal-gc-cons-threshold (* 20 1024 1024))
         (init-gc-cons-threshold (* 128 1024 1024)))
     (setq gc-cons-threshold init-gc-cons-threshold)
@@ -25,7 +25,7 @@ Since I am currently located in China, sometimes the connection to
 melpa is not stable. As a result, I have to use lcoal package archive
 repository or some mirror sites.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (require 'package)
   (setq package-archives
         '(
@@ -75,7 +75,7 @@ computer. However, I prefer to maintain a reasonable startup
 time. It's always a good idea not to pay for what you are not
 using.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package benchmark-init
                :init
                (require 'benchmark-init)
@@ -84,7 +84,7 @@ using.
 
 * Who am I?
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (setq user-full-name "Chang Xiaoduan"
         user-mail-address "drcxd@sina.com")
 #+end_src
@@ -94,7 +94,7 @@ using.
 It is good to place the custom file in =.emacs.d= directory. This way,
 we have all the files related to Emacs in one single directory.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (setq custom-file (locate-user-emacs-file "custom.el"))
 #+end_src
 
@@ -106,7 +106,7 @@ usually we have lots of minor modes turned on but we do not need the
 visual cue on the modeline to tell us they are enabled. Diminish is a
 good package to solve this problem.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package
    diminish
    :config
@@ -129,7 +129,7 @@ bar. They take much screen space but are not used most of the time. It
 is natural to hide them to make more space for the content that we
 really care about.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (menu-bar-mode -1)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
@@ -146,7 +146,7 @@ and resize the frame. Anyway, I prefer to hide the title bar to
 achieve a better visual effect and this also take better advantage of
 screen space.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (add-to-list 'default-frame-alist '(undecorated . t))
   (add-to-list 'default-frame-alist '(drag-internal-border . 1))
   (add-to-list 'default-frame-alist '(internal-border-width . 5))
@@ -161,7 +161,7 @@ screen space.
 When two buffers of the same name are opened, Emacs has to uniquify
 them so you can distinguish between them.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (require 'uniquify)
 
   (setq uniquify-buffer-name-style 'reverse)
@@ -175,7 +175,7 @@ them so you can distinguish between them.
 ibuffer is a buffer list all opened buffers in Emacs. You can use it
 to manage these buffers just as you manage files in dired.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (with-eval-after-load 'ibuffer
     ;; Use human readable Size column instead of original one
     (define-ibuffer-column size-h
@@ -264,7 +264,7 @@ to manage these buffers just as you manage files in dired.
 
 ** Fonts and Faces
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (set-fontset-font "fontset-default" 'han "Microsoft Yahei")
 
   (set-face-attribute 'default nil
@@ -285,7 +285,7 @@ to manage these buffers just as you manage files in dired.
 
 ** Unicode Support
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package
    unicode-fonts
    :config
@@ -294,14 +294,13 @@ to manage these buffers just as you manage files in dired.
 
 ** Themes
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package
     modus-themes
     ;; :defer t
     :init
     (defun my-use-modus-themes ()
       (interactive)
-      (mapc #'disable-theme custom-enabled-themes)
       (modus-themes-load-theme 'modus-operandi-tinted)
       (global-set-key (kbd "C-c tg") 'modus-themes-select))
     :config
@@ -365,7 +364,7 @@ to manage these buffers just as you manage files in dired.
 
 ** Ligature
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package
    ligature
    :config
@@ -389,7 +388,7 @@ to manage these buffers just as you manage files in dired.
 
 ** modeline
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (setq display-time-24hr-format t)
   (display-time)
   (column-number-mode)
@@ -397,7 +396,7 @@ to manage these buffers just as you manage files in dired.
 
 ** logos
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package olivetti :defer t :diminish)
   (use-package
    logos
@@ -431,7 +430,7 @@ you edit an existing file. If your file name is =fname.txt=, then it
 generates a backup file named =fname.txt~=. This can quickly make the
 directory messy, so I prefer disable this feature.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (setq make-backup-files nil)
 #+end_src
 
@@ -443,7 +442,7 @@ users, displaying the =*scratch*= buffer by default may be more
 productive. You could also execute the command =about-emacs= to display
 the splash screen manually.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (setq inhibit-splash-screen t)
 #+end_src
 
@@ -458,7 +457,7 @@ Note: I found that changing the value of ~auto-save-visited-interval~
 does not change the behavior of Emacs. This might be a
 platform-specific bug.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (auto-save-visited-mode 1)
   (setq auto-save-visited-interval 5)
 #+end_src
@@ -470,7 +469,7 @@ some external programs, edit it again and save it in Emacs will
 confict with the external changes. Enable auto-revert-mode eliminate
 the chances of such problems.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (global-auto-revert-mode)
 #+end_src
 
@@ -479,7 +478,7 @@ the chances of such problems.
 Tab could be translated to different length spaces by different
 editors. To avoid such a difference, simply avoid using tab.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (setq-default indent-tabs-mode nil)
 #+end_src
 
@@ -490,7 +489,7 @@ your last Emacs session. With recentf-mode, you do not have to input
 the location of the file every time you visit it, but choose from a
 maintained recent file list.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (recentf-mode 1)
 #+end_src
 
@@ -500,7 +499,7 @@ dired is the facility Emacs uses to manage directories, its like the
 file explorer of an operating system, you can perform any file related
 operations in dired.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (setq dired-kill-when-opening-new-dired-buffer t)
   (defun dired-mode-setup ()
     "Setup dired."
@@ -520,7 +519,7 @@ operations in dired.
 ripgrep is a multi-threaded version of grep. It is quite useful when
 searching for certain text.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package ripgrep :defer t)
 #+end_src
 
@@ -531,7 +530,7 @@ interact nicely with the OS. Emacs built-in eshell mode and term mode
 does not work properly on Windows. This package also comes with a
 powershell mode to help editing powershell script files.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package powershell :defer t)
 #+end_src
 
@@ -544,7 +543,7 @@ windows displayed, this process becomes daunting. ace-windows makes
 this process easier by allowing use specify which window should become
 the next active window directly.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package ace-window
                :defer t
                :config
@@ -560,7 +559,7 @@ wgrep allows users to modify grep/ripgrep outputs and save the changes
 to each output's original location. It is a really powerful
 interactive text file editing tool.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package wgrep :defer t)
 #+end_src
 
@@ -577,7 +576,7 @@ usually only enlarge/shrink the window by one row/column. zoom helps
 me conveniently change the ration of windows sizes by simply execute
 one single command.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package zoom
                :defer t
                :config
@@ -589,7 +588,7 @@ one single command.
 This program allows user to create a scratch buffer of a certain mode,
 so you can write anything in it.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package scratch :defer t)
 #+end_src
 
@@ -599,7 +598,7 @@ Sometimes you want to set a timer, or you simply want to practice the
 [[Pomodo][pomodoro technique]]. tmr helps you set and manage timers. pomm provide
 pomodoro functions.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package pomm
                :defer t
                :config
@@ -625,7 +624,7 @@ When working on Windows, sometimes I encounter files containing mixed
 EOL characters. This would make some lines ended with additional
 =^M=. To hide these anoyying characters, I use the following function.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (defun remove-dos-eol ()
     "Do not show ^M in files containing mixed UNIX and DOS line endings."
     (interactive)
@@ -642,7 +641,7 @@ the Linux one. Emacs works out-of-the-box with Linux find program, so
 on Windows I have to tell Emacs where the find program, which accepts
 Linux find program conventional arugments, is.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (if (eq system-type 'windows-nt)
       (setq find-program "C:/msys64/usr/bin/find.exe"))
 #+end_src
@@ -657,7 +656,7 @@ error information generated by the compiler. It is also useful when
 working with version control tools or communicating with other
 programmers.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (defvar my-linum-inhibit-modes
     '(eshell-mode
       shell-mode
@@ -703,7 +702,7 @@ its simple enough to learn and work with. Third, it is maintained
 actively. However, since yasnippet is well-known, some other packages,
 such as lsp-mode, depends on it somehow, so I still install it.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package
    tempel
    :defer t
@@ -748,7 +747,7 @@ programmers.
 corfu is a completion front end package. That is, it is responsible to
 display the completion condidates on the screen.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package
    corfu
    :defer t
@@ -788,7 +787,7 @@ display the completion condidates on the screen.
 cape provides a set of completion backends. A compeltion back ends
 decides what are the completion condidates.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package company :defer t)
   (use-package
    cape
@@ -801,7 +800,7 @@ decides what are the completion condidates.
 
 ** General Settings
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (defun prog-mode-setup ()
     (display-fill-column-indicator-mode t)
     (setq show-trailing-whitespace t)
@@ -819,7 +818,7 @@ code cannot assure consistency and is also a boring process. We can
 use our time to think about more valuable problems. Thus, using a nice
 code formatting tool is necessary.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package clang-format :defer t)
   (use-package inheritenv :defer t)
   (use-package language-id :defer t)
@@ -832,7 +831,7 @@ flycheck is an error checking package, which displays inline visual
 hint for possible code warnning or error. Currently, I only use it as
 a facility for lsp.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package flycheck :defer t :diminish)
 #+end_src
 
@@ -840,7 +839,7 @@ a facility for lsp.
 
 This package highlighs certain keywords in comments and string literals.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package
    hl-todo
    :defer t
@@ -863,7 +862,7 @@ This packages add visual hint on the fringe to indicate which part of
 the file is added/deleted/modified agianst the latest version in the
 version control system.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package
    git-gutter
    :diminish
@@ -880,7 +879,7 @@ version control system.
 
 Emacs 28 supports syntax highlighting for documentations in comments.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (setq-default c-doc-comment-style
                 '((java-mode . javadoc)
                   (pike-mode . autodoc)
@@ -895,7 +894,7 @@ operations a programmer performs. Thus, we need a convenient and smart
 package to help us perform this task. evil-nerd-commenter fits my
 need.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package
    evil-nerd-commenter
    :defer t
@@ -910,7 +909,7 @@ When inspecting a piece of code, I need to highlight some of the
 symbols to help me quickly locate the places they are referenced.
 symbol-overlay is the best package I have knonw for this task.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package
    symbol-overlay
    :defer t
@@ -928,7 +927,7 @@ IDE-like functions, such as auto-completion,
 jump-to-definition/declaraction, find-references and even
 variable-rename.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package
    lsp-mode
    :defer t
@@ -1009,7 +1008,7 @@ better than the built-in syntax highlighting solution but still not
 totally correct. However, it is light-weight enough, so it is still a
 viable choice.
 
-#+begin_src elisp :tangle no
+#+begin_src emacs-lisp :tangle no
   (use-package
    tree-sitter
    :diminish
@@ -1029,7 +1028,7 @@ viable choice.
 
 *** Lua
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package lua-mode :defer t)
 #+end_src
 
@@ -1043,42 +1042,65 @@ inside Emacs. After that, you can evaluate scheme expression in any
 scheme-mode buffer. The expression is evaluated in the inferior scheme
 process.
 
-**** Scheme Implementation
+**** Use Scheme in org-mode
 
-There are multiple scheme implementations, the one I choose is the
-[[https://call-cc.org/][chicken compiler]]. According to its [[https://wiki.call-cc.org/emacs#builtin-scheme-support][documents]], to use it with Emacs
-built-in support is easy.
+To execute scheme code in org-mode, org-babel's [[https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-scheme.html][document]] requires
+[[https://www.nongnu.org/geiser/][Geiser]].
 
-#+begin_src elisp
+#+begin_src emacs-lisp
+  (use-package geiser :defer t)
+#+end_src
+
+Geiser is an Emacs front end of a Scheme interpreter, and it supports
+multiple implementations.
+
+***** A Minor Issue
+
+I was using org 9.5 and I found org-babel failed to execute scheme
+code in org-mode buffer. After a simple serach, I found one who had
+encountered the same
+issue. https://www.mail-archive.com/emacs-orgmode@gnu.org/msg142485.html
+
+It turns out there is a bug in org and I have to upgrade it to version
+9.6 to fix it.
+
+**** Scheme Implementations
+
+***** Chicken
+
+The first scheme implementation I used is the [[https://call-cc.org/][chicken
+compiler]]. According to its [[https://wiki.call-cc.org/emacs#builtin-scheme-support][documents]], to use it with Emacs built-in
+support is easy.
+
+#+begin_src emacs-lisp :tangle no
   (setq scheme-program-name "csi -:c")
 #+end_src
 
-**** TODO Use Scheme in org-mode
+However, it needs some additional setup to work with org-babel (see
+its [[https://wiki.call-cc.org/emacs#geiser][documents]]). What's more, it does not support Windows platform
+nicely. First, there is no pre-built binaries or installers. Though
+MSYS2-MinGW 64 package manager could install a package, it is acutally
+not viable. I have to build the compiler myself. Second,
+=chicken-install=, which is a prerequisite for it to work with
+org-babel, cannot work correctly on Windows. Chicken requires users to
+apply for an account to report bug, which is not convenient.
 
-To execute scheme code in org-mode, I still have to check the
-[[https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-scheme.html][documents]] of ob-doc-scheme.
+***** Chez
 
-#+begin_src elisp
-  (use-package geiser)
+After I have found that I cannot make chicken work with org-babel on
+Windows, I switch to [[https://github.com/cisco/ChezScheme][Chez]]. It has nice Windows support, i.e. a Windows
+installer. It also host a repository on github so it is easy to report
+a bug. Finally, it does not require additional setup to work with
+Emacs. The only thing I have to do is to expose its binary =scheme= in
+the =PATH=.
 
-  (use-package geiser-chicken)
+#+begin_src emacs-lisp
+  (use-package geiser-chez :defer t)
 #+end_src
-
-https://www.mail-archive.com/emacs-orgmode@gnu.org/msg142485.html
-https://gitlab.com/emacs-geiser/chicken/-/issues/23
-
-According to the two links above. It seems that we have to:
-
-1. Do what the chicken [[https://wiki.call-cc.org/emacs#geiser][wiki]] has said.
-2. Install org-mode 9.6 or higher version.
-
-Then we can normally execute code using org-babel. However, on
-Windows, =chicken-install= does not work properly and I still can't find
-the solution of this problem.
 
 * org-mode
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package org
     :defer t
     :config
@@ -1101,7 +1123,7 @@ the solution of this problem.
 org-modern is a package that beautify org-mode. It changes the
 appearance of header line, table, time stamp and other things.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package org-modern
                :defer t
                :hook (org-mode . global-org-modern-mode))
@@ -1114,7 +1136,7 @@ extra spaces in exported Chinese paragraph when exporting to
 HTML. These spaces are necessary since English uses spaces to separate
 words, but Chinese don't. We have to override this behavior.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (defadvice org-html-paragraph (before org-html-paragraph-advice
                                         (paragraph contents info) activate)
     "Join consecutive Chinese lines into a single long line without
@@ -1135,7 +1157,7 @@ these markups only works when the content inside only contain one
 newline character. To make it works with more newlines in it, use the
 following code:
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package org
                :defer t
                :config
@@ -1152,7 +1174,7 @@ light-weight package denote. It only works with native file
 systems. These two packages are often used to practice a note-taking
 methodology called [[https://zettelkasten.de/introduction/][Zettelkasten]].
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package denote
                :defer t
                :config
@@ -1237,7 +1259,7 @@ Emacs has a tons of variables, commands and documents. When you
 exploring them, vertico provides a much more informative interface for
 you to browse those information.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package vertico
                :defer t
                :config
@@ -1257,7 +1279,7 @@ head exist or not, but you want to use the completions system as a
 tool to verify your assumption. Orderless completion is really helpful
 in these situation.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package orderless
                :config
                (setq completion-styles '(orderless basic)
@@ -1271,7 +1293,7 @@ Marginalia works together with vertico, it provides more information
 of a variable or function in the completion interface. This may help
 you locate your target more quickly.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package marginalia :defer t)
   (marginalia-mode)
 #+end_src
@@ -1282,7 +1304,7 @@ consult works together with vertico. It helps you complete among lots
 of things, such as buffers, file contents, grep results, find results,
 etc..
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package
    consult
    :defer t
@@ -1351,7 +1373,7 @@ completion system and then execute =embark-act= then use its delete file
 function to delete the current completion condidate. Much more
 convenient.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package embark
                :defer t
                :bind ("<f5>" . embark-act))
@@ -1366,7 +1388,7 @@ project, etc.. projectile helps you browse project files, search
 contents in project and even run and test project (if it is a
 programming project).
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package
    projectile
    :diminish
@@ -1387,7 +1409,7 @@ programming project).
 
 magit is the well-known Emacs interface for git.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package
    magit
    :defer t
@@ -1399,7 +1421,7 @@ magit is the well-known Emacs interface for git.
 
 ** Native Command Key Bindings
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (global-set-key (kbd "C-c E") 'eval-region)
   (global-set-key (kbd "C-c C") 'compile)
   (global-set-key (kbd "C-c b") 'switch-to-buffer)
@@ -1424,7 +1446,7 @@ t=. It also works well with my own native key bindings. When using
 meow, I do not have to change my original key binding settings. I only
 add some additional configuration specific to meow.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package
    meow
    :init
@@ -1572,7 +1594,7 @@ them. which-key is a package that displays all viable commands and
 their key bindings when you are in the middle of a sequence of key
 binding.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (use-package
    which-key
    :diminish
@@ -1585,7 +1607,7 @@ binding.
 Finally, after all the other settings have been done, we load the
 local customization file.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (when (file-exists-p custom-file)
     (load custom-file))
 #+end_src

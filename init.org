@@ -1096,6 +1096,76 @@ the =PATH=.
   (use-package geiser-chez :defer t)
 #+end_src
 
+** Unreal
+
+I am working with Unreal Engine, using Emacs + clang + lsp-mode as my
+editing environment. I still have to use Visual Studio to build the
+project, so Emacs is not my whole development environment.
+
+*** Generating Compilation Database
+
+Since clang + lsp-mode requires a compilation database to work, I need
+to generate one for my Unreal project. Unreal has complex building
+process, it has its own building tool. Unreal Build Tool (UBT)
+provides a mode which can be used to generate the compilation
+database. I write the following code to ease this process.
+
+#+begin_src emacs-lisp
+  (defvar my/ubt-location nil "File location of Unreal Build Tool")
+
+  ;; NOTE: This only works for UE4 projects.
+
+  ;; TODO: Handle multiple platform details. Add parameters for finer
+  ;; control over the arugments sent to UBT.
+  (defun my/ubt-generate-clang-database (project-path)
+    "Genertae compilation database for specified Unreal project."
+    (interactive "fProject path: ")
+    (let ((project-name (file-name-base project-path)))
+      (async-shell-command (concat
+                            ubt-location
+                            " -mode=GenerateClangDatabase -project="
+                            project-path
+                            " -game -engine "
+                            project-name
+                            "Editor Development Win64"))))
+#+end_src
+
+*** Generate Header Files
+
+Unreal Header Tool is a program which scans user code and generate
+code to implement its reflection system. Its methodology is to use
+some macros which expands to file name and line number. Then it
+generates code which substitues those macros. As a result, once the
+macro's location has changed, the file will fail the
+compilation. However, changing of line number is frequent. This makes
+clang fail to compile the code, thus providing less useful information
+when editing. The solution is to generate code every time some macro's
+line number has changed.
+
+#+begin_src emacs-lisp
+  (defvar my/uht-location nil "File location of Unreal Header Tool")
+
+  ;; NOTE: This only works for UE4 projects.
+
+  ;; TODO: Handle multiple platforms and add more parameters for finer
+  ;; control of UHT paths.
+  (defun my/uht-generate-header-file (project-path)
+    "Generate header files for specified Unreal project."
+    (interactive "fProject path: ")
+    (let ((project-name (file-name-base project-path))
+          (project-dir (file-name-directory project-path)))
+      (async-shell-command (concat uht-location
+                                   " "
+                                   project-path
+                                   " "
+                                   project-dir
+                                   "/Intermediate/Build/Win64/"
+                                   project-name
+                                   "Editor/Development/"
+                                   project-name
+                                   "Editor.uhtmanifest"))))
+#+end_src
+
 * org-mode
 
 #+begin_src emacs-lisp

@@ -300,7 +300,7 @@ to manage these buffers just as you manage files in dired.
     :init
     (defun my-use-modus-themes ()
       (interactive)
-      (modus-themes-load-theme 'modus-operandi-tinted)
+      (modus-themes-load-theme 'modus-operandi)
       (global-set-key (kbd "C-c tg") 'modus-themes-select))
     :config
     (setq modus-themes-italic-constructs t
@@ -930,24 +930,25 @@ variable-rename.
    lsp-mode
    :defer t
    :init
-   (defun my-syntax-highlighting ()
-     "Setup syntax highlighting"
-     (lsp-semantic-tokens-mode 1)
-     (if (and (boundp 'tree-sitter-hl-mode) tree-sitter-hl-mode)
-         (tree-sitter-hl-mode -1)))
+   ;; (defun my-syntax-highlighting ()
+   ;;   "Setup syntax highlighting"
+   ;;   (lsp-semantic-tokens-mode 1)
+   ;;   (if (and (boundp 'tree-sitter-hl-mode) tree-sitter-hl-mode)
+   ;;       (tree-sitter-hl-mode -1)))
    (defun corfu-lsp-setup ()
      (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
            '(orderless))
      (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible))
    :config
    (setq lsp-headerline-breadcrumb-enable nil
-         lsp-semantic-tokens-apply-modifiers nil)
+         lsp-semantic-tokens-apply-modifiers nil
+         lsp-semantic-tokens-enable t)
    (if (and (package-installed-p 'corfu) (package-installed-p 'cape))
        (progn
          (add-hook 'lsp-completion-mode-hook #'corfu-lsp-setup)
          (setq lsp-completion-provider :none)))
-   :hook
-   (lsp-mode . my-syntax-highlighting)
+   ;; :hook
+   ;; (lsp-mode . my-syntax-highlighting)
    :bind
    (("C-c l l" . lsp)
     :map lsp-mode-map
@@ -1113,8 +1114,6 @@ database. I write the following code to ease this process.
 #+begin_src emacs-lisp
   (defvar my/ubt-location nil "File location of Unreal Build Tool")
 
-  ;; NOTE: This only works for UE4 projects.
-
   ;; TODO: Handle multiple platform details. Add parameters for finer
   ;; control over the arugments sent to UBT.
   (defun my/ubt-generate-clang-database (project-path)
@@ -1122,10 +1121,10 @@ database. I write the following code to ease this process.
     (interactive "fProject path: ")
     (let ((project-name (file-name-base project-path)))
       (async-shell-command (concat
-                            ubt-location
+                            my/ubt-location
                             " -mode=GenerateClangDatabase -project="
                             project-path
-                            " -game -engine "
+                            " "
                             project-name
                             "Editor Development Win64"))))
 #+end_src
@@ -1154,7 +1153,7 @@ line number has changed.
     (interactive "fProject path: ")
     (let ((project-name (file-name-base project-path))
           (project-dir (file-name-directory project-path)))
-      (async-shell-command (concat uht-location
+      (async-shell-command (concat my/uht-location
                                    " "
                                    project-path
                                    " "

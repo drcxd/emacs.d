@@ -424,7 +424,7 @@ to manage these buffers just as you manage files in dired.
 
 By default, Emacs will automatically generate a backup file every time
 you edit an existing file. If your file name is =fname.txt=, then it
-generates a backup file named =fname.txt~=. This can quickly make the
+generates a backup file named =fname.txt=. This can quickly make the
 directory messy, so I prefer disable this feature.
 
 #+begin_src emacs-lisp
@@ -440,7 +440,7 @@ productive. You could also execute the command =about-emacs= to display
 the splash screen manually.
 
 #+begin_src emacs-lisp
-  (setq inhibit-splash-screen t)
+  (setq inhibit-splash-screen t)
 #+end_src
 
 ** Auto Save
@@ -928,11 +928,6 @@ variable-rename.
    lsp-mode
    :defer t
    :init
-   ;; (defun my-syntax-highlighting ()
-   ;;   "Setup syntax highlighting"
-   ;;   (lsp-semantic-tokens-mode 1)
-   ;;   (if (and (boundp 'tree-sitter-hl-mode) tree-sitter-hl-mode)
-   ;;       (tree-sitter-hl-mode -1)))
    (defun corfu-lsp-setup ()
      (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
            '(orderless))
@@ -945,8 +940,6 @@ variable-rename.
        (progn
          (add-hook 'lsp-completion-mode-hook #'corfu-lsp-setup)
          (setq lsp-completion-provider :none)))
-   ;; :hook
-   ;; (lsp-mode . my-syntax-highlighting)
    :bind
    (("C-c l l" . lsp)
     :map lsp-mode-map
@@ -1341,7 +1334,7 @@ is quite useful because you do not always remember exactly what you
 want to search. Sometimes, you do not even know if the things in your
 head exist or not, but you want to use the completions system as a
 tool to verify your assumption. Orderless completion is really helpful
-in these situation.
+in these situations.
 
 #+begin_src emacs-lisp
   (use-package orderless

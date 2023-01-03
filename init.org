@@ -1145,7 +1145,7 @@ line number has changed.
 
   ;; TODO: Handle multiple platforms and add more parameters for finer
   ;; control of UHT paths.
-  (defun my/uht-generate-header-file (project-path)
+  (defun my/uht-generate-header-file-ue4 (project-path)
     "Generate header files for specified Unreal project."
     (interactive "fProject path: ")
     (let ((project-name (file-name-base project-path))

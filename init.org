@@ -37,6 +37,7 @@ repository or some mirror sites.
           ;; use local repository
           ;; ("local-melpa" . "~/elpa-mirror-master/melpa/")
           ;; ("local-gnu" . "~/elpa-mirror-master/gnu/")
+          ;; ("local-nongnu" . "~/elpa-mirror-master/nongnu/")
 
           ;; Use either 163 or tsinghua mirror repository when official melpa
           ;; is slow or shutdown.

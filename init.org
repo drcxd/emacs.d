@@ -981,7 +981,7 @@ variable-rename.
   (add-to-list 'safe-local-eval-forms '(lsp))
 #+end_src
 
-** Syntax Highlighting
+** Syntax Highlighting :DEPRECATED:
 
 Eamcs has built-in syntax highlighting support, however it is based on
 regular expression. This means it would not be correct in every
@@ -997,6 +997,12 @@ expression but still not a full functional compiler. This means it is
 better than the built-in syntax highlighting solution but still not
 totally correct. However, it is light-weight enough, so it is still a
 viable choice.
+
+After Emacs 29, tree-sitter has been integrated into Emacs core. There
+is no need to install these additional packages anymore. Instead,
+Emacs need to be compiled with tree-sitter library. Also, users have
+to compile language specific shared library themselves to support
+specific langauge major mode.
 
 #+begin_src emacs-lisp :tangle no
   (use-package

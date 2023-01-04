@@ -8,6 +8,6 @@
 !.yas-parents
 !templates
 custom.el
-
+init.el
 elpa
 transient

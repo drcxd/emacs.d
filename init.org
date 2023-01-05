@@ -600,6 +600,7 @@ pomodoro functions.
                :defer t
                :config
                (pomm-mode-line-mode)
+               (setq pomm-ask-before-work t)
                :bind
                ("C-c t p" . pomm))
 

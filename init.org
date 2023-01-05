@@ -260,7 +260,7 @@ to manage these buffers just as you manage files in dired.
   (global-set-key (kbd "C-x C-b") 'ibuffer)
 #+end_src
 
-** Fonts and Faces
+** Fonts and Faces :DEPENDENCY:
 
 #+begin_src emacs-lisp
   (set-fontset-font "fontset-default" 'han "Microsoft Yahei")
@@ -509,6 +509,63 @@ operations in dired.
     (require 'dired-x))
 #+end_src
 
+* OS-Specific Settings
+
+** Windows
+
+*** powershell
+
+Since I mostly use Emacs on Windows platform, I need this package to
+interact nicely with the OS. Emacs built-in eshell mode and term mode
+does not work properly on Windows. This package also comes with a
+powershell mode to help editing powershell script files.
+
+#+begin_src emacs-lisp
+  (use-package powershell :defer t)
+#+end_src
+
+*** Find :DEPENDENCY:
+
+Windows provides a find program which accepts different arguments than
+the Linux one. Emacs works out-of-the-box with Linux find program, so
+on Windows I have to tell Emacs where the find program, which accepts
+Linux find program conventional arugments, is.
+
+#+begin_src emacs-lisp
+  (if (eq system-type 'windows-nt)
+      (setq find-program "C:/msys64/usr/bin/find.exe"))
+#+end_src
+
+*** Hide Dos EOL
+
+When working on Windows, sometimes I encounter files containing mixed
+EOL characters. This would make some lines ended with additional
+=^M=. To hide these anoyying characters, I use the following function.
+
+#+begin_src emacs-lisp
+  (defun remove-dos-eol ()
+    "Do not show ^M in files containing mixed UNIX and DOS line endings."
+    (interactive)
+    (setq buffer-display-table (make-display-table))
+    (aset buffer-display-table ?\^M []))
+#+end_src
+
+*** Alert & Notifications
+
+On Linux, Emacs could use D-BUS to send desktop
+notifications. However, I could not make dbus work on Windows, so I
+found this alert-toast package to implement this feature.
+
+#+begin_src emacs-lisp
+  (if (eq system-type 'windows-nt)
+      (use-package
+        alert-toast
+        :defer t
+        :after alert
+        :config
+        (setq alert-default-style 'toast)))
+#+end_src
+
 * Utiliy Packages
 
 ** ripgrep
@@ -518,17 +575,6 @@ searching for certain text.
 
 #+begin_src emacs-lisp
   (use-package ripgrep :defer t)
-#+end_src
-
-** powershell
-
-Since I mostly use Emacs on Windows platform, I need this package to
-interact nicely with the OS. Emacs built-in eshell mode and term mode
-does not work properly on Windows. This package also comes with a
-powershell mode to help editing powershell script files.
-
-#+begin_src emacs-lisp
-  (use-package powershell :defer t)
 #+end_src
 
 ** ace-window
@@ -600,9 +646,11 @@ pomodoro functions.
                :defer t
                :config
                (pomm-mode-line-mode)
-               (setq pomm-ask-before-work t)
+               (setq pomm-work-period 30
+                     pomm-short-break-period 10)
                :bind
-               ("C-c t p" . pomm))
+               ("C-c t p" . pomm)
+               ("C-c t 3" . pomm-third-time))
 
   (use-package tmr
                :defer t
@@ -612,36 +660,6 @@ pomodoro functions.
                 ("C-c t r" . tmr-remove-finished)
                 ("C-c t R" . tmr-remove)
                 ("C-c t l" . tmr-tabulated-view)))
-#+end_src
-
-* Utility Functions
-
-** Hide Dos EOL
-
-When working on Windows, sometimes I encounter files containing mixed
-EOL characters. This would make some lines ended with additional
-=^M=. To hide these anoyying characters, I use the following function.
-
-#+begin_src emacs-lisp
-  (defun remove-dos-eol ()
-    "Do not show ^M in files containing mixed UNIX and DOS line endings."
-    (interactive)
-    (setq buffer-display-table (make-display-table))
-    (aset buffer-display-table ?\^M []))
-#+end_src
-
-* OS Dependencies
-
-** Find
-
-Windows provides a find program which accepts different arguments than
-the Linux one. Emacs works out-of-the-box with Linux find program, so
-on Windows I have to tell Emacs where the find program, which accepts
-Linux find program conventional arugments, is.
-
-#+begin_src emacs-lisp
-  (if (eq system-type 'windows-nt)
-      (setq find-program "C:/msys64/usr/bin/find.exe"))
 #+end_src
 
 * Programming
@@ -807,7 +825,7 @@ decides what are the completion condidates.
   (add-hook 'prog-mode-hook 'prog-mode-setup)
 #+end_src
 
-** Code Formatting
+** Code Formatting :DEPENDENCY:
 
 If the code keeps a consistent and easy-to-read format, it will be
 much easier to read and maintain. However, manually formatting the
@@ -853,7 +871,7 @@ This package highlighs certain keywords in comments and string literals.
    :hook (prog-mode . hl-todo-mode))
 #+end_src
 
-** git-gutter
+** git-gutter :DEPENDENCY:
 
 This packages add visual hint on the fringe to indicate which part of
 the file is added/deleted/modified agianst the latest version in the
@@ -917,7 +935,7 @@ symbol-overlay is the best package I have knonw for this task.
    (setq symbol-overlay-inhibit-map t))
 #+end_src
 
-** lsp
+** lsp :DEPENDENCY:
 
 Language server protocol is a powerful tool. It enables Eamcs provide
 IDE-like functions, such as auto-completion,
@@ -1082,7 +1100,7 @@ not viable. I have to build the compiler myself. Second,
 org-babel, cannot work correctly on Windows. Chicken requires users to
 apply for an account to report bug, which is not convenient.
 
-***** Chez
+***** Chez :DEPENDENCY:
 
 After I have found that I cannot make chicken work with org-babel on
 Windows, I switch to [[https://github.com/cisco/ChezScheme][Chez]]. It has nice Windows support, i.e. a Windows
@@ -1095,7 +1113,7 @@ the =PATH=.
   (use-package geiser-chez :defer t)
 #+end_src
 
-** Unreal
+** Unreal :DEPENDENCY:
 
 I am working with Unreal Engine, using Emacs + clang + lsp-mode as my
 editing environment. I still have to use Visual Studio to build the
@@ -1181,6 +1199,8 @@ line number has changed.
     (add-to-list 'org-babel-load-languages '(C . t))
     (add-to-list 'org-babel-load-languages '(scheme . t))
     (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
+
+  (use-package htmlize :defer t)
 #+end_src
 
 ** Appearance
@@ -1443,7 +1463,7 @@ convenient.
   (use-package embark-consult :defer t)
 #+end_src
 
-* Project Management
+* Project Management :DEPENDENCY:
 
 Project can be applied to orgnize anything you are working on. Not
 only programming project, but also writing project, note-taking
@@ -1468,7 +1488,7 @@ programming project).
 
 * Version Control
 
-** magit
+** magit :DEPENDENCY:
 
 magit is the well-known Emacs interface for git.
 
@@ -1664,6 +1684,45 @@ binding.
    :config
    (which-key-mode))
 #+end_src
+
+* Mail in Emacs
+
+I still can't get Gnus work, but the config I copied from this [[threa][thread]]
+does work. I'll paste them here for future reference.
+
+#+begin_src emacs-lisp :tangle no
+  (setq
+   user-full-name "Chang Xiaoduan"
+   user-mail-address "drcxd@sina.com"
+   send-mail-function 'smtpmail-send-it
+   smtpmail-smtp-server "smtp.sina.com"
+   smtpmail-stream-type 'starttls
+   smtpmail-smtp-service 587
+   gnus-select-method
+   '(nnimap "sina"
+            (nnimap-address "imap.sina.com")
+            (nnimap-server-port 993)
+            (nnimap-stream ssl)
+            (nnmail-expiry-wait immediate)))
+#+end_src
+
+The config I figured out by reading the manual myself is like this:
+
+#+begin_src emacs-lisp
+  (setq
+   gnus-select-method '(nnimap "imap.sina.com")
+   send-mail-function 'smtpmail-send-it
+   smtpmail-smtp-server "smtp.sina.com"
+   smtpmail-stream-type 'starttls
+   smtpmail-servers-requiring-authorization "sina")
+#+end_src
+
+The second variable is necessary. Otherwise, I got an
+"smtpmail-send-it: Sending failed: 530 Authentication required".
+According to smtpmail.el, it should try again when the server is
+requesting authentication. However, it does not. By setting the
+varaible ~smtpmail-servers-requiring-authorization~, smtpmail would ask
+for authentification by default.
 
 * Load Custom File
 

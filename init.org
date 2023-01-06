@@ -123,35 +123,16 @@ good package to solve this problem.
 
 * Appearance
 
-** Menu Bar, Tool Bar, and Scroll Bar
+** Frame Settings
 
-By default, Emacs shows the scroll bar, the menu bar and the tool
-bar. They take much screen space but are not used most of the time. It
-is natural to hide them to make more space for the content that we
-really care about.
+[[https://www.gnu.org/software/emacs/manual/html_node/elisp/Frame-Parameters.html][Frame parameters]] can be used to control the appearance of Emacs
+frame. We can use these parameters to hide menu bar, adjust frame's
+position and width, etc..
 
 #+begin_src emacs-lisp
   (menu-bar-mode -1)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
-#+end_src
-
-** Title Bar
-
-I mostly use a standalone Emacs with GUI, so it comes with a title bar
-with its main frame. The color of the title bar is determined by the
-operating system and it may produce a bizarre visual effect with my
-favorite theme. According to this [[https://www.reddit.com/r/emacs/comments/b2r2oj/is_it_possible_to_disable_or_hide_the_titlebar_in/][post]], we could adjust [[https://www.reddit.com/r/emacs/comments/b2r2oj/is_it_possible_to_disable_or_hide_the_titlebar_in/][frame
-parameters]] to hide the title bar, but this makes it difficult to drag
-and resize the frame. Anyway, I prefer to hide the title bar to
-achieve a better visual effect and this also take better advantage of
-screen space.
-
-#+begin_src emacs-lisp
-  (add-to-list 'default-frame-alist '(width . 0.5))
-  (add-to-list 'default-frame-alist '(height . 0.5))
-  (add-to-list 'default-frame-alist '(top . 0.25))
-  (add-to-list 'default-frame-alist '(left . 0.25))
 #+end_src
 
 ** Uniquify
@@ -560,7 +541,6 @@ found this alert-toast package to implement this feature.
   (if (eq system-type 'windows-nt)
       (use-package
         alert-toast
-        :defer t
         :after alert
         :config
         (setq alert-default-style 'toast)))
@@ -1463,7 +1443,7 @@ convenient.
   (use-package embark-consult :defer t)
 #+end_src
 
-* Project Management :DEPENDENCY:
+* Project Management
 
 Project can be applied to orgnize anything you are working on. Not
 only programming project, but also writing project, note-taking
@@ -1723,6 +1703,23 @@ According to smtpmail.el, it should try again when the server is
 requesting authentication. However, it does not. By setting the
 varaible ~smtpmail-servers-requiring-authorization~, smtpmail would ask
 for authentification by default.
+
+* Calibre in Emacs :DEPENDENCY:
+
+#+begin_src emacs-lisp
+  (use-package
+    calibredb
+    :defer t)
+
+  ;; There are some other varaibles I prefer to set in a local custom.el
+  ;; file.
+  ;; (setq
+  ;;  calibredb-root-dir "D:/program/calibre/Calibre Portable/Calibre Library/"
+  ;;  calibredb-db-dir (expand-file-name "metadata.db" calibredb-root-dir)
+  ;;  calibredb-library-alist '(("D:/program/calibre/Calibre Portable/Calibre Library/")
+  ;;                            ("D:/program/calibre/Calibre Portable/Read Library/"))
+  ;;  calibredb-program "D:/program/calibre/Calibre Portable/Calibre/calibredb.exe")
+#+end_src
 
 * Load Custom File
 

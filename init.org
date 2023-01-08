@@ -1230,6 +1230,17 @@ following code:
                (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components))
 #+end_src
 
+** org-agenda
+
+*** Show org-agenda Buffer at Start-up
+
+#+begin_src emacs-lisp
+  (defun my/get-org-agenda-buffer ()
+    (org-agenda-list)
+    (get-buffer "*Org Agenda*"))
+  (setq initial-buffer-choice #'my/get-org-agenda-buffer)
+#+end_src
+
 * Taking Notes
 
 As a text editor, Emacs is a good place to take notes. There are also

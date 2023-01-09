@@ -655,13 +655,13 @@ easy to use.
   ;;              ("C-c t 3" . pomm-third-time))
 
   (use-package tmr
-               :defer t
-               :bind
-               (("C-c t T" . tmr)
-                ("C-c t t" . tmr-with-description)
-                ("C-c t r" . tmr-remove-finished)
-                ("C-c t R" . tmr-remove)
-                ("C-c t l" . tmr-tabulated-view)))
+    :defer t
+    :bind
+    (("C-c t T" . tmr)
+     ("C-c t t" . tmr-with-description)
+     ("C-c t r" . tmr-remove-finished)
+     ("C-c t R" . tmr-remove)
+     ("C-c t l" . tmr-tabulated-view)))
 
   (use-package pomidor
     :defer t
@@ -669,7 +669,11 @@ easy to use.
     :config
     (setq pomidor-seconds (* 30 60)
           pomidor-break-seconds (* 10 60)
-          pomidor-long-break-seconds (* 25 60)))
+          pomidor-long-break-seconds (* 25 60)
+          pomidor-alert (lambda ()
+                          (let ((message (pomidor-default-alert-message)))
+                            (when message
+                              (alert message :title "Pomidor"))))))
 #+end_src
 
 * Programming

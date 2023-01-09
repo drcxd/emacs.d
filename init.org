@@ -931,8 +931,8 @@ need.
    evil-nerd-commenter
    :defer t
    :bind
-   (("C-c d" . evilnc-comment-or-uncomment-lines)
-    ("C-c D" . evilnc-copy-and-comment-lines)))
+   (("C-c c" . evilnc-comment-or-uncomment-lines)
+    ("C-c C" . evilnc-copy-and-comment-lines)))
 #+end_src
 
 ** Symbol Highlighting
@@ -1534,7 +1534,7 @@ magit is the well-known Emacs interface for git.
 
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c E") 'eval-region)
-  (global-set-key (kbd "C-c C") 'compile)
+  (global-set-key (kbd "C-c P") 'compile)
   (global-set-key (kbd "C-c b") 'switch-to-buffer)
   (global-set-key (kbd "C-c o") 'other-window)
   (global-set-key (kbd "C-c k") 'kill-buffer)
@@ -1624,6 +1624,7 @@ add some additional configuration specific to meow.
       '("l" . meow-right)
       '("L" . meow-right-expand)
       '("m" . meow-join)
+      '("M" . magit)
       '("n" . meow-search)
       '("o" . meow-block)
       '("O" . meow-to-block)
@@ -1636,6 +1637,7 @@ add some additional configuration specific to meow.
       '("r" . meow-replace)
       '("R" . meow-swap-grab)
       '("s" . meow-kill)
+      '("S" . shell-command)
       '("t" . meow-till)
       '("u" . meow-undo)
       '("U" . meow-undo-in-selection)
@@ -1653,32 +1655,30 @@ add some additional configuration specific to meow.
       '("`" . delete-horizontal-space)
       '("{" . backward-paragraph)
       '("}" . forward-paragraph)
-      '("/" . hs-toggle-hiding)
-      '("M" . magit)
-      '("S" . shell-command)))
+      '("/" . hs-toggle-hiding)))
    :config
    (meow-setup)
    (meow-global-mode 1)
-   (defvar my-lsp-map
-     (let ((map (make-sparse-keymap)))
-       (define-key map (kbd "l") 'lsp)
-       (define-key map (kbd "c") 'lsp-find-declaration)
-       (define-key map (kbd "f") 'lsp-find-definition)
-       (define-key map (kbd "o") 'lsp-clangd-find-other-file)
-       (define-key map (kbd "r") 'lsp-workspace-restart)
-       (define-key map (kbd "d") 'lsp-workspace-shutdown)
-       (define-key map (kbd "a") 'lsp-execute-code-action)
-       (define-key map (kbd "n") 'lsp-rename)
-       (define-key map (kbd "g") 'lsp-ui-doc-glance)
-       (define-key map (kbd "S") 'consult-lsp-symbols)
-       (define-key map (kbd "s") 'consult-lsp-file-symbols)
-       (define-key map (kbd "i") 'consult-lsp-diagnostics)
-       (define-key map (kbd "t") 'lsp-semantic-tokens-mode)
-       (define-key map (kbd "F") 'lsp-ui-doc-focus-frame)
-       map)
-     "My LSP map")
-   (meow-leader-define-key
-    (cons "l" my-lsp-map))
+   ;; (defvar my-lsp-map
+   ;;   (let ((map (make-sparse-keymap)))
+   ;;     (define-key map (kbd "l") 'lsp)
+   ;;     (define-key map (kbd "c") 'lsp-find-declaration)
+   ;;     (define-key map (kbd "f") 'lsp-find-definition)
+   ;;     (define-key map (kbd "o") 'lsp-clangd-find-other-file)
+   ;;     (define-key map (kbd "r") 'lsp-workspace-restart)
+   ;;     (define-key map (kbd "d") 'lsp-workspace-shutdown)
+   ;;     (define-key map (kbd "a") 'lsp-execute-code-action)
+   ;;     (define-key map (kbd "n") 'lsp-rename)
+   ;;     (define-key map (kbd "g") 'lsp-ui-doc-glance)
+   ;;     (define-key map (kbd "S") 'consult-lsp-symbols)
+   ;;     (define-key map (kbd "s") 'consult-lsp-file-symbols)
+   ;;     (define-key map (kbd "i") 'consult-lsp-diagnostics)
+   ;;     (define-key map (kbd "t") 'lsp-semantic-tokens-mode)
+   ;;     (define-key map (kbd "F") 'lsp-ui-doc-focus-frame)
+   ;;     map)
+   ;;   "My LSP map")
+   ;; (meow-leader-define-key
+   ;;  (cons "l" my-lsp-map))
    (setq meow-mode-state-list
          '((diff-mode . motion)
            (ediff-mode . motion)
@@ -1695,7 +1695,8 @@ add some additional configuration specific to meow.
           (motion . "[M]")
           (keypad . "[K]")
           (insert . "[I]")
-          (beacon . "[B]"))))
+          (beacon . "[B]")))
+   (setq meow-keypad-leader-dispatch "C-c"))
 #+end_src
 
 ** which-key

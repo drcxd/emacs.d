@@ -633,22 +633,26 @@ so you can write anything in it.
   (use-package scratch :defer t)
 #+end_src
 
-** tmr & pomm
+** Pomodoro and Timers
 
-Sometimes you want to set a timer, or you simply want to practice the
-[[Pomodo][pomodoro technique]]. tmr helps you set and manage timers. pomm provide
-pomodoro functions.
+Sometimes I use the [[https://en.wikipedia.org/wiki/Pomodoro_Technique][pomodoro technique]] to force myself focus on my
+task. I have tried [[https://github.com/SqrtMinusOne/pomm.el][pomm]] but I do not like its behavior. It
+automatically switch to the next state, while I want to do this
+manually. Then I found [[https://github.com/TatriX/pomidor/][pomidor]], this is exactly what I wanted.
+
+Sometimes I just want to set a timer, and I found [[https://github.com/protesilaos/tmr][tmr]]. It's simple and
+easy to use.
 
 #+begin_src emacs-lisp
-  (use-package pomm
-               :defer t
-               :config
-               (pomm-mode-line-mode)
-               (setq pomm-work-period 30
-                     pomm-short-break-period 10)
-               :bind
-               ("C-c t p" . pomm)
-               ("C-c t 3" . pomm-third-time))
+  ;; (use-package pomm
+  ;;              :defer t
+  ;;              :config
+  ;;              (pomm-mode-line-mode)
+  ;;              (setq pomm-work-period 30
+  ;;                    pomm-short-break-period 10)
+  ;;              :bind
+  ;;              ("C-c t p" . pomm)
+  ;;              ("C-c t 3" . pomm-third-time))
 
   (use-package tmr
                :defer t
@@ -658,6 +662,14 @@ pomodoro functions.
                 ("C-c t r" . tmr-remove-finished)
                 ("C-c t R" . tmr-remove)
                 ("C-c t l" . tmr-tabulated-view)))
+
+  (use-package pomidor
+    :defer t
+    :bind (("C-c t p" . pomidor))
+    :config
+    (setq pomidor-seconds (* 30 60)
+          pomidor-break-seconds (* 10 60)
+          pomidor-long-break-seconds (* 25 60)))
 #+end_src
 
 * Programming

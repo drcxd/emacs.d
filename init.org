@@ -1000,7 +1000,7 @@ variable-rename.
 
   (use-package
    consult-lsp
-   :defer t
+   :after (lsp-mode consult)
    :bind
    (:map lsp-mode-map
          ("C-c l S" . consult-lsp-symbols)

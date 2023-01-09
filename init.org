@@ -496,15 +496,16 @@ I would like the welcome message displayed in the scratch buffer be
 some motto selected randomly from a pre-defined list.
 
 #+begin_src emacs-lisp
-  (defvar my/initial-message-list
-    '("No pain, no gain."
-      "Where there is life, there is hope!"
-      "生于忧患，死于安乐。"))
-  (setq initial-scratch-message
-        (concat ";; Hello, " user-full-name "\n"
-                ";; "
-                (nth (random (length my/initial-message-list))
-                     my/initial-message-list)))
+    (defvar my/initial-message-list
+      '("No pain, no gain."
+        "Where there is life, there is hope!"
+        "生于忧患，死于安乐。"))
+    (setq initial-scratch-message
+          (concat ";; Hello, " user-full-name "\n"
+                  ";; "
+                  (nth (random (length my/initial-message-list))
+                       my/initial-message-list)
+                  "\n"))
 #+end_src
 
 * OS-Specific Settings

@@ -29,10 +29,10 @@ repository or some mirror sites.
   (require 'package)
   (setq package-archives
         '(
-          ;; ("gnu" . "https://elpa.gnu.org/packages/")
-          ;; ("melpa" . "https://melpa.org/packages/")
+          ("gnu" . "https://elpa.gnu.org/packages/")
+          ("melpa" . "https://melpa.org/packages/")
           ;; ("melpa-stable" . "https://stable.melpa.org/packages/")
-          ;; ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+          ("nongnu" . "https://elpa.nongnu.org/nongnu/")
 
           ;; use local repository
           ;; ("local-melpa" . "~/elpa-mirror-master/melpa/")
@@ -43,10 +43,10 @@ repository or some mirror sites.
           ;; is slow or shutdown.
 
           ;; ;; {{ Option 1: 163 mirror repository:
-          ("gnu" . "https://mirrors.163.com/elpa/gnu/")
-          ("melpa" . "https://mirrors.163.com/elpa/melpa/")
+          ;; ("gnu" . "https://mirrors.163.com/elpa/gnu/")
+          ;; ("melpa" . "https://mirrors.163.com/elpa/melpa/")
           ;; ("melpa-stable" . "https://mirrors.163.com/elpa/stable-melpa/")
-          ("nongnu" . "https://mirrors.163.com/elpa/nongnu/")
+          ;; ("nongnu" . "https://mirrors.163.com/elpa/nongnu/")
           ;; ;; }}
 
           ;; ;; {{ Option 2: tsinghua mirror repository
@@ -1740,7 +1740,7 @@ binding.
 
 * Mail in Emacs
 
-I still can't get Gnus work, but the config I copied from this [[threa][thread]]
+I still can't get Gnus work, but the config I copied from this [[https://news.ycombinator.com/item?id=23420308][thread]]
 does work. I'll paste them here for future reference.
 
 #+begin_src emacs-lisp :tangle no

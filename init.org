@@ -1723,6 +1723,98 @@ add some additional configuration specific to meow.
    (setq meow-keypad-leader-dispatch "C-c"))
 #+end_src
 
+*** TODO A Note About KEYPAD Mode
+
+Meow's default behavior is to add =C-`= prefix to any key with no
+prefix. This looks counter-intuitive to me. Meow is trying to simulate
+Emacs native key bindings, but this behavior is the contrary of Emacs
+native style. For example, command =view-echo-area-message= is bound to
+=C-h e=, and command =view-external-packages= is bound to =C-h
+C-e=. Translated into Meow, =view-echo-area-message= is bound to =SPC h
+SPC e=, while =view-external-packages= is bound to =SPC h
+e=. =view-external-packages= has more key strokes in native key bindings,
+but has less key stokes in Meow. =view-echo-area-message= has less key
+strokes in native key bindings, but has more key strokes in Meow.
+
+Also, Meow has a fallback mechanism. Meow maps =C-h k= to =SPC h SPC k=,
+and =C-h C-k= to =SPC h k=. However, when =C-h C-k= is unbound, =SPC h k= will
+automatically invokes the command bound to =C-h k=. This is convenient,
+but it introduces uncertenty. Meow users could not know the command
+=SPC h k= invokes is bound to which native key binding: =C-h C-k= or =C-h
+k=.
+
+The author's explanation for this behavior is [[https://github.com/meow-edit/meow/issues/47#issuecomment-1377206836][here]]. I try to
+understand and accept the author's idea, but I still found that if
+KEYPAD does not automatically add =C-= prefix would be better. I have
+asked the author to add an option to let users make their own choices,
+but the author seems not agree with me.
+
+Thus, I tried to dig into the source code and modify them by
+myself. In =meow-keypad.el=, there is a function
+=meow-keypad-self-insert=, which defines how KEYPAD translate key
+strokes.
+
+#+begin_src emacs-lisp :tangle no
+  (defun meow-keypad-self-insert ()
+    "Default command when keypad state is enabled."
+    (interactive)
+    (setq this-command last-command)
+    (when-let ((e (meow--event-key last-input-event))
+               (key (meow--parse-input-event e)))
+      (let ((has-sub-meta (meow--keypad-has-sub-meta-keymap-p)))
+        (cond
+         (meow--use-literal
+          (push (cons 'literal key)
+                meow--keypad-keys) ;; literal
+          (setq meow--use-literal nil))
+         (meow--use-both
+          (push (cons 'both key) meow--keypad-keys)
+          (setq meow--use-both nil))
+         (meow--use-meta
+          (push (cons 'meta key) meow--keypad-keys)
+          (setq meow--use-meta nil))
+         ((and (equal e meow-keypad-meta-prefix)
+               (not meow--use-meta)
+               has-sub-meta)
+          (setq meow--use-meta t))
+         ((and (equal e meow-keypad-ctrl-meta-prefix)
+               (not meow--use-both)
+               has-sub-meta)
+          (setq meow--use-both t))
+         ((and (equal e meow-keypad-literal-prefix)
+               (not meow--use-literal)
+               meow--keypad-keys)
+          (setq meow--use-literal t))
+         (meow--keypad-keys
+          (push (cons 'control key) meow--keypad-keys)) ;; C- prefix
+         ((alist-get e meow-keypad-start-keys)
+          (push (cons 'control (meow--parse-input-event
+                                (alist-get e meow-keypad-start-keys)))
+                meow--keypad-keys))
+         (meow--keypad-allow-quick-dispatch
+          (if-let ((keymap (meow--get-leader-keymap)))
+              (setq meow--keypad-base-keymap keymap)
+            (setq meow--keypad-keys (meow--parse-string-to-keypad-keys meow-keypad-leader-dispatch)))
+          (push (cons 'literal key) meow--keypad-keys))
+         (t
+          (push (cons 'control key) meow--keypad-keys))))
+
+      ;; Try execute if the input is valid.
+      (if (or meow--use-literal
+              meow--use-meta
+              meow--use-both)
+          (progn
+            (when meow-keypad-message (meow--keypad-show-message))
+            (meow--keypad-display-message))
+        (meow--keypad-try-execute))))
+#+end_src
+
+If we exchange the two =push= evaluation, then we change KEYPAD's
+behavior to not automatically add =C-= prefix, but only when =SPC= is
+pressed. This modification introduces a new problem: which-key prompt
+for KEYPAD key bindings does not update to fit this change. I'll
+investigate this problem later.
+
 ** which-key
 
 With so many key bindings, it is impossible to memorize all of

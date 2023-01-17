@@ -1713,7 +1713,9 @@ add some additional configuration specific to meow.
            (prog-mode . normal)
            (text-mode . normal)
            (grep-mode . motion)
-           (Custom-mode . normal)))
+           (Custom-mode . normal)
+           (calibredb-search-mode . motion)
+           (calibredb-show-mode . motion)))
    (setq meow-replace-state-name-list
         '((normal . "[N]")
           (motion . "[M]")

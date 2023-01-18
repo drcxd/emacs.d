@@ -276,18 +276,26 @@ to manage these buffers just as you manage files in dired.
 #+begin_src emacs-lisp
   (use-package
     modus-themes
+    :ensure t
+    :demand t
     :init
     (defun my-use-modus-themes ()
       (interactive)
-      (modus-themes-load-theme 'modus-operandi)
+      (load-theme 'modus-operandi :no-confirm)
+      (my-custom-set-face)
       (global-set-key (kbd "C-c tg") 'modus-themes-select))
+    (defun my-custom-set-face ()
+      (modus-themes-with-colors
+        (custom-set-faces
+         `(lsp-ui-doc-background ((,c :background ,bg-dim))))))
     :config
     (setq modus-themes-italic-constructs t
           modus-themes-bold-constructs nil
           modus-themes-mixed-fonts t
           modus-themes-variable-pitch-ui t
           modus-themes-mode-line '(borderless))
-    )
+    :hook
+    (modus-themes-after-load-theme . my-custom-set-face))
 
   (use-package
     ef-themes
@@ -1038,7 +1046,7 @@ variable-rename.
                 "--function-arg-placeholders=0"
                 "-j=32"
                 "--background-index"
-                "--pch-storage-memory")))
+                "--pch-storage=memory")))
 
       (add-to-list 'safe-local-eval-forms '(lsp))
 #+end_src

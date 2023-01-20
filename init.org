@@ -1246,7 +1246,8 @@ line number has changed.
           org-insert-heading-respect-content t
           org-hide-emphasis-markers t
           org-pretty-entities t
-          org-babel-C-compiler "clang")
+          org-babel-C-compiler "clang"
+          org-babel-C++-compiler "clang++")
     (add-to-list 'org-babel-load-languages '(C . t))
     (add-to-list 'org-babel-load-languages '(scheme . t))
     (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))

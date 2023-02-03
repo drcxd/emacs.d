@@ -1737,7 +1737,8 @@ add some additional configuration specific to meow.
           (keypad . "[K]")
           (insert . "[I]")
           (beacon . "[B]")))
-   (setq meow-keypad-leader-dispatch "C-c"))
+   (setq meow-keypad-leader-dispatch "C-c")
+   (global-set-key (kbd "<f6>") 'meow-keypad))
 #+end_src
 
 *** A Note About KEYPAD Mode

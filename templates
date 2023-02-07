@@ -27,7 +27,7 @@ c-mode c++-mode
       "return 0;" n
       "}" n)
 
-(i "#include " q n)
+(i "#include " q)
 
 c++-mode
 

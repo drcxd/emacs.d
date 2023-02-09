@@ -1457,58 +1457,60 @@ etc..
 
 #+begin_src emacs-lisp
   (use-package
-   consult
-   :init
-   (setq xref-show-xrefs-function #'consult-xref
-         xref-show-definitions-function #'consult-xref)
-   (defun consult-ripgrep-with-prefix ()
-     (interactive)
-     (let ((current-prefix-arg '(4)))
-       (call-interactively 'consult-ripgrep)))
-   (defvar consult--fd-command nil)
-   (defun consult--fd-builder (input)
-     (unless consult--fd-command
-       (setq consult--fd-command
-             (if (eq 0 (call-process-shell-command "fdfind"))
-                 "fdfind"
-               "fd")))
-     (pcase-let* ((`(,arg . ,opts) (consult--command-split input))
-                  (`(,re . ,hl) (funcall consult--regexp-compiler
-                                         arg 'extended t)))
-       (when re
-         (list :command (append
-                         (list consult--fd-command
-                               "--color=never" "--full-path"
-                               (consult--join-regexps re 'extended))
-                         opts)
-               :highlight hl))))
+    consult
+    :init
+    (setq xref-show-xrefs-function #'consult-xref
+          xref-show-definitions-function #'consult-xref)
+    (defun consult-ripgrep-with-prefix ()
+      (interactive)
+      (let ((current-prefix-arg '(4)))
+        (call-interactively 'consult-ripgrep)))
+    :config
+    (setq consult-fontify-max-size 262144 ;; 262144 = 2 ^ 18
+          consult-preview-excluded-files '(".*org"))
 
-   (defun consult-fd (&optional dir initial)
-     (interactive "P")
-     (let* ((prompt-dir (consult--directory-prompt "Fd" dir))
-            (default-directory (cdr prompt-dir)))
-       (find-file (consult--find (car prompt-dir) #'consult--fd-builder initial))))
-   :config
-   (setq consult-fontify-max-size 262144 ;; 262144 = 2 ^ 18
-         consult-preview-excluded-files '(".*org"))
-   ;; this handles problems when consult results contains
-   ;; Chinese characters
-   (if (eq system-type 'windows-nt)
-       (progn
-         ;; https://github.com/minad/consult/issues/572
-         (add-to-list 'process-coding-system-alist
-                      '("[rR][gG]" . (utf-8 . gbk-dos)))
-         ;; https://github.com/minad/consult/issues/601
-         (setq consult-find-args (concat find-program " . "))))
-   :bind
-   (([remap switch-to-buffer] . consult-buffer)
-    ("C-c i" . consult-line)
-    ("C-c r" . consult-ripgrep-with-prefix)
-    ("C-c R" . consult-ripgrep)
-    ("C-c I" . consult-imenu)
-    ("C-c f" . consult-fd)
-    ("C-c H" . consult-org-heading))
-   )
+    (defvar consult--fd-command nil)
+    (defun consult--fd-builder (input)
+      (unless consult--fd-command
+        (setq consult--fd-command
+              (if (eq 0 (call-process-shell-command "fdfind"))
+                  "fdfind"
+                "fd")))
+      (pcase-let* ((`(,arg . ,opts) (consult--command-split input))
+                   (`(,re . ,hl) (funcall consult--regexp-compiler
+                                          arg 'extended t)))
+        (when re
+          (cons (append
+                 (list consult--fd-command
+                       "--color=never" "--full-path"
+                       (consult--join-regexps re 'extended))
+                 opts)
+                hl))))
+
+    (defun consult-fd (&optional dir initial)
+      (interactive "P")
+      (let* ((prompt-dir (consult--directory-prompt "Fd" dir))
+             (default-directory (cdr prompt-dir)))
+        (find-file (consult--find (car prompt-dir) #'consult--fd-builder initial))))
+
+    ;; this handles problems when consult results contains
+    ;; Chinese characters
+    (if (eq system-type 'windows-nt)
+        (progn
+          ;; https://github.com/minad/consult/issues/572
+          (add-to-list 'process-coding-system-alist
+                       '("[rR][gG]" . (utf-8 . gbk-dos)))
+          ;; https://github.com/minad/consult/issues/601
+          (setq consult-find-args (concat find-program " . "))))
+    :bind
+    (([remap switch-to-buffer] . consult-buffer)
+     ("C-c i" . consult-line)
+     ("C-c r" . consult-ripgrep-with-prefix)
+     ("C-c R" . consult-ripgrep)
+     ("C-c I" . consult-imenu)
+     ("C-c f" . consult-fd)
+     ("C-c H" . consult-org-heading))
+    )
 #+end_src
 
 ** embark

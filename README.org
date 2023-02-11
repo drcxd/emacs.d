@@ -1,18 +1,6 @@
-* TODO Try Alternative Completion System
-** Corfu
-https://github.com/minad/corfu
-** Vertico
-https://github.com/minad/vertico
-** Consult
-https://github.com/minad/consult
-** Marginalia
-https://github.com/minad/marginalia/
-** Embark
-https://github.com/oantolin/embark
-** Orderless
-https://github.com/oantolin/orderless
-* TODO Tree Sitter Add New Language
-https://tree-sitter.github.io/tree-sitter/
-https://emacs-tree-sitter.github.io/
-** Lua
-https://github.com/Azganoth/tree-sitter-lua
+This is my personal Emacs configuration.
+
+All code and explanation are located in =init.org=. To generate
+emacs-lisp configuration code which get executed by Emacs at launch
+time, tangle the =init.org= file. For example, execute the command
+=org-babel-tangle= in =init.org= buffer.

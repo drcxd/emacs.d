@@ -297,51 +297,51 @@ to manage these buffers just as you manage files in dired.
     :hook
     (modus-themes-after-load-theme . my-custom-set-face))
 
-  (use-package
-    ef-themes
-    :defer t
-    :init
-    (defun my-ef-themes-custom-faces ()
-      "My customizations on top of Ef themes.
-  This function is added to the `ef-themes-post-load-hook'."
-      (ef-themes-with-colors
-       (custom-set-faces
-        `(lsp-ui-doc-background ((,c :background ,bg-alt))))))
-    (defun my-use-ef-themes ()
-      (interactive)
-      (mapc #'disable-theme custom-enabled-themes)
-      (ef-themes-select 'ef-light)
-      (global-set-key (kbd "C-c tg") 'ef-themes-toggle)
-      )
-    :config
-    (setq
-     ef-themes-to-toggle '(ef-light ef-dark)
-     ef-themes-mixed-fonts t
-     ef-themes-variable-pitch-ui t)
-    (with-eval-after-load 'tree-sitter
-      (add-hook 'tree-sitter-hl-mode-hook
-                (lambda () (set-face-attribute
-                            'tree-sitter-hl-face:punctuation
-                            nil
-                            :inherit nil))))
-    :hook
-    (ef-themes-post-load-hook . my-ef-themes-custom-faces))
+  ;; (use-package
+  ;;   ef-themes
+  ;;   :defer t
+  ;;   :init
+  ;;   (defun my-ef-themes-custom-faces ()
+  ;;     "My customizations on top of Ef themes.
+  ;; This function is added to the `ef-themes-post-load-hook'."
+  ;;     (ef-themes-with-colors
+  ;;      (custom-set-faces
+  ;;       `(lsp-ui-doc-background ((,c :background ,bg-alt))))))
+  ;;   (defun my-use-ef-themes ()
+  ;;     (interactive)
+  ;;     (mapc #'disable-theme custom-enabled-themes)
+  ;;     (ef-themes-select 'ef-light)
+  ;;     (global-set-key (kbd "C-c tg") 'ef-themes-toggle)
+  ;;     )
+  ;;   :config
+  ;;   (setq
+  ;;    ef-themes-to-toggle '(ef-light ef-dark)
+  ;;    ef-themes-mixed-fonts t
+  ;;    ef-themes-variable-pitch-ui t)
+  ;;   (with-eval-after-load 'tree-sitter
+  ;;     (add-hook 'tree-sitter-hl-mode-hook
+  ;;               (lambda () (set-face-attribute
+  ;;                           'tree-sitter-hl-face:punctuation
+  ;;                           nil
+  ;;                           :inherit nil))))
+  ;;   :hook
+  ;;   (ef-themes-post-load-hook . my-ef-themes-custom-faces))
 
-  (use-package
-    standard-themes
-    :defer t
-    :init
-    (defun my-use-standard-themes ()
-      (interactive)
-      (mapc #'disable-theme custom-enabled-themes)
-      (load-theme 'standard-light :no-confirm)
-      (global-set-key (kbd "C-c tg") 'standard-themes-toggle))
-    :config
-    (setq standard-themes-bold-constructs t
-          standard-themes-italic-constructs t
-          standard-themes-mixed-fonts t
-          standard-themes-variable-pitch-ui t
-          standard-themes-fringes 'subtle))
+  ;; (use-package
+  ;;   standard-themes
+  ;;   :defer t
+  ;;   :init
+  ;;   (defun my-use-standard-themes ()
+  ;;     (interactive)
+  ;;     (mapc #'disable-theme custom-enabled-themes)
+  ;;     (load-theme 'standard-light :no-confirm)
+  ;;     (global-set-key (kbd "C-c tg") 'standard-themes-toggle))
+  ;;   :config
+  ;;   (setq standard-themes-bold-constructs t
+  ;;         standard-themes-italic-constructs t
+  ;;         standard-themes-mixed-fonts t
+  ;;         standard-themes-variable-pitch-ui t
+  ;;         standard-themes-fringes 'subtle))
 
   ;; (my-use-ef-themes)
   (my-use-modus-themes)

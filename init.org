@@ -1569,6 +1569,12 @@ magit is the well-known Emacs interface for git.
    ("C-c M" . magit))
 #+end_src
 
+** vc-svn
+
+#+begin_src emacs-lisp
+  (setq vc-svn-annotate-switches "-x --ignore-eol-style")
+#+end_src
+
 * Key Binding
 
 ** Native Command Key Bindings

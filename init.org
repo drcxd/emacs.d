@@ -1191,7 +1191,7 @@ database. I write the following code to ease this process.
     (let ((project-name (file-name-base project-path)))
       (async-shell-command (concat
                             my/ubt-location
-                            " -mode=GenerateClangDatabase -project="
+                            " -mode=GenerateClangDatabase "
                             project-path
                             " "
                             project-name

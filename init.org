@@ -1184,8 +1184,7 @@ database. I write the following code to ease this process.
 #+begin_src emacs-lisp
   (defvar my/ubt-location nil "File location of Unreal Build Tool")
 
-  ;; TODO: Handle multiple platform details. Add parameters for finer
-  ;; control over the arugments sent to UBT.
+  ;; TODO: Parameterize platform and configuration.
   (defun my/ubt-generate-clang-database (project-path)
     "Genertae compilation database for specified Unreal project."
     (interactive "fProject path: ")
@@ -1212,27 +1211,17 @@ when editing. The solution is to generate code every time some macro's
 line number has changed.
 
 #+begin_src emacs-lisp
-  (defvar my/uht-location nil "File location of Unreal Header Tool")
-
-  ;; NOTE: This only works for UE4 projects.
-
-  ;; TODO: Handle multiple platforms and add more parameters for finer
-  ;; control of UHT paths.
-  (defun my/uht-generate-header-file-ue4 (project-path)
+  ;; TODO: Parameterize platform and configuration.
+  (defun my/ubt-generate-header-file (project-path)
     "Generate header files for specified Unreal project."
     (interactive "fProject path: ")
-    (let ((project-name (file-name-base project-path))
-          (project-dir (file-name-directory project-path)))
-      (async-shell-command (concat my/uht-location
-                                   " "
+    (let ((project-name (file-name-base project-path)))
+      (async-shell-command (concat my/ubt-location
+                                   " -SkipBuild "
                                    project-path
                                    " "
-                                   project-dir
-                                   "/Intermediate/Build/Win64/"
                                    project-name
-                                   "Editor/Development/"
-                                   project-name
-                                   "Editor.uhtmanifest"))))
+                                   "Editor Development Win64"))))
 #+end_src
 
 * org-mode

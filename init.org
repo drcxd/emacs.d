@@ -1585,6 +1585,7 @@ magit is the well-known Emacs interface for git.
   (global-set-key (kbd "C-c w3") 'split-window-horizontally)
   (global-set-key (kbd "C-c w0") 'delete-window)
   (global-set-key (kbd "C-c z") 'hs-toggle-hiding)
+  (global-set-key (kbd "C-c w m") 'woman)
 #+end_src
 
 ** meow

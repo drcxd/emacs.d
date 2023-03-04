@@ -248,7 +248,7 @@ to manage these buffers just as you manage files in dired.
 
   (set-face-attribute 'default nil
                       :font "Iosevka Comfy"
-                      :height 160)
+                      :height 140)
   (set-face-attribute 'fixed-pitch nil
                       :font "Iosevka Comfy"
                       :height 1.0)

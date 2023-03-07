@@ -248,7 +248,7 @@ to manage these buffers just as you manage files in dired.
 
   (set-face-attribute 'default nil
                       :font "Iosevka Comfy"
-                      :height 140)
+                      :height 160)
   (set-face-attribute 'fixed-pitch nil
                       :font "Iosevka Comfy"
                       :height 1.0)
@@ -655,10 +655,12 @@ me conveniently change the ration of windows sizes by simply execute
 one single command.
 
 #+begin_src emacs-lisp
-  (use-package zoom
-               :defer t
-               :config
-               (setq zoom-size '(0.618 . 0.618)))
+      (use-package zoom
+                   :defer t
+                   :config
+                   (setq zoom-size '(0.618 . 0.618))
+                   :bind
+                   ("C-c z" . zoom))
 #+end_src
 
 ** scratch
@@ -1584,7 +1586,7 @@ magit is the well-known Emacs interface for git.
   (global-set-key (kbd "C-c w2") 'split-window-vertically)
   (global-set-key (kbd "C-c w3") 'split-window-horizontally)
   (global-set-key (kbd "C-c w0") 'delete-window)
-  (global-set-key (kbd "C-c z") 'hs-toggle-hiding)
+  (global-set-key (kbd "C-c s t") 'hs-toggle-hiding)
   (global-set-key (kbd "C-c w m") 'woman)
 #+end_src
 

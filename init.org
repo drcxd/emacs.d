@@ -1317,12 +1317,32 @@ following code:
 
 As a text editor, Emacs is a good place to take notes. There are also
 packages helps you orgnize your notes. The most popular one is
-org-roam. However, it requires a database to work. I prefer a
-light-weight package denote. It only works with native file
-systems. These two packages are often used to practice a note-taking
-methodology called [[https://zettelkasten.de/introduction/][Zettelkasten]].
+org-roam. A lighter-weight choice is denote. These two packages are
+often used to practice a note-taking methodology called [[https://zettelkasten.de/introduction/][Zettelkasten]].
+
+** org-roam
 
 #+begin_src emacs-lisp
+  (use-package org-roam
+    :defer t
+    :init
+    (setq
+     org-roam-directory "~/org-roam/"
+     org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+    :config
+    (org-roam-db-autosync-mode)
+    :bind
+    (("C-c n f" . org-roam-node-find)
+     ("C-c n i" . org-roam-node-insert)
+     ("C-c n d" . org-roam-dailies-goto-today))
+    )
+
+  (use-package org-roam-ui)
+#+end_src
+
+** denote
+
+#+begin_src emacs-lisp :tangle no
   (use-package denote
                :defer t
                :config

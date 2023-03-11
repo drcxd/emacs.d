@@ -1365,11 +1365,26 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
                 ("C-c n a" . denote-keywords-add)
                 ("C-c n r" . denote-keywords-remove)))
 
+  (defun my-denote--journal-today-file ()
+    "Find today's _journal entry, else return nil."
+     (seq-find
+      (lambda (file)
+        (string-match-p (format "%s.*_journal" (format-time-string "%A-%e-%B-%Y")) file))
+      (denote-directory-files)))
+
+  (defun my-denote--create-journal ()
+      "Create an entry tagged 'journal'."
+      (interactive)
+      (denote (format-time-string "%A %e %B %Y")
+              '("journal")))
+
   (defun my-denote-journal ()
-    "Create an entry tagged 'journal'."
+    "Open or create journal for today."
     (interactive)
-    (denote (format-time-string "%A %e %B %Y")
-            '("journal")))
+    (let ((prompt (my-denote--journal-today-file)))
+      (if prompt
+          (funcall-interactively 'denote-open-or-create prompt)
+        (my-denote-create-journal))))
 #+end_src
 
 * Completion

@@ -241,6 +241,15 @@ to manage these buffers just as you manage files in dired.
   (global-set-key (kbd "C-x C-b") 'ibuffer)
 #+end_src
 
+** Unicode Support
+
+#+begin_src emacs-lisp
+  (use-package
+   unicode-fonts
+   :config
+   (unicode-fonts-setup))
+#+end_src
+
 ** Fonts and Faces :DEPENDENCY:
 
 #+begin_src emacs-lisp
@@ -262,15 +271,6 @@ to manage these buffers just as you manage files in dired.
                       :underline nil)
 #+end_src
 
-** Unicode Support
-
-#+begin_src emacs-lisp
-  (use-package
-   unicode-fonts
-   :config
-   (unicode-fonts-setup))
-#+end_src
-
 ** Themes
 
 #+begin_src emacs-lisp
@@ -288,12 +288,12 @@ to manage these buffers just as you manage files in dired.
       (modus-themes-with-colors
         (custom-set-faces
          `(lsp-ui-doc-background ((,c :background ,bg-dim))))))
-    :config
     (setq modus-themes-italic-constructs t
           modus-themes-bold-constructs nil
           modus-themes-mixed-fonts t
           modus-themes-variable-pitch-ui t
-          modus-themes-mode-line '(borderless))
+          modus-themes-mode-line '(borderless)
+          modus-themes-headings '((t . (variable-pitch 2.0))))
     :hook
     (modus-themes-after-load-theme . my-custom-set-face))
 
@@ -1255,7 +1255,7 @@ line number has changed.
   (use-package htmlize :defer t)
 #+end_src
 
-** Appearance
+** Appearance =org-modern=
 
 org-modern is a package that beautify org-mode. It changes the
 appearance of header line, table, time stamp and other things.
@@ -1322,7 +1322,7 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
 
 ** org-roam
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
     (use-package org-roam
       :defer t
       :init
@@ -1345,7 +1345,7 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
 
 ** denote
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package denote
                :defer t
                :config

@@ -1318,6 +1318,8 @@ following code:
 Currently I am using org-cite, citar plus citeproc to deal with
 citation issues.
 
+** citar
+
 #+begin_src emacs-lisp
   (use-package citar
     :defer t
@@ -1330,6 +1332,12 @@ citation issues.
           org-cite-export-processors '((t . (csl "modern-language-association.csl"))))
     :hook
     (org-mode . citar-capf-setup))
+
+  (use-package citar-embark
+    :after citar embark
+    :no-require
+    :diminish
+    :config (citar-embark-mode))
 
   ;; You can get the csl style files from
   ;; https://github.com/citation-style-language/styles
@@ -1349,6 +1357,7 @@ bibliographic notes can be easily created in org-roam context.
     :after citar org-roam
     :no-require
     :config
+    :diminish
     (citar-org-roam-mode))
 #+end_src
 

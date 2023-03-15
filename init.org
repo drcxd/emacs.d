@@ -1313,6 +1313,31 @@ following code:
   (setq initial-buffer-choice #'my/get-org-agenda-buffer)
 #+end_src
 
+* Citation
+
+Currently I am using org-cite, citar plus citeproc to deal with
+citation issues.
+
+#+begin_src emacs-lisp
+  (use-package citar
+    :defer t
+    :init
+    (setq org-cite-global-bibliography '("~/test.bib")
+          org-cite-insert-processor 'citar
+          org-cite-follow-processor 'citar
+          org-cite-activate-processor 'citar
+          citar-bibliography org-cite-global-bibliography
+          org-cite-export-processors '((t . (csl "modern-language-association.csl"))))
+    :hook
+    (org-mode . citar-capf-setup))
+
+  ;; You can get the csl style files from
+  ;; https://github.com/citation-style-language/styles
+
+  ;; (setq org-cite-csl-styles-dir "path/to/styles/dir")
+#+end_src
+
+Also, =org-cite-csl-styles-dir= must be set for the csl styles to work.
 * Taking Notes
 
 As a text editor, Emacs is a good place to take notes. There are also

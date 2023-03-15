@@ -1338,6 +1338,20 @@ citation issues.
 #+end_src
 
 Also, =org-cite-csl-styles-dir= must be set for the csl styles to work.
+
+** citar-org-roam
+
+A necessary package to integrate citar with org-roam, thus,
+bibliographic notes can be easily created in org-roam context.
+
+#+begin_src emacs-lisp
+  (use-package citar-org-roam
+    :after citar org-roam
+    :no-require
+    :config
+    (citar-org-roam-mode))
+#+end_src
+
 * Taking Notes
 
 As a text editor, Emacs is a good place to take notes. There are also

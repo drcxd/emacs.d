@@ -498,10 +498,10 @@ operations in dired.
     (require 'dired-x))
 #+end_src
 
-** Random ~initial-scratch-message~
+** Mottoes
 
 I would like the welcome message displayed in the scratch buffer be
-some motto selected randomly from a pre-defined list.
+some mottoes selected randomly from a pre-defined list.
 
 #+begin_src emacs-lisp
   (defun my/process-raw-mottoes (lines)
@@ -529,9 +529,8 @@ some motto selected randomly from a pre-defined list.
       ("往者不可追" "来者犹可待")
       ("胜兵先胜而后求战" "败兵先战而后求胜")
       ("胜可知而不可为")
-      ("王侯将相宁有种乎")
       ("等死，死国可乎")
-      ("若士必怒" "伏尸二人" "流血五步" "天下缟素")))
+      ("冰冻三尺 非一日之寒")))
 
   (defvar my/mottoes
     (let (ret)

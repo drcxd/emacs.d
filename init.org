@@ -116,9 +116,11 @@ good package to solve this problem.
    (diminish 'eldoc-mode)
    :hook
    ((hs-minor-mode . (lambda () (diminish 'hs-minor-mode)))
-    (auto-revert-mode . (lambda () (diminish 'olivetti-mode)))
+    (olivetti-mode . (lambda () (diminish 'olivetti-mode)))
     (logos-focus-mode . (lambda () (diminish 'buffer-face-mode)))
-    (yas-minor-mode . (lambda () (diminish 'yas-minor-mode)))))
+    (yas-minor-mode . (lambda () (diminish 'yas-minor-mode)))
+    (org-roam-ui-mode . (lambda () (diminish 'org-roam-ui-mode)))
+    (org-roam-ui-follow-mode . (lambda () (diminish 'org-roam-ui-follow-mode)))))
 #+end_src
 
 * Appearance
@@ -293,7 +295,7 @@ to manage these buffers just as you manage files in dired.
           modus-themes-mixed-fonts t
           modus-themes-variable-pitch-ui t
           modus-themes-mode-line '(borderless)
-          modus-themes-headings '((t . (variable-pitch 2.0))))
+          modus-themes-headings '((t . (variable-pitch 1.61803))))
     :hook
     (modus-themes-after-load-theme . my-custom-set-face))
 
@@ -385,26 +387,26 @@ to manage these buffers just as you manage files in dired.
 #+begin_src emacs-lisp
   (use-package olivetti :defer t :diminish)
   (use-package
-   logos
-   :diminish
-   :defer t
-   :config
-   (setq logos-outlines-are-pages t)
-   (setq-default logos-hide-mode-line nil
-                 logos-hide-buffer-boundaries nil
-                 logos-hide-fringe t
-                 logos-variable-pitch t
-                 logos-buffer-read-only nil
-                 logos-olivetti t)
-   (with-eval-after-load 'modus-themes
-     (add-hook 'modus-themes-after-load-theme-hook #'logos-update-fringe-in-buffers))
-   (with-eval-after-load 'ef-themes
-     (add-hook 'ef-themes-post-load-hook #'logos-update-fringe-in-buffers))
-   :bind
-   (("C-c s l" . logos-focus-mode)
-    ("C-c s n" . logos-narrow-dwim)
-    ("C-c s k" . logos-backward-page-dwim)
-    ("C-c s j" . logos-forward-page-dwim)))
+    logos
+    :diminish
+    :defer t
+    :config
+    (setq logos-outlines-are-pages t)
+    (setq-default logos-hide-mode-line nil
+                  logos-hide-buffer-boundaries nil
+                  logos-hide-fringe t
+                  logos-variable-pitch t
+                  logos-buffer-read-only nil
+                  logos-olivetti t)
+    (with-eval-after-load 'modus-themes
+      (add-hook 'modus-themes-after-load-theme-hook #'logos-update-fringe-in-buffers))
+    (with-eval-after-load 'ef-themes
+      (add-hook 'ef-themes-post-load-hook #'logos-update-fringe-in-buffers))
+    :bind
+    (("C-c s l" . logos-focus-mode)
+     ("C-c s n" . logos-narrow-dwim)
+     ("C-c s k" . logos-backward-page-dwim)
+     ("C-c s j" . logos-forward-page-dwim)))
 #+end_src
 
 * General Behavior
@@ -1354,10 +1356,10 @@ bibliographic notes can be easily created in org-roam context.
 
 #+begin_src emacs-lisp
   (use-package citar-org-roam
+    :diminish
     :after citar org-roam
     :no-require
     :config
-    :diminish
     (citar-org-roam-mode))
 #+end_src
 
@@ -1394,7 +1396,7 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
      ("C-c n a" . org-roam-alias-add)
      ("C-c n A" . org-roam-alias-remove)))
 
-  (use-package org-roam-ui)
+  (use-package org-roam-ui :defer t)
 #+end_src
 
 ** denote

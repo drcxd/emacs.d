@@ -825,10 +825,10 @@ display the completion condidates on the screen.
   (use-package
    corfu
    :init
-   (setq corfu-auto t
+   (setq corfu-auto nil
          corfu-cycle t
-         corfu-quit-at-boundary 'separator
-         corfu-quit-no-match t
+         corfu-quit-at-boundary nil
+         corfu-quit-no-match nil
          corfu-preview-current nil
          corfu-excluded-modes '(gud-mode))
    ;; disalbe corfu in gud-mode, see
@@ -1632,6 +1632,7 @@ magit is the well-known Emacs interface for git.
   (global-set-key (kbd "C-c w0") 'delete-window)
   (global-set-key (kbd "C-c s t") 'hs-toggle-hiding)
   (global-set-key (kbd "C-c w m") 'woman)
+  (global-set-key (kbd "C-<tab>") 'completion-at-point)
 #+end_src
 
 ** meow

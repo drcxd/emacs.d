@@ -1104,6 +1104,17 @@ specific langauge major mode.
 
 ** Programming Languages
 
+*** C++
+
+#+begin_src emacs-lisp
+  (defun my/c-indent-then-complete ()
+    (interactive)
+    (if (= 0 (c-indent-line-or-region))
+        (completion-at-point)))
+  (with-eval-after-load 'cc-mode
+    (define-key c++-mode-map [remap c-indent-line-or-region] 'my/c-indent-then-complete))
+#+end_src
+
 *** Lua
 
 #+begin_src emacs-lisp

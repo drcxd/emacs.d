@@ -1176,16 +1176,6 @@ the =PATH=.
   (use-package geiser-chez :defer t)
 #+end_src
 
-*** C++
-
-#+begin_src emacs-lisp
-  (defun my/c-indent-then-complete ()
-    (interactive)
-    (if (= 0 (c-indent-line-or-region))
-        (completion-at-point)))
-  (define-key c++-mode-map [remap c-indent-line-or-region] 'my/c-indent-then-complete)
-#+end_src
-
 ** Unreal :DEPENDENCY:
 
 I am working with Unreal Engine, using Emacs + clang + lsp-mode as my

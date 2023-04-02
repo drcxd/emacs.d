@@ -1896,7 +1896,12 @@ for authentification by default.
 
 * Calibre in Emacs :DEPENDENCY:
 
-#+begin_src emacs-lisp
+The author seems do not support this package anymore. Also, Calibre
+itself offers quite rich features which cannot be all exposed to
+Emacs. I also do not read pdf or other EBook formats in Emacs, so I
+quit using this package.
+
+#+begin_src emacs-lisp :tangle no
   (use-package
     calibredb
     :defer t)
@@ -1909,6 +1914,26 @@ for authentification by default.
   ;;  calibredb-library-alist '(("D:/program/calibre/Calibre Portable/Calibre Library/")
   ;;                            ("D:/program/calibre/Calibre Portable/Read Library/"))
   ;;  calibredb-program "D:/program/calibre/Calibre Portable/Calibre/calibredb.exe")
+#+end_src
+
+* nXML Mode
+
+By default, nXML mode does not support hide and show certain blocks
+(sections/nodes), this piece of code add this feature using hs-minor
+mode.
+
+Credit: https://stackoverflow.com/questions/944614/emacs-does-hideshow-work-with-xml-mode-sgml-mode
+
+#+begin_src emacs-lisp
+  (add-to-list 'hs-special-modes-alist
+               (list 'nxml-mode
+                     "<!--\\|<[^/>]*[^/]>"
+                     "-->\\|</[^/>]*[^/]>"
+                     "<!--"
+                     'nxml-forward-element
+                     nil))
+
+  (add-hook 'nxml-mode-hook 'hs-minor-mode)
 #+end_src
 
 * Load Custom File

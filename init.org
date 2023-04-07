@@ -1626,6 +1626,65 @@ magit is the well-known Emacs interface for git.
   (setq vc-svn-annotate-switches "-x --ignore-eol-style")
 #+end_src
 
+* nXML Mode
+
+By default, nXML mode does not support hide and show certain blocks
+(sections/nodes), this piece of code add this feature using hs-minor
+mode.
+
+Credit: https://stackoverflow.com/questions/944614/emacs-does-hideshow-work-with-xml-mode-sgml-mode
+
+#+begin_src emacs-lisp
+  (add-to-list 'hs-special-modes-alist
+               (list 'nxml-mode
+                     "<!--\\|<[^/>]*[^/]>"
+                     "-->\\|</[^/>]*[^/]>"
+                     "<!--"
+                     'nxml-forward-element
+                     nil))
+
+  (add-hook 'nxml-mode-hook 'hs-minor-mode)
+#+end_src
+
+* Mail in Emacs
+
+I still can't get Gnus work, but the config I copied from this [[https://news.ycombinator.com/item?id=23420308][thread]]
+does work. I'll paste them here for future reference.
+
+#+begin_src emacs-lisp :tangle no
+  (setq
+   user-full-name "Chang Xiaoduan"
+   user-mail-address "drcxd@sina.com"
+   send-mail-function 'smtpmail-send-it
+   smtpmail-smtp-server "smtp.sina.com"
+   smtpmail-stream-type 'starttls
+   smtpmail-smtp-service 587
+   gnus-select-method
+   '(nnimap "sina"
+            (nnimap-address "imap.sina.com")
+            (nnimap-server-port 993)
+            (nnimap-stream ssl)
+            (nnmail-expiry-wait immediate)))
+#+end_src
+
+The config I figured out by reading the manual myself is like this:
+
+#+begin_src emacs-lisp
+  (setq
+   gnus-select-method '(nnimap "imap.sina.com")
+   send-mail-function 'smtpmail-send-it
+   smtpmail-smtp-server "smtp.sina.com"
+   smtpmail-stream-type 'starttls
+   smtpmail-servers-requiring-authorization "sina")
+#+end_src
+
+The second variable is necessary. Otherwise, I got an
+"smtpmail-send-it: Sending failed: 530 Authentication required".
+According to smtpmail.el, it should try again when the server is
+requesting authentication. However, it does not. By setting the
+varaible ~smtpmail-servers-requiring-authorization~, smtpmail would ask
+for authentification by default.
+
 * Key Binding
 
 ** Native Command Key Bindings
@@ -1855,45 +1914,6 @@ binding.
    (which-key-mode))
 #+end_src
 
-* Mail in Emacs
-
-I still can't get Gnus work, but the config I copied from this [[https://news.ycombinator.com/item?id=23420308][thread]]
-does work. I'll paste them here for future reference.
-
-#+begin_src emacs-lisp :tangle no
-  (setq
-   user-full-name "Chang Xiaoduan"
-   user-mail-address "drcxd@sina.com"
-   send-mail-function 'smtpmail-send-it
-   smtpmail-smtp-server "smtp.sina.com"
-   smtpmail-stream-type 'starttls
-   smtpmail-smtp-service 587
-   gnus-select-method
-   '(nnimap "sina"
-            (nnimap-address "imap.sina.com")
-            (nnimap-server-port 993)
-            (nnimap-stream ssl)
-            (nnmail-expiry-wait immediate)))
-#+end_src
-
-The config I figured out by reading the manual myself is like this:
-
-#+begin_src emacs-lisp
-  (setq
-   gnus-select-method '(nnimap "imap.sina.com")
-   send-mail-function 'smtpmail-send-it
-   smtpmail-smtp-server "smtp.sina.com"
-   smtpmail-stream-type 'starttls
-   smtpmail-servers-requiring-authorization "sina")
-#+end_src
-
-The second variable is necessary. Otherwise, I got an
-"smtpmail-send-it: Sending failed: 530 Authentication required".
-According to smtpmail.el, it should try again when the server is
-requesting authentication. However, it does not. By setting the
-varaible ~smtpmail-servers-requiring-authorization~, smtpmail would ask
-for authentification by default.
-
 * Calibre in Emacs :DEPENDENCY:
 
 The author seems do not support this package anymore. Also, Calibre
@@ -1914,26 +1934,6 @@ quit using this package.
   ;;  calibredb-library-alist '(("D:/program/calibre/Calibre Portable/Calibre Library/")
   ;;                            ("D:/program/calibre/Calibre Portable/Read Library/"))
   ;;  calibredb-program "D:/program/calibre/Calibre Portable/Calibre/calibredb.exe")
-#+end_src
-
-* nXML Mode
-
-By default, nXML mode does not support hide and show certain blocks
-(sections/nodes), this piece of code add this feature using hs-minor
-mode.
-
-Credit: https://stackoverflow.com/questions/944614/emacs-does-hideshow-work-with-xml-mode-sgml-mode
-
-#+begin_src emacs-lisp
-  (add-to-list 'hs-special-modes-alist
-               (list 'nxml-mode
-                     "<!--\\|<[^/>]*[^/]>"
-                     "-->\\|</[^/>]*[^/]>"
-                     "<!--"
-                     'nxml-forward-element
-                     nil))
-
-  (add-hook 'nxml-mode-hook 'hs-minor-mode)
 #+end_src
 
 * Load Custom File

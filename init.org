@@ -1539,10 +1539,10 @@ etc..
                 hl))))
 
     (defun consult-fd (&optional dir initial)
-      (interactive "P")
-      (let* ((prompt-dir (consult--directory-prompt "Fd" dir))
-             (default-directory (cdr prompt-dir)))
-        (find-file (consult--find (car prompt-dir) #'consult--fd-builder initial))))
+    (interactive "P")
+    (pcase-let* ((`(,prompt ,paths ,dir) (consult--directory-prompt "Fd" dir))
+                 (default-directory dir))
+      (find-file (consult--find prompt #'consult--fd-builder initial))))
 
     ;; this handles problems when consult results contains
     ;; Chinese characters

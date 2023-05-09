@@ -459,6 +459,7 @@ the chances of such problems.
 
 #+begin_src emacs-lisp
   (global-auto-revert-mode)
+  (setq auto-revert-verbose nil)
 #+end_src
 
 ** No Tab Character

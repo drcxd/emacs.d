@@ -672,7 +672,10 @@ This program allows user to create a scratch buffer of a certain mode,
 so you can write anything in it.
 
 #+begin_src emacs-lisp
-  (use-package scratch :defer t)
+  (use-package scratch
+    :defer t
+    :bind
+    ("C-c s c" . scratch))
 #+end_src
 
 ** Pomodoro and Timers
@@ -1316,15 +1319,22 @@ following code:
                (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components))
 #+end_src
 
-** org-agenda
-
-*** Show org-agenda Buffer at Start-up
+** Show org-agenda Buffer at Start-up
 
 #+begin_src emacs-lisp
   (defun my/get-org-agenda-buffer ()
     (org-agenda-list)
     (get-buffer "*Org Agenda*"))
   (setq initial-buffer-choice #'my/get-org-agenda-buffer)
+#+end_src
+
+** capture
+
+#+begin_src emacs-lisp
+  (use-package org
+               :defer t
+               :config
+               (setq org-default-notes-file (concat org-directory "/notes.org")))
 #+end_src
 
 * Citation

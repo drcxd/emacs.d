@@ -1382,7 +1382,8 @@ bibliographic notes can be easily created in org-roam context.
     :after citar org-roam
     :no-require
     :config
-    (citar-org-roam-mode))
+    (citar-org-roam-mode)
+    (setq citar-org-roam-subdir "references"))
 #+end_src
 
 * Taking Notes
@@ -1400,7 +1401,13 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
     :init
     (setq
      org-roam-directory "~/org-roam/"
-     org-roam-node-display-template (concat "${title} " (propertize "${tags}" 'face 'org-tag)))
+     org-roam-node-display-template (concat "${title} " (propertize "${tags}" 'face 'org-tag))
+     org-roam-capture-templates '(("d" "default" plain "%?" :target
+                                   (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+                                   :unnarrowed t)
+                                  ("p" "private" plain "%?" :target
+                                   (file+head "private/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+                                   :unnarrowed t)))
     :config
     (org-roam-db-autosync-mode)
     :bind

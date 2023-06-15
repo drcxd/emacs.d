@@ -1407,6 +1407,9 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
                                    :unnarrowed t)
                                   ("p" "private" plain "%?" :target
                                    (file+head "private/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+                                   :unnarrowed t)
+                                  ("r" "reference" plain "%?" :target
+                                   (file+head "references/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
                                    :unnarrowed t)))
     :config
     (org-roam-db-autosync-mode)

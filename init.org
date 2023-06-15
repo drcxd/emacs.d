@@ -1348,7 +1348,7 @@ citation issues.
   (use-package citar
     :defer t
     :init
-    (setq org-cite-global-bibliography '("~/test.bib")
+    (setq org-cite-global-bibliography '("~/org-roam/references.bib")
           org-cite-insert-processor 'citar
           org-cite-follow-processor 'citar
           org-cite-activate-processor 'citar

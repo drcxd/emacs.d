@@ -1403,14 +1403,18 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
      org-roam-directory "~/org-roam/"
      org-roam-node-display-template (concat "${title} " (propertize "${tags}" 'face 'org-tag))
      org-roam-capture-templates '(("d" "default" plain "%?" :target
-                                   (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+                                   (file+head "%<%Y%m%d%H%M%S>.org" "#+title: ${title}\n")
                                    :unnarrowed t)
                                   ("p" "private" plain "%?" :target
-                                   (file+head "private/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+                                   (file+head "private/%<%Y%m%d%H%M%S>.org.gpg" "#+title: ${title}\n")
                                    :unnarrowed t)
                                   ("r" "reference" plain "%?" :target
-                                   (file+head "references/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
-                                   :unnarrowed t)))
+                                   (file+head "references/%<%Y%m%d%H%M%S>.org" "#+title: ${title}\n")
+                                   :unnarrowed t))
+     org-roam-dailies-capture-templates '(("d" "default" entry "* %?" :target
+                                           (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))
+                                          ("p" "private" entry "* %?" :target
+                                           (file+head "%<%Y-%m-%d>.org.gpg" "#+title: %<%Y-%m-%d>\n"))))
     :config
     (org-roam-db-autosync-mode)
     :bind

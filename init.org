@@ -1266,6 +1266,7 @@ line number has changed.
           org-babel-C++-compiler "clang++")
     (add-to-list 'org-babel-load-languages '(C . t))
     (add-to-list 'org-babel-load-languages '(scheme . t))
+    (add-to-list 'org-babel-load-languages '(dot . t))
     (add-to-list 'org-modules 'org-habit t)
     (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
 

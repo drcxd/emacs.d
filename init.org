@@ -1191,6 +1191,12 @@ the =PATH=.
   (use-package geiser-chez :defer t)
 #+end_src
 
+*** Graphviz Dot
+
+#+begin_src emacs-lisp
+  (use-package graphviz-dot-mode :ensure t)
+#+end_src
+
 ** Unreal :DEPENDENCY:
 
 I am working with Unreal Engine, using Emacs + clang + lsp-mode as my

@@ -1557,8 +1557,7 @@ etc..
       (let ((current-prefix-arg '(4)))
         (call-interactively 'consult-ripgrep)))
     :config
-    (setq consult-fontify-max-size 262144 ;; 262144 = 2 ^ 18
-          consult-preview-excluded-files '(".*org"))
+    (setq consult-fontify-max-size 262144) ;; 262144 = 2 ^ 18
 
     (defvar consult--fd-command nil)
     (defun consult--fd-builder (input)

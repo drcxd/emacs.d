@@ -1016,63 +1016,65 @@ jump-to-definition/declaraction, find-references and even
 variable-rename.
 
 #+begin_src emacs-lisp
-      (use-package
-       lsp-mode
-       :defer t
-       :init
-       (defun corfu-lsp-setup ()
-         (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-               '(orderless))
-         (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible))
-       :config
-       (setq lsp-headerline-breadcrumb-enable nil
-             lsp-semantic-tokens-apply-modifiers nil
-             lsp-semantic-tokens-enable t)
-       (if (and (package-installed-p 'corfu) (package-installed-p 'cape))
-           (progn
-             (add-hook 'lsp-completion-mode-hook #'corfu-lsp-setup)
-             (setq lsp-completion-provider :none)))
-       :bind
-       (("C-c l l" . lsp)
-        :map lsp-mode-map
-        ("C-c l c" . lsp-find-declaration)
-        ("C-c l f" . lsp-find-definition)
-        ("C-c l o" . lsp-clangd-find-other-file)
-        ("C-c l r" . lsp-workspace-restart)
-        ("C-c l d" . lsp-workspace-shutdown)
-        ("C-c l a" . lsp-execute-code-action)
-        ("C-c l n" . lsp-rename)
-        ("C-c l t" . lsp-semantic-tokens-mode)))
+  (use-package
+   lsp-mode
+   :defer t
+   :init
+   (defun corfu-lsp-setup ()
+     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+           '(orderless))
+     (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible))
+   :config
+   (setq lsp-headerline-breadcrumb-enable nil
+         lsp-semantic-tokens-apply-modifiers nil
+         lsp-semantic-tokens-enable t)
+   (if (and (package-installed-p 'corfu) (package-installed-p 'cape))
+       (progn
+         (add-hook 'lsp-completion-mode-hook #'corfu-lsp-setup)
+         (setq lsp-completion-provider :none)))
+   :hook
+   (lua-mode . (lambda () (setq-local lsp-enable-indentation nil)))
+   :bind
+   (("C-c l l" . lsp)
+    :map lsp-mode-map
+    ("C-c l c" . lsp-find-declaration)
+    ("C-c l f" . lsp-find-definition)
+    ("C-c l o" . lsp-clangd-find-other-file)
+    ("C-c l r" . lsp-workspace-restart)
+    ("C-c l d" . lsp-workspace-shutdown)
+    ("C-c l a" . lsp-execute-code-action)
+    ("C-c l n" . lsp-rename)
+    ("C-c l t" . lsp-semantic-tokens-mode)))
 
-      (use-package
-       lsp-ui
-       :defer t
-       :bind
-       (:map lsp-ui-mode-map
-             ("C-c l g" . lsp-ui-doc-glance)
-             ("C-c l F" . lsp-ui-doc-focus-frame))
-       :config
-       (setq lsp-ui-doc-show-with-mouse nil))
+  (use-package
+   lsp-ui
+   :defer t
+   :bind
+   (:map lsp-ui-mode-map
+         ("C-c l g" . lsp-ui-doc-glance)
+         ("C-c l F" . lsp-ui-doc-focus-frame))
+   :config
+   (setq lsp-ui-doc-show-with-mouse nil))
 
-      (use-package
-       consult-lsp
-       :after (lsp-mode consult)
-       :bind
-       (:map lsp-mode-map
-             ("C-c l S" . consult-lsp-symbols)
-             ("C-c l s" . consult-lsp-file-symbols)
-             ("C-c l i" . consult-lsp-diagnostics)))
+  (use-package
+   consult-lsp
+   :after (lsp-mode consult)
+   :bind
+   (:map lsp-mode-map
+         ("C-c l S" . consult-lsp-symbols)
+         ("C-c l s" . consult-lsp-file-symbols)
+         ("C-c l i" . consult-lsp-diagnostics)))
 
-      (with-eval-after-load 'lsp-clangd
-        (setq lsp-clients-clangd-args
-              '("--completion-style=detailed"
-                "--header-insertion=never"
-                "--function-arg-placeholders=0"
-                "-j=32"
-                "--background-index"
-                "--pch-storage=memory")))
+  (with-eval-after-load 'lsp-clangd
+    (setq lsp-clients-clangd-args
+          '("--completion-style=detailed"
+            "--header-insertion=never"
+            "--function-arg-placeholders=0"
+            "-j=32"
+            "--background-index"
+            "--pch-storage=memory")))
 
-      (add-to-list 'safe-local-eval-forms '(lsp))
+  (add-to-list 'safe-local-eval-forms '(lsp))
 #+end_src
 
 ** Syntax Highlighting :DEPRECATED:

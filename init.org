@@ -1857,41 +1857,6 @@ add some additional configuration specific to meow.
       '("}" . forward-paragraph)
       '("/" . hs-toggle-hiding)))
    :config
-   (meow-setup)
-   (meow-global-mode 1)
-   ;; (defvar my-lsp-map
-   ;;   (let ((map (make-sparse-keymap)))
-   ;;     (define-key map (kbd "l") 'lsp)
-   ;;     (define-key map (kbd "c") 'lsp-find-declaration)
-   ;;     (define-key map (kbd "f") 'lsp-find-definition)
-   ;;     (define-key map (kbd "o") 'lsp-clangd-find-other-file)
-   ;;     (define-key map (kbd "r") 'lsp-workspace-restart)
-   ;;     (define-key map (kbd "d") 'lsp-workspace-shutdown)
-   ;;     (define-key map (kbd "a") 'lsp-execute-code-action)
-   ;;     (define-key map (kbd "n") 'lsp-rename)
-   ;;     (define-key map (kbd "g") 'lsp-ui-doc-glance)
-   ;;     (define-key map (kbd "S") 'consult-lsp-symbols)
-   ;;     (define-key map (kbd "s") 'consult-lsp-file-symbols)
-   ;;     (define-key map (kbd "i") 'consult-lsp-diagnostics)
-   ;;     (define-key map (kbd "t") 'lsp-semantic-tokens-mode)
-   ;;     (define-key map (kbd "F") 'lsp-ui-doc-focus-frame)
-   ;;     map)
-   ;;   "My LSP map")
-   ;; (meow-leader-define-key
-   ;;  (cons "l" my-lsp-map))
-   (setq meow-mode-state-list
-         '((diff-mode . motion)
-           (ediff-mode . motion)
-           (help-mode . motion)
-           (org-roam-mode . motion)
-           (json-mode . normal)
-           (occur-edit-mode . normal)
-           (prog-mode . normal)
-           (text-mode . normal)
-           (grep-mode . motion)
-           (Custom-mode . normal)
-           (calibredb-search-mode . motion)
-           (calibredb-show-mode . motion)))
    (setq meow-replace-state-name-list
         '((normal . "[N]")
           (motion . "[M]")
@@ -1899,6 +1864,11 @@ add some additional configuration specific to meow.
           (insert . "[I]")
           (beacon . "[B]")))
    (setq meow-keypad-leader-dispatch "C-c")
+   (setq meow-mode-state-list
+         '((special-mode . motion)
+           (text-mode . normal)))
+   (meow-setup)
+   (meow-global-mode 1)
    (global-set-key (kbd "<f6>") 'meow-keypad))
 #+end_src
 

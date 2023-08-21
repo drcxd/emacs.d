@@ -2,6 +2,19 @@ fundamental-mode
 
 (today (format-time-string "%Y-%m-%d"))
 
+latex-mode org-mode
+
+(align "\\begin{align}\n" r> n> "\\end{align}")
+(alignn "\\begin{align*}\n" r> n> "\\end{align*}")
+(cases "\\begin{cases}\n" r> n> "\\end{cases}")
+(equation "\\begin{equation}" r> n> "\\end{equation}")
+(equationn "\\begin{equation*}" r> n> "\\end{equation*}")
+
+org-mode
+
+(ilm "\\(" q "\\)")
+(olm "\\[" q "\\]")
+
 prog-mode
 
 (fixme (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "FIXME: ")

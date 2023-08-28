@@ -12,8 +12,8 @@ latex-mode org-mode
 
 org-mode
 
-(ilm "\\(" q "\\)")
-(olm "\\[" q "\\]")
+(ilm "\\(" r "\\)")
+(olm "\\[" r "\\]")
 
 prog-mode
 

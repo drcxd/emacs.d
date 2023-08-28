@@ -1737,11 +1737,13 @@ for authentification by default.
   (global-set-key (kbd "C-c o") 'other-window)
   (global-set-key (kbd "C-c k") 'kill-buffer)
   (global-set-key (kbd "C-c S") 'shell-command)
-  (global-set-key (kbd "C-c w1") 'delete-other-windows)
-  (global-set-key (kbd "C-c w2") 'split-window-vertically)
-  (global-set-key (kbd "C-c w3") 'split-window-horizontally)
-  (global-set-key (kbd "C-c w0") 'delete-window)
+  (global-set-key (kbd "C-c w 1") 'delete-other-windows)
+  (global-set-key (kbd "C-c w 2") 'split-window-vertically)
+  (global-set-key (kbd "C-c w 3") 'split-window-horizontally)
+  (global-set-key (kbd "C-c w 0") 'delete-window)
   (global-set-key (kbd "C-c s t") 'hs-toggle-hiding)
+  (global-set-key (kbd "C-c s f") 'flyspell-mode)
+  (global-set-key (kbd "C-c s b") 'flyspell-buffer)
   (global-set-key (kbd "C-c w m") 'woman)
   (global-set-key (kbd "C-<tab>") 'completion-at-point)
 #+end_src
@@ -1923,28 +1925,6 @@ binding.
    :diminish
    :config
    (which-key-mode))
-#+end_src
-
-* Calibre in Emacs :DEPENDENCY:
-
-The author seems do not support this package anymore. Also, Calibre
-itself offers quite rich features which cannot be all exposed to
-Emacs. I also do not read pdf or other EBook formats in Emacs, so I
-quit using this package.
-
-#+begin_src emacs-lisp :tangle no
-  (use-package
-    calibredb
-    :defer t)
-
-  ;; There are some other varaibles I prefer to set in a local custom.el
-  ;; file.
-  ;; (setq
-  ;;  calibredb-root-dir "D:/program/calibre/Calibre Portable/Calibre Library/"
-  ;;  calibredb-db-dir (expand-file-name "metadata.db" calibredb-root-dir)
-  ;;  calibredb-library-alist '(("D:/program/calibre/Calibre Portable/Calibre Library/")
-  ;;                            ("D:/program/calibre/Calibre Portable/Read Library/"))
-  ;;  calibredb-program "D:/program/calibre/Calibre Portable/Calibre/calibredb.exe")
 #+end_src
 
 * Load Custom File

@@ -1452,6 +1452,40 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
   (use-package org-roam-ui :defer t)
 #+end_src
 
+** consult-org-roam
+
+Utility package makes org-roam using consult to search notes, forward
+and backward links. It improves the workflow and thus efficiency.
+
+#+begin_src emacs-lisp
+  (use-package consult-org-roam
+     :ensure t
+     :after org-roam
+     :init
+     (require 'consult-org-roam)
+     ;; Activate the minor mode
+     (consult-org-roam-mode 1)
+     :custom
+     ;; Use `ripgrep' for searching with `consult-org-roam-search'
+     (consult-org-roam-grep-func #'consult-ripgrep)
+     ;; Configure a custom narrow key for `consult-buffer'
+     (consult-org-roam-buffer-narrow-key ?r)
+     ;; Display org-roam buffers right after non-org-roam buffers
+     ;; in consult-buffer (and not down at the bottom)
+     (consult-org-roam-buffer-after-buffers t)
+     :config
+     ;; Eventually suppress previewing for certain functions
+     ;; (consult-customize
+     ;;  consult-org-roam-forward-links
+     ;;  :preview-key (kbd "M-."))
+     :bind
+     ;; Define some convenient keybindings as an addition
+     ("C-c n f" . consult-org-roam-file-find)
+     ("C-c n l" . consult-org-roam-backlinks)
+     ("C-c n L" . consult-org-roam-forward-links)
+     ("C-c n s" . consult-org-roam-search))
+#+end_src
+
 ** denote
 
 #+begin_src emacs-lisp :tangle no
@@ -1602,6 +1636,7 @@ etc..
      ("C-c I" . consult-imenu)
      ("C-c f" . consult-fd)
      ("C-c H" . consult-org-heading))
+    :demand t
     )
 #+end_src
 

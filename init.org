@@ -1462,6 +1462,7 @@ and backward links. It improves the workflow and thus efficiency.
 #+begin_src emacs-lisp
   (use-package consult-org-roam
      :after (org-roam consult)
+     :diminish
      :init
      (require 'consult-org-roam)
      ;; Activate the minor mode

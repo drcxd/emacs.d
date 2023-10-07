@@ -109,18 +109,19 @@ good package to solve this problem.
 
 #+begin_src emacs-lisp
   (use-package
-   diminish
-   :config
-   (diminish 'abbrev-mode)
-   (diminish 'visual-line-mode)
-   (diminish 'eldoc-mode)
-   :hook
-   ((hs-minor-mode . (lambda () (diminish 'hs-minor-mode)))
-    (olivetti-mode . (lambda () (diminish 'olivetti-mode)))
-    (logos-focus-mode . (lambda () (diminish 'buffer-face-mode)))
-    (yas-minor-mode . (lambda () (diminish 'yas-minor-mode)))
-    (org-roam-ui-mode . (lambda () (diminish 'org-roam-ui-mode)))
-    (org-roam-ui-follow-mode . (lambda () (diminish 'org-roam-ui-follow-mode)))))
+    :demand t
+    diminish
+    :config
+    (diminish 'abbrev-mode)
+    (diminish 'visual-line-mode)
+    (diminish 'eldoc-mode)
+    :hook
+    ((hs-minor-mode . (lambda () (diminish 'hs-minor-mode)))
+     (olivetti-mode . (lambda () (diminish 'olivetti-mode)))
+     (logos-focus-mode . (lambda () (diminish 'buffer-face-mode)))
+     (yas-minor-mode . (lambda () (diminish 'yas-minor-mode)))
+     (org-roam-ui-mode . (lambda () (diminish 'org-roam-ui-mode)))
+     (org-roam-ui-follow-mode . (lambda () (diminish 'org-roam-ui-follow-mode)))))
 #+end_src
 
 * Appearance
@@ -278,7 +279,6 @@ to manage these buffers just as you manage files in dired.
 #+begin_src emacs-lisp
   (use-package
     modus-themes
-    :ensure t
     :demand t
     :init
     (defun my-use-modus-themes ()
@@ -879,6 +879,7 @@ decides what are the completion condidates.
   (use-package company :defer t)
   (use-package
    cape
+   :defer t
    :config
    (add-to-list 'completion-at-point-functions #'cape-dabbrev)
    (add-to-list 'completion-at-point-functions #'cape-file)
@@ -1204,7 +1205,7 @@ the =PATH=.
 *** Graphviz Dot
 
 #+begin_src emacs-lisp
-  (use-package graphviz-dot-mode :ensure t)
+  (use-package graphviz-dot-mode :defer t)
 #+end_src
 
 ** Unreal :DEPENDENCY:
@@ -1375,8 +1376,9 @@ citation issues.
     (org-mode . citar-capf-setup))
 
   (use-package citar-embark
-    :after citar embark
-    :no-require
+    :defer t
+    :after (citar embark)
+    ;; :no-require
     :diminish
     :config (citar-embark-mode))
 
@@ -1396,8 +1398,8 @@ bibliographic notes can be easily created in org-roam context.
 #+begin_src emacs-lisp
   (use-package citar-org-roam
     :diminish
-    :after citar org-roam
-    :no-require
+    :after (citar org-roam)
+    ;; :no-require
     :config
     (citar-org-roam-mode)
     (setq citar-org-roam-subdir "references"))
@@ -1459,8 +1461,7 @@ and backward links. It improves the workflow and thus efficiency.
 
 #+begin_src emacs-lisp
   (use-package consult-org-roam
-     :ensure t
-     :after org-roam
+     :after (org-roam consult)
      :init
      (require 'consult-org-roam)
      ;; Activate the minor mode
@@ -1472,7 +1473,7 @@ and backward links. It improves the workflow and thus efficiency.
      (consult-org-roam-buffer-narrow-key ?r)
      ;; Display org-roam buffers right after non-org-roam buffers
      ;; in consult-buffer (and not down at the bottom)
-     (consult-org-roam-buffer-after-buffers t)
+     ;; (consult-org-roam-buffer-after-buffers t)
      :config
      ;; Eventually suppress previewing for certain functions
      ;; (consult-customize
@@ -1540,9 +1541,10 @@ you to browse those information.
 
 #+begin_src emacs-lisp
   (use-package vertico
-               :config
-               (setq read-extended-command-predicate #'command-completion-default-include-p
-                     enable-recursive-minibuffers t))
+    :demand t
+    :config
+    (setq read-extended-command-predicate #'command-completion-default-include-p
+          enable-recursive-minibuffers t))
   (vertico-mode)
 #+end_src
 
@@ -1559,10 +1561,11 @@ in these situations.
 
 #+begin_src emacs-lisp
   (use-package orderless
-               :config
-               (setq completion-styles '(orderless basic)
-                     completion-category-defaults nil
-                     completion-category-overrides '((file (styles partial-completion)))))
+    :demand t
+    :config
+    (setq completion-styles '(orderless basic)
+          completion-category-defaults nil
+          completion-category-overrides '((file (styles partial-completion)))))
 #+end_src
 
 ** marginalia
@@ -1797,6 +1800,7 @@ add some additional configuration specific to meow.
 #+begin_src emacs-lisp
   (use-package
    meow
+   :demand t
    :init
    (defun meow-setup ()
      (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)

@@ -71,7 +71,7 @@ repository or some mirror sites.
 * Benchmark
 
 Some Emacs users don't care about bootstrap time, they claim that they
-only launch emacs once and never close it until they turn off the
+only launch Emacs once and never close it until they turn off the
 computer. However, I prefer to maintain a reasonable startup
 time. It's always a good idea not to pay for what you are not
 using.
@@ -101,10 +101,10 @@ we have all the files related to Emacs in one single directory.
 
 * Diminish
 
-I am using the built-in modeline, and it displays a symbol for all the
-activated minor modes. This could makes the modeline messy, because
+I am using the built-in mode line, and it displays a symbol for all the
+activated minor modes. This could makes the mode line messy, because
 usually we have lots of minor modes turned on but we do not need the
-visual cue on the modeline to tell us they are enabled. Diminish is a
+visual cue on the mode line to tell us they are enabled. Diminish is a
 good package to solve this problem.
 
 #+begin_src emacs-lisp
@@ -289,7 +289,15 @@ to manage these buffers just as you manage files in dired.
     (defun my-custom-set-face ()
       (modus-themes-with-colors
         (custom-set-faces
-         `(lsp-ui-doc-background ((,c :background ,bg-dim))))))
+         `(lsp-ui-doc-background ((,c :background ,bg-dim)))
+         `(symbol-overlay-face-1 ((,c :inherit modus-themes-intense-blue)))
+         `(symbol-overlay-face-2 ((,c :inherit modus-themes-intense-red)))
+         `(symbol-overlay-face-3 ((,c :inherit modus-themes-intense-cyan)))
+         `(symbol-overlay-face-4 ((,c :inherit modus-themes-intense-green)))
+         `(symbol-overlay-face-5 ((,c :inherit modus-themes-intense-yellow)))
+         `(symbol-overlay-face-6 ((,c :inherit modus-themes-intense-magenta)))
+         `(symbol-overlay-face-7 ((,c :inherit modus-themes-subtle-red)))
+         `(symbol-overlay-face-8 ((,c :inherit modus-themes-subtle-green))))))
     (setq modus-themes-italic-constructs t
           modus-themes-bold-constructs nil
           modus-themes-mixed-fonts t
@@ -382,7 +390,7 @@ to manage these buffers just as you manage files in dired.
    (global-ligature-mode t))
 #+end_src
 
-** modeline
+** Mode Line
 
 #+begin_src emacs-lisp
   (setq display-time-24hr-format t)
@@ -462,7 +470,7 @@ platform-specific bug.
 
 I turn on auto-revert-mode because sometimes when a file is edited by
 some external programs, edit it again and save it in Emacs will
-confict with the external changes. Enable auto-revert-mode eliminate
+conflict with the external changes. Enable auto-revert-mode eliminate
 the chances of such problems.
 
 #+begin_src emacs-lisp
@@ -574,8 +582,8 @@ powershell mode to help editing powershell script files.
 
 Windows provides a find program which accepts different arguments than
 the Linux one. Emacs works out-of-the-box with Linux find program, so
-on Windows I have to tell Emacs where the find program, which accepts
-Linux find program conventional arugments, is.
+on Windows I have to tell Emacs where the find program is, one that
+accepts Linux find program conventional arguments.
 
 #+begin_src emacs-lisp
   (if (eq system-type 'windows-nt)
@@ -586,7 +594,7 @@ Linux find program conventional arugments, is.
 
 When working on Windows, sometimes I encounter files containing mixed
 EOL characters. This would make some lines ended with additional
-=^M=. To hide these anoyying characters, I use the following function.
+=^M=. To hide these annoying characters, I use the following function.
 
 #+begin_src emacs-lisp
   (defun remove-dos-eol ()
@@ -611,7 +619,7 @@ found this alert-toast package to implement this feature.
         (setq alert-default-style 'toast)))
 #+end_src
 
-* Utiliy Packages
+* Utility Packages
 
 ** ripgrep
 
@@ -657,7 +665,7 @@ By default, when multiple windows are displayed, Emacs split the
 screen evenly among them. However, sometimes, this not what I
 like. For example, when I am editing one buffer while reading the
 content of another buffer, I may want to make the edited buffer takes
-up most of the screen space. Emacs has a serie of built-in commands
+up most of the screen space. Emacs has a series of built-in commands
 such as =enlarge-window= which allow users to adjust the window size as
 they want. However, this process is repetitive and boring, because it
 usually only enlarge/shrink the window by one row/column. zoom helps
@@ -831,7 +839,7 @@ programmers.
 *** corfu
 
 corfu is a completion front end package. That is, it is responsible to
-display the completion condidates on the screen.
+display the completion candidates on the screen.
 
 #+begin_src emacs-lisp
   (use-package
@@ -872,8 +880,8 @@ display the completion condidates on the screen.
 
 *** cape
 
-cape provides a set of completion backends. A compeltion back ends
-decides what are the completion condidates.
+cape provides a set of completion backends. A completion back ends
+decides what are the completion candidates.
 
 #+begin_src emacs-lisp
   (use-package company :defer t)
@@ -917,7 +925,7 @@ code formatting tool is necessary.
 ** flycheck
 
 flycheck is an error checking package, which displays inline visual
-hint for possible code warnning or error. Currently, I only use it as
+hint for possible code warning or error. Currently, I only use it as
 a facility for lsp.
 
 #+begin_src emacs-lisp
@@ -926,7 +934,8 @@ a facility for lsp.
 
 ** hl-todo
 
-This package highlighs certain keywords in comments and string literals.
+This package highlights certain keywords in comments and string
+literals.
 
 #+begin_src emacs-lisp
   (use-package
@@ -948,7 +957,7 @@ This package highlighs certain keywords in comments and string literals.
 ** git-gutter :DEPENDENCY:
 
 This packages add visual hint on the fringe to indicate which part of
-the file is added/deleted/modified agianst the latest version in the
+the file is added/deleted/modified against the latest version in the
 version control system.
 
 #+begin_src emacs-lisp
@@ -996,7 +1005,7 @@ need.
 
 When inspecting a piece of code, I need to highlight some of the
 symbols to help me quickly locate the places they are referenced.
-symbol-overlay is the best package I have knonw for this task.
+symbol-overlay is the best package I have known for this task.
 
 #+begin_src emacs-lisp
   (use-package
@@ -1013,7 +1022,7 @@ symbol-overlay is the best package I have knonw for this task.
 
 Language server protocol is a powerful tool. It enables Eamcs provide
 IDE-like functions, such as auto-completion,
-jump-to-definition/declaraction, find-references and even
+jump-to-definition/declaration, find-references and even
 variable-rename.
 
 #+begin_src emacs-lisp
@@ -1087,7 +1096,7 @@ situation.
 lsp also provides syntax highlighting support. This requires a backend
 server, and sometimes it is too heavy to practice. What if we are
 editing a simple one-file program but still want better syntax
-highlighing?
+highlighting?
 
 I find the package tree-sitter. Its solution is better than regular
 expression but still not a full functional compiler. This means it is
@@ -1099,7 +1108,7 @@ After Emacs 29, tree-sitter has been integrated into Emacs core. There
 is no need to install these additional packages anymore. Instead,
 Emacs need to be compiled with tree-sitter library. Also, users have
 to compile language specific shared library themselves to support
-specific langauge major mode.
+specific language major mode.
 
 #+begin_src emacs-lisp :tangle no
   (use-package
@@ -1161,7 +1170,7 @@ multiple implementations.
 ***** A Minor Issue
 
 I was using org 9.5 and I found org-babel failed to execute scheme
-code in org-mode buffer. After a simple serach, I found one who had
+code in org-mode buffer. After a simple search, I found one who had
 encountered the same
 issue. https://www.mail-archive.com/emacs-orgmode@gnu.org/msg142485.html
 
@@ -1183,7 +1192,7 @@ support is easy.
 However, it needs some additional setup to work with org-babel (see
 its [[https://wiki.call-cc.org/emacs#geiser][documents]]). What's more, it does not support Windows platform
 nicely. First, there is no pre-built binaries or installers. Though
-MSYS2-MinGW 64 package manager could install a package, it is acutally
+MSYS2-MinGW 64 package manager could install a package, it is actually
 not viable. I have to build the compiler myself. Second,
 =chicken-install=, which is a prerequisite for it to work with
 org-babel, cannot work correctly on Windows. Chicken requires users to
@@ -1205,7 +1214,7 @@ the =PATH=.
 *** Graphviz Dot
 
 #+begin_src emacs-lisp
-  (use-package graphviz-dot-mode :defer t)
+  (use-package graphviz-dot-mode :demand t)
 #+end_src
 
 ** Unreal :DEPENDENCY:
@@ -1244,7 +1253,7 @@ database. I write the following code to ease this process.
 Unreal Header Tool is a program which scans user code and generate
 code to implement its reflection system. Its methodology is to use
 some macros which expands to file name and line number. Then it
-generates code which substitues those macros. As a result, once the
+generates code which substitutes those macros. As a result, once the
 macro's location has changed, the file will fail the
 compilation. However, changing of line number is frequent. This makes
 clang fail to compile the code, thus providing less useful information
@@ -1410,7 +1419,7 @@ bibliographic notes can be easily created in org-roam context.
 * Taking Notes
 
 As a text editor, Emacs is a good place to take notes. There are also
-packages helps you orgnize your notes. The most popular one is
+packages helps you organize your notes. The most popular one is
 org-roam. A lighter-weight choice is denote. These two packages are
 often used to practice a note-taking methodology called [[https://zettelkasten.de/introduction/][Zettelkasten]].
 
@@ -1554,7 +1563,7 @@ you to browse those information.
 ** orderless
 
 orderless allows the completion systems using a different completion
-strategy. The default completion systems complets based on prefix
+strategy. The default completion systems completes based on prefix
 matching. orderless enable it to use a fuzzy matching strategy. This
 is quite useful because you do not always remember exactly what you
 want to search. Sometimes, you do not even know if the things in your
@@ -1573,7 +1582,7 @@ in these situations.
 
 ** marginalia
 
-Marginalia works together with vertico, it provides more information
+marginalia works together with vertico, it provides more information
 of a variable or function in the completion interface. This may help
 you locate your target more quickly.
 
@@ -1655,7 +1664,7 @@ you have to =find-file= to open the directory the file is located. Then
 mark the file to be deleted in dired and finally execute the delete
 operation. With embark, you can simply browse to the file in
 completion system and then execute =embark-act= then use its delete file
-function to delete the current completion condidate. Much more
+function to delete the current completion candidate. Much more
 convenient.
 
 #+begin_src emacs-lisp
@@ -1667,7 +1676,7 @@ convenient.
 
 * Project Management
 
-Project can be applied to orgnize anything you are working on. Not
+Project can be applied to organize anything you are working on. Not
 only programming project, but also writing project, note-taking
 project, etc.. projectile helps you browse project files, search
 contents in project and even run and test project (if it is a
@@ -1764,8 +1773,8 @@ The second variable is necessary. Otherwise, I got an
 "smtpmail-send-it: Sending failed: 530 Authentication required".
 According to smtpmail.el, it should try again when the server is
 requesting authentication. However, it does not. By setting the
-varaible ~smtpmail-servers-requiring-authorization~, smtpmail would ask
-for authentification by default.
+variable ~smtpmail-servers-requiring-authorization~, smtpmail would ask
+for authentication by default.
 
 * Spell Checking
 
@@ -1940,7 +1949,7 @@ strokes in native key bindings, but has more key strokes in Meow.
 Also, Meow has a fallback mechanism. Meow maps =C-h k= to =SPC h SPC k=,
 and =C-h C-k= to =SPC h k=. However, when =C-h C-k= is unbound, =SPC h k= will
 automatically invokes the command bound to =C-h k=. This is convenient,
-but it introduces uncertenty. Meow users could not know the command
+but it introduces uncertainty. Meow users could not know the command
 =SPC h k= invokes is bound to which native key binding: =C-h C-k= or =C-h
 k=.
 

@@ -1475,7 +1475,7 @@ and backward links. It improves the workflow and thus efficiency.
      :after (org-roam consult)
      :diminish
      :init
-     (require 'consult-org-roam)
+     (setq consult-org-roam-buffer-enabled nil)
      ;; Activate the minor mode
      (consult-org-roam-mode 1)
      :custom

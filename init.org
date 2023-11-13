@@ -887,11 +887,10 @@ decides what are the completion candidates.
   (use-package company :defer t)
   (use-package
    cape
-   :defer t
+   :demand t
    :config
    (add-to-list 'completion-at-point-functions #'cape-dabbrev)
    (add-to-list 'completion-at-point-functions #'cape-file)
-   (require 'company-clang)
    (add-to-list 'completion-at-point-functions (cape-company-to-capf #'company-clang)))
 #+end_src
 
@@ -1130,7 +1129,7 @@ specific language major mode.
 
 *** C++
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (defun my/c-indent-then-complete ()
     (interactive)
     (if (= 0 (c-indent-line-or-region))

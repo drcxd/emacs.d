@@ -690,8 +690,13 @@ so you can write anything in it.
 #+begin_src emacs-lisp
   (use-package scratch
     :defer t
+    :init
+    (defun my-scratch-with-prefix ()
+      (interactive)
+      (let ((current-prefix-arg '(0)))
+        (call-interactively 'scratch)))
     :bind
-    ("C-c s c" . scratch))
+    ("C-c s c" . my-scratch-with-prefix))
 #+end_src
 
 ** Pomodoro and Timers
@@ -1278,28 +1283,29 @@ line number has changed.
 * org-mode
 
 #+begin_src emacs-lisp
-      (use-package org
-        :defer t
-        :config
-        (setq org-ellipsis "⤵"
-              org-auto-align-tags nil
-              org-tags-column 0
-              org-catch-invisible-edits 'show-and-error
-              org-special-ctrl-a/e t
-              org-insert-heading-respect-content t
-              org-hide-emphasis-markers t
-              org-pretty-entities t
-              org-babel-C-compiler "clang"
-              org-babel-C++-compiler "clang++")
-        (add-to-list 'org-babel-load-languages '(C . t))
-        (add-to-list 'org-babel-load-languages '(scheme . t))
-        (add-to-list 'org-babel-load-languages '(dot . t))
-        (add-to-list 'org-modules 'org-habit t)
-        (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
-        :hook
-        (org-mode . flyspell-mode))
+  (use-package org
+    :defer t
+    :config
+    (setq org-ellipsis "⤵"
+          org-auto-align-tags nil
+          org-tags-column 0
+          org-catch-invisible-edits 'show-and-error
+          org-special-ctrl-a/e t
+          org-insert-heading-respect-content t
+          org-hide-emphasis-markers t
+          org-pretty-entities t
+          org-babel-C-compiler "clang"
+          org-babel-C++-compiler "clang++")
+    (add-to-list 'org-babel-load-languages '(C . t))
+    (add-to-list 'org-babel-load-languages '(scheme . t))
+    (add-to-list 'org-babel-load-languages '(dot . t))
+    (add-to-list 'org-modules 'org-habit t)
+    (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
+    :hook
+    ((org-mode . flyspell-mode)
+     (org-mode . variable-pitch-mode)))
 
-      (use-package htmlize :defer t)
+  (use-package htmlize :defer t)
 #+end_src
 
 ** Appearance =org-modern=

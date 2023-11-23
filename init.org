@@ -1303,7 +1303,7 @@ line number has changed.
     (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
     :hook
     ((org-mode . flyspell-mode)
-     (org-mode . variable-pitch-mode)))
+     (org-mode . olivetti-mode)))
 
   (use-package htmlize :defer t)
 #+end_src

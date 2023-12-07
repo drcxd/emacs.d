@@ -1468,6 +1468,7 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
     :defer t
     :init
     (setq
+     org-roam-database-connector 'sqlite-builtin
      org-roam-directory "~/org-roam/"
      org-roam-node-display-template (concat "${title} " (propertize "${tags}" 'face 'org-tag))
      org-roam-capture-templates '(("d" "default" plain "%?" :target

@@ -2037,6 +2037,16 @@ binding.
    (which-key-mode))
 #+end_src
 
+* Read EPUB
+
+#+begin_src emacs-lisp
+  (use-package
+    nov
+    :defer t
+    :init
+    (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
+#+end_src
+
 * Load Custom File
 
 Finally, after all the other settings have been done, we load the

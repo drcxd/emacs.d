@@ -2037,7 +2037,29 @@ binding.
    (which-key-mode))
 #+end_src
 
-* Read EPUB
+* EBooks
+
+** calibredb
+
+#+begin_src emacs-lisp
+  (use-package
+    calibredb
+    :defer t)
+#+end_src
+
+To use this package, several other variables have to be set:
+
+- =calibredb-root-dir=
+- =calibredb-db-dir=
+- =calibredb-program=
+- =calibredb-library-alist=
+
+
+However, the values of these variables depends on the actual location
+of the calibre libraries on the current computer. Thus, it is better
+to put these configurations in the local =custom.el= file.
+
+** Read EPUB
 
 #+begin_src emacs-lisp
   (use-package

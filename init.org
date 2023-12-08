@@ -1978,7 +1978,12 @@ add some additional configuration specific to meow.
    (setq meow-keypad-leader-dispatch "C-c")
    (setq meow-mode-state-list
          '((special-mode . motion)
-           (text-mode . normal)))
+           (text-mode . normal)
+           (lisp-interaction-mode . normal)))
+   ;; use motion state by default
+   (defun my-meow-guess-state (state)
+     'motion)
+   (advice-add 'meow--mode-guess-state :filter-return #'my-meow-guess-state)
    (meow-setup)
    (meow-global-mode 1)
    (global-set-key (kbd "<f6>") 'meow-keypad))

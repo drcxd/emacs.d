@@ -1979,8 +1979,7 @@ add some additional configuration specific to meow.
    (setq meow-mode-state-list
          '((special-mode . motion)
            (text-mode . normal)
-           (prog-mode . normal)
-           (lisp-interaction-mode . normal)))
+           (prog-mode . normal)))
    ;; use motion state by default
    (defun my-meow-guess-state (state)
      'motion)

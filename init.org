@@ -2044,7 +2044,9 @@ binding.
 
 * EBooks
 
-** calibredb
+** calibre Interface
+
+*** COMMENT calibredb
 
 #+begin_src emacs-lisp
   (use-package
@@ -2063,6 +2065,22 @@ To use this package, several other variables have to be set:
 However, the values of these variables depends on the actual location
 of the calibre libraries on the current computer. Thus, it is better
 to put these configurations in the local =custom.el= file.
+
+*** calibre
+
+This is an alternative to calibredb. In my opinion, this package is
+better. However, this is a problem preventing this package form
+working on Windows. On Linux, I prefer this package over calibredb.
+
+#+begin_src emacs-lisp
+  (use-package calibre :defer t)
+#+end_src
+
+This package also requires some additional settings, for example:
+
+#+begin_src emacs-lisp :tangle no
+  (setq calibre-libraries '(("nonficition" . "~/Documents/Non Fiction Library/")))
+#+end_src
 
 ** Read EPUB
 

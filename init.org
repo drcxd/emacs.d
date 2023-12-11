@@ -2082,7 +2082,9 @@ This package also requires some additional settings, for example:
   (setq calibre-libraries '(("nonficition" . "~/Documents/Non Fiction Library/")))
 #+end_src
 
-** Read EPUB
+** nov
+
+nov is a package that allows you read EPUB files inside Emacs.
 
 #+begin_src emacs-lisp
   (use-package
@@ -2092,7 +2094,8 @@ This package also requires some additional settings, for example:
     (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
     (setq nov-text-width t)
     :hook
-    (nov-mode . visual-line-mode))
+    ((nov-mode . visual-line-mode)
+     (nov-post-html-render . toggle-truncate-lines)))
 #+end_src
 
 * Load Custom File

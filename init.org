@@ -2095,7 +2095,7 @@ nov is a package that allows you read EPUB files inside Emacs.
     (setq nov-text-width t)
     :hook
     ((nov-mode . visual-line-mode)
-     (nov-post-html-render . toggle-truncate-lines)))
+     (nov-post-html-render . (lambda () (toggle-truncate-lines 0)))))
 #+end_src
 
 * Load Custom File

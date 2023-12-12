@@ -2068,12 +2068,21 @@ to put these configurations in the local =custom.el= file.
 
 *** calibre
 
-This is an alternative to calibredb. In my opinion, this package is
-better. However, this is a problem preventing this package form
-working on Windows. On Linux, I prefer this package over calibredb.
+This is an alternative to calibredb. I prefer this package over
+calibredb. The =defun= is required to temporarily circumvent an issue
+related to the C standard library implementation on Windows. It can be
+removed after the author add this definition to the package.
 
 #+begin_src emacs-lisp
-  (use-package calibre :defer t)
+  (use-package
+    calibre
+    :defer t
+    :config
+    (defun calibre-db--parse-timestamp (timestamp)
+     "Return a Lisp timestamp from TIMESTAMP.
+  TIMESTAMP is a string of the form YYYY-MM-DD HH:MM:SS.xxxxxx+00:00."
+     (ignore-errors (parse-iso8601-time-string (string-replace " " "T" 
+  timestamp)))))
 #+end_src
 
 This package also requires some additional settings, for example:

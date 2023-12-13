@@ -449,6 +449,8 @@ to manage these buffers just as you manage files in dired.
       (add-hook 'modus-themes-after-load-theme-hook #'logos-update-fringe-in-buffers))
     (with-eval-after-load 'ef-themes
       (add-hook 'ef-themes-post-load-hook #'logos-update-fringe-in-buffers))
+    (with-eval-after-load 'standard-themes
+      (add-hook 'standard-themes-post-load-hook #'logos-update-fringe-in-buffers))
     :bind
     (("C-c s l" . logos-focus-mode)
      ("C-c s n" . logos-narrow-dwim)

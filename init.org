@@ -22,7 +22,7 @@ not figured out how to enable it in the tangled file.
 * Package
 
 Since I am currently located in China, sometimes the connection to
-melpa is not stable. As a result, I have to use lcoal package archive
+melpa is not stable. As a result, I have to use local package archive
 repository or some mirror sites.
 
 #+begin_src emacs-lisp
@@ -2076,13 +2076,7 @@ removed after the author add this definition to the package.
 #+begin_src emacs-lisp
   (use-package
     calibre
-    :defer t
-    :config
-    (defun calibre-db--parse-timestamp (timestamp)
-     "Return a Lisp timestamp from TIMESTAMP.
-  TIMESTAMP is a string of the form YYYY-MM-DD HH:MM:SS.xxxxxx+00:00."
-     (ignore-errors (parse-iso8601-time-string (string-replace " " "T" 
-  timestamp)))))
+    :defer t)
 #+end_src
 
 This package also requires some additional settings, for example:

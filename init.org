@@ -276,11 +276,11 @@ to manage these buffers just as you manage files in dired.
 
 ** Themes
 
-*** COMMENT Modus Themes
+*** Modus Themes
 #+begin_src emacs-lisp
   (use-package
     modus-themes
-    :demand t
+    :defer t
     :init
     (defun my-modus-themes-custom-face ()
       (modus-themes-with-colors
@@ -294,6 +294,10 @@ to manage these buffers just as you manage files in dired.
          `(symbol-overlay-face-6 ((,c :inherit modus-themes-intense-magenta)))
          `(symbol-overlay-face-7 ((,c :inherit modus-themes-subtle-red)))
          `(symbol-overlay-face-8 ((,c :inherit modus-themes-subtle-green))))))
+    (defun my-use-modus-themes ()
+      (interactive)
+      (progn (global-set-key (kbd "C-c t g") 'modus-themes-select)
+             (load-theme 'modus-operandi :no-confirm)))
     :config
     (setq modus-themes-italic-constructs t
           modus-themes-bold-constructs nil
@@ -310,11 +314,10 @@ to manage these buffers just as you manage files in dired.
                                   (6 . (variable-pitch 1.03444))
                                   (7 . (variable-pitch 1.02129))
                                   (t . (variable-pitch 1.0))))
-    :bind
-    ("C-c t g" . modus-themes-select)
+    ;; :bind
+    ;; ("C-c t g" . modus-themes-select)
     :hook
     (modus-themes-after-load-theme . my-modus-themes-custom-face))
-  (load-theme 'modus-operandi :no-confirm)
 #+end_src
 
 *** Standard Themes
@@ -322,7 +325,7 @@ to manage these buffers just as you manage files in dired.
 #+begin_src emacs-lisp
   (use-package
     standard-themes
-    :demand t
+    :defer t
     :init
     (defun my-standard-themes-custom-face ()
       (standard-themes-with-colors
@@ -336,6 +339,10 @@ to manage these buffers just as you manage files in dired.
         `(symbol-overlay-face-6 ((,c :inherit standard-themes-intense-magenta)))
         `(symbol-overlay-face-7 ((,c :inherit standard-themes-subtle-red)))
         `(symbol-overlay-face-8 ((,c :inherit standard-themes-subtle-green))))))
+    (defun my-use-standard-themes ()
+      (interactive)
+      (progn (global-set-key (kbd "C-c t g") 'standard-themes-toggle)
+             (standard-themes-load-light)))
     :config
     (setq standard-themes-bold-constructs t
           standard-themes-italic-constructs t
@@ -351,19 +358,18 @@ to manage these buffers just as you manage files in dired.
                                      (6 . (variable-pitch 1.03444))
                                      (7 . (variable-pitch 1.02129))
                                      (t . (variable-pitch 1.0))))
-    :bind
-    ("C-c t g" . standard-themes-toggle)
+    ;; :bind
+    ;; ("C-c t g" . standard-themes-toggle)
     :hook
     (standard-themes-post-load . my-standard-themes-custom-face))
-  (standard-themes-load-light)
 #+end_src
 
-*** COMMENT Ef Themes
+*** Ef Themes
 
 #+begin_src emacs-lisp
   (use-package
     ef-themes
-    :demand t
+    :defer t
     :init
     (defun my-ef-themes-custom-face ()
       (ef-themes-with-colors
@@ -377,6 +383,10 @@ to manage these buffers just as you manage files in dired.
         `(symbol-overlay-face-6 ((,c :background ,bg-cyan-intense)))
         `(symbol-overlay-face-7 ((,c :background ,bg-red-subtle)))
         `(symbol-overlay-face-8 ((,c :background ,bg-green-subtle))))))
+    (defun my-use-ef-themes ()
+      (interactive)
+      (progn (global-set-key (kbd "C-c t g") 'ef-themes-select)
+             (load-theme 'ef-elea-light :no-confirm)))
     :config
     (setq ef-themes-mixed-fonts t
           ef-themes-variable-pitch-ui t
@@ -390,11 +400,10 @@ to manage these buffers just as you manage files in dired.
                                (6 . (variable-pitch 1.03444))
                                (7 . (variable-pitch 1.02129))
                                (t . (variable-pitch 1.0))))
-    :bind
-    ("C-c t g" . ef-themes-select)
+    ;; :bind
+    ;; ("C-c t g" . ef-themes-select)
     :hook
     (ef-themes-post-load . my-ef-themes-custom-face))
-  (load-theme 'ef-elea-light :no-confirm)
 #+end_src
 
 ** Ligature

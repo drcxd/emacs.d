@@ -393,8 +393,8 @@ to manage these buffers just as you manage files in dired.
     :bind
     ("C-c t g" . ef-themes-select)
     :hook
-    (ef-themes-post-load-hook . my-ef-themes-custom-face))
-  (load-theme 'ef-light :no-confirm)
+    (ef-themes-post-load . my-ef-themes-custom-face))
+  (load-theme 'ef-elea-light :no-confirm)
 #+end_src
 
 ** Ligature

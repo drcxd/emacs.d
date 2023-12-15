@@ -382,7 +382,7 @@ to manage these buffers just as you manage files in dired.
     (defun my-use-ef-themes ()
       (interactive)
       (progn (global-set-key (kbd "C-c t g") 'ef-themes-select)
-             (ef-themes-select 'cyprus)))
+             (ef-themes-select 'ef-cyprus)))
     (setq ef-themes-disable-other-themes t)
     :config
     (setq ef-themes-mixed-fonts t

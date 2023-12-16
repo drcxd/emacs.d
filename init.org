@@ -1983,6 +1983,8 @@ add some additional configuration specific to meow.
    (setq meow-keypad-leader-dispatch "C-c")
    (setq meow-mode-state-list
          '((special-mode . motion)
+           (eshell-mode . insert)
+           (fundamental-mode . normal)
            (text-mode . normal)
            (prog-mode . normal)))
    ;; use motion state by default

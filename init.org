@@ -1653,6 +1653,7 @@ etc..
         (call-interactively 'consult-ripgrep)))
     :config
     (setq consult-fontify-max-size 262144) ;; 262144 = 2 ^ 18
+    (setq consult-preview-excluded-files '("*.epub"))
 
     (defvar consult--fd-command nil)
     (defun consult--fd-builder (input)

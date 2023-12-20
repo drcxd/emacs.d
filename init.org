@@ -108,8 +108,7 @@ visual cue on the mode line to tell us they are enabled. Diminish is a
 good package to solve this problem.
 
 #+begin_src emacs-lisp
-  (use-package
-    diminish
+  (use-package diminish
     :demand t
     :config
     (diminish 'abbrev-mode)
@@ -247,8 +246,7 @@ to manage these buffers just as you manage files in dired.
 ** Unicode Support
 
 #+begin_src emacs-lisp
-  (use-package
-   unicode-fonts
+  (use-package unicode-fonts
    :config
    (unicode-fonts-setup))
 #+end_src
@@ -278,8 +276,7 @@ to manage these buffers just as you manage files in dired.
 
 *** Modus Themes
 #+begin_src emacs-lisp
-  (use-package
-    modus-themes
+  (use-package modus-themes
     :defer t
     :init
     (defun my-modus-themes-custom-face ()
@@ -321,8 +318,7 @@ to manage these buffers just as you manage files in dired.
 *** Standard Themes
 
 #+begin_src emacs-lisp
-  (use-package
-    standard-themes
+  (use-package standard-themes
     :defer t
     :init
     (defun my-standard-themes-custom-face ()
@@ -363,8 +359,7 @@ to manage these buffers just as you manage files in dired.
 *** Ef Themes
 
 #+begin_src emacs-lisp
-  (use-package
-    ef-themes
+  (use-package ef-themes
     :defer t
     :init
     (defun my-ef-themes-custom-face ()
@@ -403,8 +398,7 @@ to manage these buffers just as you manage files in dired.
 ** Ligature
 
 #+begin_src emacs-lisp
-  (use-package
-   ligature
+  (use-package ligature
    :config
    (ligature-set-ligatures
     'prog-mode
@@ -436,8 +430,7 @@ to manage these buffers just as you manage files in dired.
 
 #+begin_src emacs-lisp
   (use-package olivetti :defer t :diminish)
-  (use-package
-    logos
+  (use-package logos
     :diminish
     :defer t
     :config
@@ -648,8 +641,7 @@ found this alert-toast package to implement this feature.
 
 #+begin_src emacs-lisp
   (if (eq system-type 'windows-nt)
-      (use-package
-        alert-toast
+      (use-package alert-toast
         :after alert
         :config
         (setq alert-default-style 'toast)))
@@ -838,8 +830,7 @@ actively. However, since yasnippet is well-known, some other packages,
 such as lsp-mode, depends on it somehow, so I still install it.
 
 #+begin_src emacs-lisp
-  (use-package
-   tempel
+  (use-package tempel
    :defer t
    :init
    ;; Setup completion at point
@@ -861,8 +852,7 @@ such as lsp-mode, depends on it somehow, so I still install it.
    ((prog-mode . tempel-setup-capf)
     (text-mode . tempel-setup-capf)))
 
-  (use-package
-   yasnippet
+  (use-package yasnippet
    :diminish
    :defer t
    :hook
@@ -883,8 +873,7 @@ corfu is a completion front end package. That is, it is responsible to
 display the completion candidates on the screen.
 
 #+begin_src emacs-lisp
-  (use-package
-   corfu
+  (use-package corfu
    :init
    (setq corfu-auto nil
          corfu-cycle t
@@ -926,8 +915,7 @@ decides what are the completion candidates.
 
 #+begin_src emacs-lisp
   (use-package company :defer t)
-  (use-package
-   cape
+  (use-package cape
    :demand t
    :config
    (add-to-list 'completion-at-point-functions #'cape-dabbrev)
@@ -978,8 +966,7 @@ This package highlights certain keywords in comments and string
 literals.
 
 #+begin_src emacs-lisp
-  (use-package
-   hl-todo
+  (use-package hl-todo
    :defer t
    :config
    (setq hl-todo-highlight-punctuation ":"
@@ -1003,8 +990,7 @@ the file is added/deleted/modified against the latest version in the
 version control system.
 
 #+begin_src emacs-lisp
-  (use-package
-   git-gutter
+  (use-package git-gutter
    :diminish
    :defer t
    :config
@@ -1035,8 +1021,7 @@ package to help us perform this task. evil-nerd-commenter fits my
 need.
 
 #+begin_src emacs-lisp
-  (use-package
-   evil-nerd-commenter
+  (use-package evil-nerd-commenter
    :defer t
    :bind
    (("C-c c" . evilnc-comment-or-uncomment-lines)
@@ -1050,8 +1035,7 @@ symbols to help me quickly locate the places they are referenced.
 symbol-overlay is the best package I have known for this task.
 
 #+begin_src emacs-lisp
-  (use-package
-   symbol-overlay
+  (use-package symbol-overlay
    :defer t
    :bind
    (("C-c s p" . symbol-overlay-put)
@@ -1068,8 +1052,7 @@ jump-to-definition/declaration, find-references and even
 variable-rename.
 
 #+begin_src emacs-lisp
-  (use-package
-   lsp-mode
+  (use-package lsp-mode
    :defer t
    :init
    (defun corfu-lsp-setup ()
@@ -1098,8 +1081,7 @@ variable-rename.
     ("C-c l n" . lsp-rename)
     ("C-c l t" . lsp-semantic-tokens-mode)))
 
-  (use-package
-   lsp-ui
+  (use-package lsp-ui
    :defer t
    :bind
    (:map lsp-ui-mode-map
@@ -1108,8 +1090,7 @@ variable-rename.
    :config
    (setq lsp-ui-doc-show-with-mouse nil))
 
-  (use-package
-   consult-lsp
+  (use-package consult-lsp
    :after (lsp-mode consult)
    :bind
    (:map lsp-mode-map
@@ -1129,7 +1110,7 @@ variable-rename.
   (add-to-list 'safe-local-eval-forms '(lsp))
 #+end_src
 
-** Syntax Highlighting :DEPRECATED:
+** COMMENT Syntax Highlighting :DEPRECATED:
 
 Eamcs has built-in syntax highlighting support, however it is based on
 regular expression. This means it would not be correct in every
@@ -1153,8 +1134,7 @@ to compile language specific shared library themselves to support
 specific language major mode.
 
 #+begin_src emacs-lisp :tangle no
-  (use-package
-   tree-sitter
+  (use-package tree-sitter
    :diminish
    :defer t
    :hook
@@ -1163,8 +1143,7 @@ specific language major mode.
     (lua-mode . tree-sitter-mode)
     (tree-sitter-after-on . tree-sitter-hl-mode)))
 
-  (use-package
-   tree-sitter-langs
+  (use-package tree-sitter-langs
    :defer t)
 #+end_src
 
@@ -1702,8 +1681,7 @@ contents in project and even run and test project (if it is a
 programming project).
 
 #+begin_src emacs-lisp
-  (use-package
-   projectile
+  (use-package projectile
    :diminish
    :defer t
    :bind
@@ -1723,8 +1701,7 @@ programming project).
 magit is the well-known Emacs interface for git.
 
 #+begin_src emacs-lisp
-  (use-package
-   magit
+  (use-package magit
    :defer t
    :bind
    ("C-c M" . magit))
@@ -1849,8 +1826,7 @@ meow, I do not have to change my original key binding settings. I only
 add some additional configuration specific to meow.
 
 #+begin_src emacs-lisp
-  (use-package
-   meow
+  (use-package meow
    :demand t
    :init
    (defun meow-setup ()
@@ -2017,8 +1993,7 @@ their key bindings when you are in the middle of a sequence of key
 binding.
 
 #+begin_src emacs-lisp
-  (use-package
-   which-key
+  (use-package which-key
    :diminish
    :config
    (which-key-mode))
@@ -2031,8 +2006,7 @@ binding.
 *** COMMENT calibredb
 
 #+begin_src emacs-lisp
-  (use-package
-    calibredb
+  (use-package calibredb
     :defer t)
 #+end_src
 
@@ -2056,8 +2030,7 @@ related to the C standard library implementation on Windows. It can be
 removed after the author add this definition to the package.
 
 #+begin_src emacs-lisp
-  (use-package
-    calibre
+  (use-package calibre
     :defer t)
 #+end_src
 
@@ -2072,8 +2045,7 @@ This package also requires some additional settings, for example:
 nov is a package that allows you read EPUB files inside Emacs.
 
 #+begin_src emacs-lisp
-  (use-package
-    nov
+  (use-package nov
     :defer t
     :init
     (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))

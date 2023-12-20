@@ -1642,8 +1642,8 @@ of things, such as buffers, file contents, grep results, find results,
 etc..
 
 #+begin_src emacs-lisp
-  (use-package
-    consult
+  (use-package consult
+    :demand t
     :init
     (setq xref-show-xrefs-function #'consult-xref
           xref-show-definitions-function #'consult-xref)
@@ -1653,31 +1653,7 @@ etc..
         (call-interactively 'consult-ripgrep)))
     :config
     (setq consult-fontify-max-size 262144) ;; 262144 = 2 ^ 18
-    (setq consult-preview-excluded-files '("*.epub"))
-
-    (defvar consult--fd-command nil)
-    (defun consult--fd-builder (input)
-      (unless consult--fd-command
-        (setq consult--fd-command
-              (if (eq 0 (call-process-shell-command "fdfind"))
-                  "fdfind"
-                "fd")))
-      (pcase-let* ((`(,arg . ,opts) (consult--command-split input))
-                   (`(,re . ,hl) (funcall consult--regexp-compiler
-                                          arg 'extended t)))
-        (when re
-          (cons (append
-                 (list consult--fd-command
-                       "--color=never" "--full-path"
-                       (consult--join-regexps re 'extended))
-                 opts)
-                hl))))
-
-    (defun consult-fd (&optional dir initial)
-    (interactive "P")
-    (pcase-let* ((`(,prompt ,paths ,dir) (consult--directory-prompt "Fd" dir))
-                 (default-directory dir))
-      (find-file (consult--find prompt #'consult--fd-builder initial))))
+    (setq consult-preview-excluded-files '(".*epub"))
 
     ;; this handles problems when consult results contains
     ;; Chinese characters
@@ -1695,9 +1671,7 @@ etc..
      ("C-c R" . consult-ripgrep)
      ("C-c I" . consult-imenu)
      ("C-c f" . consult-fd)
-     ("C-c H" . consult-org-heading))
-    :demand t
-    )
+     ("C-c H" . consult-org-heading)))
 #+end_src
 
 ** embark

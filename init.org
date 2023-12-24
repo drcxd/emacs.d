@@ -279,7 +279,7 @@ to manage these buffers just as you manage files in dired.
   (use-package modus-themes
     :defer t
     :init
-    (defun my-modus-themes-custom-face ()
+    (defun my/modus-themes-custom-face ()
       (modus-themes-with-colors
         (custom-set-faces
          `(lsp-ui-doc-background ((,c :background ,bg-dim)))
@@ -291,7 +291,7 @@ to manage these buffers just as you manage files in dired.
          `(symbol-overlay-face-6 ((,c :inherit modus-themes-intense-magenta)))
          `(symbol-overlay-face-7 ((,c :inherit modus-themes-subtle-red)))
          `(symbol-overlay-face-8 ((,c :inherit modus-themes-subtle-green))))))
-    (defun my-use-modus-themes ()
+    (defun my/use-modus-themes ()
       (interactive)
       (progn (global-set-key (kbd "C-c t g") 'modus-themes-select)
              (modus-themes-select 'modus-operandi)))
@@ -312,7 +312,7 @@ to manage these buffers just as you manage files in dired.
                                   (7 . (variable-pitch 1.02129))
                                   (t . (variable-pitch 1.0))))
     :hook
-    (modus-themes-after-load-theme . my-modus-themes-custom-face))
+    (modus-themes-after-load-theme . my/modus-themes-custom-face))
 #+end_src
 
 *** Standard Themes
@@ -321,7 +321,7 @@ to manage these buffers just as you manage files in dired.
   (use-package standard-themes
     :defer t
     :init
-    (defun my-standard-themes-custom-face ()
+    (defun my/standard-themes-custom-face ()
       (standard-themes-with-colors
        (custom-set-faces
         `(lsp-ui-doc-background ((,c :background ,bg-dim)))
@@ -333,7 +333,7 @@ to manage these buffers just as you manage files in dired.
         `(symbol-overlay-face-6 ((,c :inherit standard-themes-intense-magenta)))
         `(symbol-overlay-face-7 ((,c :inherit standard-themes-subtle-red)))
         `(symbol-overlay-face-8 ((,c :inherit standard-themes-subtle-green))))))
-    (defun my-use-standard-themes ()
+    (defun my/use-standard-themes ()
       (interactive)
       (progn (global-set-key (kbd "C-c t g") 'standard-themes-toggle)
              (standard-themes-load-light)))
@@ -353,7 +353,7 @@ to manage these buffers just as you manage files in dired.
                                      (7 . (variable-pitch 1.02129))
                                      (t . (variable-pitch 1.0))))
     :hook
-    (standard-themes-post-load . my-standard-themes-custom-face))
+    (standard-themes-post-load . my/standard-themes-custom-face))
 #+end_src
 
 *** Ef Themes
@@ -362,7 +362,7 @@ to manage these buffers just as you manage files in dired.
   (use-package ef-themes
     :defer t
     :init
-    (defun my-ef-themes-custom-face ()
+    (defun my/ef-themes-custom-face ()
       (ef-themes-with-colors
        (custom-set-faces
         `(lsp-ui-doc-background ((,c :background ,bg-dim)))
@@ -374,7 +374,7 @@ to manage these buffers just as you manage files in dired.
         `(symbol-overlay-face-6 ((,c :background ,bg-cyan-intense)))
         `(symbol-overlay-face-7 ((,c :background ,bg-red-subtle)))
         `(symbol-overlay-face-8 ((,c :background ,bg-green-subtle))))))
-    (defun my-use-ef-themes ()
+    (defun my/use-ef-themes ()
       (interactive)
       (progn (global-set-key (kbd "C-c t g") 'ef-themes-select)
              (ef-themes-select 'ef-cyprus)))
@@ -392,7 +392,7 @@ to manage these buffers just as you manage files in dired.
                                (7 . (variable-pitch 1.02129))
                                (t . (variable-pitch 1.0))))
     :hook
-    (ef-themes-post-load . my-ef-themes-custom-face))
+    (ef-themes-post-load . my/ef-themes-custom-face))
 #+end_src
 
 ** Ligature
@@ -719,12 +719,12 @@ so you can write anything in it.
   (use-package scratch
     :defer t
     :init
-    (defun my-scratch-with-prefix ()
+    (defun my/scratch-with-prefix ()
       (interactive)
       (let ((current-prefix-arg '(0)))
         (call-interactively 'scratch)))
     :bind
-    ("C-c s c" . my-scratch-with-prefix))
+    ("C-c s c" . my/scratch-with-prefix))
 #+end_src
 
 ** Pomodoro and Timers
@@ -1514,30 +1514,30 @@ and backward links. It improves the workflow and thus efficiency.
                 ("C-c n o" . denote-link-find-file)
                 ("C-c n M" . denote-rename-file)
                 ("C-c n m" . denote-rename-file-using-front-matter)
-                ("C-c n j" . my-denote-journal)
+                ("C-c n j" . my/denote-journal)
                 ("C-c n a" . denote-keywords-add)
                 ("C-c n r" . denote-keywords-remove)))
 
-  (defun my-denote--journal-today-file ()
+  (defun my/denote--journal-today-file ()
     "Find today's _journal entry, else return nil."
      (seq-find
       (lambda (file)
         (string-match-p (format "%s.*_journal" (format-time-string "%A-%e-%B-%Y")) file))
       (denote-directory-files)))
 
-  (defun my-denote--create-journal ()
+  (defun my/denote--create-journal ()
       "Create an entry tagged 'journal'."
       (interactive)
       (denote (format-time-string "%A %e %B %Y")
               '("journal")))
 
-  (defun my-denote-journal ()
+  (defun my/denote-journal ()
     "Open or create journal for today."
     (interactive)
-    (let ((prompt (my-denote--journal-today-file)))
+    (let ((prompt (my/denote--journal-today-file)))
       (if prompt
           (funcall-interactively 'denote-open-or-create prompt)
-        (my-denote-create-journal))))
+        (my/denote-create-journal))))
 #+end_src
 
 * Completion
@@ -1915,9 +1915,9 @@ add some additional configuration specific to meow.
            (text-mode . normal)
            (prog-mode . normal)))
    ;; use motion state by default
-   (defun my-meow-guess-state (state)
+   (defun my/meow-guess-state (state)
      'motion)
-   (advice-add 'meow--mode-guess-state :filter-return #'my-meow-guess-state)
+   (advice-add 'meow--mode-guess-state :filter-return #'my/meow-guess-state)
    (meow-setup)
    (meow-global-mode 1)
    (global-set-key (kbd "<f6>") 'meow-keypad))

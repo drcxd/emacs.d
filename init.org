@@ -1341,13 +1341,25 @@ following code:
   (setq initial-buffer-choice #'my/get-org-agenda-buffer)
 #+end_src
 
-** capture
+** COMMENT capture
 
 #+begin_src emacs-lisp
   (use-package org
                :defer t
                :config
                (setq org-default-notes-file (concat org-directory "/notes.org")))
+#+end_src
+
+** Delete Link
+
+#+begin_src emacs-lisp
+  (defun my/org-remove-link ()
+    "Remove an org link"
+    (interactive)
+    (if (org-in-regexp org-link-bracket-re 1)
+        (save-excursion
+          (let ((remove (list (match-beginning 0) (match-end 0))))
+            (apply 'delete-region remove)))))
 #+end_src
 
 * Citation

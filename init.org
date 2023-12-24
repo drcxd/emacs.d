@@ -1897,7 +1897,9 @@ add some additional configuration specific to meow.
       '("`" . delete-horizontal-space)
       '("{" . backward-paragraph)
       '("}" . forward-paragraph)
-      '("/" . hs-toggle-hiding)))
+      '("/" . hs-toggle-hiding))
+     ;; disable SPC in motion mode since it might be used
+     (define-key meow-motion-state-keymap (kbd "SPC") nil))
    :config
    (setq meow-replace-state-name-list
         '((normal . "[N]")

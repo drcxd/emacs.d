@@ -529,9 +529,8 @@ maintained recent file list.
 
 ** Dired
 
-dired is the facility Emacs uses to manage directories, its like the
-file explorer of an operating system, you can perform any file related
-operations in dired.
+dired is the facility Emacs uses to manage files. It's the file
+explorer of Emacs. You can perform many file operations in dired.
 
 #+begin_src emacs-lisp
   (setq dired-kill-when-opening-new-dired-buffer t)
@@ -540,7 +539,8 @@ operations in dired.
     (dired-hide-details-mode 1)
     ;; global-auto-revert-mode does not work for dired
     (auto-revert-mode)
-    (hl-line-mode 1))
+    (hl-line-mode 1)
+    (setq dired-guess-shell-alist-user '(("\\.pdf\\'" "okular &"))))
   (add-hook 'dired-mode-hook 'dired-mode-setup)
   (with-eval-after-load 'dired
     (require 'dired-x))
@@ -592,6 +592,12 @@ some mottoes selected randomly from a pre-defined list.
                 "\n"))
 #+end_src
 
+** Hide Async Shell Command Buffer
+
+#+begin_src emacs-lisp
+  (add-to-list 'display-buffer-alist
+    (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
+#+end_src
 * OS-Specific Settings
 
 ** Windows
@@ -2006,8 +2012,25 @@ related to the C standard library implementation on Windows. It can be
 removed after the author add this definition to the package.
 
 #+begin_src emacs-lisp
-  (use-package calibre
-    :defer t)
+    (use-package calibre
+      :defer t
+      :config
+      (use-package calibre-library
+        :ensure nil
+        :config
+        (defun calibre-book--path (book)
+          "Return the path to the directory of BOOK."
+          (let ((path (calibre-book-path book)))
+            (file-name-concat (calibre--library)
+                              path)))
+        (defun calibre-library-open-book-dir (book)
+          "Open the directory of BOOK."
+          (interactive (list (tabulated-list-get-id))
+                       calibre-library-mode)
+          (find-file (calibre-book--path book)))
+        :bind
+        (:map calibre-library-mode-map
+              ("O" . calibre-library-open-book-dir))))
 #+end_src
 
 This package also requires some additional settings, for example:

@@ -1286,7 +1286,8 @@ line number has changed.
     (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
     :hook
     ((org-mode . flyspell-mode)
-     (org-mode . logos-focus-mode)))
+     (org-mode . logos-focus-mode)
+     (org-mode . org-indent-mode)))
 
   (use-package htmlize :defer t)
 #+end_src
@@ -1298,8 +1299,11 @@ appearance of header line, table, time stamp and other things.
 
 #+begin_src emacs-lisp
   (use-package org-modern
-               :defer t
-               :hook (org-mode . global-org-modern-mode))
+    :defer t
+    :config
+    (setq org-modern-star '("🌟" "☪" "🌠" "✧" "⚝" "🔯")
+          org-modern-list '((43 . "✠") (45 . "➢") (42 . "✸")))
+    :hook (org-mode . global-org-modern-mode))
 #+end_src
 
 ** Exporting Chinese Paragraph to HTML
@@ -2012,25 +2016,25 @@ related to the C standard library implementation on Windows. It can be
 removed after the author add this definition to the package.
 
 #+begin_src emacs-lisp
-    (use-package calibre
-      :defer t
+  (use-package calibre
+    :defer t
+    :config
+    (use-package calibre-library
+      :ensure nil
       :config
-      (use-package calibre-library
-        :ensure nil
-        :config
-        (defun calibre-book--path (book)
-          "Return the path to the directory of BOOK."
-          (let ((path (calibre-book-path book)))
-            (file-name-concat (calibre--library)
-                              path)))
-        (defun calibre-library-open-book-dir (book)
-          "Open the directory of BOOK."
-          (interactive (list (tabulated-list-get-id))
-                       calibre-library-mode)
-          (find-file (calibre-book--path book)))
-        :bind
-        (:map calibre-library-mode-map
-              ("O" . calibre-library-open-book-dir))))
+      (defun calibre-book--path (book)
+        "Return the path to the directory of BOOK."
+        (let ((path (calibre-book-path book)))
+          (file-name-concat (calibre--library)
+                            path)))
+      (defun calibre-library-open-book-dir (book)
+        "Open the directory of BOOK."
+        (interactive (list (tabulated-list-get-id))
+                     calibre-library-mode)
+        (find-file (calibre-book--path book)))
+      :bind
+      (:map calibre-library-mode-map
+            ("O" . calibre-library-open-book-dir))))
 #+end_src
 
 This package also requires some additional settings, for example:

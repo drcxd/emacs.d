@@ -598,6 +598,15 @@ some mottoes selected randomly from a pre-defined list.
   (add-to-list 'display-buffer-alist
     (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
 #+end_src
+
+** Repeat Mode
+
+Activate repeat mode to move among windows and repeat =M-x= commands.
+
+#+begin_src emacs-lisp
+  (repeat-mode)
+#+end_src
+
 * OS-Specific Settings
 
 ** Windows
@@ -662,25 +671,6 @@ searching for certain text.
 
 #+begin_src emacs-lisp
   (use-package ripgrep :defer t)
-#+end_src
-
-** ace-window
-
-By default, to switch between windows, you have to use the built in
-command =other-window=. This would iterate through all displayed windows
-and make one of them active a time. When there are more than two
-windows displayed, this process becomes daunting. ace-windows makes
-this process easier by allowing use specify which window should become
-the next active window directly.
-
-#+begin_src emacs-lisp
-  (use-package ace-window
-               :defer t
-               :config
-               (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-               :bind
-               (([remap other-window] . ace-window)
-                ("C-c w s" . ace-swap-window)))
 #+end_src
 
 ** wgrep
@@ -1789,10 +1779,6 @@ checking.
   (global-set-key (kbd "C-c o") 'other-window)
   (global-set-key (kbd "C-c k") 'kill-buffer)
   (global-set-key (kbd "C-c S") 'shell-command)
-  (global-set-key (kbd "C-c w 1") 'delete-other-windows)
-  (global-set-key (kbd "C-c w 2") 'split-window-vertically)
-  (global-set-key (kbd "C-c w 3") 'split-window-horizontally)
-  (global-set-key (kbd "C-c w 0") 'delete-window)
   (global-set-key (kbd "C-c s t") 'hs-toggle-hiding)
   (global-set-key (kbd "C-c w m") 'woman)
   (global-set-key (kbd "C-<tab>") 'completion-at-point)

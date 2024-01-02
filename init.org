@@ -34,8 +34,8 @@ repository or some mirror sites.
         '(
           ("gnu" . "https://elpa.gnu.org/packages/")
           ("melpa" . "https://melpa.org/packages/")
-          ;; ("melpa-stable" . "https://stable.melpa.org/packages/")
           ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+          ;; ("melpa-stable" . "https://stable.melpa.org/packages/")
 
           ;; use local repository
           ;; ("local-melpa" . "~/elpa-mirror-master/melpa/")
@@ -104,11 +104,11 @@ we have all the files related to Emacs in one single directory.
 
 * Diminish
 
-I am using the built-in mode line, and it displays a symbol for all the
-activated minor modes. This could makes the mode line messy, because
-usually we have lots of minor modes turned on but we do not need the
-visual cue on the mode line to tell us they are enabled. Diminish is a
-good package to solve this problem.
+I am using the built-in mode line, and it displays a symbol for all
+the activated minor modes. This could makes the mode line messy,
+because usually we have lots of minor modes turned on but we do not
+need the visual cue on the mode line to tell us they are
+enabled. Diminish is a good package to solve this problem.
 
 #+begin_src emacs-lisp
   (use-package diminish
@@ -116,14 +116,13 @@ good package to solve this problem.
     :config
     (diminish 'abbrev-mode)
     (diminish 'visual-line-mode)
-    (diminish 'eldoc-mode)
-    :hook
-    ((hs-minor-mode . (lambda () (diminish 'hs-minor-mode)))
-     (olivetti-mode . (lambda () (diminish 'olivetti-mode)))
-     (logos-focus-mode . (lambda () (diminish 'buffer-face-mode)))
-     (yas-minor-mode . (lambda () (diminish 'yas-minor-mode)))
-     (org-roam-ui-mode . (lambda () (diminish 'org-roam-ui-mode)))
-     (org-roam-ui-follow-mode . (lambda () (diminish 'org-roam-ui-follow-mode)))))
+    (diminish 'eldoc-mode))
+
+  (use-package hideshow
+    :diminish hs-minor-mode)
+
+  (use-package face-remap
+    :diminish buffer-face-mode)
 #+end_src
 
 * Appearance
@@ -435,11 +434,12 @@ to manage these buffers just as you manage files in dired.
 ** logos
 
 #+begin_src emacs-lisp
-  (use-package olivetti :defer t :diminish
+  (use-package olivetti :defer t
+    :diminish olivetti-mode
     :config
     (setq olivetti-body-width (+ fill-column 10)))
   (use-package logos
-    :diminish
+    :diminish logos-focus-mode
     :defer t
     :config
     (setq logos-outlines-are-pages t)
@@ -818,7 +818,7 @@ such as lsp-mode, depends on it somehow, so I still install it.
     (text-mode . tempel-setup-capf)))
 
   (use-package yasnippet
-   :diminish
+   :diminish yas-minor-mode
    :defer t
    :hook
    (prog-mode . yas-minor-mode)
@@ -1465,7 +1465,8 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
      ("C-c n a" . org-roam-alias-add)
      ("C-c n A" . org-roam-alias-remove)))
 
-  (use-package org-roam-ui :defer t)
+  (use-package org-roam-ui :defer t
+    :diminish ((org-roam-ui-mode . "") (org-roam-ui-follow-mode . "")))
 #+end_src
 
 ** consult-org-roam
@@ -1770,9 +1771,13 @@ Currently I use Emacs' built-in spell checker, flyspell mode for spell
 checking.
 
 #+begin_src emacs-lisp
-  (add-hook 'text-mode-hook 'flyspell-mode)
-  (add-hook 'prog-mode-hook 'flyspell-prog-mode)
-  (global-set-key (kbd "C-c s f") 'flyspell-mode)
+  (use-package flyspell
+    :diminish flyspell-mode
+    :hook
+    ((text-mode . flyspell-mode)
+     (prog-mode . flyspell-prog-mode))
+    :bind
+    ("C-c s b" . flyspell-buffer))
 #+end_src
 
 * Key Binding

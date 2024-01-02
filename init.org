@@ -269,7 +269,7 @@ to manage these buffers just as you manage files in dired.
                       :height 1.0)
   (set-face-attribute 'variable-pitch nil
                       :font "Iosevka Etoile"
-                      :height 1.0)
+                      :height 0.9)
 
   ;; italic
   (set-face-attribute 'italic nil
@@ -435,9 +435,7 @@ to manage these buffers just as you manage files in dired.
 
 #+begin_src emacs-lisp
   (use-package olivetti :defer t
-    :diminish olivetti-mode
-    :config
-    (setq olivetti-body-width (+ fill-column 10)))
+    :diminish olivetti-mode)
   (use-package logos
     :diminish logos-focus-mode
     :defer t

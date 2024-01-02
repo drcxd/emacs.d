@@ -1772,7 +1772,6 @@ checking.
 #+begin_src emacs-lisp
   (add-hook 'text-mode-hook 'flyspell-mode)
   (add-hook 'prog-mode-hook 'flyspell-prog-mode)
-  (add-hook 'flyspell-mode-hook 'flyspell-buffer)
   (global-set-key (kbd "C-c s f") 'flyspell-mode)
 #+end_src
 

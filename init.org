@@ -3,7 +3,10 @@
 * Abstract
 
 Trying literate programming with my emacs configuration. This is
-inspired by http://alhassy.com/emacs.d/.
+inspired by http://alhassy.com/emacs.d/. Protesilaos
+(https://protesilaos.com/) uses such a method as well. His
+configuration (https://git.sr.ht/~protesilaos/dotfiles) is also a good
+resource to learn about Emacs.
 
 * TODO Garbage Collection Settings
 
@@ -253,17 +256,20 @@ to manage these buffers just as you manage files in dired.
 
 ** Fonts and Faces :DEPENDENCY:
 
++ Sarasa Gothic font: https://github.com/be5invis/Sarasa-Gothic
++ Iosevka font: https://github.com/be5invis/Iosevka
+
 #+begin_src emacs-lisp
-  (set-fontset-font "fontset-default" 'han "Microsoft Yahei")
+  (set-fontset-font "fontset-default" 'han "Sarasa Gothic SC")
 
   (set-face-attribute 'default nil
-                      :font "Iosevka Comfy"
+                      :font "Iosevka"
                       :height 160)
   (set-face-attribute 'fixed-pitch nil
-                      :font "Iosevka Comfy"
+                      :font "Iosevka"
                       :height 1.0)
   (set-face-attribute 'variable-pitch nil
-                      :font "Iosevka Comfy Duo"
+                      :font "Iosevka Etoile"
                       :height 1.0)
 
   ;; italic
@@ -429,7 +435,9 @@ to manage these buffers just as you manage files in dired.
 ** logos
 
 #+begin_src emacs-lisp
-  (use-package olivetti :defer t :diminish)
+  (use-package olivetti :defer t :diminish
+    :config
+    (setq olivetti-body-width (+ fill-column 10)))
   (use-package logos
     :diminish
     :defer t
@@ -1275,9 +1283,7 @@ line number has changed.
     (add-to-list 'org-modules 'org-habit t)
     (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
     :hook
-    ((org-mode . flyspell-mode)
-     (org-mode . logos-focus-mode)
-     (org-mode . org-indent-mode)))
+    (org-mode . logos-focus-mode))
 
   (use-package htmlize :defer t)
 #+end_src
@@ -1292,7 +1298,7 @@ appearance of header line, table, time stamp and other things.
     :defer t
     :config
     (setq org-modern-star '("🌟" "☪" "🌠" "✧" "⚝" "🔯")
-          org-modern-list '((43 . "✠") (45 . "➢") (42 . "✸")))
+          org-modern-list '((43 . "🕆") (45 . "➢") (42 . "✸")))
     :hook (org-mode . global-org-modern-mode))
 #+end_src
 
@@ -1764,6 +1770,8 @@ Currently I use Emacs' built-in spell checker, flyspell mode for spell
 checking.
 
 #+begin_src emacs-lisp
+  (add-hook 'text-mode-hook 'flyspell-mode)
+  (add-hook 'prog-mode-hook 'flyspell-prog-mode)
   (add-hook 'flyspell-mode-hook 'flyspell-buffer)
   (global-set-key (kbd "C-c s f") 'flyspell-mode)
 #+end_src
@@ -1781,6 +1789,7 @@ checking.
   (global-set-key (kbd "C-c S") 'shell-command)
   (global-set-key (kbd "C-c s t") 'hs-toggle-hiding)
   (global-set-key (kbd "C-c w m") 'woman)
+  (global-set-key (kbd "C-c w s") 'window-swap-states)
   (global-set-key (kbd "C-<tab>") 'completion-at-point)
 #+end_src
 

@@ -1286,7 +1286,9 @@ line number has changed.
     (add-to-list 'org-babel-load-languages '(scheme . t))
     (add-to-list 'org-babel-load-languages '(dot . t))
     (add-to-list 'org-modules 'org-habit t)
-    (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
+    (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
+    :hook
+    (org-mode . org-indent-mode))
 
   (use-package htmlize :defer t)
 #+end_src
@@ -1480,7 +1482,7 @@ and backward links. It improves the workflow and thus efficiency.
 #+begin_src emacs-lisp
   (use-package consult-org-roam
      :after (org-roam consult)
-     :diminish
+     :diminish consult-org-roam-mode
      :init
      (setq consult-org-roam-buffer-enabled nil)
      ;; Activate the minor mode
@@ -1500,7 +1502,7 @@ and backward links. It improves the workflow and thus efficiency.
      ;;  :preview-key (kbd "M-."))
      :bind
      ;; Define some convenient keybindings as an addition
-     ("C-c n f" . consult-org-roam-file-find)
+     ;; ("C-c n f" . consult-org-roam-file-find)
      ("C-c n l" . consult-org-roam-backlinks)
      ("C-c n L" . consult-org-roam-forward-links)
      ("C-c n s" . consult-org-roam-search))

@@ -8,18 +8,36 @@ inspired by http://alhassy.com/emacs.d/. Protesilaos
 configuration (https://git.sr.ht/~protesilaos/dotfiles) is also a good
 resource to learn about Emacs.
 
-* TODO Garbage Collection Settings
+* Garbage Collection Settings
 
-Adjust garbage collection thresholds during startup, and
-thereafter. This piece of code only works with lexical binding. I have
-not figured out how to enable it in the tangled file.
+Adjust garbage collection thresholds during startup, and restore it
+after startup. It is said that this reduces the boot time, but I have
+not seen any observable change.
 
-#+begin_src emacs-lisp :lexical t :tangle no
-  (let ((normal-gc-cons-threshold (* 20 1024 1024))
-        (init-gc-cons-threshold (* 128 1024 1024)))
-    (setq gc-cons-threshold init-gc-cons-threshold)
-    (add-hook 'emacs-startup-hook
-              (lambda () (setq gc-cons-threshold normal-gc-cons-threshold))))
+#+begin_src emacs-lisp :tangle "early-init.el"
+  (setq gc-cons-threshold most-positive-fixnum
+        gc-cons-percentage 0.5)
+
+  (defvar my/file-name-handler-alist file-name-handler-alist)
+  (defvar my/vc-handled-backends vc-handled-backends)
+
+  (setq file-name-handler-alist nil
+        vc-handled-backends nil)
+
+  (add-hook 'emacs-startup-hook
+            (lambda ()
+              (setq gc-cons-threshold (* 1024 1024 20)
+                    gc-cons-percentage 0.2
+                    file-name-handler-alist my/file-name-handler-alist
+                    vc-handled-backends my/vc-handled-backends)))
+#+end_src
+
+* Native Compilation
+
+#+begin_src emacs-lisp
+  (when (native-comp-available-p)
+    (setq native-comp-async-report-warnings-errors 'silent) ; Emacs 28 with native compilation
+    (setq native-compile-prune-cache t)) ; Emacs 29
 #+end_src
 
 * Package
@@ -147,9 +165,9 @@ them so you can distinguish between them.
 #+begin_src emacs-lisp
   (require 'uniquify)
 
-  (setq uniquify-buffer-name-style 'reverse)
-  (setq uniquify-separator " • ")
+  (setq uniquify-buffer-name-style 'forward)
   (setq uniquify-after-kill-buffer-p t)
+  (setq uniquify-strip-common-suffix t)
   (setq uniquify-ignore-buffers-re "^\\*")
 #+end_src
 
@@ -159,88 +177,88 @@ ibuffer is a buffer list all opened buffers in Emacs. You can use it
 to manage these buffers just as you manage files in dired.
 
 #+begin_src emacs-lisp
-  (with-eval-after-load 'ibuffer
-    ;; Use human readable Size column instead of original one
-    (define-ibuffer-column size-h
-      (:name "Size" :inline t)
-      (cond
-       ((> (buffer-size) 1000000)
-        (format "%7.1fM" (/ (buffer-size) 1000000.0)))
-       ((> (buffer-size) 1000)
-        (format "%7.1fk" (/ (buffer-size) 1000.0)))
-       (t
-        (format "%8d" (buffer-size)))))
+  ;; (with-eval-after-load 'ibuffer
+  ;;   ;; Use human readable Size column instead of original one
+  ;;   (define-ibuffer-column size-h
+  ;;     (:name "Size" :inline t)
+  ;;     (cond
+  ;;      ((> (buffer-size) 1000000)
+  ;;       (format "%7.1fM" (/ (buffer-size) 1000000.0)))
+  ;;      ((> (buffer-size) 1000)
+  ;;       (format "%7.1fk" (/ (buffer-size) 1000.0)))
+  ;;      (t
+  ;;       (format "%8d" (buffer-size)))))
 
-    (setq ibuffer-expert t
-          ibuffer-show-empty-filter-groups nil
-          ibuffer-display-summary nil)
+  ;;   (setq ibuffer-expert t
+  ;;         ibuffer-show-empty-filter-groups nil
+  ;;         ibuffer-display-summary nil)
 
-    (setq ibuffer-saved-filter-groups
-          (quote (("default"
-                   ("code" (or (mode . emacs-lisp-mode)
-                               (mode . cperl-mode)
-                               (mode . c-mode)
-                               (mode . java-mode)
-                               (mode . idl-mode)
-                               (mode . web-mode)
-                               (mode . lisp-mode)
-                               (mode . js2-mode)
-                               (mode . c++-mode)
-                               (mode . lua-mode)
-                               (mode . cmake-mode)
-                               (mode . ruby-mode)
-                               (mode . css-mode)
-                               (mode . objc-mode)
-                               (mode . sql-mode)
-                               (mode . python-mode)
-                               (mode . php-mode)
-                               (mode . sh-mode)
-                               (mode . json-mode)
-                               (mode . scala-mode)
-                               (mode . go-mode)
-                               (mode . erlang-mode)))
+  ;;   (setq ibuffer-saved-filter-groups
+  ;;         (quote (("default"
+  ;;                  ("code" (or (mode . emacs-lisp-mode)
+  ;;                              (mode . cperl-mode)
+  ;;                              (mode . c-mode)
+  ;;                              (mode . java-mode)
+  ;;                              (mode . idl-mode)
+  ;;                              (mode . web-mode)
+  ;;                              (mode . lisp-mode)
+  ;;                              (mode . js2-mode)
+  ;;                              (mode . c++-mode)
+  ;;                              (mode . lua-mode)
+  ;;                              (mode . cmake-mode)
+  ;;                              (mode . ruby-mode)
+  ;;                              (mode . css-mode)
+  ;;                              (mode . objc-mode)
+  ;;                              (mode . sql-mode)
+  ;;                              (mode . python-mode)
+  ;;                              (mode . php-mode)
+  ;;                              (mode . sh-mode)
+  ;;                              (mode . json-mode)
+  ;;                              (mode . scala-mode)
+  ;;                              (mode . go-mode)
+  ;;                              (mode . erlang-mode)))
 
-                   ("dired" (or (mode . dired-mode)
-                                (mode . sr-mode)))
+  ;;                  ("dired" (or (mode . dired-mode)
+  ;;                               (mode . sr-mode)))
 
-                   ("erc" (mode . erc-mode))
+  ;;                  ("erc" (mode . erc-mode))
 
-                   ("planner" (or (name . "^\\*Calendar\\*$")
-                                  (name . "^diary$")
-                                  (mode . muse-mode)
-                                  (mode . org-mode)
-                                  (mode . org-agenda-mode)))
+  ;;                  ("planner" (or (name . "^\\*Calendar\\*$")
+  ;;                                 (name . "^diary$")
+  ;;                                 (mode . muse-mode)
+  ;;                                 (mode . org-mode)
+  ;;                                 (mode . org-agenda-mode)))
 
-                   ("emacs" (or (name . "^\\*scratch\\*$")
-                                (name . "^\\*Messages\\*$")))
+  ;;                  ("emacs" (or (name . "^\\*scratch\\*$")
+  ;;                               (name . "^\\*Messages\\*$")))
 
-                   ("gnus" (or (mode . message-mode)
-                               (mode . bbdb-mode)
-                               (mode . mail-mode)
-                               (mode . gnus-group-mode)
-                               (mode . gnus-summary-mode)
-                               (mode . gnus-article-mode)
-                               (name . "^\\.bbdb$")
-                               (name . "^\\.newsrc-dribble")))))))
-    (defun ibuffer-mode-hook-setup ()
-      (unless (eq ibuffer-sorting-mode 'filename/process)
-        (ibuffer-do-sort-by-filename/process))
-      (ibuffer-switch-to-saved-filter-groups "default"))
+  ;;                  ("gnus" (or (mode . message-mode)
+  ;;                              (mode . bbdb-mode)
+  ;;                              (mode . mail-mode)
+  ;;                              (mode . gnus-group-mode)
+  ;;                              (mode . gnus-summary-mode)
+  ;;                              (mode . gnus-article-mode)
+  ;;                              (name . "^\\.bbdb$")
+  ;;                              (name . "^\\.newsrc-dribble")))))))
+  ;;   (defun ibuffer-mode-hook-setup ()
+  ;;     (unless (eq ibuffer-sorting-mode 'filename/process)
+  ;;       (ibuffer-do-sort-by-filename/process))
+  ;;     (ibuffer-switch-to-saved-filter-groups "default"))
 
-    (add-hook 'ibuffer-mode-hook 'ibuffer-mode-hook-setup)
+  ;;   (add-hook 'ibuffer-mode-hook 'ibuffer-mode-hook-setup)
 
-    ;; Modify the default ibuffer-formats
-    (setq ibuffer-formats
-          '((mark modified read-only " "
-                  (name 18 18 :left :elide)
-                  " "
-                  (size-h 9 -1 :right)
-                  " "
-                  (mode 16 16 :left :elide)
-                  " "
-                  filename-and-process)))
+  ;;   ;; Modify the default ibuffer-formats
+  ;;   (setq ibuffer-formats
+  ;;         '((mark modified read-only " "
+  ;;                 (name 18 18 :left :elide)
+  ;;                 " "
+  ;;                 (size-h 9 -1 :right)
+  ;;                 " "
+  ;;                 (mode 16 16 :left :elide)
+  ;;                 " "
+  ;;                 filename-and-process)))
 
-    (setq ibuffer-filter-group-name-face 'font-lock-doc-face))
+  ;;   (setq ibuffer-filter-group-name-face 'font-lock-doc-face))
 
   (global-set-key (kbd "C-x C-b") 'ibuffer)
 #+end_src
@@ -253,7 +271,7 @@ to manage these buffers just as you manage files in dired.
    (unicode-fonts-setup))
 #+end_src
 
-** Fonts and Faces :DEPENDENCY:
+** Fonts and Faces :dependency:
 
 + Sarasa Gothic font: https://github.com/be5invis/Sarasa-Gothic
 + Iosevka font: https://github.com/be5invis/Iosevka
@@ -461,6 +479,35 @@ to manage these buffers just as you manage files in dired.
      ("C-c s j" . logos-forward-page-dwim)))
 #+end_src
 
+** nerd-icons :dependency:
+
+Add some fancy icons. Require nerd fonts:
+
+https://www.nerdfonts.com/#home
+
+#+begin_src emacs-lisp
+  (use-package nerd-icons :demand t)
+
+  (use-package nerd-icons-completion
+    :after marginalia
+    :config
+    (nerd-icons-completion-mode)
+    (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+
+  (use-package nerd-icons-dired
+    :hook
+    (dired-mode . nerd-icons-dired-mode))
+
+  (use-package nerd-icons-corfu
+    :demand t
+    :after corfu
+    :init
+    (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+
+  (use-package nerd-icons-ibuffer
+    :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
+#+end_src
+
 * General Behavior
 
 ** Auto Backup
@@ -543,7 +590,6 @@ explorer of Emacs. You can perform many file operations in dired.
   (setq dired-kill-when-opening-new-dired-buffer t)
   (defun dired-mode-setup ()
     "Setup dired."
-    (dired-hide-details-mode 1)
     ;; global-auto-revert-mode does not work for dired
     (auto-revert-mode)
     (hl-line-mode 1)
@@ -635,7 +681,7 @@ powershell mode to help editing powershell script files.
   (use-package powershell :defer t)
 #+end_src
 
-*** Find :DEPENDENCY:
+*** Find :dependency:
 
 Windows provides a find program which accepts different arguments than
 the Linux one. Emacs works out-of-the-box with Linux find program, so
@@ -906,7 +952,7 @@ decides what are the completion candidates.
   (add-hook 'prog-mode-hook 'prog-mode-setup)
 #+end_src
 
-** Code Formatting :DEPENDENCY:
+** Code Formatting :dependency:
 
 If the code keeps a consistent and easy-to-read format, it will be
 much easier to read and maintain. However, manually formatting the
@@ -928,7 +974,7 @@ hint for possible code warning or error. Currently, I only use it as
 a facility for lsp.
 
 #+begin_src emacs-lisp
-  (use-package flycheck :defer t :diminish)
+  (use-package flycheck :defer t :diminish flycheck-mode)
 #+end_src
 
 ** hl-todo
@@ -954,7 +1000,7 @@ literals.
     (org-mode . hl-todo-mode)))
 #+end_src
 
-** git-gutter :DEPENDENCY:
+** git-gutter :dependency:
 
 This packages add visual hint on the fringe to indicate which part of
 the file is added/deleted/modified against the latest version in the
@@ -962,7 +1008,7 @@ version control system.
 
 #+begin_src emacs-lisp
   (use-package git-gutter
-   :diminish
+   :diminish git-gutter-mode
    :defer t
    :config
    (setq git-gutter:handled-backends '(git svn))
@@ -1015,7 +1061,7 @@ symbol-overlay is the best package I have known for this task.
    (setq symbol-overlay-inhibit-map t))
 #+end_src
 
-** lsp :DEPENDENCY:
+** lsp :dependency:
 
 Language server protocol is a powerful tool. It enables Eamcs provide
 IDE-like functions, such as auto-completion,
@@ -1081,7 +1127,7 @@ variable-rename.
   (add-to-list 'safe-local-eval-forms '(lsp))
 #+end_src
 
-** COMMENT Syntax Highlighting :DEPRECATED:
+** COMMENT Syntax Highlighting
 
 Eamcs has built-in syntax highlighting support, however it is based on
 regular expression. This means it would not be correct in every
@@ -1190,7 +1236,7 @@ not viable. I have to build the compiler myself. Second,
 org-babel, cannot work correctly on Windows. Chicken requires users to
 apply for an account to report bug, which is not convenient.
 
-***** Chez :DEPENDENCY:
+***** Chez :dependency:
 
 After I have found that I cannot make chicken work with org-babel on
 Windows, I switch to [[https://github.com/cisco/ChezScheme][Chez]]. It has nice Windows support, i.e. a Windows
@@ -1209,7 +1255,7 @@ the =PATH=.
   (use-package graphviz-dot-mode :demand t)
 #+end_src
 
-** Unreal :DEPENDENCY:
+** Unreal :dependency:
 
 I am working with Unreal Engine, using Emacs + clang + lsp-mode as my
 editing environment. I still have to use Visual Studio to build the
@@ -1302,7 +1348,7 @@ appearance of header line, table, time stamp and other things.
   (use-package org-modern
     :defer t
     :config
-    (setq org-modern-star '("🌟" "☪" "🌠" "✧" "⚝" "🔯")
+    (setq org-modern-star '("☉" "🌙" "☆" "✧" "⚝" "🔯")
           org-modern-list '((43 . "🕆") (45 . "➢") (42 . "✸")))
     :hook (org-mode . global-org-modern-mode))
 #+end_src
@@ -1397,7 +1443,7 @@ citation issues.
     :defer t
     :after (citar embark)
     ;; :no-require
-    :diminish
+    :diminish citar-embark-mode
     :config (citar-embark-mode))
 
   ;; You can get the csl style files from
@@ -1415,7 +1461,7 @@ bibliographic notes can be easily created in org-roam context.
 
 #+begin_src emacs-lisp
   (use-package citar-org-roam
-    :diminish
+    :diminish citar-org-roam-mode
     :after (citar org-roam)
     ;; :no-require
     :config
@@ -1660,6 +1706,8 @@ convenient.
 
 * Project Management
 
+** projectile
+
 Project can be applied to organize anything you are working on. Not
 only programming project, but also writing project, note-taking
 project, etc.. projectile helps you browse project files, search
@@ -1668,7 +1716,7 @@ programming project).
 
 #+begin_src emacs-lisp
   (use-package projectile
-   :diminish
+   :diminish projectile-mode
    :defer t
    :bind
    (("C-c p f" . projectile-find-file)
@@ -1680,9 +1728,14 @@ programming project).
    (projectile-global-mode))
 #+end_src
 
+** Emacs Built-in project
+
+#+begin_src emacs-lisp
+  (setq project-vc-extra-root-markers '(".project"))
+#+end_src
 * Version Control
 
-** magit :DEPENDENCY:
+** magit :dependency:
 
 magit is the well-known Emacs interface for git.
 
@@ -1723,13 +1776,17 @@ Credit: https://stackoverflow.com/questions/944614/emacs-does-hideshow-work-with
 
 ** News
 
-The following code is copied from =~/News/nnrss.el=. The code there is
-generated by adding the server in gnus in an interactive way. See
+Subscribing a RSS feed in Gnus can not be done by simply setting a
+variable. Emacs has to execute the function
+=gnus-group-make-rss-group=. This can be done in the Gnus group buffer
+by typing =G R= and input the RSS feed URL. Thus, on every PC, the
+subscription has to be done manually during the initial setup. See
 [[info:gnus#RSS][gnus#RSS]] for more details.
 
-#+begin_src emacs-lisp
-  (setq nnrss-group-alist '(("Sacha Chua - category - emacs-news" "https://sachachua.com/blog/category/emacs-news/feed/" "Emacs, sketches, and life")))
-#+end_src
+RSS feeds:
+
+- https://sachachua.com/blog/category/emacs-news/feed/
+- https://protesilaos.com/codelog.xml
 
 ** Mail in Emacs
 
@@ -2060,6 +2117,24 @@ nov is a package that allows you read EPUB files inside Emacs.
     :hook
     ((nov-mode . visual-line-mode)
      (nov-post-html-render . (lambda () (toggle-truncate-lines 0)))))
+#+end_src
+
+* Emacs As Server
+
+#+begin_src emacs-lisp 
+  (require 'server)
+  (setq server-client-instructions nil)
+  (unless (server-running-p)
+    (server-start))
+#+end_src
+
+* ediff
+
+#+begin_src emacs-lisp
+  (setq ediff-keep-variants nil)
+  (setq ediff-make-buffers-readonly-at-startup t)
+  (setq ediff-show-clashes-only t)
+  (setq ediff-split-window-function 'split-window-horizontally)
 #+end_src
 
 * Load Custom File

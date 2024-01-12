@@ -9,5 +9,6 @@
 !templates
 custom.el
 init.el
+early-init.el
 elpa
 transient

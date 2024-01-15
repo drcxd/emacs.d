@@ -1991,7 +1991,8 @@ add some additional configuration specific to meow.
            (eshell-mode . insert)
            (fundamental-mode . normal)
            (text-mode . normal)
-           (prog-mode . normal)))
+           (prog-mode . normal)
+           (conf-mode . normal)))
    ;; use motion state by default
    (defun my/meow-guess-state (state)
      'motion)

@@ -1344,12 +1344,19 @@ line number has changed.
 org-modern is a package that beautify org-mode. It changes the
 appearance of header line, table, time stamp and other things.
 
+Note that the Unicode characters used for ~org-modern-star~ and
+~org-modern-list~ are carefully selected from the characters that are
+supported by the fonts used in [[*Fonts and Faces]]. Otherwise, the
+symbols are displayed using whatever font that can display such
+symbols available on the system. In this case, a consistent appearance
+can not be maintained on different systems.
+
 #+begin_src emacs-lisp
   (use-package org-modern
     :defer t
     :config
-    (setq org-modern-star '("☉" "🌙" "☆" "✧" "⚝" "🔯")
-          org-modern-list '((43 . "🕆") (45 . "➢") (42 . "✸")))
+    (setq org-modern-star '("⨀" "⧖" "⎊" "✧" "☆" "⚛")
+          org-modern-list '((43 . "•") (45 . "‣") (42 . "⁕")))
     :hook (org-mode . global-org-modern-mode))
 #+end_src
 

@@ -26,7 +26,7 @@ not seen any observable change.
 
   (add-hook 'emacs-startup-hook
             (lambda ()
-              (setq gc-cons-threshold (* 1024 1024 20)
+              (setq gc-cons-threshold (* 1024 1024 128)
                     gc-cons-percentage 0.2
                     file-name-handler-alist my/file-name-handler-alist
                     vc-handled-backends my/vc-handled-backends)))
@@ -1079,7 +1079,8 @@ variable-rename.
    :config
    (setq lsp-headerline-breadcrumb-enable nil
          lsp-semantic-tokens-apply-modifiers nil
-         lsp-semantic-tokens-enable t)
+         lsp-semantic-tokens-enable t
+         read-process-output-max (* 1024 1024)) ;; to increase lsp performance
    (if (and (package-installed-p 'corfu) (package-installed-p 'cape))
        (progn
          (add-hook 'lsp-completion-mode-hook #'corfu-lsp-setup)

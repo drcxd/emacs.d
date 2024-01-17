@@ -2080,9 +2080,8 @@ to put these configurations in the local =custom.el= file.
 *** calibre
 
 This is an alternative to calibredb. I prefer this package over
-calibredb. The =defun= is required to temporarily circumvent an issue
-related to the C standard library implementation on Windows. It can be
-removed after the author add this definition to the package.
+calibredb. I have added some custom functions to open the directory
+that contains a book in Dired.
 
 #+begin_src emacs-lisp
   (use-package calibre
@@ -2106,11 +2105,20 @@ removed after the author add this definition to the package.
             ("O" . calibre-library-open-book-dir))))
 #+end_src
 
-This package also requires some additional settings, for example:
+This package also requires some local settings, for example, we have
+to specify the location of the library:
 
 #+begin_src emacs-lisp :tangle no
   (setq calibre-libraries '(("nonficition" . "~/Documents/Non Fiction Library/")))
 #+end_src
+
+Also, we can specify an external program to open a certain format of a book:
+
+#+begin_src emacs-lisp :tangle no
+  (setq calibre-external-programs '((pdf . "acrobat")))
+#+end_src
+
+Otherwise, the book is opened inside Emacs.
 
 ** nov
 

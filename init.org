@@ -1258,59 +1258,100 @@ the =PATH=.
 
 ** Unreal :dependency:
 
-I am working with Unreal Engine, using Emacs + clang + lsp-mode as my
-editing environment. I still have to use Visual Studio to build the
-project, so Emacs is not my whole development environment.
+I am working with Unreal Engine, using Emacs + clangd + lsp-mode as my
+development environment. I find that I frequently execute some
+operations on my Unreal project, such as generate compilation
+database, generate header files, build the project and debug the
+project. To accelerate these processes, I have developed the following
+routines.
+
+*** Variables
+
+Most of the operations are done using the Unreal Build Tool (UBT). All
+operations must be associated with a particular target and
+platform. These variables are defined for convenience.
+
+#+begin_src emacs-lisp
+  (defvar my/ubt-location nil "Unreal Build Tool file location.")
+
+  (defvar my/unreal-opts '("DebugGame"
+                           "Development")
+    "A list of frequently used optimization levels for Unreal projects.")
+
+  (defvar my/unreal-platforms '("Win64")
+    "A list of frequently used target platforms for Unreal projects.")
+
+  (defun my/build-ubt-op-string (project opt platform &optional editor)
+    "Return a string ready to be appended with an UBT operation."
+    (let ((name (file-name-base project)))
+      (format-message "%s %s %s%s %s %s"
+                      my/ubt-location
+                      project
+                      name
+                      (if editor "Editor" "")
+                      opt
+                      platform)))
+#+end_src
+
+*** Build the Project
+
+#+begin_src emacs-lisp
+  (defun my/unreal-build-project (project opt platform &optional editor)
+    "Build an Unreal project."
+    (interactive
+     (let ((completion-ignore-case t))
+       (list (read-file-name "Project file path: ")
+             (completing-read "Optimization level: " my/unreal-opts nil nil)
+             (completing-read "Platform: " my/unreal-platforms nil nil)
+             current-prefix-arg)))
+    (async-shell-command (my/build-ubt-op-string project opt platform editor)))
+#+end_src
 
 *** Generating Compilation Database
 
-Since clang + lsp-mode requires a compilation database to work, I need
-to generate one for my Unreal project. Unreal has complex building
-process, it has its own building tool. Unreal Build Tool (UBT)
-provides a mode which can be used to generate the compilation
-database. I write the following code to ease this process.
+clangd + lsp-mode requires a compilation database to work. UBT
+provides a mode which generates the compilation database.
 
 #+begin_src emacs-lisp
-  (defvar my/ubt-location nil "File location of Unreal Build Tool")
-
-  ;; TODO: Parameterize platform and configuration.
-  (defun my/ubt-generate-clang-database (project-path)
-    "Genertae compilation database for specified Unreal project."
-    (interactive "fProject path: ")
-    (let ((project-name (file-name-base project-path)))
-      (async-shell-command (concat
-                            my/ubt-location
-                            " -mode=GenerateClangDatabase "
-                            project-path
-                            " "
-                            project-name
-                            "Editor Development Win64"))))
+  (defun my/unreal-generate-clang-database (project opt platform &optional editor)
+    "Generate compilation database for an Unreal project."
+    (interactive
+     (let ((completion-ignore-case t))
+       (list (read-file-name "Project file path: ")
+             (completing-read "Optimization level: " my/unreal-opts nil nil)
+             (completing-read "Platform: " my/unreal-platforms nil nil)
+             current-prefix-arg)))
+    (async-shell-command
+     (format-message
+      "%s -mode=GenerateClangDatabase"
+      (my/build-ubt-op-string project opt platform editor))))
 #+end_src
 
 *** Generate Header Files
 
-Unreal Header Tool is a program which scans user code and generate
-code to implement its reflection system. Its methodology is to use
-some macros which expands to file name and line number. Then it
+Unreal Header Tool (UHT) is a program which scans user code and
+generate code to implement the reflection code. Its methodology is to
+use some macros which expands to file name and line number. Then it
 generates code which substitutes those macros. As a result, once the
 macro's location has changed, the file will fail the
 compilation. However, changing of line number is frequent. This makes
-clang fail to compile the code, thus providing less useful information
-when editing. The solution is to generate code every time some macro's
-line number has changed.
+clangd fail to compile the code, thus providing less useful
+information when editing. The solution is to generate code every time
+some macro's line number has changed.
 
 #+begin_src emacs-lisp
-  ;; TODO: Parameterize platform and configuration.
-  (defun my/ubt-generate-header-file (project-path)
+  (defun my/unreal-generate-header-file (project opt platform &optional editor)
     "Generate header files for specified Unreal project."
-    (interactive "fProject path: ")
-    (let ((project-name (file-name-base project-path)))
-      (async-shell-command (concat my/ubt-location
-                                   " -SkipBuild "
-                                   project-path
-                                   " "
-                                   project-name
-                                   "Editor Development Win64"))))
+    (interactive
+       (let ((completion-ignore-case t))
+         (list (read-file-name "Project file path: ")
+               (completing-read "Optimization level: " my/unreal-opts nil nil)
+               (completing-read "Platform: " my/unreal-platforms nil nil)
+               current-prefix-arg)))
+    (async-shell-command
+     (format-message
+      "%s -SkipBuild"
+      (my/build-ubt-op-string project opt platform editor))))
 #+end_src
 
 * org-mode

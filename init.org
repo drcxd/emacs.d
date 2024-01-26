@@ -1279,15 +1279,19 @@ imported to the session, the org-mode code block must define the
     ;; buffer
     (setq geiser-active-implementations '(racket)))
 
-  ;; (use-package racket-mode)
+  (use-package racket-mode)
 
+  (add-to-list 'load-path (concat user-emacs-directory "site-lisp/emacs-ob-racket"))
+  (with-eval-after-load 'org
+    (add-to-list 'org-babel-load-languages '(racket . t))
+    (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
   ;; (use-package ob-racket
-  ;;   )
-  ;; (use-package graphviz-dot-mode
-  ;;   :demand t
+  ;;   :after org
+  ;;   :hook
+  ;;   (ob-racket-pre-runtime-library-load . ob-racket-raco-make-runtime-library)
   ;;   :init
-  ;;   (add-to-list 'org-babel-load-languages '(dot . t))
-  ;;   (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
+
+  ;;   )
 #+end_src
 
 *** Graphviz Dot

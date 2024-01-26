@@ -2,11 +2,13 @@
 !*/
 
 !.gitignore
+!.gitmodules
 !*.el
 !*.yas
 !*.org
 !.yas-parents
 !templates
+!site-lisp
 custom.el
 init.el
 early-init.el

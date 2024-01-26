@@ -1183,8 +1183,8 @@ specific language major mode.
 
 *** Scheme
 
-Scheme is a dialect of Lisp. It is also the language used in the
-famous book /Structure and Interpretation of Computer Programs/. Emacs
+Scheme is a dialect of Lisp. It is also the language used in the book
+/Structure and Interpretation of Computer Programs/ (SICP). Emacs
 provide nice support for scheme language. It has a built-in package
 scheme-mode. The command ~run-scheme~ starts an inferior scheme process
 inside Emacs. After that, you can evaluate scheme expression in any
@@ -1201,7 +1201,8 @@ To execute scheme code in org-mode, org-babel's [[https://orgmode.org/worg/org-c
 #+end_src
 
 Geiser is an Emacs front end of a Scheme interpreter, and it supports
-multiple implementations.
+multiple implementations. For more information about Geiser, check its
+documentation in Emacs' INFO pages (after installing the package).
 
 ***** A Minor Issue
 
@@ -1241,16 +1242,62 @@ Windows, I switch to [[https://github.com/cisco/ChezScheme][Chez]]. It has nice 
 installer. It also host a repository on github so it is easy to report
 a bug. Finally, it does not require additional setup to work with
 Emacs. The only thing I have to do is to expose its binary =scheme= in
-the =PATH=.
+the =PATH=, or customize ~geiser-chez-binary~.
 
 #+begin_src emacs-lisp
   (use-package geiser-chez :defer t)
 #+end_src
 
+***** Racket :dependency:
+
+I use scheme mainly to learn SICP. SIPC has some customized code that
+are frequently used in multiple examples. There is a Racket package
+(https://docs.racket-lang.org/sicp-manual/index.html
+https://github.com/sicp-lang/sicp) that implements these customized
+code so that users do not have to input and evaluate them every time
+they execute code depends on them. Thus, [[https://racket-lang.org/][Racket]] becomes a better
+choice than Chez when learning SICP.
+
+To use the code in the package inside Emacs, input the following in
+the Racket session:
+
+#+begin_src example
+  ,enter "/path/to/package.rst"
+#+end_src
+
+The prompt of the Racket session should change from =racket@>= to
+=racket@package.rst>=. Afterwards, the code defined in the package can
+be used in the session and in org-mode. Note that to use the code
+imported to the session, the org-mode code block must define the
+=:session= header.
+
+#+begin_src emacs-lisp
+  (use-package geiser-racket
+    :defer t
+    :config
+    ;; this forces geiser to use racket to evaluate code in org-mode
+    ;; buffer
+    (setq geiser-active-implementations '(racket)))
+
+  ;; (use-package racket-mode)
+
+  ;; (use-package ob-racket
+  ;;   )
+  ;; (use-package graphviz-dot-mode
+  ;;   :demand t
+  ;;   :init
+  ;;   (add-to-list 'org-babel-load-languages '(dot . t))
+  ;;   (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
+#+end_src
+
 *** Graphviz Dot
 
 #+begin_src emacs-lisp
-  (use-package graphviz-dot-mode :demand t)
+  (use-package graphviz-dot-mode
+    :after org
+    :init
+    (add-to-list 'org-babel-load-languages '(dot . t))
+    (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
 #+end_src
 
 ** Unreal :dependency:
@@ -1369,7 +1416,6 @@ some macro's line number has changed.
           org-babel-C++-compiler "clang++")
     (add-to-list 'org-babel-load-languages '(C . t))
     (add-to-list 'org-babel-load-languages '(scheme . t))
-    (add-to-list 'org-babel-load-languages '(dot . t))
     (add-to-list 'org-modules 'org-habit t)
     (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
     :hook

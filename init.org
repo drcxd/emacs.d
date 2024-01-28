@@ -8,7 +8,13 @@ inspired by http://alhassy.com/emacs.d/. Protesilaos
 configuration (https://git.sr.ht/~protesilaos/dotfiles) is also a good
 resource to learn about Emacs.
 
-* Garbage Collection Settings
+* Emacs Native Configurations
+
+This part contains configurations about all Emacs native options and
+built-in packages. This part does not depends on any third-party
+packages.
+
+** Garbage Collection Settings
 
 Adjust garbage collection thresholds during startup, and restore it
 after startup. It is said that this reduces the boot time, but I have
@@ -32,7 +38,11 @@ not seen any observable change.
                     vc-handled-backends my/vc-handled-backends)))
 #+end_src
 
-* Native Compilation
+** Native Compilation
+
+Native compilation tends to generate a lot of warnings, which
+interrupts whatever work you are doing. Disabling them reduces
+distraction.
 
 #+begin_src emacs-lisp
   (when (native-comp-available-p)
@@ -40,11 +50,12 @@ not seen any observable change.
     (setq native-compile-prune-cache t)) ; Emacs 29
 #+end_src
 
-* Package
+** Package
 
-Since I am currently located in China, sometimes the connection to
-melpa is not stable. As a result, I have to use local package archive
-repository or some mirror sites.
+I use package.el to manage almost all the packages I use, except those
+are only available on github. package.el is flexible since it can
+easily be configured to use a local repository or a mirror. This is
+really helpful when your network environment is not good.
 
 #+begin_src emacs-lisp
   (require 'package)
@@ -89,61 +100,27 @@ repository or some mirror sites.
   (setq use-package-always-ensure t)
 #+end_src
 
-* Benchmark
-
-Some Emacs users don't care about bootstrap time, they claim that they
-only launch Emacs once and never close it until they turn off the
-computer. However, I prefer to maintain a reasonable startup
-time. It's always a good idea not to pay for what you are not
-using.
-
-#+begin_src emacs-lisp
-  (use-package benchmark-init
-               :init
-               (require 'benchmark-init)
-               :hook (after-init . benchmark-init/deactivate))
-#+end_src
-
-* Who am I?
+** Who am I?
 
 #+begin_src emacs-lisp
   (setq user-full-name "Chang Xiaoduan"
         user-mail-address "drcxd@sina.com")
 #+end_src
 
-* Custom File Location
+** Custom File Location
 
 It is good to place the custom file in =.emacs.d= directory. This way,
-we have all the files related to Emacs in one single directory.
+we have all the files related to Emacs in one single directory. Some
+users do not like the idea of a custom file since Emacs' Custom writes
+to it. However, I consider the custom file as a location that you can
+add some machine-dependent settings. For example, you can specify the
+location of a binary file. I find it helpful since I am using Emacs on
+different computers and different OSes. Thus, keep a volatile and
+local configuration file helps solve some specific issues.
 
 #+begin_src emacs-lisp
   (setq custom-file (locate-user-emacs-file "custom.el"))
 #+end_src
-
-* Diminish
-
-I am using the built-in mode line, and it displays a symbol for all
-the activated minor modes. This could makes the mode line messy,
-because usually we have lots of minor modes turned on but we do not
-need the visual cue on the mode line to tell us they are
-enabled. Diminish is a good package to solve this problem.
-
-#+begin_src emacs-lisp
-  (use-package diminish
-    :demand t
-    :config
-    (diminish 'abbrev-mode)
-    (diminish 'visual-line-mode)
-    (diminish 'eldoc-mode))
-
-  (use-package hideshow
-    :diminish hs-minor-mode)
-
-  (use-package face-remap
-    :diminish buffer-face-mode)
-#+end_src
-
-* Appearance
 
 ** Frame Settings
 
@@ -151,20 +128,18 @@ enabled. Diminish is a good package to solve this problem.
 frame. We can use these parameters to hide menu bar, adjust frame's
 position and width, etc..
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "early-init.el"
   (menu-bar-mode -1)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
 #+end_src
 
-** Uniquify
+** uniquify
 
 When two buffers of the same name are opened, Emacs has to uniquify
 them so you can distinguish between them.
 
 #+begin_src emacs-lisp
-  (require 'uniquify)
-
   (setq uniquify-buffer-name-style 'forward)
   (setq uniquify-after-kill-buffer-p t)
   (setq uniquify-strip-common-suffix t)
@@ -263,14 +238,6 @@ to manage these buffers just as you manage files in dired.
   (global-set-key (kbd "C-x C-b") 'ibuffer)
 #+end_src
 
-** Unicode Support
-
-#+begin_src emacs-lisp
-  (use-package unicode-fonts
-   :config
-   (unicode-fonts-setup))
-#+end_src
-
 ** Fonts and Faces :dependency:
 
 + Sarasa Gothic font: https://github.com/be5invis/Sarasa-Gothic
@@ -296,152 +263,6 @@ to manage these buffers just as you manage files in dired.
                       :underline nil)
 #+end_src
 
-** Themes
-
-*** Modus Themes
-#+begin_src emacs-lisp
-  (use-package modus-themes
-    :defer t
-    :init
-    (defun my/modus-themes-custom-face ()
-      (modus-themes-with-colors
-        (custom-set-faces
-         `(lsp-ui-doc-background ((,c :background ,bg-dim)))
-         `(symbol-overlay-face-1 ((,c :inherit modus-themes-intense-blue)))
-         `(symbol-overlay-face-2 ((,c :inherit modus-themes-intense-red)))
-         `(symbol-overlay-face-3 ((,c :inherit modus-themes-intense-cyan)))
-         `(symbol-overlay-face-4 ((,c :inherit modus-themes-intense-green)))
-         `(symbol-overlay-face-5 ((,c :inherit modus-themes-intense-yellow)))
-         `(symbol-overlay-face-6 ((,c :inherit modus-themes-intense-magenta)))
-         `(symbol-overlay-face-7 ((,c :inherit modus-themes-subtle-red)))
-         `(symbol-overlay-face-8 ((,c :inherit modus-themes-subtle-green))))))
-    (defun my/use-modus-themes ()
-      (interactive)
-      (progn (global-set-key (kbd "C-c t g") 'modus-themes-select)
-             (modus-themes-select 'modus-operandi)))
-    (setq modus-themes-disable-other-themes t)
-    :config
-    (setq modus-themes-italic-constructs t
-          modus-themes-bold-constructs nil
-          modus-themes-mixed-fonts t
-          modus-themes-variable-pitch-ui t
-          modus-themes-mode-line '(borderless)
-          modus-themes-headings '((0 . (variable-pitch 1.61803))
-                                  (1 . (variable-pitch 1.38196))
-                                  (2 . (variable-pitch 1.23607))
-                                  (3 . (variable-pitch 1.1459))
-                                  (4 . (variable-pitch 1.09017))
-                                  (5 . (variable-pitch 1.05573))
-                                  (6 . (variable-pitch 1.03444))
-                                  (7 . (variable-pitch 1.02129))
-                                  (t . (variable-pitch 1.0))))
-    :hook
-    (modus-themes-after-load-theme . my/modus-themes-custom-face))
-#+end_src
-
-*** Standard Themes
-
-#+begin_src emacs-lisp
-  (use-package standard-themes
-    :defer t
-    :init
-    (defun my/standard-themes-custom-face ()
-      (standard-themes-with-colors
-       (custom-set-faces
-        `(lsp-ui-doc-background ((,c :background ,bg-dim)))
-        `(symbol-overlay-face-1 ((,c :inherit standard-themes-intense-blue)))
-        `(symbol-overlay-face-2 ((,c :inherit standard-themes-intense-red)))
-        `(symbol-overlay-face-3 ((,c :inherit standard-themes-intense-cyan)))
-        `(symbol-overlay-face-4 ((,c :inherit standard-themes-intense-green)))
-        `(symbol-overlay-face-5 ((,c :inherit standard-themes-intense-yello)))
-        `(symbol-overlay-face-6 ((,c :inherit standard-themes-intense-magenta)))
-        `(symbol-overlay-face-7 ((,c :inherit standard-themes-subtle-red)))
-        `(symbol-overlay-face-8 ((,c :inherit standard-themes-subtle-green))))))
-    (defun my/use-standard-themes ()
-      (interactive)
-      (progn (global-set-key (kbd "C-c t g") 'standard-themes-toggle)
-             (standard-themes-load-light)))
-    (setq standard-themes-disable-other-themes t)
-    :config
-    (setq standard-themes-bold-constructs t
-          standard-themes-italic-constructs t
-          standard-themes-mixed-fonts t
-          standard-themes-variable-pitch-ui t
-          standard-themes-headings '((0 . (variable-pitch 1.61803))
-                                     (1 . (variable-pitch 1.38196))
-                                     (2 . (variable-pitch 1.23607))
-                                     (3 . (variable-pitch 1.1459))
-                                     (4 . (variable-pitch 1.09017))
-                                     (5 . (variable-pitch 1.05573))
-                                     (6 . (variable-pitch 1.03444))
-                                     (7 . (variable-pitch 1.02129))
-                                     (t . (variable-pitch 1.0))))
-    :hook
-    (standard-themes-post-load . my/standard-themes-custom-face))
-#+end_src
-
-*** Ef Themes
-
-#+begin_src emacs-lisp
-  (use-package ef-themes
-    :defer t
-    :init
-    (defun my/ef-themes-custom-face ()
-      (ef-themes-with-colors
-       (custom-set-faces
-        `(lsp-ui-doc-background ((,c :background ,bg-dim)))
-        `(symbol-overlay-face-1 ((,c :background ,bg-red-intense)))
-        `(symbol-overlay-face-2 ((,c :background ,bg-green-intense)))
-        `(symbol-overlay-face-3 ((,c :background ,bg-yellow-intense)))
-        `(symbol-overlay-face-4 ((,c :background ,bg-blue-intense)))
-        `(symbol-overlay-face-5 ((,c :background ,bg-magenta-intense)))
-        `(symbol-overlay-face-6 ((,c :background ,bg-cyan-intense)))
-        `(symbol-overlay-face-7 ((,c :background ,bg-red-subtle)))
-        `(symbol-overlay-face-8 ((,c :background ,bg-green-subtle))))))
-    (defun my/use-ef-themes ()
-      (interactive)
-      (progn (global-set-key (kbd "C-c t g") 'ef-themes-select)
-             (ef-themes-select 'ef-cyprus)))
-    (setq ef-themes-disable-other-themes t)
-    :config
-    (setq ef-themes-mixed-fonts t
-          ef-themes-variable-pitch-ui t
-          ef-themes-headings '((0 . (variable-pitch 1.61803))
-                               (1 . (variable-pitch 1.38196))
-                               (2 . (variable-pitch 1.23607))
-                               (3 . (variable-pitch 1.1459))
-                               (4 . (variable-pitch 1.09017))
-                               (5 . (variable-pitch 1.05573))
-                               (6 . (variable-pitch 1.03444))
-                               (7 . (variable-pitch 1.02129))
-                               (t . (variable-pitch 1.0))))
-    :hook
-    (ef-themes-post-load . my/ef-themes-custom-face))
-#+end_src
-
-** Ligature
-
-#+begin_src emacs-lisp
-  (use-package ligature
-   :config
-   (ligature-set-ligatures
-    'prog-mode
-    `("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
-      ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
-      "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
-      "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
-      "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
-      "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
-      "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
-      "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
-      ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
-      "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
-      "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
-      "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
-      "\\\\" "://" ("=" ,(rx (+ "=")))))
-   (global-ligature-mode t))
-#+end_src
-
 ** Mode Line
 
 #+begin_src emacs-lisp
@@ -449,66 +270,6 @@ to manage these buffers just as you manage files in dired.
   (display-time)
   (column-number-mode)
 #+end_src
-
-** logos
-
-#+begin_src emacs-lisp
-  (use-package olivetti :defer t
-    :diminish olivetti-mode)
-  (use-package logos
-    :diminish logos-focus-mode
-    :defer t
-    :config
-    (setq logos-outlines-are-pages t)
-    (setq-default logos-hide-mode-line nil
-                  logos-hide-buffer-boundaries nil
-                  logos-hide-fringe t
-                  logos-variable-pitch nil
-                  logos-buffer-read-only nil
-                  logos-olivetti t)
-    (with-eval-after-load 'modus-themes
-      (add-hook 'modus-themes-after-load-theme-hook #'logos-update-fringe-in-buffers))
-    (with-eval-after-load 'ef-themes
-      (add-hook 'ef-themes-post-load-hook #'logos-update-fringe-in-buffers))
-    (with-eval-after-load 'standard-themes
-      (add-hook 'standard-themes-post-load-hook #'logos-update-fringe-in-buffers))
-    :bind
-    (("C-c s l" . logos-focus-mode)
-     ("C-c s n" . logos-narrow-dwim)
-     ("C-c s k" . logos-backward-page-dwim)
-     ("C-c s j" . logos-forward-page-dwim)))
-#+end_src
-
-** nerd-icons :dependency:
-
-Add some fancy icons. Require nerd fonts:
-
-https://www.nerdfonts.com/#home
-
-#+begin_src emacs-lisp
-  (use-package nerd-icons :demand t)
-
-  (use-package nerd-icons-completion
-    :after marginalia
-    :config
-    (nerd-icons-completion-mode)
-    (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
-
-  (use-package nerd-icons-dired
-    :hook
-    (dired-mode . nerd-icons-dired-mode))
-
-  (use-package nerd-icons-corfu
-    :demand t
-    :after corfu
-    :init
-    (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
-
-  (use-package nerd-icons-ibuffer
-    :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
-#+end_src
-
-* General Behavior
 
 ** Auto Backup
 
@@ -519,18 +280,6 @@ directory messy, so I prefer disable this feature.
 
 #+begin_src emacs-lisp
   (setq make-backup-files nil)
-#+end_src
-
-** Splash Screen
-
-By default, Emacs shows a welcome screen every time it is
-launched. This might be useful to new Emacs users, but for experienced
-users, displaying the =*scratch*= buffer by default may be more
-productive. You could also execute the command =about-emacs= to display
-the splash screen manually.
-
-#+begin_src emacs-lisp
-  (setq inhibit-splash-screen t)
 #+end_src
 
 ** Auto Save
@@ -559,6 +308,18 @@ the chances of such problems.
 #+begin_src emacs-lisp
   (global-auto-revert-mode)
   (setq auto-revert-verbose nil)
+#+end_src
+
+** Splash Screen
+
+By default, Emacs shows a welcome screen every time it is
+launched. This might be useful to new Emacs users, but for experienced
+users, displaying the =*scratch*= buffer by default may be more
+productive. You could also execute the command =about-emacs= to display
+the splash screen manually.
+
+#+begin_src emacs-lisp
+  (setq inhibit-splash-screen t)
 #+end_src
 
 ** No Tab Character
@@ -663,22 +424,7 @@ Activate repeat mode to move among windows and repeat =M-x= commands.
   (add-hook 'text-mode-hook 'variable-pitch-mode)
 #+end_src
 
-* OS-Specific Settings
-
-** Windows
-
-*** powershell
-
-Since I mostly use Emacs on Windows platform, I need this package to
-interact nicely with the OS. Emacs built-in eshell mode and term mode
-does not work properly on Windows. This package also comes with a
-powershell mode to help editing powershell script files.
-
-#+begin_src emacs-lisp
-  (use-package powershell :defer t)
-#+end_src
-
-*** Find :dependency:
+** Find :dependency:
 
 Windows provides a find program which accepts different arguments than
 the Linux one. Emacs works out-of-the-box with Linux find program, so
@@ -690,7 +436,7 @@ accepts Linux find program conventional arguments.
       (setq find-program "C:/msys64/usr/bin/find.exe"))
 #+end_src
 
-*** Hide Dos EOL
+** Hide Dos EOL
 
 When working on Windows, sometimes I encounter files containing mixed
 EOL characters. This would make some lines ended with additional
@@ -702,6 +448,542 @@ EOL characters. This would make some lines ended with additional
     (interactive)
     (setq buffer-display-table (make-display-table))
     (aset buffer-display-table ?\^M []))
+#+end_src
+
+** prog-mode
+
+#+begin_src emacs-lisp
+  (defun prog-mode-setup ()
+    (display-fill-column-indicator-mode t)
+    (setq show-trailing-whitespace t)
+    (electric-pair-mode t)
+    (hs-minor-mode 1)
+    (hl-line-mode 1)
+    (display-line-numbers-mode))
+  (add-hook 'prog-mode-hook 'prog-mode-setup)
+#+end_src
+
+** Documentation Style
+
+Emacs 28 supports syntax highlighting for documentations in comments.
+
+#+begin_src emacs-lisp
+  (setq-default c-doc-comment-style
+                '((java-mode . javadoc)
+                  (pike-mode . autodoc)
+                  (c-mode    . doxygen)
+                  (c++-mode  . doxygen)))
+#+end_src
+
+** org-mode
+
+#+begin_src emacs-lisp
+  (use-package org
+    :defer t
+    :init
+    (defvar my/org-babel-languages (list '(C . t) '(scheme . t)))
+    :config
+    (setq org-ellipsis "⤵"
+          org-auto-align-tags nil
+          org-tags-column 0
+          org-catch-invisible-edits 'show-and-error
+          org-special-ctrl-a/e t
+          org-insert-heading-respect-content t
+          org-hide-emphasis-markers t
+          org-pretty-entities t
+          org-babel-C-compiler "clang"
+          org-babel-C++-compiler "clang++")
+    (add-to-list 'org-modules 'org-habit t)
+    (org-babel-do-load-languages 'org-babel-load-languages my/org-babel-languages)
+    ;; The following code makes org emphasis markup covers more lines
+    (setcar (nthcdr 4 org-emphasis-regexp-components) 5)
+    (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
+    :hook
+    (org-mode . org-indent-mode))
+#+end_src
+
+*** Exporting Chinese Paragraph to HTML
+
+Due to the difference between English and Chinese, there are some
+extra spaces in exported Chinese paragraph when exporting to
+HTML. These spaces are necessary since English uses spaces to separate
+words, but Chinese don't. We have to override this behavior.
+
+#+begin_src emacs-lisp
+  (defadvice org-html-paragraph (before org-html-paragraph-advice
+                                        (paragraph contents info) activate)
+    "Join consecutive Chinese lines into a single long line without
+     unwanted space when exporting org-mode to html."
+    (let* ((origin-contents (ad-get-arg 1))
+           (fix-regexp "[[:multibyte:]]")
+           (fixed-contents
+            (replace-regexp-in-string
+             (concat
+              "\\(" fix-regexp "\\) *\n *\\(" fix-regexp "\\)") "\\1\\2" origin-contents)))
+      (ad-set-arg 1 fixed-contents)))
+#+end_src
+
+*** Show org-agenda Buffer at Start-up
+
+#+begin_src emacs-lisp
+  (defun my/get-org-agenda-buffer ()
+    (org-agenda-list)
+    (get-buffer "*Org Agenda*"))
+  (setq initial-buffer-choice #'my/get-org-agenda-buffer)
+#+end_src
+
+*** COMMENT capture
+
+#+begin_src emacs-lisp
+  (use-package org
+               :defer t
+               :config
+               (setq org-default-notes-file (concat org-directory "/notes.org")))
+#+end_src
+
+*** Delete Link
+
+#+begin_src emacs-lisp
+  (defun my/org-remove-link ()
+    "Remove an org link"
+    (interactive)
+    (if (org-in-regexp org-link-bracket-re 1)
+        (save-excursion
+          (let ((remove (list (match-beginning 0) (match-end 0))))
+            (apply 'delete-region remove)))))
+#+end_src
+
+** project
+
+#+begin_src emacs-lisp
+  (setq project-vc-extra-root-markers '(".project"))
+#+end_src
+
+** vc-svn
+
+#+begin_src emacs-lisp
+  (setq vc-svn-annotate-switches "-x --ignore-eol-style")
+#+end_src
+
+** nXML Mode
+
+By default, nXML mode does not support hide and show certain blocks
+(sections/nodes), this piece of code add this feature using hs-minor
+mode.
+
+Credit: https://stackoverflow.com/questions/944614/emacs-does-hideshow-work-with-xml-mode-sgml-mode
+
+#+begin_src emacs-lisp
+  (add-to-list 'hs-special-modes-alist
+               (list 'nxml-mode
+                     "<!--\\|<[^/>]*[^/]>"
+                     "-->\\|</[^/>]*[^/]>"
+                     "<!--"
+                     'nxml-forward-element
+                     nil))
+
+  (add-hook 'nxml-mode-hook 'hs-minor-mode)
+#+end_src
+
+** Gnus
+
+*** News
+
+Subscribing a RSS feed in Gnus can not be done by simply setting a
+variable. Emacs has to execute the function
+=gnus-group-make-rss-group=. This can be done in the Gnus group buffer
+by typing =G R= and input the RSS feed URL. Thus, on every PC, the
+subscription has to be done manually during the initial setup. See
+[[info:gnus#RSS][gnus#RSS]] for more details.
+
+RSS feeds:
+
+- https://sachachua.com/blog/category/emacs-news/feed/
+- https://protesilaos.com/codelog.xml
+
+*** Mail in Emacs
+
+I still can't get Gnus work, but the config I copied from this [[https://news.ycombinator.com/item?id=23420308][thread]]
+does work. I'll paste them here for future reference.
+
+#+begin_src emacs-lisp :tangle no
+  (setq
+   user-full-name "Chang Xiaoduan"
+   user-mail-address "drcxd@sina.com"
+   send-mail-function 'smtpmail-send-it
+   smtpmail-smtp-server "smtp.sina.com"
+   smtpmail-stream-type 'starttls
+   smtpmail-smtp-service 587
+   gnus-select-method
+   '(nnimap "sina"
+            (nnimap-address "imap.sina.com")
+            (nnimap-server-port 993)
+            (nnimap-stream ssl)
+            (nnmail-expiry-wait immediate)))
+#+end_src
+
+The config I figured out by reading the manual myself is like this:
+
+#+begin_src emacs-lisp
+  (setq
+   gnus-select-method '(nnimap "imap.sina.com")
+   send-mail-function 'smtpmail-send-it
+   smtpmail-smtp-server "smtp.sina.com"
+   smtpmail-stream-type 'starttls
+   smtpmail-servers-requiring-authorization "sina")
+#+end_src
+
+The second variable is necessary. Otherwise, I got an
+"smtpmail-send-it: Sending failed: 530 Authentication required".
+According to smtpmail.el, it should try again when the server is
+requesting authentication. However, it does not. By setting the
+variable ~smtpmail-servers-requiring-authorization~, smtpmail would ask
+for authentication by default.
+
+** Spell Checking
+
+Currently I use Emacs' built-in spell checker, flyspell mode for spell
+checking.
+
+#+begin_src emacs-lisp
+  (use-package flyspell
+    :diminish flyspell-mode
+    :hook
+    ((text-mode . flyspell-mode)
+     (prog-mode . flyspell-prog-mode))
+    :bind
+    ("C-c s b" . flyspell-buffer))
+#+end_src
+
+** Key Bindings
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c E") 'eval-region)
+  (global-set-key (kbd "C-c P") 'compile)
+  (global-set-key (kbd "C-c b") 'switch-to-buffer)
+  (global-set-key (kbd "C-c o") 'other-window)
+  (global-set-key (kbd "C-c k") 'kill-buffer)
+  (global-set-key (kbd "C-c S") 'shell-command)
+  (global-set-key (kbd "C-c s t") 'hs-toggle-hiding)
+  (global-set-key (kbd "C-c w m") 'woman)
+  (global-set-key (kbd "C-c w s") 'window-swap-states)
+  (global-set-key (kbd "C-<tab>") 'completion-at-point)
+#+end_src
+
+** Emacs As Server
+
+#+begin_src emacs-lisp 
+  (require 'server)
+  (setq server-client-instructions nil)
+  (unless (server-running-p)
+    (server-start))
+#+end_src
+
+** ediff
+
+#+begin_src emacs-lisp
+  (setq ediff-keep-variants nil)
+  (setq ediff-make-buffers-readonly-at-startup t)
+  (setq ediff-show-clashes-only t)
+  (setq ediff-split-window-function 'split-window-horizontally)
+#+end_src
+
+* Third-Party Packages
+
+** Appearance
+
+*** Diminish
+
+I am using the built-in mode line, and it displays a symbol for all
+the activated minor modes. This could makes the mode line messy,
+because usually we have lots of minor modes turned on but we do not
+need the visual cue on the mode line to tell us they are
+enabled. Diminish is a good package to solve this problem.
+
+#+begin_src emacs-lisp
+  (use-package diminish
+    :demand t
+    :config
+    (diminish 'abbrev-mode)
+    (diminish 'visual-line-mode)
+    (diminish 'eldoc-mode))
+
+  (use-package hideshow
+    :diminish hs-minor-mode)
+
+  (use-package face-remap
+    :diminish buffer-face-mode)
+#+end_src
+
+*** Unicode Support
+
+#+begin_src emacs-lisp
+  (use-package unicode-fonts
+   :config
+   (unicode-fonts-setup))
+#+end_src
+
+*** Themes
+
+**** Modus Themes
+#+begin_src emacs-lisp
+  (use-package modus-themes
+    :defer t
+    :init
+    (defun my/modus-themes-custom-face ()
+      (modus-themes-with-colors
+        (custom-set-faces
+         `(lsp-ui-doc-background ((,c :background ,bg-dim)))
+         `(symbol-overlay-face-1 ((,c :inherit modus-themes-intense-blue)))
+         `(symbol-overlay-face-2 ((,c :inherit modus-themes-intense-red)))
+         `(symbol-overlay-face-3 ((,c :inherit modus-themes-intense-cyan)))
+         `(symbol-overlay-face-4 ((,c :inherit modus-themes-intense-green)))
+         `(symbol-overlay-face-5 ((,c :inherit modus-themes-intense-yellow)))
+         `(symbol-overlay-face-6 ((,c :inherit modus-themes-intense-magenta)))
+         `(symbol-overlay-face-7 ((,c :inherit modus-themes-subtle-red)))
+         `(symbol-overlay-face-8 ((,c :inherit modus-themes-subtle-green))))))
+    (defun my/use-modus-themes ()
+      (interactive)
+      (progn (global-set-key (kbd "C-c t g") 'modus-themes-select)
+             (modus-themes-select 'modus-operandi)))
+    (setq modus-themes-disable-other-themes t)
+    :config
+    (setq modus-themes-italic-constructs t
+          modus-themes-bold-constructs nil
+          modus-themes-mixed-fonts t
+          modus-themes-variable-pitch-ui t
+          modus-themes-mode-line '(borderless)
+          modus-themes-headings '((0 . (variable-pitch 1.61803))
+                                  (1 . (variable-pitch 1.38196))
+                                  (2 . (variable-pitch 1.23607))
+                                  (3 . (variable-pitch 1.1459))
+                                  (4 . (variable-pitch 1.09017))
+                                  (5 . (variable-pitch 1.05573))
+                                  (6 . (variable-pitch 1.03444))
+                                  (7 . (variable-pitch 1.02129))
+                                  (t . (variable-pitch 1.0))))
+    :hook
+    (modus-themes-after-load-theme . my/modus-themes-custom-face))
+#+end_src
+
+**** Standard Themes
+
+#+begin_src emacs-lisp
+  (use-package standard-themes
+    :defer t
+    :init
+    (defun my/standard-themes-custom-face ()
+      (standard-themes-with-colors
+       (custom-set-faces
+        `(lsp-ui-doc-background ((,c :background ,bg-dim)))
+        `(symbol-overlay-face-1 ((,c :inherit standard-themes-intense-blue)))
+        `(symbol-overlay-face-2 ((,c :inherit standard-themes-intense-red)))
+        `(symbol-overlay-face-3 ((,c :inherit standard-themes-intense-cyan)))
+        `(symbol-overlay-face-4 ((,c :inherit standard-themes-intense-green)))
+        `(symbol-overlay-face-5 ((,c :inherit standard-themes-intense-yello)))
+        `(symbol-overlay-face-6 ((,c :inherit standard-themes-intense-magenta)))
+        `(symbol-overlay-face-7 ((,c :inherit standard-themes-subtle-red)))
+        `(symbol-overlay-face-8 ((,c :inherit standard-themes-subtle-green))))))
+    (defun my/use-standard-themes ()
+      (interactive)
+      (progn (global-set-key (kbd "C-c t g") 'standard-themes-toggle)
+             (standard-themes-load-light)))
+    (setq standard-themes-disable-other-themes t)
+    :config
+    (setq standard-themes-bold-constructs t
+          standard-themes-italic-constructs t
+          standard-themes-mixed-fonts t
+          standard-themes-variable-pitch-ui t
+          standard-themes-headings '((0 . (variable-pitch 1.61803))
+                                     (1 . (variable-pitch 1.38196))
+                                     (2 . (variable-pitch 1.23607))
+                                     (3 . (variable-pitch 1.1459))
+                                     (4 . (variable-pitch 1.09017))
+                                     (5 . (variable-pitch 1.05573))
+                                     (6 . (variable-pitch 1.03444))
+                                     (7 . (variable-pitch 1.02129))
+                                     (t . (variable-pitch 1.0))))
+    :hook
+    (standard-themes-post-load . my/standard-themes-custom-face))
+#+end_src
+
+**** Ef Themes
+
+#+begin_src emacs-lisp
+  (use-package ef-themes
+    :defer t
+    :init
+    (defun my/ef-themes-custom-face ()
+      (ef-themes-with-colors
+       (custom-set-faces
+        `(lsp-ui-doc-background ((,c :background ,bg-dim)))
+        `(symbol-overlay-face-1 ((,c :background ,bg-red-intense)))
+        `(symbol-overlay-face-2 ((,c :background ,bg-green-intense)))
+        `(symbol-overlay-face-3 ((,c :background ,bg-yellow-intense)))
+        `(symbol-overlay-face-4 ((,c :background ,bg-blue-intense)))
+        `(symbol-overlay-face-5 ((,c :background ,bg-magenta-intense)))
+        `(symbol-overlay-face-6 ((,c :background ,bg-cyan-intense)))
+        `(symbol-overlay-face-7 ((,c :background ,bg-red-subtle)))
+        `(symbol-overlay-face-8 ((,c :background ,bg-green-subtle))))))
+    (defun my/use-ef-themes ()
+      (interactive)
+      (progn (global-set-key (kbd "C-c t g") 'ef-themes-select)
+             (ef-themes-select 'ef-cyprus)))
+    (setq ef-themes-disable-other-themes t)
+    :config
+    (setq ef-themes-mixed-fonts t
+          ef-themes-variable-pitch-ui t
+          ef-themes-headings '((0 . (variable-pitch 1.61803))
+                               (1 . (variable-pitch 1.38196))
+                               (2 . (variable-pitch 1.23607))
+                               (3 . (variable-pitch 1.1459))
+                               (4 . (variable-pitch 1.09017))
+                               (5 . (variable-pitch 1.05573))
+                               (6 . (variable-pitch 1.03444))
+                               (7 . (variable-pitch 1.02129))
+                               (t . (variable-pitch 1.0))))
+    :hook
+    (ef-themes-post-load . my/ef-themes-custom-face))
+#+end_src
+
+*** Ligature
+
+#+begin_src emacs-lisp
+  (use-package ligature
+   :config
+   (ligature-set-ligatures
+    'prog-mode
+    `("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
+      ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
+      "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
+      "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
+      "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
+      "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
+      "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
+      "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
+      ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
+      "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
+      "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
+      "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
+      "\\\\" "://" ("=" ,(rx (+ "=")))))
+   (global-ligature-mode t))
+#+end_src
+
+*** nerd-icons :dependency:
+
+Add some fancy icons. Require nerd fonts:
+
+https://www.nerdfonts.com/#home
+
+#+begin_src emacs-lisp
+  (use-package nerd-icons :demand t)
+
+  (use-package nerd-icons-completion
+    :after marginalia
+    :config
+    (nerd-icons-completion-mode)
+    (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+
+  (use-package nerd-icons-dired
+    :hook
+    (dired-mode . nerd-icons-dired-mode))
+
+  (use-package nerd-icons-corfu
+    :demand t
+    :after corfu
+    :init
+    (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+
+  (use-package nerd-icons-ibuffer
+    :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
+#+end_src
+
+*** logos
+
+#+begin_src emacs-lisp
+  (use-package olivetti :defer t
+    :diminish olivetti-mode)
+  (use-package logos
+    :diminish logos-focus-mode
+    :defer t
+    :config
+    (setq logos-outlines-are-pages t)
+    (setq-default logos-hide-mode-line nil
+                  logos-hide-buffer-boundaries nil
+                  logos-hide-fringe t
+                  logos-variable-pitch nil
+                  logos-buffer-read-only nil
+                  logos-olivetti t)
+    (with-eval-after-load 'modus-themes
+      (add-hook 'modus-themes-after-load-theme-hook #'logos-update-fringe-in-buffers))
+    (with-eval-after-load 'ef-themes
+      (add-hook 'ef-themes-post-load-hook #'logos-update-fringe-in-buffers))
+    (with-eval-after-load 'standard-themes
+      (add-hook 'standard-themes-post-load-hook #'logos-update-fringe-in-buffers))
+    :bind
+    (("C-c s l" . logos-focus-mode)
+     ("C-c s n" . logos-narrow-dwim)
+     ("C-c s k" . logos-backward-page-dwim)
+     ("C-c s j" . logos-forward-page-dwim)))
+#+end_src
+
+** org-mode
+
+*** org-mode Export: htmlize
+
+htmlize is necessary to export code blocks to HTML.
+
+#+begin_src emacs-lisp
+  (use-package htmlize :defer t)
+#+end_src
+
+*** org-mode Appearance: org-modern
+
+org-modern is a package that beautify org-mode. It changes the
+appearance of header line, table, time stamp and other things.
+
+Note that the Unicode characters used for ~org-modern-star~ and
+~org-modern-list~ are carefully selected from the characters that are
+supported by the fonts used in [[*Fonts and Faces]]. Otherwise, the
+symbols are displayed using whatever font that can display such
+symbols available on the system. In this case, a consistent appearance
+can not be maintained on different systems.
+
+#+begin_src emacs-lisp
+  (use-package org-modern
+    :defer t
+    :config
+    (setq org-modern-star '("⨀" "⧖" "⎊" "✧" "☆" "⚛")
+          org-modern-list '((43 . "•") (45 . "‣") (42 . "⁕")))
+    :hook (org-mode . global-org-modern-mode))
+#+end_src
+
+** Benchmark
+
+Some Emacs users don't care about bootstrap time, they claim that they
+only launch Emacs once and never close it until they turn off the
+computer. However, I prefer to maintain a reasonable startup
+time. It's always a good idea not to pay for what you are not
+using.
+
+#+begin_src emacs-lisp
+  (use-package benchmark-init
+               :init
+               (require 'benchmark-init)
+               :hook (after-init . benchmark-init/deactivate))
+#+end_src
+
+** Windows-Specific
+
+*** powershell
+
+Since I mostly use Emacs on Windows platform, I need this package to
+interact nicely with the OS. Emacs built-in eshell mode and term mode
+does not work properly on Windows. This package also comes with a
+powershell mode to help editing powershell script files.
+
+#+begin_src emacs-lisp
+  (use-package powershell :defer t)
 #+end_src
 
 *** Alert & Notifications
@@ -718,9 +1000,9 @@ found this alert-toast package to implement this feature.
         (setq alert-default-style 'toast)))
 #+end_src
 
-* Utility Packages
+** Life Quality
 
-** ripgrep
+*** ripgrep
 
 ripgrep is a multi-threaded version of grep. It is quite useful when
 searching for certain text.
@@ -729,7 +1011,7 @@ searching for certain text.
   (use-package ripgrep :defer t)
 #+end_src
 
-** wgrep
+*** wgrep
 
 wgrep allows users to modify grep/ripgrep outputs and save the changes
 to each output's original location. It is a really powerful
@@ -739,7 +1021,7 @@ interactive text file editing tool.
   (use-package wgrep :defer t)
 #+end_src
 
-** zoom
+*** zoom
 
 By default, when multiple windows are displayed, Emacs split the
 screen evenly among them. However, sometimes, this not what I
@@ -762,7 +1044,8 @@ one single command.
                ("C-c Z" . zoom-mode))
 #+end_src
 
-** scratch
+
+*** scratch
 
 This program allows user to create a scratch buffer of a certain mode,
 so you can write anything in it.
@@ -779,7 +1062,8 @@ so you can write anything in it.
     ("C-c s c" . my/scratch-with-prefix))
 #+end_src
 
-** Pomodoro and Timers
+
+*** Pomodoro and Timers
 
 Sometimes I use the [[https://en.wikipedia.org/wiki/Pomodoro_Technique][pomodoro technique]] to force myself focus on my
 task. I have tried [[https://github.com/SqrtMinusOne/pomm.el][pomm]] but I do not like its behavior. It
@@ -790,16 +1074,6 @@ Sometimes I just want to set a timer, and I found [[https://github.com/protesila
 easy to use.
 
 #+begin_src emacs-lisp
-  ;; (use-package pomm
-  ;;              :defer t
-  ;;              :config
-  ;;              (pomm-mode-line-mode)
-  ;;              (setq pomm-work-period 30
-  ;;                    pomm-short-break-period 10)
-  ;;              :bind
-  ;;              ("C-c t p" . pomm)
-  ;;              ("C-c t 3" . pomm-third-time))
-
   (use-package tmr
     :defer t
     :bind
@@ -825,62 +1099,15 @@ easy to use.
                          (alert message :title "Pomidor"))))))
 #+end_src
 
-* Programming
+** Programming
 
-** Templates or Snippets
-
-When programming, we have to write some boilerplate code: the
-structure of the piece of code is conventional, we only need to
-replace some key text in it, for example, the name of the variable.
-
-There is a well-known package for this task: yasnippet. However, this
-package is not maintained actively for more than two years (today is
-2022-12-10, and its last commit time is 2020-06-04). Thus, I switch to
-another package, tempel. Though it is a new package, it has its own
-advantages. First, it relies on Emacs built-in Tempo library. Second,
-its simple enough to learn and work with. Third, it is maintained
-actively. However, since yasnippet is well-known, some other packages,
-such as lsp-mode, depends on it somehow, so I still install it.
-
-#+begin_src emacs-lisp
-  (use-package tempel
-   :defer t
-   :init
-   ;; Setup completion at point
-   (defun tempel-setup-capf ()
-     ;; Add the Tempel Capf to `completion-at-point-functions'.
-     ;; `tempel-expand' only triggers on exact matches. Alternatively use
-     ;; `tempel-complete' if you want to see all matches, but then you
-     ;; should also configure `tempel-trigger-prefix', such that Tempel
-     ;; does not trigger too often when you don't expect it. NOTE: We add
-     ;; `tempel-expand' *before* the main programming mode Capf, such
-     ;; that it will be tried first.
-     (setq-local completion-at-point-functions
-                 (cons #'tempel-expand
-                       completion-at-point-functions)))
-   :bind
-   (("M-+" . tempel-insert)
-    ("M-*" . tempel-complete))
-   :hook
-   ((prog-mode . tempel-setup-capf)
-    (text-mode . tempel-setup-capf)))
-
-  (use-package yasnippet
-   :diminish yas-minor-mode
-   :defer t
-   :hook
-   (prog-mode . yas-minor-mode)
-   :bind
-   ("C-c Y" . yas-reload-all))
-#+end_src
-
-** Completion
+*** Completion
 
 Completion is an important feature of modern IDE. With the help of
 language server protocol, Emacs could also provide such service to
 programmers.
 
-*** corfu
+**** corfu
 
 corfu is a completion front end package. That is, it is responsible to
 display the completion candidates on the screen.
@@ -921,7 +1148,7 @@ display the completion candidates on the screen.
   (global-corfu-mode)
 #+end_src
 
-*** cape
+**** cape
 
 cape provides a set of completion backends. A completion back ends
 decides what are the completion candidates.
@@ -936,20 +1163,8 @@ decides what are the completion candidates.
    (add-to-list 'completion-at-point-functions (cape-company-to-capf #'company-clang)))
 #+end_src
 
-** General Settings
 
-#+begin_src emacs-lisp
-  (defun prog-mode-setup ()
-    (display-fill-column-indicator-mode t)
-    (setq show-trailing-whitespace t)
-    (electric-pair-mode t)
-    (hs-minor-mode 1)
-    (hl-line-mode 1)
-    (display-line-numbers-mode))
-  (add-hook 'prog-mode-hook 'prog-mode-setup)
-#+end_src
-
-** Code Formatting :dependency:
+*** COMMENT Code Formatting :dependency:
 
 If the code keeps a consistent and easy-to-read format, it will be
 much easier to read and maintain. However, manually formatting the
@@ -964,7 +1179,7 @@ code formatting tool is necessary.
   (use-package format-all :defer t)
 #+end_src
 
-** flycheck
+*** flycheck
 
 flycheck is an error checking package, which displays inline visual
 hint for possible code warning or error. Currently, I only use it as
@@ -974,7 +1189,7 @@ a facility for lsp.
   (use-package flycheck :defer t :diminish flycheck-mode)
 #+end_src
 
-** hl-todo
+*** hl-todo
 
 This package highlights certain keywords in comments and string
 literals.
@@ -997,7 +1212,7 @@ literals.
     (org-mode . hl-todo-mode)))
 #+end_src
 
-** git-gutter :dependency:
+*** git-gutter :dependency:
 
 This packages add visual hint on the fringe to indicate which part of
 the file is added/deleted/modified against the latest version in the
@@ -1015,19 +1230,7 @@ version control system.
    ("C-c G" . git-gutter))
 #+end_src
 
-** Documentation Style
-
-Emacs 28 supports syntax highlighting for documentations in comments.
-
-#+begin_src emacs-lisp
-  (setq-default c-doc-comment-style
-                '((java-mode . javadoc)
-                  (pike-mode . autodoc)
-                  (c-mode    . doxygen)
-                  (c++-mode  . doxygen)))
-#+end_src
-
-** evil-nerd-commenter
+*** evil-nerd-commenter
 
 Commenting a piece of code might be one of the most frequent
 operations a programmer performs. Thus, we need a convenient and smart
@@ -1042,7 +1245,7 @@ need.
     ("C-c C" . evilnc-copy-and-comment-lines)))
 #+end_src
 
-** Symbol Highlighting
+*** Symbol Highlighting
 
 When inspecting a piece of code, I need to highlight some of the
 symbols to help me quickly locate the places they are referenced.
@@ -1058,7 +1261,7 @@ symbol-overlay is the best package I have known for this task.
    (setq symbol-overlay-inhibit-map t))
 #+end_src
 
-** lsp :dependency:
+*** lsp :dependency:
 
 Language server protocol is a powerful tool. It enables Eamcs provide
 IDE-like functions, such as auto-completion,
@@ -1125,7 +1328,7 @@ variable-rename.
   (add-to-list 'safe-local-eval-forms '(lsp))
 #+end_src
 
-** COMMENT Syntax Highlighting
+*** COMMENT Syntax Highlighting
 
 Eamcs has built-in syntax highlighting support, however it is based on
 regular expression. This means it would not be correct in every
@@ -1162,9 +1365,9 @@ specific language major mode.
    :defer t)
 #+end_src
 
-** Programming Languages
+*** Programming Languages
 
-*** C++
+**** C++
 
 #+begin_src emacs-lisp :tangle no
   (defun my/c-indent-then-complete ()
@@ -1175,13 +1378,13 @@ specific language major mode.
     (define-key c++-mode-map [remap c-indent-line-or-region] 'my/c-indent-then-complete))
 #+end_src
 
-*** Lua
+**** Lua
 
 #+begin_src emacs-lisp
   (use-package lua-mode :defer t)
 #+end_src
 
-*** Scheme
+**** Scheme
 
 Scheme is a dialect of Lisp. It is also the language used in the book
 /Structure and Interpretation of Computer Programs/ (SICP). Emacs
@@ -1191,7 +1394,7 @@ inside Emacs. After that, you can evaluate scheme expression in any
 scheme-mode buffer. The expression is evaluated in the inferior scheme
 process.
 
-**** Use Scheme in org-mode
+***** Use Scheme in org-mode
 
 To execute scheme code in org-mode, org-babel's [[https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-scheme.html][document]] requires
 [[https://www.nongnu.org/geiser/][Geiser]].
@@ -1204,7 +1407,7 @@ Geiser is an Emacs front end of a Scheme interpreter, and it supports
 multiple implementations. For more information about Geiser, check its
 documentation in Emacs' INFO pages (after installing the package).
 
-***** A Minor Issue
+****** A Minor Issue
 
 I was using org 9.5 and I found org-babel failed to execute scheme
 code in org-mode buffer. After a simple search, I found one who had
@@ -1214,9 +1417,9 @@ issue. https://www.mail-archive.com/emacs-orgmode@gnu.org/msg142485.html
 It turns out there is a bug in org and I have to upgrade it to version
 9.6 to fix it.
 
-**** Scheme Implementations
+***** Scheme Implementations
 
-***** Chicken
+****** Chicken
 
 The first scheme implementation I used is the [[https://call-cc.org/][chicken
 compiler]]. According to its [[https://wiki.call-cc.org/emacs#builtin-scheme-support][documents]], to use it with Emacs built-in
@@ -1235,7 +1438,7 @@ not viable. I have to build the compiler myself. Second,
 org-babel, cannot work correctly on Windows. Chicken requires users to
 apply for an account to report bug, which is not convenient.
 
-***** Chez :dependency:
+****** Chez :dependency:
 
 After I have found that I cannot make chicken work with org-babel on
 Windows, I switch to [[https://github.com/cisco/ChezScheme][Chez]]. It has nice Windows support, i.e. a Windows
@@ -1248,7 +1451,7 @@ the =PATH=, or customize ~geiser-chez-binary~.
   (use-package geiser-chez :defer t)
 #+end_src
 
-***** Racket :dependency:
+****** Racket :dependency:
 
 I use scheme mainly to learn SICP. SIPC has some customized code that
 are frequently used in multiple examples. There is a Racket package
@@ -1282,29 +1485,19 @@ imported to the session, the org-mode code block must define the
   (use-package racket-mode)
 
   (add-to-list 'load-path (concat user-emacs-directory "site-lisp/emacs-ob-racket"))
-  (with-eval-after-load 'org
-    (add-to-list 'org-babel-load-languages '(racket . t))
-    (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
-  ;; (use-package ob-racket
-  ;;   :after org
-  ;;   :hook
-  ;;   (ob-racket-pre-runtime-library-load . ob-racket-raco-make-runtime-library)
-  ;;   :init
-
-  ;;   )
+  (add-to-list 'my/org-babel-languages '(racket . t))
 #+end_src
 
-*** Graphviz Dot
+**** Graphviz Dot
 
 #+begin_src emacs-lisp
   (use-package graphviz-dot-mode
     :after org
     :init
-    (add-to-list 'org-babel-load-languages '(dot . t))
-    (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
+    (add-to-list 'my/org-babel-languages '(dot . t)))
 #+end_src
 
-** Unreal :dependency:
+*** Unreal :dependency:
 
 I am working with Unreal Engine, using Emacs + clangd + lsp-mode as my
 development environment. I find that I frequently execute some
@@ -1313,7 +1506,7 @@ database, generate header files, build the project and debug the
 project. To accelerate these processes, I have developed the following
 routines.
 
-*** Variables
+**** Variables
 
 Most of the operations are done using the Unreal Build Tool (UBT). All
 operations must be associated with a particular target and
@@ -1341,7 +1534,7 @@ platform. These variables are defined for convenience.
                       platform)))
 #+end_src
 
-*** Build the Project
+**** Build the Project
 
 #+begin_src emacs-lisp
   (defun my/unreal-build-project (project opt platform &optional editor)
@@ -1355,7 +1548,7 @@ platform. These variables are defined for convenience.
     (async-shell-command (my/build-ubt-op-string project opt platform editor)))
 #+end_src
 
-*** Generating Compilation Database
+**** Generating Compilation Database
 
 clangd + lsp-mode requires a compilation database to work. UBT
 provides a mode which generates the compilation database.
@@ -1375,7 +1568,7 @@ provides a mode which generates the compilation database.
       (my/build-ubt-op-string project opt platform editor))))
 #+end_src
 
-*** Generate Header Files
+**** Generate Header Files
 
 Unreal Header Tool (UHT) is a program which scans user code and
 generate code to implement the reflection code. Its methodology is to
@@ -1402,125 +1595,59 @@ some macro's line number has changed.
       (my/build-ubt-op-string project opt platform editor))))
 #+end_src
 
-* org-mode
+** Templates & Snippets
+
+When programming, we have to write some boilerplate code: the
+structure of the piece of code is conventional, we only need to
+replace some key text in it, for example, the name of the variable.
+
+There is a well-known package for this task: yasnippet. However, this
+package is not maintained actively for more than two years (today is
+2022-12-10, and its last commit time is 2020-06-04). Thus, I switch to
+another package, tempel. Though it is a new package, it has its own
+advantages. First, it relies on Emacs built-in Tempo library. Second,
+its simple enough to learn and work with. Third, it is maintained
+actively. However, since yasnippet is well-known, some other packages,
+such as lsp-mode, depends on it somehow, so I still install it.
 
 #+begin_src emacs-lisp
-  (use-package org
-    :defer t
-    :config
-    (setq org-ellipsis "⤵"
-          org-auto-align-tags nil
-          org-tags-column 0
-          org-catch-invisible-edits 'show-and-error
-          org-special-ctrl-a/e t
-          org-insert-heading-respect-content t
-          org-hide-emphasis-markers t
-          org-pretty-entities t
-          org-babel-C-compiler "clang"
-          org-babel-C++-compiler "clang++")
-    (add-to-list 'org-babel-load-languages '(C . t))
-    (add-to-list 'org-babel-load-languages '(scheme . t))
-    (add-to-list 'org-modules 'org-habit t)
-    (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
-    :hook
-    (org-mode . org-indent-mode))
+  (use-package tempel
+   :defer t
+   :init
+   ;; Setup completion at point
+   (defun tempel-setup-capf ()
+     ;; Add the Tempel Capf to `completion-at-point-functions'.
+     ;; `tempel-expand' only triggers on exact matches. Alternatively use
+     ;; `tempel-complete' if you want to see all matches, but then you
+     ;; should also configure `tempel-trigger-prefix', such that Tempel
+     ;; does not trigger too often when you don't expect it. NOTE: We add
+     ;; `tempel-expand' *before* the main programming mode Capf, such
+     ;; that it will be tried first.
+     (setq-local completion-at-point-functions
+                 (cons #'tempel-expand
+                       completion-at-point-functions)))
+   :bind
+   (("M-+" . tempel-insert)
+    ("M-*" . tempel-complete))
+   :hook
+   ((prog-mode . tempel-setup-capf)
+    (text-mode . tempel-setup-capf)))
 
-  (use-package htmlize :defer t)
+  (use-package yasnippet
+   :diminish yas-minor-mode
+   :defer t
+   :hook
+   (prog-mode . yas-minor-mode)
+   :bind
+   ("C-c Y" . yas-reload-all))
 #+end_src
 
-** Appearance =org-modern=
-
-org-modern is a package that beautify org-mode. It changes the
-appearance of header line, table, time stamp and other things.
-
-Note that the Unicode characters used for ~org-modern-star~ and
-~org-modern-list~ are carefully selected from the characters that are
-supported by the fonts used in [[*Fonts and Faces]]. Otherwise, the
-symbols are displayed using whatever font that can display such
-symbols available on the system. In this case, a consistent appearance
-can not be maintained on different systems.
-
-#+begin_src emacs-lisp
-  (use-package org-modern
-    :defer t
-    :config
-    (setq org-modern-star '("⨀" "⧖" "⎊" "✧" "☆" "⚛")
-          org-modern-list '((43 . "•") (45 . "‣") (42 . "⁕")))
-    :hook (org-mode . global-org-modern-mode))
-#+end_src
-
-** Exporting Chinese Paragraph to HTML
-
-Due to the difference between English and Chinese, there are some
-extra spaces in exported Chinese paragraph when exporting to
-HTML. These spaces are necessary since English uses spaces to separate
-words, but Chinese don't. We have to override this behavior.
-
-#+begin_src emacs-lisp
-  (defadvice org-html-paragraph (before org-html-paragraph-advice
-                                        (paragraph contents info) activate)
-    "Join consecutive Chinese lines into a single long line without
-     unwanted space when exporting org-mode to html."
-    (let* ((origin-contents (ad-get-arg 1))
-           (fix-regexp "[[:multibyte:]]")
-           (fixed-contents
-            (replace-regexp-in-string
-             (concat
-              "\\(" fix-regexp "\\) *\n *\\(" fix-regexp "\\)") "\\1\\2" origin-contents)))
-      (ad-set-arg 1 fixed-contents)))
-#+end_src
-
-** Markups across More Lines
-
-org-mode has built-in support for inline emphasis markups. By default,
-these markups only works when the content inside only contain one
-newline character. To make it works with more newlines in it, use the
-following code:
-
-#+begin_src emacs-lisp
-  (use-package org
-               :defer t
-               :config
-               (setcar (nthcdr 4 org-emphasis-regexp-components) 5)
-               (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components))
-#+end_src
-
-** Show org-agenda Buffer at Start-up
-
-#+begin_src emacs-lisp
-  (defun my/get-org-agenda-buffer ()
-    (org-agenda-list)
-    (get-buffer "*Org Agenda*"))
-  (setq initial-buffer-choice #'my/get-org-agenda-buffer)
-#+end_src
-
-** COMMENT capture
-
-#+begin_src emacs-lisp
-  (use-package org
-               :defer t
-               :config
-               (setq org-default-notes-file (concat org-directory "/notes.org")))
-#+end_src
-
-** Delete Link
-
-#+begin_src emacs-lisp
-  (defun my/org-remove-link ()
-    "Remove an org link"
-    (interactive)
-    (if (org-in-regexp org-link-bracket-re 1)
-        (save-excursion
-          (let ((remove (list (match-beginning 0) (match-end 0))))
-            (apply 'delete-region remove)))))
-#+end_src
-
-* Citation
+** Citation
 
 Currently I am using org-cite, citar plus citeproc to deal with
 citation issues.
 
-** citar
+*** citar
 
 #+begin_src emacs-lisp
   (use-package citar
@@ -1550,7 +1677,7 @@ citation issues.
 
 Also, =org-cite-csl-styles-dir= must be set for the csl styles to work.
 
-** citar-org-roam
+*** citar-org-roam
 
 A necessary package to integrate citar with org-roam, thus,
 bibliographic notes can be easily created in org-roam context.
@@ -1565,14 +1692,14 @@ bibliographic notes can be easily created in org-roam context.
     (setq citar-org-roam-subdir "references"))
 #+end_src
 
-* Taking Notes
+** Taking Notes
 
 As a text editor, Emacs is a good place to take notes. There are also
 packages helps you organize your notes. The most popular one is
 org-roam. A lighter-weight choice is denote. These two packages are
 often used to practice a note-taking methodology called [[https://zettelkasten.de/introduction/][Zettelkasten]].
 
-** org-roam
+*** org-roam
 
 #+begin_src emacs-lisp
   (use-package org-roam
@@ -1616,7 +1743,7 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
     :diminish ((org-roam-ui-mode . "") (org-roam-ui-follow-mode . "")))
 #+end_src
 
-** consult-org-roam
+*** consult-org-roam
 
 Utility package makes org-roam using consult to search notes, forward
 and backward links. It improves the workflow and thus efficiency.
@@ -1650,7 +1777,7 @@ and backward links. It improves the workflow and thus efficiency.
      ("C-c n s" . consult-org-roam-search))
 #+end_src
 
-** denote
+*** COMMENT denote
 
 #+begin_src emacs-lisp :tangle no
   (use-package denote
@@ -1694,9 +1821,9 @@ and backward links. It improves the workflow and thus efficiency.
         (my/denote-create-journal))))
 #+end_src
 
-* Completion
+** Completion
 
-** vertico
+*** vertico
 
 Emacs has a tons of variables, commands and documents. When you
 exploring them, vertico provides a much more informative interface for
@@ -1711,7 +1838,7 @@ you to browse those information.
   (vertico-mode)
 #+end_src
 
-** orderless
+*** orderless
 
 orderless allows the completion systems using a different completion
 strategy. The default completion systems completes based on prefix
@@ -1731,7 +1858,7 @@ in these situations.
           completion-category-overrides '((file (styles partial-completion)))))
 #+end_src
 
-** marginalia
+*** marginalia
 
 marginalia works together with vertico, it provides more information
 of a variable or function in the completion interface. This may help
@@ -1742,7 +1869,7 @@ you locate your target more quickly.
   (marginalia-mode)
 #+end_src
 
-** consult
+*** consult
 
 consult works together with vertico. It helps you complete among lots
 of things, such as buffers, file contents, grep results, find results,
@@ -1781,7 +1908,7 @@ etc..
      ("C-c H" . consult-org-heading)))
 #+end_src
 
-** embark
+*** embark
 
 embark allows users perform certain tasks in the completion
 interface. This reduces the number of operations users have to
@@ -1799,8 +1926,6 @@ convenient.
                :bind ("<f5>" . embark-act))
   (use-package embark-consult :defer t)
 #+end_src
-
-* Project Management
 
 ** projectile
 
@@ -1824,13 +1949,6 @@ programming project).
    (projectile-global-mode))
 #+end_src
 
-** Emacs Built-in project
-
-#+begin_src emacs-lisp
-  (setq project-vc-extra-root-markers '(".project"))
-#+end_src
-* Version Control
-
 ** magit :dependency:
 
 magit is the well-known Emacs interface for git.
@@ -1842,120 +1960,9 @@ magit is the well-known Emacs interface for git.
    ("C-c M" . magit))
 #+end_src
 
-** vc-svn
+** Key Binding
 
-#+begin_src emacs-lisp
-  (setq vc-svn-annotate-switches "-x --ignore-eol-style")
-#+end_src
-
-* nXML Mode
-
-By default, nXML mode does not support hide and show certain blocks
-(sections/nodes), this piece of code add this feature using hs-minor
-mode.
-
-Credit: https://stackoverflow.com/questions/944614/emacs-does-hideshow-work-with-xml-mode-sgml-mode
-
-#+begin_src emacs-lisp
-  (add-to-list 'hs-special-modes-alist
-               (list 'nxml-mode
-                     "<!--\\|<[^/>]*[^/]>"
-                     "-->\\|</[^/>]*[^/]>"
-                     "<!--"
-                     'nxml-forward-element
-                     nil))
-
-  (add-hook 'nxml-mode-hook 'hs-minor-mode)
-#+end_src
-
-* Gnus
-
-** News
-
-Subscribing a RSS feed in Gnus can not be done by simply setting a
-variable. Emacs has to execute the function
-=gnus-group-make-rss-group=. This can be done in the Gnus group buffer
-by typing =G R= and input the RSS feed URL. Thus, on every PC, the
-subscription has to be done manually during the initial setup. See
-[[info:gnus#RSS][gnus#RSS]] for more details.
-
-RSS feeds:
-
-- https://sachachua.com/blog/category/emacs-news/feed/
-- https://protesilaos.com/codelog.xml
-
-** Mail in Emacs
-
-I still can't get Gnus work, but the config I copied from this [[https://news.ycombinator.com/item?id=23420308][thread]]
-does work. I'll paste them here for future reference.
-
-#+begin_src emacs-lisp :tangle no
-  (setq
-   user-full-name "Chang Xiaoduan"
-   user-mail-address "drcxd@sina.com"
-   send-mail-function 'smtpmail-send-it
-   smtpmail-smtp-server "smtp.sina.com"
-   smtpmail-stream-type 'starttls
-   smtpmail-smtp-service 587
-   gnus-select-method
-   '(nnimap "sina"
-            (nnimap-address "imap.sina.com")
-            (nnimap-server-port 993)
-            (nnimap-stream ssl)
-            (nnmail-expiry-wait immediate)))
-#+end_src
-
-The config I figured out by reading the manual myself is like this:
-
-#+begin_src emacs-lisp
-  (setq
-   gnus-select-method '(nnimap "imap.sina.com")
-   send-mail-function 'smtpmail-send-it
-   smtpmail-smtp-server "smtp.sina.com"
-   smtpmail-stream-type 'starttls
-   smtpmail-servers-requiring-authorization "sina")
-#+end_src
-
-The second variable is necessary. Otherwise, I got an
-"smtpmail-send-it: Sending failed: 530 Authentication required".
-According to smtpmail.el, it should try again when the server is
-requesting authentication. However, it does not. By setting the
-variable ~smtpmail-servers-requiring-authorization~, smtpmail would ask
-for authentication by default.
-
-* Spell Checking
-
-Currently I use Emacs' built-in spell checker, flyspell mode for spell
-checking.
-
-#+begin_src emacs-lisp
-  (use-package flyspell
-    :diminish flyspell-mode
-    :hook
-    ((text-mode . flyspell-mode)
-     (prog-mode . flyspell-prog-mode))
-    :bind
-    ("C-c s b" . flyspell-buffer))
-#+end_src
-
-* Key Binding
-
-** Native Command Key Bindings
-
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-c E") 'eval-region)
-  (global-set-key (kbd "C-c P") 'compile)
-  (global-set-key (kbd "C-c b") 'switch-to-buffer)
-  (global-set-key (kbd "C-c o") 'other-window)
-  (global-set-key (kbd "C-c k") 'kill-buffer)
-  (global-set-key (kbd "C-c S") 'shell-command)
-  (global-set-key (kbd "C-c s t") 'hs-toggle-hiding)
-  (global-set-key (kbd "C-c w m") 'woman)
-  (global-set-key (kbd "C-c w s") 'window-swap-states)
-  (global-set-key (kbd "C-<tab>") 'completion-at-point)
-#+end_src
-
-** meow
+*** meow
 
 meow is a modal editing package. It looks like evil, but I think it
 suits Emacs more than evil. meow provides supports for many Emacs
@@ -2092,7 +2099,7 @@ add some additional configuration specific to meow.
    (global-set-key (kbd "<f6>") 'meow-keypad))
 #+end_src
 
-*** A Note About KEYPAD Mode
+**** A Note About KEYPAD Mode
 
 Meow's default behavior is to add =C-`= prefix to any key with no
 prefix. This looks counter-intuitive to me. Meow is trying to simulate
@@ -2130,7 +2137,7 @@ to fit this change. There are two additional functions
 have similar structures to that of =meow-keypad-self-insert=, deal with
 them so that Meow generate the correct hints.
 
-** COMMENT which-key
+*** COMMENT which-key
 
 With so many key bindings, it is impossible to memorize all of
 them. which-key is a package that displays all viable commands and
@@ -2144,11 +2151,11 @@ binding.
    (which-key-mode))
 #+end_src
 
-* EBooks
+** EBooks
 
-** calibre Interface
+*** calibre Interface
 
-*** COMMENT calibredb
+**** COMMENT calibredb
 
 #+begin_src emacs-lisp
   (use-package calibredb
@@ -2167,7 +2174,7 @@ However, the values of these variables depends on the actual location
 of the calibre libraries on the current computer. Thus, it is better
 to put these configurations in the local =custom.el= file.
 
-*** calibre
+**** calibre
 
 This is an alternative to calibredb. I prefer this package over
 calibredb. I have added some custom functions to open the directory
@@ -2210,7 +2217,7 @@ Also, we can specify an external program to open a certain format of a book:
 
 Otherwise, the book is opened inside Emacs.
 
-** nov
+*** nov
 
 nov is a package that allows you read EPUB files inside Emacs.
 
@@ -2225,24 +2232,6 @@ nov is a package that allows you read EPUB files inside Emacs.
      (nov-post-html-render . (lambda () (toggle-truncate-lines 0)))))
 #+end_src
 
-* Emacs As Server
-
-#+begin_src emacs-lisp 
-  (require 'server)
-  (setq server-client-instructions nil)
-  (unless (server-running-p)
-    (server-start))
-#+end_src
-
-* ediff
-
-#+begin_src emacs-lisp
-  (setq ediff-keep-variants nil)
-  (setq ediff-make-buffers-readonly-at-startup t)
-  (setq ediff-show-clashes-only t)
-  (setq ediff-split-window-function 'split-window-horizontally)
-#+end_src
-
 * Load Custom File
 
 Finally, after all the other settings have been done, we load the
@@ -2252,3 +2241,4 @@ local customization file.
   (when (file-exists-p custom-file)
     (load custom-file))
 #+end_src
+

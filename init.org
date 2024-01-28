@@ -1163,7 +1163,6 @@ decides what are the completion candidates.
    (add-to-list 'completion-at-point-functions (cape-company-to-capf #'company-clang)))
 #+end_src
 
-
 *** COMMENT Code Formatting :dependency:
 
 If the code keeps a consistent and easy-to-read format, it will be
@@ -1419,7 +1418,7 @@ It turns out there is a bug in org and I have to upgrade it to version
 
 ***** Scheme Implementations
 
-****** Chicken
+****** Chicken :dependency:
 
 The first scheme implementation I used is the [[https://call-cc.org/][chicken
 compiler]]. According to its [[https://wiki.call-cc.org/emacs#builtin-scheme-support][documents]], to use it with Emacs built-in
@@ -1441,7 +1440,7 @@ apply for an account to report bug, which is not convenient.
 ****** Chez :dependency:
 
 After I have found that I cannot make chicken work with org-babel on
-Windows, I switch to [[https://github.com/cisco/ChezScheme][Chez]]. It has nice Windows support, i.e. a Windows
+Windows, I switch to [[https://github.com/cisco/ChezScheme][Chez]]. It has nice Windows support, e.g. a Windows
 installer. It also host a repository on github so it is easy to report
 a bug. Finally, it does not require additional setup to work with
 Emacs. The only thing I have to do is to expose its binary =scheme= in
@@ -1453,34 +1452,23 @@ the =PATH=, or customize ~geiser-chez-binary~.
 
 ****** Racket :dependency:
 
-I use scheme mainly to learn SICP. SIPC has some customized code that
-are frequently used in multiple examples. There is a Racket package
+If I am only using Scheme then Chez is good enough, however, I use
+scheme mainly to learn SICP. SICP has some customized code that are
+frequently used in multiple examples. There is a Racket package
 (https://docs.racket-lang.org/sicp-manual/index.html
 https://github.com/sicp-lang/sicp) that implements these customized
 code so that users do not have to input and evaluate them every time
 they execute code depends on them. Thus, [[https://racket-lang.org/][Racket]] becomes a better
-choice than Chez when learning SICP.
+choice than Chez when learning SICP. Instead of writing =scheme= code
+block, writing =racket= code block take advantages of the =sicp= package.
 
-To use the code in the package inside Emacs, input the following in
-the Racket session:
-
-#+begin_src example
-  ,enter "/path/to/package.rst"
-#+end_src
-
-The prompt of the Racket session should change from =racket@>= to
-=racket@package.rst>=. Afterwards, the code defined in the package can
-be used in the session and in org-mode. Note that to use the code
-imported to the session, the org-mode code block must define the
-=:session= header.
+The org-babel support for racket is done in the package
+[[https://github.com/hasu/emacs-ob-racket][eamcs-ob-racket]] , which is only available on github. I have no other
+choice but use =git submodule= to link it to my configuration
+repository.
 
 #+begin_src emacs-lisp
-  (use-package geiser-racket
-    :defer t
-    :config
-    ;; this forces geiser to use racket to evaluate code in org-mode
-    ;; buffer
-    (setq geiser-active-implementations '(racket)))
+  (use-package geiser-racket :defer t)
 
   (use-package racket-mode)
 

@@ -244,6 +244,7 @@ to manage these buffers just as you manage files in dired.
 + Iosevka font: https://github.com/be5invis/Iosevka
 + Iosevka Comfy font: https://github.com/protesilaos/iosevka-comfy
 
+  #+NAME: font-setup
 #+begin_src emacs-lisp
   (set-fontset-font "fontset-default" 'han "Sarasa Gothic SC")
 
@@ -717,10 +718,13 @@ enabled. Diminish is a good package to solve this problem.
 
 *** Unicode Support
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :noweb yes
   (use-package unicode-fonts
    :config
    (unicode-fonts-setup))
+  ;; duplicate the font setup code here, otherwise it is override by
+  ;; `unicode-fonts-setup'
+  <<font-setup>>
 #+end_src
 
 *** Themes
@@ -885,6 +889,7 @@ https://www.nerdfonts.com/#home
     (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
 
   (use-package nerd-icons-dired
+    :diminish nerd-icons-dired-mode
     :hook
     (dired-mode . nerd-icons-dired-mode))
 

@@ -498,9 +498,7 @@ Emacs 28 supports syntax highlighting for documentations in comments.
     (org-babel-do-load-languages 'org-babel-load-languages my/org-babel-languages)
     ;; The following code makes org emphasis markup covers more lines
     (setcar (nthcdr 4 org-emphasis-regexp-components) 5)
-    (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
-    :hook
-    (org-mode . org-indent-mode))
+    (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components))
 #+end_src
 
 *** Exporting Chinese Paragraph to HTML

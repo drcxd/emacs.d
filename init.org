@@ -1473,7 +1473,7 @@ repository.
 #+begin_src emacs-lisp
   (use-package geiser-racket :defer t)
 
-  (use-package racket-mode)
+  (use-package racket-mode :defer t)
 
   (add-to-list 'load-path (concat user-emacs-directory "site-lisp/emacs-ob-racket"))
   (add-to-list 'my/org-babel-languages '(racket . t))
@@ -1483,7 +1483,7 @@ repository.
 
 #+begin_src emacs-lisp
   (use-package graphviz-dot-mode
-    :after org
+    :defer t
     :init
     (add-to-list 'my/org-babel-languages '(dot . t)))
 #+end_src

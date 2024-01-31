@@ -1470,10 +1470,22 @@ The org-babel support for racket is done in the package
 choice but use =git submodule= to link it to my configuration
 repository.
 
-#+begin_src emacs-lisp
-  (use-package geiser-racket :defer t)
+Note that if you want to use =racket-mode= then you should not install
+=geiser-racket=. These two packages conflict with each other on some
+particular settings. For example, when opening a =.rkt= file, if
+=geiser-racket= is installed, then it opens it in =scheme-mode=. This
+prevents you use some of the functions provided by =racket-mode=, since
+it requires the major mode being =racket-mode=.
 
-  (use-package racket-mode :defer t)
+Currently, I would use Chez for pure Scheme programming and use Racket
+for SICP related Scheme programming. Thus, I need not install the
+=geiser-racket= package.
+
+#+begin_src emacs-lisp
+  ;; (use-package geiser-racket :defer t)
+
+  (use-package racket-mode
+    :defer t)
 
   (add-to-list 'load-path (concat user-emacs-directory "site-lisp/emacs-ob-racket"))
   (add-to-list 'my/org-babel-languages '(racket . t))

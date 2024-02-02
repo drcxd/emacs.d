@@ -1982,10 +1982,10 @@ add some additional configuration specific to meow.
    :init
    (defun meow-setup ()
      (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
-     (meow-motion-overwrite-define-key
-      ;; '("j" . meow-next)
-      ;; '("k" . meow-prev)
-      '("<escape>" . ignore))
+     ;; (meow-motion-overwrite-define-key
+     ;;  ;; '("j" . meow-next)
+     ;;  ;; '("k" . meow-prev)
+     ;;  '("<escape>" . ignore))
      (meow-leader-define-key
       ;; SPC j/k will run the original command in MOTION state.
       ;; '("j" . "H-j")
@@ -2086,10 +2086,7 @@ add some additional configuration specific to meow.
           (beacon . "[B]")))
    (setq meow-keypad-leader-dispatch "C-c")
    (setq meow-mode-state-list
-         '((special-mode . motion)
-           (eshell-mode . insert)
-           (comint-mode . insert)
-           (fundamental-mode . normal)
+         '((fundamental-mode . normal)
            (text-mode . normal)
            (prog-mode . normal)
            (conf-mode . normal)))

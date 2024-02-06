@@ -484,7 +484,8 @@ Emacs 28 supports syntax highlighting for documentations in comments.
     :init
     (defvar my/org-babel-languages (list '(C . t) '(scheme . t)))
     :config
-    (setq org-ellipsis "⤵"
+    (setq org-ellipsis "…"
+          org-log-into-drawer t
           org-auto-align-tags nil
           org-tags-column 0
           org-catch-invisible-edits 'show-and-error
@@ -1421,7 +1422,7 @@ It turns out there is a bug in org and I have to upgrade it to version
 
 ***** Scheme Implementations
 
-****** Chicken :dependency:
+****** COMMENT Chicken :dependency:
 
 The first scheme implementation I used is the [[https://call-cc.org/][chicken
 compiler]]. According to its [[https://wiki.call-cc.org/emacs#builtin-scheme-support][documents]], to use it with Emacs built-in
@@ -1440,7 +1441,7 @@ not viable. I have to build the compiler myself. Second,
 org-babel, cannot work correctly on Windows. Chicken requires users to
 apply for an account to report bug, which is not convenient.
 
-****** Chez :dependency:
+****** COMMENT Chez :dependency:
 
 After I have found that I cannot make chicken work with org-babel on
 Windows, I switch to [[https://github.com/cisco/ChezScheme][Chez]]. It has nice Windows support, e.g. a Windows
@@ -1456,19 +1457,21 @@ the =PATH=, or customize ~geiser-chez-binary~.
 ****** Racket :dependency:
 
 If I am only using Scheme then Chez is good enough, however, I use
-scheme mainly to learn SICP. SICP has some customized code that are
-frequently used in multiple examples. There is a Racket package
+scheme mainly to learn SICP. SICP has some customized code which are
+used as dependencies in some exercises. There is a Racket package
 (https://docs.racket-lang.org/sicp-manual/index.html
 https://github.com/sicp-lang/sicp) that implements these customized
 code so that users do not have to input and evaluate them every time
 they execute code depends on them. Thus, [[https://racket-lang.org/][Racket]] becomes a better
-choice than Chez when learning SICP. Instead of writing =scheme= code
-block, writing =racket= code block take advantages of the =sicp= package.
+choice than Chez when learning SICP.
 
-The org-babel support for racket is done in the package
-[[https://github.com/hasu/emacs-ob-racket][eamcs-ob-racket]] , which is only available on github. I have no other
-choice but use =git submodule= to link it to my configuration
-repository.
+What makes things interesting is that Racket is not only an
+implementation of Scheme, but also itself a programming
+language. There is a major-mode package =racket-mode= for it. There is
+also a specialized org-babel language support package for Racket:
+[[https://github.com/hasu/emacs-ob-racket][eamcs-ob-racket]] , which is only available on github. If I want to use
+this package, I have no other choice but use =git submodule= to link it
+to my configuration repository.
 
 Note that if you want to use =racket-mode= then you should not install
 =geiser-racket=. These two packages conflict with each other on some
@@ -1477,18 +1480,32 @@ particular settings. For example, when opening a =.rkt= file, if
 prevents you use some of the functions provided by =racket-mode=, since
 it requires the major mode being =racket-mode=.
 
-Currently, I would use Chez for pure Scheme programming and use Racket
-for SICP related Scheme programming. Thus, I need not install the
-=geiser-racket= package.
+Thus, I have to choose one of the two solutions: =geiser-racket= plus
+native org-babel support for scheme; or =racket-mode= plus
+=emacs-ob-racket=.
+
+I have tried the latter for some time, because I tried to find a way
+to use the Racket package for SIPC conveniently in
+org-babel. =emacs-ob-racket= allows me to add a header argument to the
+code block to declare that the code depends on the SICP package, while
+the native support for Scheme language or =geiser-racket= does not
+provide such features.
+
+However, =racket-mode= and =eamcs-ob-racket= makes completion when editing
+Racket code block difficult, comparing with =geiser-racket=. Actually,
+there seems no completion in the org-mode code blocks at all. Thus, I
+switch back to =geiser-racket=. This is also because I found that adding
+~(require sicp)~ at the beginning of any org-mode Scheme code block
+imports the code defined in the SICP package, which is almost equally
+convenient as the header argument.
+
+Note that evaluating a Scheme code block in org-mode may be slow. This
+can be optimized by having a dedicated REPL for the org-mode
+buffer. Thus, org-babel does not have to launch a new instance of
+Racket backend each time you evaluate a code block.
 
 #+begin_src emacs-lisp
-  ;; (use-package geiser-racket :defer t)
-
-  (use-package racket-mode
-    :defer t)
-
-  (add-to-list 'load-path (concat user-emacs-directory "site-lisp/emacs-ob-racket"))
-  (add-to-list 'my/org-babel-languages '(racket . t))
+  (use-package geiser-racket :defer t)
 #+end_src
 
 **** Graphviz Dot
@@ -2241,4 +2258,3 @@ local customization file.
   (when (file-exists-p custom-file)
     (load custom-file))
 #+end_src
-

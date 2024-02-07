@@ -1,3 +1,0 @@
-[submodule "site-lisp/emacs-ob-racket"]
-	path = site-lisp/emacs-ob-racket
-	url = https://github.com/hasu/emacs-ob-racket

@@ -485,7 +485,6 @@ Emacs 28 supports syntax highlighting for documentations in comments.
     (defvar my/org-babel-languages (list '(C . t) '(scheme . t)))
     :config
     (setq org-ellipsis "…"
-          org-log-into-drawer t
           org-auto-align-tags nil
           org-tags-column 0
           org-catch-invisible-edits 'show-and-error
@@ -793,7 +792,7 @@ enabled. Diminish is a good package to solve this problem.
              (standard-themes-load-light)))
     (setq standard-themes-disable-other-themes t)
     :config
-    (setq standard-themes-bold-constructs t
+    (setq standard-themes-bold-constructs nil
           standard-themes-italic-constructs t
           standard-themes-mixed-fonts t
           standard-themes-variable-pitch-ui t

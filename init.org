@@ -586,6 +586,18 @@ Credit: https://stackoverflow.com/questions/944614/emacs-does-hideshow-work-with
 
 ** Gnus
 
+#+begin_src emacs-lisp
+  (use-package gnus
+    :bind
+    (
+     :map gnus-summary-mode-map
+     ("v n" . gnus-summary-next-subject)
+     ("v p" . gnus-summary-prev-subject)
+     (:repeat-map gnus-summary-mode-repeat-map
+                  ("n" . gnus-summary-next-subject)
+                  ("p" . gnus-summary-prev-subject))))
+#+end_src
+
 *** News
 
 Subscribing a RSS feed in Gnus can not be done by simply setting a
@@ -2105,7 +2117,8 @@ add some additional configuration specific to meow.
          '((fundamental-mode . normal)
            (text-mode . normal)
            (prog-mode . normal)
-           (conf-mode . normal)))
+           (conf-mode . normal)
+           (bibtex-mode . normal)))
    ;; use motion state by default
    (defun my/meow-guess-state (state)
      'motion)

@@ -489,7 +489,6 @@ Emacs 28 supports syntax highlighting for documentations in comments.
           org-tags-column 0
           org-catch-invisible-edits 'show-and-error
           org-special-ctrl-a/e t
-          org-insert-heading-respect-content t
           org-hide-emphasis-markers t
           org-pretty-entities t
           org-babel-C-compiler "clang"

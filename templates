@@ -51,6 +51,27 @@ c++-mode
        q n
        "};" n>)
 
+;;; Unreal Engine Templates
+(UC "UCLASS(" p ")")
+(UP "UPROPERTY(" p ")")
+(UF "UFUNCTION(" p ")")
+(US "USTRUCT(" p ")")
+(UE "UENUM(" p ")")
+(UI "UINTERFACE(" p ")")
+(GE "GENERATED_BODY()")
+(brw "BlueprintReadWrite")
+(bro "BlueprintReadOnly")
+(ba "BlueprintAssignable")
+(bc "BlueprintCallable")
+(bt "BlueprintType")
+(cat "Category = \"" p "\"")
+(dp "DisplayName = \"" p "\"")
+(ea "EditAnywhere")
+(ec "EditCondition = \"" p "\"")
+(mt "meta = (" p ")")
+(ts "Transient")
+(wptr "TWeakObjectPtr<" r ">")
+
 ;; Local Variables:
 ;; mode: lisp-data
 ;; End:

@@ -699,6 +699,15 @@ checking.
   (setq ediff-split-window-function 'split-window-horizontally)
 #+end_src
 
+** imenu
+
+#+begin_src emacs-lisp
+  (use-package imenu
+    :defer t
+    :init
+    (setq imenu-max-item-length 'Unlimited))
+#+end_src
+
 * Third-Party Packages
 
 ** Appearance

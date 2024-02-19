@@ -976,7 +976,7 @@ can not be maintained on different systems.
   (use-package org-modern
     :defer t
     :config
-    (setq org-modern-star '("⨀" "⧖" "⎊" "✧" "☆" "⚛")
+    (setq org-modern-star '("⨀" "◎" "⎊" "✧" "☆" "⚛")
           org-modern-list '((43 . "•") (45 . "‣") (42 . "⁕")))
     :hook (org-mode . global-org-modern-mode))
 #+end_src

@@ -408,7 +408,9 @@ some mottoes selected randomly from a pre-defined list.
 
 #+begin_src emacs-lisp
   (add-to-list 'display-buffer-alist
-    (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
+               '("\\*Async Shell Command\\*.*"
+                 (display-buffer-at-bottom display-buffer-pop-up-frame)
+                 (window-height . 0.2)))
 #+end_src
 
 ** Repeat Mode

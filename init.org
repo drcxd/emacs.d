@@ -243,8 +243,9 @@ to manage these buffers just as you manage files in dired.
 + Sarasa Gothic font: https://github.com/be5invis/Sarasa-Gothic
 + Iosevka font: https://github.com/be5invis/Iosevka
 + Iosevka Comfy font: https://github.com/protesilaos/iosevka-comfy
++ Sarasa Term SC Nerd font: https://github.com/laishulu/Sarasa-Term-SC-Nerd
 
-  #+NAME: font-setup
+#+NAME: font-setup
 #+begin_src emacs-lisp
   (set-fontset-font "fontset-default" 'han "Sarasa Gothic SC")
 

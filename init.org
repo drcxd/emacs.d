@@ -2137,9 +2137,9 @@ add some additional configuration specific to meow.
      (meow-global-mode 1)
      (global-set-key (kbd "<f6>") 'meow-keypad)
      :hook
-     (meow-normal-mode . (lambda ()
-                             (if (and meow-normal-mode (not buffer-read-only))
-                                 (delete-trailing-whitespace (pos-bol) (pos-eol))))))
+     (meow-insert-exit . (lambda ()
+                           (if (and meow-normal-mode (not buffer-read-only))
+                               (delete-trailing-whitespace (pos-bol) (pos-eol))))))
 #+end_src
 
 **** A Note About KEYPAD Mode

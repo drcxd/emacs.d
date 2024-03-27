@@ -1704,7 +1704,7 @@ citation issues.
     (org-mode . citar-capf-setup))
 
   (use-package citar-embark
-    :defer t
+    ;; :defer t
     :after (citar embark)
     ;; :no-require
     :diminish citar-embark-mode

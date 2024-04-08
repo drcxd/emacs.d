@@ -1695,7 +1695,7 @@ citation issues.
 
 #+begin_src emacs-lisp
   (use-package citar
-    :defer t
+    :after org-roam
     :init
     (setq org-cite-global-bibliography '("~/org-roam/references.bib")
           org-cite-insert-processor 'citar
@@ -1733,7 +1733,10 @@ bibliographic notes can be easily created in org-roam context.
     ;; :no-require
     :config
     (citar-org-roam-mode)
-    (setq citar-org-roam-subdir "references"))
+    (add-to-list 'org-roam-capture-templates '("r" "reference" plain "%?" :target
+                                               (file+head "%<%Y%m%d%H%M%S>.org" "#+title: ${note-title}\n")
+                                               :unnarrowed t) t)
+    (setq citar-org-roam-capture-template-key "r"))
 #+end_src
 
 ** Taking Notes
@@ -1758,9 +1761,6 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
                                    :unnarrowed t)
                                   ("p" "private" plain "%?" :target
                                    (file+head "private/%<%Y%m%d%H%M%S>.org.gpg" "#+title: ${title}\n")
-                                   :unnarrowed t)
-                                  ("r" "reference" plain "%?" :target
-                                   (file+head "references/%<%Y%m%d%H%M%S>.org" "#+title: ${title}\n")
                                    :unnarrowed t))
      org-roam-dailies-capture-templates '(("d" "default" entry "* %?" :target
                                            (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))

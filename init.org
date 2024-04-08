@@ -1355,6 +1355,20 @@ variable-rename.
   (add-to-list 'safe-local-eval-forms '(lsp))
 #+end_src
 
+*** citre
+
+citre is a package that use tags files to provide IDE-like features
+such as completion and jumping to definition. Generally speaking,
+solutions based on tags are not as accurate as solutions based on
+LSP. However, it is still useful when the project can not be compiled.
+
+#+begin_src emacs-lisp
+  (use-package citre
+    :defer t
+    :init
+    (require 'citre-config))
+#+end_src
+
 *** COMMENT Syntax Highlighting
 
 Eamcs has built-in syntax highlighting support, however it is based on

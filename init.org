@@ -1348,8 +1348,8 @@ variable-rename.
           '("--completion-style=detailed"
             "--header-insertion=never"
             "--function-arg-placeholders=0"
-            "-j=32"
             "--background-index"
+            "--background-index-priority=low"
             "--pch-storage=memory")))
 
   (add-to-list 'safe-local-eval-forms '(lsp))

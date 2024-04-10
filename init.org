@@ -463,7 +463,8 @@ EOL characters. This would make some lines ended with additional
     (electric-pair-mode t)
     (hs-minor-mode 1)
     (hl-line-mode 1)
-    (display-line-numbers-mode))
+    (display-line-numbers-mode)
+    (setq truncate-lines t))
   (add-hook 'prog-mode-hook 'prog-mode-setup)
 #+end_src
 

@@ -463,8 +463,7 @@ EOL characters. This would make some lines ended with additional
     (electric-pair-mode t)
     (hs-minor-mode 1)
     (hl-line-mode 1)
-    (display-line-numbers-mode)
-    (setq truncate-lines t))
+    (display-line-numbers-mode))
   (add-hook 'prog-mode-hook 'prog-mode-setup)
 #+end_src
 
@@ -711,6 +710,14 @@ checking.
     :defer t
     :init
     (setq imenu-max-item-length 'Unlimited))
+#+end_src
+
+** Truncating Lines
+
+I'd like to enable truncating long lines by default.
+
+#+begin_src emacs-lisp
+  (setq truncate-lines t)
 #+end_src
 
 * Third-Party Packages
@@ -2287,10 +2294,7 @@ nov is a package that allows you read EPUB files inside Emacs.
     :defer t
     :init
     (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
-    (setq nov-text-width t)
-    :hook
-    ((nov-mode . visual-line-mode)
-     (nov-post-html-render . (lambda () (toggle-truncate-lines 0)))))
+    (setq nov-text-width t))
 #+end_src
 
 * Load Custom File

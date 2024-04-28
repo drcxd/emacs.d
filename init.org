@@ -547,6 +547,8 @@ words, but Chinese don't. We have to override this behavior.
 
 *** Delete Link
 
+This is inspired by this [[https://emacs.stackexchange.com/a/10714][stackexchange answer]].
+
 #+begin_src emacs-lisp
   (defun my/org-remove-link ()
     "Remove an org link"
@@ -557,6 +559,24 @@ words, but Chinese don't. We have to override this behavior.
             (apply 'delete-region remove)))))
 #+end_src
 
+*** Replace Link
+
+This function comes from this [[https://emacs.stackexchange.com/a/10714][stackexchange answer]].
+
+#+begin_src emacs-lisp
+  (defun my/org-replace-link-by-link-description ()
+    "Replace an org link by its description or if empty its address"
+    (interactive)
+    (if (org-in-regexp org-link-bracket-re 1)
+        (save-excursion
+          (let ((remove (list (match-beginning 0) (match-end 0)))
+                (description
+                 (if (match-end 2)
+                     (org-match-string-no-properties 2)
+                   (org-match-string-no-properties 1))))
+            (apply 'delete-region remove)
+            (insert description)))))
+#+end_src
 ** project
 
 #+begin_src emacs-lisp

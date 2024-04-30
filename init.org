@@ -1263,8 +1263,7 @@ literals.
           ("DEPRECATED" font-lock-doc-face bold)
           ("BUG" error bold)))
    :hook
-   ((prog-mode . hl-todo-mode)
-    (org-mode . hl-todo-mode)))
+   (prog-mode . hl-todo-mode))
 #+end_src
 
 *** git-gutter :dependency:

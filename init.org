@@ -686,7 +686,8 @@ checking.
     :diminish flyspell-mode
     :hook
     ((text-mode . flyspell-mode)
-     (prog-mode . flyspell-prog-mode))
+     (prog-mode . flyspell-prog-mode)
+     (latex-mode . (lambda () (flyspell-mode -1))))
     :bind
     ("C-c s b" . flyspell-buffer))
 #+end_src

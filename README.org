@@ -1,6 +1,5 @@
 This is my personal Emacs configuration.
 
-All code and explanation are located in =init.org=. To generate
-emacs-lisp configuration code which get executed by Emacs at launch
-time, tangle the =init.org= file. For example, execute the command
-=org-babel-tangle= in =init.org= buffer.
+All code and explanation are located in =init.org=. Execute
+~org-babel-tangel~ in the ~init.org~ buffer to generate configurations
+that gets executed by Emacs at launch time.

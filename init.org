@@ -1041,6 +1041,35 @@ can not be maintained on different systems.
     :hook (org-mode . global-org-modern-mode))
 #+end_src
 
+*** org-mode & E-Mail: org-msg
+
+#+begin_src emacs-lisp
+  (use-package org-msg :defer t
+    :config
+    (setq
+     org-msg-options "html-postamble:nil H:5 num:nil ^:{} toc:nil author:nil email:nil \\n:t"
+     org-msg-startup "hidestars indent inlineimages"
+     ;; org-msg-greeting-fmt "\nHi%s,\n\n"
+     ;; org-msg-recipient-names '(("jeremy.compostella@gmail.com" . "Jérémy"))
+     ;; org-msg-greeting-name-limit 3
+     org-msg-default-alternatives '((new		. (text html))
+                                    (reply-to-html	. (text html))
+                                    (reply-to-text	. (text)))
+     org-msg-convert-citation t
+     org-msg-signature "
+
+  Regards,
+
+  ,#+begin_signature
+  --
+  ,*Chang Xiaoduan*
+  /One Emacs to rule them all/
+  ,#+end_signature")
+    )
+
+  (org-msg-mode)
+#+end_src
+
 ** Benchmark
 
 Some Emacs users don't care about bootstrap time, they claim that they

@@ -462,8 +462,7 @@ EOL characters. This would make some lines ended with additional
     (setq show-trailing-whitespace t)
     (electric-pair-mode t)
     (hs-minor-mode 1)
-    (hl-line-mode 1)
-    (display-line-numbers-mode))
+    (hl-line-mode 1))
   (add-hook 'prog-mode-hook 'prog-mode-setup)
 #+end_src
 

@@ -1060,9 +1060,7 @@ can not be maintained on different systems.
   ,#+begin_signature
   --
   ,*Chang Xiaoduan*
-  /One Emacs to rule them all/
-  ,#+end_signature")
-    )
+  ,#+end_signature"))
 
   (org-msg-mode)
 #+end_src

@@ -50,7 +50,7 @@ distraction.
     (setq native-compile-prune-cache t)) ; Emacs 29
 #+end_src
 
-** Package
+** COMMENT Package
 
 I use package.el to manage almost all the packages I use, except those
 are only available on github. package.el is flexible since it can
@@ -99,6 +99,13 @@ really helpful when your network environment is not good.
   (require 'use-package)
   (setq use-package-always-ensure t)
 #+end_src
+
+** Disable =package.el=
+
+#+begin_src emacs-lisp :tangle "early-init.el"
+  (setq package-enable-at-startup nil)
+#+end_src
+
 
 ** Who am I?
 
@@ -740,6 +747,29 @@ I'd like to enable truncating long lines by default.
 #+end_src
 
 * Third-Party Packages
+
+** =staraight.el=
+
+#+begin_src emacs-lisp
+  (setq straight-use-package-by-default t)
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name
+          "straight/repos/straight.el/bootstrap.el"
+          (or (bound-and-true-p straight-base-dir)
+              user-emacs-directory)))
+        (bootstrap-version 7))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+
+  (straight-use-package 'org) ;; to fix org version mismatching
+#+end_src
 
 ** Appearance
 

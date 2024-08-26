@@ -391,7 +391,8 @@ some mottoes selected randomly from a pre-defined list.
       ("胜可知而不可为")
       ("等死，死国可乎")
       ("冰冻三尺 非一日之寒")
-      ("但行好事" "莫问前程")))
+      ("但行好事" "莫问前程")
+      ("今我何功德" "曾不事农桑")))
 
   (defvar my/mottoes
     (let (ret)

@@ -14,3 +14,4 @@ init.el
 early-init.el
 elpa
 transient
+straight

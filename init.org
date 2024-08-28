@@ -106,7 +106,6 @@ really helpful when your network environment is not good.
   (setq package-enable-at-startup nil)
 #+end_src
 
-
 ** Who am I?
 
 #+begin_src emacs-lisp
@@ -362,7 +361,6 @@ explorer of Emacs. You can perform many file operations in dired.
     "Setup dired."
     ;; global-auto-revert-mode does not work for dired
     (auto-revert-mode)
-    (hl-line-mode 1)
     (setq dired-guess-shell-alist-user '(("\\.pdf\\'" "okular &"))))
   (add-hook 'dired-mode-hook 'dired-mode-setup)
   (with-eval-after-load 'dired
@@ -1036,6 +1034,22 @@ https://www.nerdfonts.com/#home
              :mode-line-inactive vertical-border)))
 
   (spacious-padding-mode)
+#+end_src
+
+*** =lin=
+
+#+begin_src emacs-lisp
+  (use-package lin
+    :init
+    (setq lin-face 'lin-green
+          lin-mode-hooks '(dired-mode-hook
+                           grep-mode-hook
+                           ibuffer-mode-hook
+                           log-view-mode-hook
+                           magit-log-mode-hook
+                           occur-mode-hook
+                           tabulated-list-mode-hook))
+    (lin-global-mode 1))
 #+end_src
 
 ** org-mode

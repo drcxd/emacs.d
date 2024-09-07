@@ -490,7 +490,10 @@ Emacs 28 supports syntax highlighting for documentations in comments.
   (use-package org
     :defer t
     :init
-    (defvar my/org-babel-languages (list '(C . t) '(scheme . t)))
+    (defvar my/org-babel-languages (list '(C . t)
+                                         '(scheme . t)
+                                         '(emacs-lisp . t)
+                                         '(dot . t)))
     :config
     (setq org-ellipsis "…"
           org-auto-align-tags nil
@@ -532,7 +535,7 @@ words, but Chinese don't. We have to override this behavior.
       (ad-set-arg 1 fixed-contents)))
 #+end_src
 
-*** Show org-agenda Buffer at Start-up
+*** COMMENT Show org-agenda Buffer at Start-up
 
 #+begin_src emacs-lisp
   (defun my/get-org-agenda-buffer ()
@@ -1683,10 +1686,7 @@ Racket backend each time you evaluate a code block.
 **** Graphviz Dot
 
 #+begin_src emacs-lisp
-  (use-package graphviz-dot-mode
-    :defer t
-    :init
-    (add-to-list 'my/org-babel-languages '(dot . t)))
+  (use-package graphviz-dot-mode :defer t)
 #+end_src
 
 *** Unreal :dependency:

@@ -1843,7 +1843,6 @@ citation issues.
 
 #+begin_src emacs-lisp
   (use-package citar
-    :after org-roam
     :init
     (setq org-cite-global-bibliography '("~/org-roam/references.bib")
           org-cite-insert-processor 'citar
@@ -1868,24 +1867,6 @@ citation issues.
 #+end_src
 
 Also, =org-cite-csl-styles-dir= must be set for the csl styles to work.
-
-*** citar-org-roam
-
-A necessary package to integrate citar with org-roam, thus,
-bibliographic notes can be easily created in org-roam context.
-
-#+begin_src emacs-lisp
-  (use-package citar-org-roam
-    :diminish citar-org-roam-mode
-    :after (citar org-roam)
-    ;; :no-require
-    :config
-    (citar-org-roam-mode)
-    (add-to-list 'org-roam-capture-templates '("r" "reference" plain "%?" :target
-                                               (file+head "%<%Y%m%d%H%M%S>.org" "#+title: ${note-title}\n")
-                                               :unnarrowed t) t)
-    (setq citar-org-roam-capture-template-key "r"))
-#+end_src
 
 ** Taking Notes
 
@@ -1935,7 +1916,7 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
     :diminish ((org-roam-ui-mode . "") (org-roam-ui-follow-mode . "")))
 #+end_src
 
-*** consult-org-roam
+**** consult-org-roam
 
 Utility package makes org-roam using consult to search notes, forward
 and backward links. It improves the workflow and thus efficiency.
@@ -1969,48 +1950,82 @@ and backward links. It improves the workflow and thus efficiency.
      ("C-c n s" . consult-org-roam-search))
 #+end_src
 
+**** citar-org-roam
+
+A necessary package to integrate citar with org-roam, thus,
+bibliographic notes can be easily created in org-roam context.
+
+#+begin_src emacs-lisp
+  (use-package citar-org-roam
+    :diminish citar-org-roam-mode
+    :after (citar org-roam)
+    ;; :no-require
+    :config
+    (citar-org-roam-mode)
+    (add-to-list 'org-roam-capture-templates '("r" "reference" plain "%?" :target
+                                               (file+head "%<%Y%m%d%H%M%S>.org" "#+title: ${note-title}\n")
+                                               :unnarrowed t) t)
+    (setq citar-org-roam-capture-template-key "r"))
+#+end_src
+
 *** COMMENT denote
 
-#+begin_src emacs-lisp :tangle no
-  (use-package denote
-               :defer t
-               :config
-               (setq denote-directory "~/note"
-                     denote-known-keywords '("emacs")
-                     denote-prompts '(title keywords)
-                     denote-backlinks-show-context t)
-               :bind
-               (("C-c n d" . denote-open-or-create)
-                ("C-c n l" . denote-link-or-create)
-                ("C-c n B" . denote-link-backlinks)
-                ("C-c n b" . denote-link-find-backlink)
-                ("C-c n o" . denote-link-find-file)
-                ("C-c n M" . denote-rename-file)
-                ("C-c n m" . denote-rename-file-using-front-matter)
-                ("C-c n j" . my/denote-journal)
-                ("C-c n a" . denote-keywords-add)
-                ("C-c n r" . denote-keywords-remove)))
+#+begin_src emacs-lisp
+  (use-package denote :defer t
+    :config
+    (setq denote-directory (expand-file-name "~/denotes")
+          denote-infer-keywords t
+          denote-sort-keywords t
+          denote-prompts '(title keywords)
+          denote-backlinks-show-context t
+          denote-date-prompt-use-org-read-date t)
+    (denote-rename-buffer-mode 1))
+    ;; :bind
+    ;; (("C-c n d" . denote-open-or-create)
+    ;;  ("C-c n l" . denote-link-or-create)
+    ;;  ("C-c n B" . denote-link-backlinks)
+    ;;  ("C-c n b" . denote-link-find-backlink)
+    ;;  ("C-c n o" . denote-link-find-file)
+    ;;  ("C-c n M" . denote-rename-file)
+    ;;  ("C-c n m" . denote-rename-file-using-front-matter)
+    ;;  ("C-c n j" . my/denote-journal)
+    ;;  ("C-c n a" . denote-keywords-add)
+    ;;  ("C-c n r" . denote-keywords-remove)))
 
-  (defun my/denote--journal-today-file ()
-    "Find today's _journal entry, else return nil."
-     (seq-find
-      (lambda (file)
-        (string-match-p (format "%s.*_journal" (format-time-string "%A-%e-%B-%Y")) file))
-      (denote-directory-files)))
+  ;; (defun my/denote--journal-today-file ()
+  ;;   "Find today's _journal entry, else return nil."
+  ;;    (seq-find
+  ;;     (lambda (file)
+  ;;       (string-match-p (format "%s.*_journal" (format-time-string "%A-%e-%B-%Y")) file))
+  ;;     (denote-directory-files)))
 
-  (defun my/denote--create-journal ()
-      "Create an entry tagged 'journal'."
-      (interactive)
-      (denote (format-time-string "%A %e %B %Y")
-              '("journal")))
+  ;; (defun my/denote--create-journal ()
+  ;;     "Create an entry tagged 'journal'."
+  ;;     (interactive)
+  ;;     (denote (format-time-string "%A %e %B %Y")
+  ;;             '("journal")))
 
-  (defun my/denote-journal ()
-    "Open or create journal for today."
-    (interactive)
-    (let ((prompt (my/denote--journal-today-file)))
-      (if prompt
-          (funcall-interactively 'denote-open-or-create prompt)
-        (my/denote-create-journal))))
+  ;; (defun my/denote-journal ()
+  ;;   "Open or create journal for today."
+  ;;   (interactive)
+  ;;   (let ((prompt (my/denote--journal-today-file)))
+  ;;     (if prompt
+  ;;         (funcall-interactively 'denote-open-or-create prompt)
+  ;;       (my/denote-create-journal))))
+
+  (use-package consult-denote
+    :after (consult denote)
+    :config
+    (consult-denote-mode 1))
+#+end_src
+
+**** citar-denote
+
+#+begin_src emacs-lisp
+  (use-package citar-denote
+    :after (citar denote)
+    :config
+    (citar-denote-mode 1))
 #+end_src
 
 ** Completion

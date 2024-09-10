@@ -1968,66 +1968,6 @@ bibliographic notes can be easily created in org-roam context.
     (setq citar-org-roam-capture-template-key "r"))
 #+end_src
 
-*** COMMENT denote
-
-#+begin_src emacs-lisp
-  (use-package denote :defer t
-    :config
-    (setq denote-directory (expand-file-name "~/denotes")
-          denote-infer-keywords t
-          denote-sort-keywords t
-          denote-prompts '(title keywords)
-          denote-backlinks-show-context t
-          denote-date-prompt-use-org-read-date t)
-    (denote-rename-buffer-mode 1))
-    ;; :bind
-    ;; (("C-c n d" . denote-open-or-create)
-    ;;  ("C-c n l" . denote-link-or-create)
-    ;;  ("C-c n B" . denote-link-backlinks)
-    ;;  ("C-c n b" . denote-link-find-backlink)
-    ;;  ("C-c n o" . denote-link-find-file)
-    ;;  ("C-c n M" . denote-rename-file)
-    ;;  ("C-c n m" . denote-rename-file-using-front-matter)
-    ;;  ("C-c n j" . my/denote-journal)
-    ;;  ("C-c n a" . denote-keywords-add)
-    ;;  ("C-c n r" . denote-keywords-remove)))
-
-  ;; (defun my/denote--journal-today-file ()
-  ;;   "Find today's _journal entry, else return nil."
-  ;;    (seq-find
-  ;;     (lambda (file)
-  ;;       (string-match-p (format "%s.*_journal" (format-time-string "%A-%e-%B-%Y")) file))
-  ;;     (denote-directory-files)))
-
-  ;; (defun my/denote--create-journal ()
-  ;;     "Create an entry tagged 'journal'."
-  ;;     (interactive)
-  ;;     (denote (format-time-string "%A %e %B %Y")
-  ;;             '("journal")))
-
-  ;; (defun my/denote-journal ()
-  ;;   "Open or create journal for today."
-  ;;   (interactive)
-  ;;   (let ((prompt (my/denote--journal-today-file)))
-  ;;     (if prompt
-  ;;         (funcall-interactively 'denote-open-or-create prompt)
-  ;;       (my/denote-create-journal))))
-
-  (use-package consult-denote
-    :after (consult denote)
-    :config
-    (consult-denote-mode 1))
-#+end_src
-
-**** citar-denote
-
-#+begin_src emacs-lisp
-  (use-package citar-denote
-    :after (citar denote)
-    :config
-    (citar-denote-mode 1))
-#+end_src
-
 ** Completion
 
 *** vertico

@@ -1231,6 +1231,17 @@ easy to use.
 #+begin_src emacs-lisp
   (use-package tmr
     :defer t
+    :init
+    (if (eq system-type 'windows-nt)
+        (progn
+          (defun my/tmr-alert-notify (timer)
+            (let ((title "TMR May Ring")
+                  (body (tmr--long-description-for-finished-timer timer)))
+              (alert body
+                     :title title)))
+          (setq tmr-timer-finished-functions (list #'my/tmr-alert-notify
+                                                   #'tmr-print-message-for-finished-timer
+                                                   #'tmr-acknowledge-minibuffer))))
     :bind
     (("C-c t T" . tmr)
      ("C-c t t" . tmr-with-description)
@@ -1247,11 +1258,12 @@ easy to use.
      pomidor-sound-tack nil
      pomidor-seconds (* 30 60)
      pomidor-break-seconds (* 10 60)
-     pomidor-long-break-seconds (* 25 60)
-     pomidor-alert (lambda ()
-                     (let ((message (pomidor-default-alert-message)))
-                       (when message
-                         (alert message :title "Pomidor"))))))
+     pomidor-long-break-seconds (* 25 60))
+    (if (eq system-type 'windows-nt)
+        (setq pomidor-alert (lambda ()
+                              (let ((message (pomidor-default-alert-message)))
+                                (when message
+                                  (alert message :title "Pomidor")))))))
 #+end_src
 
 *** ace-window

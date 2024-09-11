@@ -262,7 +262,7 @@ to manage these buffers just as you manage files in dired.
                       :font "Iosevka Comfy"
                       :height 1.0)
   (set-face-attribute 'variable-pitch nil
-                      :font "Iosevka Comfy Motion Duo"
+                      :font "Iosevka Comfy Duo"
                       :height 1.0)
 
   ;; italic
@@ -933,7 +933,7 @@ enabled. Diminish is a good package to solve this problem.
 
 *** Ligature
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package ligature
    :config
    (ligature-set-ligatures
@@ -950,8 +950,50 @@ enabled. Diminish is a good package to solve this problem.
       "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
       "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
       "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
-      "\\\\" "://" ("=" ,(rx (+ "=")))))
+      "\\\\" "://"
+      ("=" ,(rx (one-or-more "=")))
+      ("-" ,(rx (one-or-more "-")))
+      ("<" ,(rx "<" (one-or-more "-") ">"))))
    (global-ligature-mode t))
+#+end_src
+
+#+begin_src emacs-lisp
+  (dolist (char/ligature-re
+           `((?-  . ,(rx (or (or "-->" "-<<" "->>" "-|" "-~" "-<" "->")
+                             (+ "-"))))
+             (?/  . ,(rx (or (or "/==" "/=" "/>" "/**" "/*") (+ "/"))))
+             (?*  . ,(rx (or (or "*>" "*/") (+ "*"))))
+             (?<  . ,(rx (or (or "<<=" "<<-" "<|||" "<==>" "<!--" "<=>" "<||" "<|>" "<-<"
+                                 "<==" "<=<" "<-|" "<~>" "<=|" "<~~" "<$>" "<+>" "</>"
+                                 "<*>" "<->" "<=" "<|" "<:" "<>"  "<$" "<-" "<~" "<+"
+                                 "</" "<*")
+                             (+ "<")
+                             (+ "-"))))
+             (?:  . ,(rx (or (or ":?>" "::=" ":>" ":<" ":?" ":=") (+ ":"))))
+             (?=  . ,(rx (or (or "=>>" "==>" "=/=" "=!=" "=>" "=:=") (+ "="))))
+             (?!  . ,(rx (or (or "!==" "!=") (+ "!"))))
+             (?>  . ,(rx (or (or ">>-" ">>=" ">=>" ">]" ">:" ">-" ">=") (+ ">"))))
+             (?&  . ,(rx (+ "&")))
+             (?|  . ,(rx (or (or "|->" "|||>" "||>" "|=>" "||-" "||=" "|-" "|>"
+                                 "|]" "|}" "|=")
+                             (+ "|"))))
+             (?.  . ,(rx (or (or ".?" ".=" ".-" "..<") (+ "."))))
+             (?+  . ,(rx (or "+>" (+ "+"))))
+             (?\[ . ,(rx (or "[<" "[|")))
+             (?\{ . ,(rx "{|"))
+             (?\? . ,(rx (or (or "?." "?=" "?:") (+ "?"))))
+             (?#  . ,(rx (or (or "#_(" "#[" "#{" "#=" "#!" "#:" "#_" "#?" "#(")
+                             (+ "#"))))
+             (?\; . ,(rx (+ ";")))
+             (?_  . ,(rx (or "_|_" "__")))
+             (?~  . ,(rx (or "~~>" "~~" "~>" "~-" "~@")))
+             (?$  . ,(rx "$>"))
+             (?^  . ,(rx "^="))
+             (?\] . ,(rx "]#"))))
+    (let ((char (car char/ligature-re))
+          (ligature-re (cdr char/ligature-re)))
+      (set-char-table-range composition-function-table char
+                            `([,ligature-re 0 font-shape-gstring]))))
 #+end_src
 
 *** nerd-icons :dependency:

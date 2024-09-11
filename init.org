@@ -251,24 +251,42 @@ to manage these buffers just as you manage files in dired.
 + Iosevka Comfy font: https://github.com/protesilaos/iosevka-comfy
 + Sarasa Term SC Nerd font: https://github.com/laishulu/Sarasa-Term-SC-Nerd
 
-#+NAME: font-setup
+
+The following functions should be invoked in the custom file.
+
 #+begin_src emacs-lisp
-  (set-fontset-font "fontset-default" 'han "Sarasa Gothic SC")
+  ;; credit: https://emacsredux.com/blog/2021/12/22/check-if-a-font-is-available-with-emacs-lisp/
+  (defun font-available-p (font-name)
+    (find-font (font-spec :name font-name)))
 
-  (set-face-attribute 'default nil
-                      :font "Iosevka Comfy"
-                      :height 160)
-  (set-face-attribute 'fixed-pitch nil
-                      :font "Iosevka Comfy"
-                      :height 1.0)
-  (set-face-attribute 'variable-pitch nil
-                      :font "Iosevka Comfy Duo"
-                      :height 1.0)
+  (defun my/setup-fonts (fixed-pitch-font height fixed-pitch-weight variable-pitch-font)
+    "Setup default, fixed-pitch and variable-pitch faces using the
+  fonts given."
+    (if (and (font-available-p fixed-pitch-font)
+             (font-available-p variable-pitch-font))
+        (progn
+          (set-face-attribute 'default nil
+                              :font fixed-pitch-font
+                              :weight fixed-pitch-weight
+                              :height height)
+          (set-face-attribute 'fixed-pitch nil
+                              :font fixed-pitch-font
+                              :weight fixed-pitch-weight
+                              :height 1.0)
+          (set-face-attribute 'variable-pitch nil
+                              :font variable-pitch-font
+                              :height 1.0))
+      (warn (format "Fonts %s or %s is not available!" fixed-pitch-font variable-pitch-font))))
 
-  ;; italic
-  (set-face-attribute 'italic nil
-                      :slant 'italic
-                      :underline nil)
+  (defun my/setup-chinese ()
+    (if (font-available-p "Sarasa Gothic SC")
+        (set-fontset-font "fontset-default" 'han "Sarasa Gothic SC")
+      (warn "Sarasa Gothic SC is not available!")))
+
+  ;; ;; italic
+  ;; (set-face-attribute 'italic nil
+  ;;                        :slant 'italic
+  ;;                        :underline nil)
 #+end_src
 
 ** Mode Line
@@ -803,9 +821,6 @@ enabled. Diminish is a good package to solve this problem.
   (use-package unicode-fonts
    :config
    (unicode-fonts-setup))
-  ;; duplicate the font setup code here, otherwise it is override by
-  ;; `unicode-fonts-setup'
-  <<font-setup>>
 #+end_src
 
 *** Themes

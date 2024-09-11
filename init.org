@@ -136,8 +136,9 @@ position and width, etc..
 
 #+begin_src emacs-lisp :tangle "early-init.el"
   (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
+  ;; These two functions are not defined in Termux version of Emacs
+  ;; (tool-bar-mode -1)
+  ;; (scroll-bar-mode -1)
 #+end_src
 
 ** uniquify
@@ -866,7 +867,7 @@ enabled. Diminish is a good package to solve this problem.
     (modus-themes-after-load-theme . my/modus-themes-custom-face))
 #+end_src
 
-**** Standard Themes
+**** COMMENT Standard Themes
 
 #+begin_src emacs-lisp
   (use-package standard-themes
@@ -907,7 +908,7 @@ enabled. Diminish is a good package to solve this problem.
     (standard-themes-post-load . my/standard-themes-custom-face))
 #+end_src
 
-**** Ef Themes
+**** COMMENT Ef Themes
 
 #+begin_src emacs-lisp
   (use-package ef-themes
@@ -1011,7 +1012,7 @@ enabled. Diminish is a good package to solve this problem.
                             `([,ligature-re 0 font-shape-gstring]))))
 #+end_src
 
-*** nerd-icons :dependency:
+*** COMMENT nerd-icons :dependency:
 
 Add some fancy icons. Require nerd fonts:
 
@@ -1122,7 +1123,7 @@ htmlize is necessary to export code blocks to HTML.
   (use-package htmlize :defer t)
 #+end_src
 
-*** org-mode Appearance: org-modern
+*** COMMENT org-mode Appearance: org-modern
 
 org-modern is a package that beautify org-mode. It changes the
 appearance of header line, table, time stamp and other things.
@@ -1187,7 +1188,7 @@ using.
                :hook (after-init . benchmark-init/deactivate))
 #+end_src
 
-** Windows-Specific
+** COMMENT Windows-Specific
 
 *** powershell
 
@@ -2369,7 +2370,7 @@ binding.
    (which-key-mode))
 #+end_src
 
-** EBooks
+** COMMENT EBooks
 
 *** calibre Interface
 

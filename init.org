@@ -510,9 +510,12 @@ Emacs 28 supports syntax highlighting for documentations in comments.
     :defer t
     :init
     (defvar my/org-babel-languages (list '(C . t)
-                                         '(scheme . t)
+                                         '(racket . t)
                                          '(emacs-lisp . t)
                                          '(dot . t)))
+    :hook
+    (emacs-startup . (lambda ()
+                       (org-babel-do-load-languages 'org-babel-load-languages my/org-babel-languages)))
     :config
     (setq org-ellipsis "…"
           org-auto-align-tags nil
@@ -527,7 +530,6 @@ Emacs 28 supports syntax highlighting for documentations in comments.
           ;; special window
           org-src-window-setup 'current-window)
     (add-to-list 'org-modules 'org-habit t)
-    (org-babel-do-load-languages 'org-babel-load-languages my/org-babel-languages)
     ;; The following code makes org emphasis markup covers more lines
     (setcar (nthcdr 4 org-emphasis-regexp-components) 5)
     (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
@@ -1635,7 +1637,7 @@ specific language major mode.
   (use-package lua-mode :defer t)
 #+end_src
 
-**** Scheme
+**** COMMENT Scheme
 
 Scheme is a dialect of Lisp. It is also the language used in the book
 /Structure and Interpretation of Computer Programs/ (SICP). Emacs
@@ -1702,7 +1704,7 @@ the =PATH=, or customize ~geiser-chez-binary~.
   (use-package geiser-chez :defer t)
 #+end_src
 
-****** Racket :dependency:
+****** COMMENT Racket :dependency:
 
 If I am only using Scheme then Chez is good enough, however, I use
 scheme mainly to learn SICP. SICP has some customized code which are

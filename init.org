@@ -1,4 +1,5 @@
 #+property: header-args:emacs-lisp :tangle init.el :comments org
+#+STARTUP: OVERVIEW
 
 * Abstract
 
@@ -1759,6 +1760,39 @@ Racket backend each time you evaluate a code block.
 
 #+begin_src emacs-lisp
   (use-package graphviz-dot-mode :defer t)
+#+end_src
+
+**** Racket
+
+Racket is an implementation of [[Scheme]]. Though there is a package
+=geiser-racket= which supports using Racket as the implementation of
+scheme, it lacks maintenance now.
+
+With =racket-mode= and =emacs-ob-racket=, I can use Racket as an
+implementation of scheme in org mode, though not without troubles.
+
+=racket-mode= requires enable =racket-xp-mode= to provide dynamic
+completion. This does not work well with the org mode edit special
+buffer. I have to manually execute ~racket-run~ once in a
+edit-special-session to make =racket-xp-mode= works. =geiser-racket= is
+much more convenient on the completion aspect, though it has severe
+problem of correctly executing Racket code.
+
+Thus, I decide to include both solutions in my configuration for now.
+
+#+begin_src emacs-lisp
+  (use-package ob-racket
+    :after org
+    :config
+    (add-hook 'ob-racket-pre-runtime-library-load-hook
+  	      #'ob-racket-raco-make-runtime-library)
+    :straight (ob-racket
+  	       :type git :host github :repo "hasu/emacs-ob-racket"
+  	       :files ("*.el" "*.rkt")))
+
+  (use-package racket-mode
+    :hook
+    (racket-mode . racket-xp-mode))
 #+end_src
 
 *** Unreal :dependency:

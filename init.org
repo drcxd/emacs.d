@@ -2003,7 +2003,19 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
                                            (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))
                                           ("p" "private" entry "* %?" :target
                                            (file+head "%<%Y-%m-%d>.org.gpg" "#+title: %<%Y-%m-%d>\n"))))
+
+    (defun org-roam-rename-buffer (&optional buffer)
+      (rename-buffer (org-roam-db--file-title) t))
+
+    ;; This is inspired by denote's denote-rename-buffer-mode
+    (define-minor-mode org-roam-rename-buffer-mode
+      "Doc string here."
+      :global t
+      (if org-roam-rename-buffer-mode
+          (add-hook 'org-roam-find-file-hook #'org-roam-rename-buffer)
+        (remove-hook 'org-roam-find-file-hook #'org-roam-rename-buffer)))
     :config
+    (org-roam-rename-buffer-mode)
     (org-roam-db-autosync-mode)
     :bind
     (("C-c n f" . org-roam-node-find)

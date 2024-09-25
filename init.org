@@ -2005,15 +2005,20 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
                                            (file+head "%<%Y-%m-%d>.org.gpg" "#+title: %<%Y-%m-%d>\n"))))
 
     (defun org-roam-rename-buffer (&optional buffer)
-      (rename-buffer (org-roam-db--file-title) t))
+      (let ((title (org-roam-db--file-title)))
+        (if (> (length title) 0)
+            (rename-buffer title t))))
 
     ;; This is inspired by denote's denote-rename-buffer-mode
     (define-minor-mode org-roam-rename-buffer-mode
       "Doc string here."
       :global t
       (if org-roam-rename-buffer-mode
-          (add-hook 'org-roam-find-file-hook #'org-roam-rename-buffer)
-        (remove-hook 'org-roam-find-file-hook #'org-roam-rename-buffer)))
+          (progn
+            (add-hook 'org-roam-find-file-hook #'org-roam-rename-buffer)
+            (add-hook 'org-roam-capture-new-node-hook #'org-roam-rename-buffer))
+        (remove-hook 'org-roam-find-file-hook #'org-roam-rename-buffer)
+        (remove-hook 'org-roam-capture-new-node-hook #'org-roam-rename-buffer)))
     :config
     (org-roam-rename-buffer-mode)
     (org-roam-db-autosync-mode)

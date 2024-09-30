@@ -2016,19 +2016,20 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
     (defun org-roam-rename-buffer (&optional buffer)
       "Try to rename the current buffer if it is an org roam buffer and
   has a title. If possible, rename it using both its title and tags."
-      (let ((node (org-roam-node-at-point)))
-        (if node
-            (let ((tags (org-roam-node-tags node))
-                  (title (org-roam-node-title node)))
-              (if title
-                  (rename-buffer (format "%s%s"
-                                     title
-                                     (apply #'concat
-                                            (seq-map (lambda (tag) (format "#%s" tag)) tags)))
-                                 t)
-                (let ((title (org-roam-db--file-title)))
-                  (if (> (length title) 0)
-                      (rename-buffer title t))))))))
+      (if (org-roam-buffer-p)
+          (let ((node (org-roam-node-at-point)))
+            (if node
+                (let ((tags (org-roam-node-tags node))
+                      (title (org-roam-node-title node)))
+                  (if title
+                      (rename-buffer (format "%s%s"
+                                             title
+                                             (apply #'concat
+                                                    (seq-map (lambda (tag) (format "#%s" tag)) tags)))
+                                     t)
+                    (let ((title (org-roam-db--file-title)))
+                      (if (> (length title) 0)
+                          (rename-buffer title t)))))))))
 
     ;; This is inspired by denote's denote-rename-buffer-mode
     (define-minor-mode org-roam-rename-buffer-mode

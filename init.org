@@ -1793,9 +1793,7 @@ Thus, I decide to include both solutions in my configuration for now.
   	       :type git :host github :repo "hasu/emacs-ob-racket"
   	       :files ("*.el" "*.rkt")))
 
-  (use-package racket-mode
-    :hook
-    (racket-mode . racket-xp-mode))
+  (use-package racket-mode :defer t)
 #+end_src
 
 *** Unreal :dependency:
@@ -2006,20 +2004,35 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
                                            (file+head "%<%Y-%m-%d>.org.gpg" "#+title: %<%Y-%m-%d>\n"))))
 
     (defun org-roam-rename-buffer (&optional buffer)
-      (let ((title (org-roam-db--file-title)))
-        (if (> (length title) 0)
-            (rename-buffer title t))))
+      "Try to rename the current buffer if it is an org roam buffer and
+  has a title. If possible, rename it using both its title and tags."
+      (let ((node (org-roam-node-at-point)))
+        (if node
+            (let ((tags (org-roam-node-tags node))
+                  (title (org-roam-node-title node)))
+              (if title
+                  (rename-buffer (format "%s%s"
+                                     title
+                                     (apply #'concat
+                                            (seq-map (lambda (tag) (format "#%s" tag)) tags)))
+                                 t)
+                (let ((title (org-roam-db--file-title)))
+                  (if (> (length title) 0)
+                      (rename-buffer title t))))))))
 
     ;; This is inspired by denote's denote-rename-buffer-mode
     (define-minor-mode org-roam-rename-buffer-mode
-      "Doc string here."
+      "Minor mode rename org mode buffer when opening org roam files,
+  creating new org roam nodes, and saving org roam files."
       :global t
       (if org-roam-rename-buffer-mode
           (progn
             (add-hook 'org-roam-find-file-hook #'org-roam-rename-buffer)
-            (add-hook 'org-roam-capture-new-node-hook #'org-roam-rename-buffer))
+            (add-hook 'org-roam-capture-new-node-hook #'org-roam-rename-buffer)
+            (add-hook 'after-save-hook #'org-roam-rename-buffer))
         (remove-hook 'org-roam-find-file-hook #'org-roam-rename-buffer)
-        (remove-hook 'org-roam-capture-new-node-hook #'org-roam-rename-buffer)))
+        (remove-hook 'org-roam-capture-new-node-hook #'org-roam-rename-buffer)
+        (remove-hook 'after-save-hook #'org-roam-rename-buffer)))
     :config
     (org-roam-rename-buffer-mode)
     (org-roam-db-autosync-mode)

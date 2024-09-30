@@ -1100,13 +1100,13 @@ https://www.nerdfonts.com/#home
              :tab-width 4
              :right-divider-width 30
              :scroll-bar-width 8
-             :fringe-width 8))
+             :fringe-width 8)))
 
     ;; Read the doc string of `spacious-padding-subtle-mode-line' as it
     ;; is very flexible and provides several examples.
-    (setq spacious-padding-subtle-mode-line
-          `( :mode-line-active 'default
-             :mode-line-inactive vertical-border)))
+    ;; (setq spacious-padding-subtle-mode-line
+    ;;       `( :mode-line-active 'default
+    ;;          :mode-line-inactive vertical-border)))
 
   (spacious-padding-mode)
 #+end_src

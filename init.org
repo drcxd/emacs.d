@@ -296,6 +296,9 @@ The following functions should be invoked in the custom file.
   (setq display-time-24hr-format t)
   (display-time)
   (column-number-mode)
+  ;; put mode lines at the top of buffers
+  (setq-default header-line-format mode-line-format)
+  (setq-default mode-line-format nil)
 #+end_src
 
 ** Auto Backup

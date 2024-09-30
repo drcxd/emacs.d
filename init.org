@@ -297,8 +297,14 @@ The following functions should be invoked in the custom file.
   (display-time)
   (column-number-mode)
   ;; put mode lines at the top of buffers
-  (setq-default header-line-format mode-line-format)
-  (setq-default mode-line-format nil)
+  ;; (setq-default header-line-format mode-line-format)
+  ;; (setq-default mode-line-format nil)
+
+  ;; NOTE: I give up this configuration since the header line is also
+  ;; used by some special buffer, for example, org-edit-special. In such
+  ;; a buffer, I lose all the information provided by the mode
+  ;; line. This is not acceptable so I switch back to the bottom mode
+  ;; line setting.
 #+end_src
 
 ** Auto Backup
@@ -1764,7 +1770,9 @@ Racket backend each time you evaluate a code block.
 **** Graphviz Dot
 
 #+begin_src emacs-lisp
-  (use-package graphviz-dot-mode :defer t)
+  (use-package graphviz-dot-mode :defer t
+    :init
+    (add-to-list 'org-src-lang-modes '("dot" . graphviz-dot)))
 #+end_src
 
 **** Racket

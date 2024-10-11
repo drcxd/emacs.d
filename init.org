@@ -545,6 +545,8 @@ Emacs 28 supports syntax highlighting for documentations in comments.
     (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
     ;; For preview tikz pictures
     (add-to-list 'org-latex-packages-alist '("" "tikz" t))
+    ;; For theorems and proofs
+    (add-to-list 'org-latex-packages-alist '("" "amsthm" t))
     (setq org-preview-latex-default-process 'dvisvgm))
 #+end_src
 

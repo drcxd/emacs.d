@@ -1345,8 +1345,6 @@ easy to use.
 
 #+begin_src emacs-lisp
   (use-package ace-window
-    :config
-    (setq aw-dispatch-always t)
     :bind
     (("C-c o" . ace-window)
      ([remap other-window] . ace-window)))

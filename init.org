@@ -542,10 +542,6 @@ Emacs 28 supports syntax highlighting for documentations in comments.
     ;; The following code makes org emphasis markup covers more lines
     (setcar (nthcdr 4 org-emphasis-regexp-components) 5)
     (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
-    ;; For preview tikz pictures
-    (add-to-list 'org-latex-packages-alist '("" "tikz" t))
-    ;; For theorems and proofs
-    (add-to-list 'org-latex-packages-alist '("" "amsthm" t))
     (setq org-preview-latex-default-process 'dvisvgm))
 #+end_src
 

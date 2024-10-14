@@ -1697,7 +1697,7 @@ not viable. I have to build the compiler myself. Second,
 org-babel, cannot work correctly on Windows. Chicken requires users to
 apply for an account to report bug, which is not convenient.
 
-****** COMMENT Chez :dependency:
+****** Chez :dependency:
 
 After I have found that I cannot make chicken work with org-babel on
 Windows, I switch to [[https://github.com/cisco/ChezScheme][Chez]]. It has nice Windows support, e.g. a Windows
@@ -2475,25 +2475,24 @@ calibredb. I have added some custom functions to open the directory
 that contains a book in Dired.
 
 #+begin_src emacs-lisp
-  (use-package calibre
-    :defer t
-    :config
-    (use-package calibre-library
-      :ensure nil
-      :config
-      (defun calibre-book--path (book)
-        "Return the path to the directory of BOOK."
-        (let ((path (calibre-book-path book)))
-          (file-name-concat (calibre--library)
-                            path)))
-      (defun calibre-library-open-book-dir (book)
-        "Open the directory of BOOK."
-        (interactive (list (tabulated-list-get-id))
-                     calibre-library-mode)
-        (find-file (calibre-book--path book)))
-      :bind
-      (:map calibre-library-mode-map
-            ("O" . calibre-library-open-book-dir))))
+  (use-package calibre :defer t)
+    ;; :config
+    ;; (use-package calibre-library
+    ;;   :ensure nil
+    ;;   :config
+    ;;   (defun calibre-book--path (book)
+    ;;     "Return the path to the directory of BOOK."
+    ;;     (let ((path (calibre-book-path book)))
+    ;;       (file-name-concat (calibre--library)
+    ;;                         path)))
+    ;;   (defun calibre-library-open-book-dir (book)
+    ;;     "Open the directory of BOOK."
+    ;;     (interactive (list (tabulated-list-get-id))
+    ;;                  calibre-library-mode)
+    ;;     (find-file (calibre-book--path book)))
+    ;;   :bind
+    ;;   (:map calibre-library-mode-map
+    ;;         ("O" . calibre-library-open-book-dir))))
 #+end_src
 
 This package also requires some local settings, for example, we have

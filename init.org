@@ -1800,7 +1800,9 @@ Thus, I decide to include both solutions in my configuration for now.
   	       :type git :host github :repo "hasu/emacs-ob-racket"
   	       :files ("*.el" "*.rkt")))
 
-  (use-package racket-mode :defer t)
+  (use-package racket-mode :defer t
+    :hook
+    (racket-mode . racket-xp-mode))
 #+end_src
 
 *** Unreal :dependency:

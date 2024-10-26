@@ -846,7 +846,9 @@ enabled. Diminish is a good package to solve this problem.
     (defun my/modus-themes-custom-face ()
       (modus-themes-with-colors
         (custom-set-faces
+         ;; Faces used by lsp-mode package
          `(lsp-ui-doc-background ((,c :background ,bg-dim)))
+         ;; Faces used by symbol overlay package
          `(symbol-overlay-face-1 ((,c :inherit modus-themes-intense-blue)))
          `(symbol-overlay-face-2 ((,c :inherit modus-themes-intense-red)))
          `(symbol-overlay-face-3 ((,c :inherit modus-themes-intense-cyan)))
@@ -854,7 +856,10 @@ enabled. Diminish is a good package to solve this problem.
          `(symbol-overlay-face-5 ((,c :inherit modus-themes-intense-yellow)))
          `(symbol-overlay-face-6 ((,c :inherit modus-themes-intense-magenta)))
          `(symbol-overlay-face-7 ((,c :inherit modus-themes-subtle-red)))
-         `(symbol-overlay-face-8 ((,c :inherit modus-themes-subtle-green))))))
+         `(symbol-overlay-face-8 ((,c :inherit modus-themes-subtle-green)))
+         ;; Undo what the package has done to the fill-column-indicator,
+         ;; the documentation about this face is not accurate
+         `(fill-column-indicator ((,c :inherit shadow :foreground unspecified :background unspecified :height unspecified))))))
     (defun my/use-modus-themes ()
       (interactive)
       (progn (global-set-key (kbd "C-c t g") 'modus-themes-select)
@@ -1090,22 +1095,14 @@ https://www.nerdfonts.com/#home
 
   (use-package spacious-padding
     :config
-    ;; These is the default value, but I keep it here for visiibility.
     (setq spacious-padding-widths
-          '( :internal-border-width 15
-             :header-line-width 4
-             :mode-line-width 6
-             :tab-width 4
-             :right-divider-width 30
-             :scroll-bar-width 8
-             :fringe-width 8)))
-
-    ;; Read the doc string of `spacious-padding-subtle-mode-line' as it
-    ;; is very flexible and provides several examples.
-    ;; (setq spacious-padding-subtle-mode-line
-    ;;       `( :mode-line-active 'default
-    ;;          :mode-line-inactive vertical-border)))
-
+          '( :internal-border-width 16
+             :right-divider-width 4
+             :mode-line-width 4
+             :fringe-width 8)
+          spacious-padding-subtle-mode-line
+          '( :mode-line-active error
+             :mode-line-inactive shadow)))
   (spacious-padding-mode)
 #+end_src
 
@@ -1575,7 +1572,7 @@ variable-rename.
   (add-to-list 'safe-local-eval-forms '(lsp))
 #+end_src
 
-*** citre
+*** COMMENT citre
 
 citre is a package that use tags files to provide IDE-like features
 such as completion and jumping to definition. Generally speaking,
@@ -1583,8 +1580,7 @@ solutions based on tags are not as accurate as solutions based on
 LSP. However, it is still useful when the project can not be compiled.
 
 #+begin_src emacs-lisp
-  (use-package citre
-    :defer t
+  (use-package citre :defer t
     :init
     (require 'citre-config))
 #+end_src
@@ -1793,7 +1789,7 @@ problem of correctly executing Racket code.
 Thus, I decide to include both solutions in my configuration for now.
 
 #+begin_src emacs-lisp
-  (use-package ob-racket
+  (use-package ob-racket :defer t
     :after org
     :config
     (add-hook 'ob-racket-pre-runtime-library-load-hook

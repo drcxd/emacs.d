@@ -253,31 +253,43 @@ to manage these buffers just as you manage files in dired.
 + Sarasa Term SC Nerd font: https://github.com/laishulu/Sarasa-Term-SC-Nerd
 
 
-The following functions should be invoked in the custom file.
+The following functions should be invoked in the custom file or interactively.
 
 #+begin_src emacs-lisp
   ;; credit: https://emacsredux.com/blog/2021/12/22/check-if-a-font-is-available-with-emacs-lisp/
   (defun font-available-p (font-name)
     (find-font (font-spec :name font-name)))
 
+  (defun my/setup-fixed-pitch-font (font height weight)
+    "Setup default and fixed-pitch faces."
+    (interactive "sFont name: \nn Font height: \nSFont weight: ")
+    (if (font-available-p font)
+        (progn
+          (set-face-attribute 'default nil
+                              :font font
+                              :weight weight
+                              :height height)
+          (set-face-attribute 'fixed-pitch nil
+                              :font font
+                              :weight weight
+                              :height 1.0))
+      (warn (format "Fonts %s is not available!" font))))
+
+  (defun my/setup-variable-pitch-font (font)
+    "Setup variable pitch font."
+    (interactive "sFont name: ")
+    (if (font-available-p font)
+        (set-face-attribute 'variable-pitch nil
+                              :font font
+                              :height 1.0)
+      (warn (format "Fonts %s is not available!" font))))
+
   (defun my/setup-fonts (fixed-pitch-font height fixed-pitch-weight variable-pitch-font)
     "Setup default, fixed-pitch and variable-pitch faces using the
   fonts given."
-    (if (and (font-available-p fixed-pitch-font)
-             (font-available-p variable-pitch-font))
-        (progn
-          (set-face-attribute 'default nil
-                              :font fixed-pitch-font
-                              :weight fixed-pitch-weight
-                              :height height)
-          (set-face-attribute 'fixed-pitch nil
-                              :font fixed-pitch-font
-                              :weight fixed-pitch-weight
-                              :height 1.0)
-          (set-face-attribute 'variable-pitch nil
-                              :font variable-pitch-font
-                              :height 1.0))
-      (warn (format "Fonts %s or %s is not available!" fixed-pitch-font variable-pitch-font))))
+    (interactive "sFixed pitch font name: \nn Font height: \nSFont weight: \nsVariable pitch font name: ")
+    (my/setup-fixed-pitch-font fixed-ptich-font height fixed-pitch-weight)
+    (my/setup-variable-pitch-font variable-pitch-font))
 
   (defun my/setup-chinese ()
     (if (font-available-p "Sarasa Gothic SC")

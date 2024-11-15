@@ -247,10 +247,25 @@ to manage these buffers just as you manage files in dired.
 
 ** Fonts and Faces :dependency:
 
-+ Sarasa Gothic font: https://github.com/be5invis/Sarasa-Gothic
-+ Iosevka font: https://github.com/be5invis/Iosevka
-+ Iosevka Comfy font: https://github.com/protesilaos/iosevka-comfy
-+ Sarasa Term SC Nerd font: https://github.com/laishulu/Sarasa-Term-SC-Nerd
+*** Coding Fonts
+
+- [[https://github.com/protesilaos/iosevka-comfy][Iosevka Comfy]].
+- [[https://github.com/be5invis/Iosevka][Iosevka]].
+
+*** Variable Pitch Fonts
+
++ [[https://fonts.google.com/specimen/Open+Sans][Open Sans]].
++ Papyrus. Theoretically, this font is only available on Windows
+  platform. It is interesting, I learn about it from the game Undertale.
++ [[https://fonts.google.com/specimen/Delius][Delius]]. I came across this font when searching for Papyrus. It
+  turned out that this font is nice using with Cascadia Code.
++ Iosevka Comfy also provides variable pitch fonts.
+
+
+*** Simplified Chinese Fonts
+
++ [[https://github.com/be5invis/Sarasa-Gothic][Sarasa Gothic]].
++ [[https://github.com/laishulu/Sarasa-Term-SC-Nerd][Sarasa Term SC Nerd]].
 
 
 The following functions should be invoked in the custom file or interactively.

@@ -303,7 +303,7 @@ The following functions should be invoked in the custom file or interactively.
     "Setup default, fixed-pitch and variable-pitch faces using the
   fonts given."
     (interactive "sFixed pitch font name: \nn Font height: \nSFont weight: \nsVariable pitch font name: ")
-    (my/setup-fixed-pitch-font fixed-ptich-font height fixed-pitch-weight)
+    (my/setup-fixed-pitch-font fixed-pitch-font height fixed-pitch-weight)
     (my/setup-variable-pitch-font variable-pitch-font))
 
   (defun my/setup-chinese ()

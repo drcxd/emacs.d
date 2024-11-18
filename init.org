@@ -352,13 +352,12 @@ time. This feature is disabled by default. I would like to enable it
 to prevent accidental loss of data. The idle time should not be too
 short since this would incur frequently disk I/O.
 
-Note: I found that changing the value of ~auto-save-visited-interval~
-does not change the behavior of Emacs. This might be a
-platform-specific bug.
-
 #+begin_src emacs-lisp
-  (auto-save-visited-mode 1)
+  ;; auto-save-visited-interval must be set before
+  ;; auto-save-visited-mode is enabled, otherwise, changing its value
+  ;; does not take effect
   (setq auto-save-visited-interval 30)
+  (auto-save-visited-mode 1)
 #+end_src
 
 ** Auto Revert

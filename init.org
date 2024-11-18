@@ -306,10 +306,11 @@ The following functions should be invoked in the custom file or interactively.
     (my/setup-fixed-pitch-font fixed-pitch-font height fixed-pitch-weight)
     (my/setup-variable-pitch-font variable-pitch-font))
 
-  (defun my/setup-chinese ()
-    (if (font-available-p "Sarasa Gothic SC")
-        (set-fontset-font "fontset-default" 'han "Sarasa Gothic SC")
-      (warn "Sarasa Gothic SC is not available!")))
+  (defun my/setup-chinese-font (font)
+    (interactive "sFont name: ")
+    (if (font-available-p font)
+        (set-fontset-font "fontset-default" 'han font)
+      (warn (format "Font %s is not available!" font))))
 
   ;; ;; italic
   ;; (set-face-attribute 'italic nil

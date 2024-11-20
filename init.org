@@ -2027,17 +2027,34 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
      org-roam-directory "~/org-roam/"
      org-roam-node-display-template (concat "${title} " (propertize "${tags}" 'face 'org-tag))
      org-roam-capture-templates '(("d" "default" plain "%?" :target
-                                   (file+head "%<%Y%m%d%H%M%S>.org" "#+title: ${title}\n")
-                                   :unnarrowed t)
+                                   (file+head "%<%Y%m%d%H%M%S>.org" "#+title: ${title}\n"))
                                   ("p" "private" plain "%?" :target
-                                   (file+head "private/%<%Y%m%d%H%M%S>.org.gpg" "#+title: ${title}\n")
-                                   :unnarrowed t))
+                                   (file+head "private/%<%Y%m%d%H%M%S>.org.gpg" "#+title: ${title}\n")))
      org-roam-dailies-capture-templates '(("d" "default" entry "* %?" :target
                                            (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))
                                           ("p" "private" entry "* %?" :target
                                            (file+head "%<%Y-%m-%d>.org.gpg" "#+title: %<%Y-%m-%d>\n"))))
 
-    (defun org-roam-rename-buffer (&optional buffer)
+    (defun my/title->file-name (title)
+      "Process the input string so that it only contains valid
+  characters for file names and is no more than 32 characters."
+      (string-limit (replace-regexp-in-string file-name-invalid-regexp "" title) 32))
+
+    (defun my/org-roam-rename-file ()
+      "Rename the current org-roam file according to its title field."
+      (if (org-roam-buffer-p)
+          (let ((title (org-roam-db--file-title))
+                (full-name (buffer-file-name)))
+            (let ((new-name (format "%s.org" (my/title->file-name title)))
+                  (current-name (file-name-nondirectory full-name)))
+              (if (not (string= new-name current-name))
+                  (if (file-exists-p current-name)
+                      (warn (format "File %s already exists. Renaming skipped!" current-name))
+                    (if (file-exists-p current-name)
+                        (rename-file buffer-file-name new-name))
+                    (set-visited-file-name new-name)))))))
+
+    (defun my/org-roam-rename-buffer (&optional buffer)
       "Try to rename the current buffer if it is an org roam buffer and
   has a title. If possible, rename it using both its title and tags."
       (if (org-roam-buffer-p)
@@ -2056,20 +2073,22 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
                           (rename-buffer title t)))))))))
 
     ;; This is inspired by denote's denote-rename-buffer-mode
-    (define-minor-mode org-roam-rename-buffer-mode
+    (define-minor-mode org-roam-rename-buffer-file-mode
       "Minor mode rename org mode buffer when opening org roam files,
   creating new org roam nodes, and saving org roam files."
       :global t
-      (if org-roam-rename-buffer-mode
+      (if org-roam-rename-buffer-file-mode
           (progn
-            (add-hook 'org-roam-find-file-hook #'org-roam-rename-buffer)
-            (add-hook 'org-roam-capture-new-node-hook #'org-roam-rename-buffer)
-            (add-hook 'after-save-hook #'org-roam-rename-buffer))
-        (remove-hook 'org-roam-find-file-hook #'org-roam-rename-buffer)
-        (remove-hook 'org-roam-capture-new-node-hook #'org-roam-rename-buffer)
-        (remove-hook 'after-save-hook #'org-roam-rename-buffer)))
+            (add-hook 'org-roam-find-file-hook #'my/org-roam-rename-buffer)
+            (add-hook 'org-roam-capture-new-node-hook #'my/org-roam-rename-buffer)
+            ;; (add-hook 'before-save-hook #'my/org-roam-rename-file)
+            (add-hook 'after-save-hook #'my/org-roam-rename-buffer))
+        (remove-hook 'org-roam-find-file-hook #'my/org-roam-rename-buffer)
+        (remove-hook 'org-roam-capture-new-node-hook #'my/org-roam-rename-buffer)
+        ;; (remove-hook 'before-save-hook #'my/org-roam-rename-file)
+        (remove-hook 'after-save-hook #'my/org-roam-rename-buffer)))
     :config
-    (org-roam-rename-buffer-mode)
+    (org-roam-rename-buffer-file-mode)
     (org-roam-db-autosync-mode)
     :bind
     (("C-c n f" . org-roam-node-find)

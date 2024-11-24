@@ -2,6 +2,10 @@ fundamental-mode
 
 (today (format-time-string "%Y-%m-%d"))
 
+text-mode
+
+(godel "Gödel")
+
 latex-mode org-mode
 
 (align "\\begin{align}\n" r> n> "\\end{align}")

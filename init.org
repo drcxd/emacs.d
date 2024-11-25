@@ -261,7 +261,6 @@ to manage these buffers just as you manage files in dired.
   turned out that this font is nice using with Cascadia Code.
 + Iosevka Comfy also provides variable pitch fonts.
 
-
 *** Simplified Chinese Fonts
 
 + [[https://github.com/be5invis/Sarasa-Gothic][Sarasa Gothic]].
@@ -311,6 +310,20 @@ The following functions should be invoked in the custom file or interactively.
     (if (font-available-p font)
         (set-fontset-font "fontset-default" 'han font)
       (warn (format "Font %s is not available!" font))))
+
+  (defmacro my/def-use-font-function (name fixed-pitch-font variable-pitch-font)
+    "Templates that is used to define various font using functions."
+    `(defun ,(intern (concat "my/use-font-" name)) ()
+       (interactive)
+       (my/setup-fonts ,fixed-pitch-font 180 'regular ,variable-pitch-font)))
+
+  ;; Sample code to use the above macro
+  ;; (dolist (list '(("iosevka-comfy" "Iosevka Comfy" "Iosevka Comfy Duo")
+  ;;                 ("iosevka" "Iosevka" "Iosevka Aile")
+  ;;                 ("jetbrains-mono" "JetBrains Mono" "IBM Plex Sans")
+  ;;                 ("victor-mono" "Victor Mono" "IBM Plex Sans")
+  ;;                 ("ibm-plex" "IBM Plex Mono" "IBM Plex Sans")))
+  ;;   (eval `(my/def-use-font-function ,(car list) ,(cadr list) ,(caddr list))))
 
   ;; ;; italic
   ;; (set-face-attribute 'italic nil

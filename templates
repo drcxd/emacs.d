@@ -75,6 +75,7 @@ c++-mode
 (mt "meta = (" p ")")
 (ts "Transient")
 (wptr "TWeakObjectPtr<" r ">")
+(ulog "UE_LOG(LogTemp, Display, TEXT(\"DEBUG CXD " p "\"));")
 
 ;; Local Variables:
 ;; mode: lisp-data

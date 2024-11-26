@@ -896,10 +896,7 @@ enabled. Diminish is a good package to solve this problem.
          `(symbol-overlay-face-5 ((,c :inherit modus-themes-intense-yellow)))
          `(symbol-overlay-face-6 ((,c :inherit modus-themes-intense-magenta)))
          `(symbol-overlay-face-7 ((,c :inherit modus-themes-subtle-red)))
-         `(symbol-overlay-face-8 ((,c :inherit modus-themes-subtle-green)))
-         ;; Undo what the package has done to the fill-column-indicator,
-         ;; the documentation about this face is not accurate
-         `(fill-column-indicator ((,c :inherit shadow :foreground unspecified :background unspecified :height unspecified))))))
+         `(symbol-overlay-face-8 ((,c :inherit modus-themes-subtle-green))))))
     (defun my/use-modus-themes ()
       (interactive)
       (progn (global-set-key (kbd "C-c t g") 'modus-themes-select)

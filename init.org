@@ -247,26 +247,6 @@ to manage these buffers just as you manage files in dired.
 
 ** Fonts and Faces :dependency:
 
-*** Coding Fonts
-
-- [[https://github.com/protesilaos/iosevka-comfy][Iosevka Comfy]].
-- [[https://github.com/be5invis/Iosevka][Iosevka]].
-
-*** Variable Pitch Fonts
-
-+ [[https://fonts.google.com/specimen/Open+Sans][Open Sans]].
-+ Papyrus. Theoretically, this font is only available on Windows
-  platform. It is interesting, I learn about it from the game Undertale.
-+ [[https://fonts.google.com/specimen/Delius][Delius]]. I came across this font when searching for Papyrus. It
-  turned out that this font is nice using with Cascadia Code.
-+ Iosevka Comfy also provides variable pitch fonts.
-
-*** Simplified Chinese Fonts
-
-+ [[https://github.com/be5invis/Sarasa-Gothic][Sarasa Gothic]].
-+ [[https://github.com/laishulu/Sarasa-Term-SC-Nerd][Sarasa Term SC Nerd]].
-
-
 The following functions should be invoked in the custom file or interactively.
 
 #+begin_src emacs-lisp
@@ -306,29 +286,41 @@ The following functions should be invoked in the custom file or interactively.
     (my/setup-variable-pitch-font variable-pitch-font))
 
   (defun my/setup-chinese-font (font)
+    "Make Chinese characters use the given font."
     (interactive "sFont name: ")
     (if (font-available-p font)
         (set-fontset-font "fontset-default" 'han font)
       (warn (format "Font %s is not available!" font))))
 
-  (defmacro my/def-use-font-function (name fixed-pitch-font variable-pitch-font)
-    "Templates that is used to define various font using functions."
-    `(defun ,(intern (concat "my/use-font-" name)) ()
-       (interactive)
-       (my/setup-fonts ,fixed-pitch-font 180 'regular ,variable-pitch-font)))
+  (defun my/use-font (profile-name)
+    "Apply the font profile specified by the given profile name."
+    (interactive
+     (let ((completion-ignore-case t))
+       (list (completing-read "Font profile name: " (mapcar #'car my/font-profiles)))))
+    (let ((profile (assoc profile-name my/font-profiles)))
+      (if profile
+          (let ((fixed-pitch-font (nth 1 profile))
+                (size (nth 2 profile))
+                (weight (nth 3 profile))
+                (variable-pitch-font (nth 4 profile)))
+            (my/setup-fonts fixed-pitch-font 180 'regular variable-pitch-font))
+        (warn "No such font profile: MY/USE-FONT:" profile-name))))
 
-  ;; Sample code to use the above macro
-  ;; (dolist (list '(("iosevka-comfy" "Iosevka Comfy" "Iosevka Comfy Duo")
-  ;;                 ("iosevka" "Iosevka" "Iosevka Aile")
-  ;;                 ("jetbrains-mono" "JetBrains Mono" "IBM Plex Sans")
-  ;;                 ("victor-mono" "Victor Mono" "IBM Plex Sans")
-  ;;                 ("ibm-plex" "IBM Plex Mono" "IBM Plex Sans")))
-  ;;   (eval `(my/def-use-font-function ,(car list) ,(cadr list) ,(caddr list))))
+  ;; Deprecated code that is used to define functions that apply font
+  ;; profiles. Use `my/use-font' now.
 
-  ;; ;; italic
-  ;; (set-face-attribute 'italic nil
-  ;;                        :slant 'italic
-  ;;                        :underline nil)
+  ;; (defmacro my/def-use-font-function (name fixed-pitch-font variable-pitch-font)
+  ;;   "Templates that is used to define various font using functions."
+  ;;   `(defun ,(intern (concat "my/use-font-" name)) ()
+  ;;      (interactive)
+  ;;      (my/setup-fonts ,fixed-pitch-font 180 'regular ,variable-pitch-font)))
+
+  (defvar my/font-profiles
+    '(("IBM Plex" . ("IBM Plex Mono" 180 'regular "IBM Plex Sans"))
+      ("Iosevka" . ("Iosevka" 180 'regular "Iosevka Aile"))
+      ("Iosevka Comfy" . ("Iosevka Comfy" 180 'regular "Iosevka Comfy Duo"))
+      ("JetBrains Mono" . ("JetBrains Mono" 180 'regular "IBM Plex Sans"))
+      ("Victor Mono" . ("Victor Mono" 180 'regular "IBM Plex Sans"))))
 #+end_src
 
 ** Mode Line

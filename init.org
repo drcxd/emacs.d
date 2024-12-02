@@ -1340,7 +1340,7 @@ easy to use.
                                                    #'tmr-acknowledge-minibuffer))))
     :bind
     (("C-c t T" . tmr)
-     ("C-c t t" . tmr-with-description)
+     ("C-c t t" . tmr-with-details)
      ("C-c t r" . tmr-remove-finished)
      ("C-c t R" . tmr-remove)
      ("C-c t l" . tmr-tabulated-view)))

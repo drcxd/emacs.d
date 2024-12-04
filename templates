@@ -76,7 +76,7 @@ c++-mode
 (ts "Transient")
 (wptr "TWeakObjectPtr<" r ">")
 (ulog "UE_LOG(LogTemp, Display, TEXT(\"DEBUG CXD " p "\")" q ");")
-(umsg "GEngin->AddOnScreenDebugMessage(INDEX_NONE, 4.0F, FColor::Cyan, FString::Printf(TEXT(\"" p "\")" q "));")
+(umsg "GEngine->AddOnScreenDebugMessage(INDEX_NONE, 4.0F, FColor::Cyan, FString::Printf(TEXT(\"" p "\")" q "));")
 
 ;; Local Variables:
 ;; mode: lisp-data

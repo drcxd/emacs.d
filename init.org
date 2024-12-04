@@ -299,20 +299,31 @@ The following functions should be invoked in the custom file or interactively.
        (list (completing-read "Font profile name: " (mapcar #'car my/font-profiles)))))
     (let ((profile (assoc profile-name my/font-profiles)))
       (if profile
-          (let ((fixed-pitch-font (nth 1 profile))
-                (size (nth 2 profile))
-                (weight (nth 3 profile))
-                (variable-pitch-font (nth 4 profile)))
-            (my/setup-fonts fixed-pitch-font 180 'regular variable-pitch-font))
+          (progn
+            (message "Using font profile %s" profile-name)
+            (let ((fixed-pitch-font (nth 1 profile))
+                  (size (nth 2 profile))
+                  (weight (nth 3 profile))
+                  (variable-pitch-font (nth 4 profile)))
+              (my/setup-fonts fixed-pitch-font 180 'regular variable-pitch-font)))
         (warn "No such font profile: MY/USE-FONT:" profile-name))))
 
   (defun my/use-font-by-day ()
     "Select a font profile depends on the date."
     (interactive)
-    (let ((day (/ (time-convert (current-time) 'integer) (* 60 60 24)))
-          (len (length my/font-profiles)))
-      (let ((idx (% day len)))
-        (my/use-font (car (nth idx my/font-profiles))))))
+    (let* ((day (/ (time-convert (current-time) 'integer) (* 60 60 24)))
+           (len (length my/font-profiles))
+           (idx (% day len))
+           (profile-name (car (nth idx my/font-profiles))))
+      (my/use-font profile-name)))
+
+  (defun my/use-font-rand ()
+    "Select a font randomly."
+    (interactive)
+    (let* ((len (length my/font-profiles))
+           (idx (random len))
+           (profile-name (car (nth idx my/font-profiles))))
+      (my/use-font profile-name)))
 
   ;; Deprecated code that is used to define functions that apply font
   ;; profiles. Use `my/use-font' now.

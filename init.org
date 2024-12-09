@@ -293,6 +293,7 @@ The following functions should be invoked in the custom file or interactively.
         (set-fontset-font "fontset-default" 'han font)
       (warn (format "Font %s is not available!" font))))
 
+  (defvar my/font-size 160)
   (defun my/use-font (profile-name)
     "Apply the font profile specified by the given profile name."
     (interactive
@@ -303,10 +304,9 @@ The following functions should be invoked in the custom file or interactively.
           (progn
             (message "Using font profile %s" profile-name)
             (let ((fixed-pitch-font (nth 1 profile))
-                  (size (nth 2 profile))
-                  (weight (nth 3 profile))
-                  (variable-pitch-font (nth 4 profile)))
-              (my/setup-fonts fixed-pitch-font 180 'regular variable-pitch-font)))
+                  (weight (nth 2 profile))
+                  (variable-pitch-font (nth 3 profile)))
+              (my/setup-fonts fixed-pitch-font my/font-size 'regular variable-pitch-font)))
         (warn "No such font profile: MY/USE-FONT:" profile-name))))
 
   (defun my/use-font-by-num (n)
@@ -350,11 +350,11 @@ The following functions should be invoked in the custom file or interactively.
   ;;      (my/setup-fonts ,fixed-pitch-font 180 'regular ,variable-pitch-font)))
 
   (defvar my/font-profiles
-    '(("IBM Plex" . ("IBM Plex Mono" 180 'regular "IBM Plex Sans"))
-      ("Iosevka" . ("Iosevka" 180 'regular "Iosevka Aile"))
-      ("Iosevka Comfy" . ("Iosevka Comfy" 180 'regular "Iosevka Comfy Duo"))
-      ("JetBrains Mono" . ("JetBrains Mono" 180 'regular "IBM Plex Sans"))
-      ("Victor Mono" . ("Victor Mono" 180 'regular "IBM Plex Sans"))))
+    '(("IBM Plex" . ("IBM Plex Mono" 'regular "IBM Plex Sans"))
+      ("Iosevka" . ("Iosevka" 'regular "Iosevka Aile"))
+      ("Iosevka Comfy" . ("Iosevka Comfy" 'regular "Iosevka Comfy Duo"))
+      ("JetBrains Mono" . ("JetBrains Mono" 'regular "IBM Plex Sans"))
+      ("Victor Mono" . ("Victor Mono" 'regular "IBM Plex Sans"))))
 #+end_src
 
 ** Mode Line

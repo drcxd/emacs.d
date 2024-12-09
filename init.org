@@ -490,15 +490,11 @@ some mottoes selected randomly from a pre-defined list.
       ("但行好事" "莫问前程")
       ("今我何功德" "曾不事农桑")))
 
-  (defvar my/mottoes
-    (let (ret)
-      (dolist (raw-motto my/raw-mottoes ret)
-        (setq ret (cons (my/process-raw-mottoes raw-motto) ret)))))
-
   (setq initial-scratch-message
         (concat ";; Hello, " user-full-name "\n"
-                (nth (random (length my/mottoes))
-                     my/mottoes)
+                (my/process-raw-mottoes
+                 (nth (random (length my/raw-mottoes))
+                      my/raw-mottoes))
                 "\n"))
 #+end_src
 

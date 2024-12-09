@@ -252,6 +252,7 @@ The following functions should be invoked in the custom file or interactively.
 #+begin_src emacs-lisp
   ;; credit: https://emacsredux.com/blog/2021/12/22/check-if-a-font-is-available-with-emacs-lisp/
   (defun font-available-p (font-name)
+    "Return true if font specified by FONT-NAME is installed."
     (find-font (font-spec :name font-name)))
 
   (defun my/setup-fixed-pitch-font (font height weight)
@@ -326,16 +327,18 @@ The following functions should be invoked in the custom file or interactively.
     (let ((n (random)))
       (my/use-font-by-num n)))
 
-  (defun my/use-font-by-launch ()
-    (let ((file-name (concat user-emacs-directory "launch")))
-      (if (not (file-exists-p file-name))
-          (write-region "('launch 0)" nil file-name 0))
-      (with-temp-buffer
-        (insert-file-contents file-name)
-        (let ((launch (cadr (read (current-buffer)))))
-          (write-region (format "('launch %d)" (+ 1 launch)) nil file-name 0)
-          (my/use-font-by-num launch)))))
+  (defvar my/launch-counter 0)
 
+  (use-package savehist
+    :config
+    (setq savehist-save-minibuffer-history nil)
+    (push 'my/launch-counter savehist-additional-variables))
+
+  (defun my/use-font-by-launch ()
+    "Select a different font each time Emacs is launched."
+    (savehist-mode)
+    (my/use-font-by-num my/launch-counter)
+    (setq my/launch-counter (+ my/launch-counter 1)))
 
   ;; Deprecated code that is used to define functions that apply font
   ;; profiles. Use `my/use-font' now.

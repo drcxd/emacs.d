@@ -2314,11 +2314,12 @@ programming project).
    :bind
    (("C-c p f" . projectile-find-file)
     ("C-c p i" . projectile-invalidate-cache)
-    ("C-c p s" . projectile-switch-project)
+    ("C-c p s" . (lambda () (interactive) (projectile-switch-project t)))
     ("C-c p d" . projectile-dired)
     ("C-c p r" . projectile-ripgrep))
    :config
-   (projectile-global-mode))
+   (projectile-global-mode)
+   (def-projectile-commander-method ?e "Open eshell at project root." (projectile-run-eshell)))
 #+end_src
 
 ** magit :dependency:

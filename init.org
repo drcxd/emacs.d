@@ -330,15 +330,18 @@ The following functions should be invoked in the custom file or interactively.
   (defvar my/launch-counter 0)
 
   (use-package savehist
-    :config
+    :init
     (setq savehist-save-minibuffer-history nil)
+    :config
     (push 'my/launch-counter savehist-additional-variables))
 
   (defun my/use-font-by-launch ()
     "Select a different font each time Emacs is launched."
     (savehist-mode)
     (my/use-font-by-num my/launch-counter)
-    (setq my/launch-counter (+ my/launch-counter 1)))
+    (setq my/launch-counter (+ my/launch-counter 1))
+    (savehist-save)
+    (savehist-mode -1))
 
   ;; Deprecated code that is used to define functions that apply font
   ;; profiles. Use `my/use-font' now.

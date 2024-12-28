@@ -294,6 +294,7 @@ The following functions should be invoked in the custom file or interactively.
       (warn (format "Font %s is not available!" font))))
 
   (defvar my/font-size 160)
+  (defvar my/current-font-profile "")
   (defun my/use-font (profile-name)
     "Apply the font profile specified by the given profile name."
     (interactive
@@ -302,11 +303,11 @@ The following functions should be invoked in the custom file or interactively.
     (let ((profile (assoc profile-name my/font-profiles)))
       (if profile
           (progn
-            (message "Using font profile %s" profile-name)
             (let ((fixed-pitch-font (nth 1 profile))
                   (weight (nth 2 profile))
                   (variable-pitch-font (nth 3 profile)))
-              (my/setup-fonts fixed-pitch-font my/font-size 'regular variable-pitch-font)))
+              (my/setup-fonts fixed-pitch-font my/font-size 'regular variable-pitch-font))
+            (setq my/current-font-profile profile-name))
         (warn "No such font profile: MY/USE-FONT:" profile-name))))
 
   (defun my/use-font-by-num (n)
@@ -342,6 +343,11 @@ The following functions should be invoked in the custom file or interactively.
     (setq my/launch-counter (+ my/launch-counter 1))
     (savehist-save)
     (savehist-mode -1))
+
+  (defun my/describe-current-font-profile ()
+    "Describe the font profile currently used."
+    (interactive)
+    (message "The current font profile is %s" my/current-font-profile))
 
   ;; Deprecated code that is used to define functions that apply font
   ;; profiles. Use `my/use-font' now.

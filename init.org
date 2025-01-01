@@ -500,7 +500,8 @@ some mottoes selected randomly from a pre-defined list.
       ("等死，死国可乎")
       ("冰冻三尺 非一日之寒")
       ("但行好事" "莫问前程")
-      ("今我何功德" "曾不事农桑")))
+      ("今我何功德" "曾不事农桑")
+      ("希望越大 失望越大" "能力越小 责任越小")))
 
   (setq initial-scratch-message
         (concat ";; Hello, " user-full-name "\n"

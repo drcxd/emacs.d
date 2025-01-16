@@ -564,7 +564,7 @@ accepts Linux find program conventional arguments.
       (setq find-program "C:/msys64/usr/bin/find.exe"))
 #+end_src
 
-** Hide Dos EOL
+** Hide DOS EOL
 
 When working on Windows, sometimes I encounter files containing mixed
 EOL characters. This would make some lines ended with additional
@@ -866,6 +866,16 @@ I'd like to enable truncating long lines by default.
 
 #+begin_src emacs-lisp
   (setq-default truncate-lines t)
+#+end_src
+
+** Utility Code
+
+#+begin_src emacs-lisp
+  (defun my/curly->round (start end)
+    "Replace { with (, and } with ) in region."
+    (interactive "r")
+    (replace-string-in-region "{" "(" start end)
+    (replace-string-in-region "}" ")" start end))
 #+end_src
 
 * Third-Party Packages

@@ -299,22 +299,24 @@ The following functions should be invoked in the custom file or interactively.
     "Apply the font profile specified by the given profile name."
     (interactive
      (let ((completion-ignore-case t))
-       (list (completing-read "Font profile name: " (mapcar #'car my/font-profiles)))))
-    (let ((profile (assoc profile-name my/font-profiles)))
+       (list (completing-read "Font profile name: " (my/get-font-profile-names)))))
+    (let ((profile (my/get-font-profile profile-name)))
       (if profile
           (progn
-            (let ((fixed-pitch-font (nth 1 profile))
-                  (weight (nth 2 profile))
-                  (variable-pitch-font (nth 3 profile)))
+            (let ((fixed-pitch-font (my/font-profile-fixed-pitch-font profile))
+                  (weight (my/font-profile-weight profile))
+                  (variable-pitch-font (my/font-profile-variable-pitch-font profile)))
               (my/setup-fonts fixed-pitch-font my/font-size 'regular variable-pitch-font))
             (setq my/current-font-profile profile-name))
         (warn "No such font profile: MY/USE-FONT:" profile-name))))
 
   (defun my/use-font-by-num (n)
-    (let* ((len (length my/font-profiles))
-           (idx (% n len))
-           (profile-name (car (nth idx my/font-profiles))))
-      (my/use-font profile-name)))
+    (let ((len (length my/font-profiles)))
+      (if (= 0 len)
+          (message "Empty font profiles!")
+        (let* ((idx (% n len))
+               (profile-name (car (nth idx my/font-profiles))))
+          (my/use-font profile-name)))))
 
   (defun my/use-font-by-day ()
     "Select a font profile depends on the date."
@@ -358,12 +360,26 @@ The following functions should be invoked in the custom file or interactively.
   ;;      (interactive)
   ;;      (my/setup-fonts ,fixed-pitch-font 180 'regular ,variable-pitch-font)))
 
-  (defvar my/font-profiles
-    '(("IBM Plex" . ("IBM Plex Mono" 'regular "IBM Plex Sans"))
-      ("Iosevka" . ("Iosevka" 'regular "Iosevka Aile"))
-      ("Iosevka Comfy" . ("Iosevka Comfy" 'regular "Iosevka Comfy Duo"))
-      ("JetBrains Mono" . ("JetBrains Mono" 'regular "IBM Plex Sans"))
-      ("Victor Mono" . ("Victor Mono" 'regular "IBM Plex Sans"))))
+  (defvar my/font-profiles '())
+
+  (defun my/add-font-profile (name fixed-pitch-font weight variable-pitch-font)
+    (push (cons name (list fixed-pitch-font weight variable-pitch-font))
+          my/font-profiles))
+
+  (defun my/get-font-profile-names ()
+    (mapcar #'car my/font-profiles))
+
+  (defun my/get-font-profile (name)
+    (assoc name my/font-profiles))
+
+  (defun my/font-profile-fixed-pitch-font (profile)
+    (nth 1 profile))
+
+  (defun my/font-profile-weight (profile)
+    (nth 2 profile))
+
+  (defun my/font-profile-variable-pitch-font (profile)
+    (nth 3 profile))
 #+end_src
 
 ** Mode Line

@@ -353,15 +353,27 @@ fonts in Emacs.
     (interactive)
     (message "The current font profile is %s" fp/current-font-profile))
 
-  (defun fp/add-font-profile (name fixed-pitch-font weight variable-pitch-font)
-    (push (cons name (list fixed-pitch-font weight variable-pitch-font))
+  (defun fp/add-font-profile (name fixed weight variable)
+    (push (fp/make-font-profile name fixed weight variable)
           fp/font-profiles))
+
+  (defun fp/add-font-profiles (profile-list)
+    (if (not (null profile-list))
+        (let ((first (car profile-list)))
+          (fp/add-font-profile (nth 0 first)
+                               (nth 1 first)
+                               (nth 2 first)
+                               (nth 3 first))
+          (fp/add-font-profiles (cdr profile-list)))))
 
   (defun fp/get-font-profile-names ()
     (mapcar #'car fp/font-profiles))
 
   (defun fp/get-font-profile (name)
     (assoc name fp/font-profiles))
+
+  (defun fp/make-font-profile (name fixed weight variable)
+    (cons name (list fixed weight variable)))
 
   (defun fp/font-profile-fixed-pitch-font (profile)
     (nth 1 profile))

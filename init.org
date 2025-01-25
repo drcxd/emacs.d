@@ -835,6 +835,8 @@ checking.
   (global-set-key (kbd "C-c s t") 'hs-toggle-hiding)
   (global-set-key (kbd "C-c w m") 'woman)
   (global-set-key (kbd "C-<tab>") 'completion-at-point)
+  (global-set-key (kbd "C-c t s") 'global-text-scale-adjust)
+  (global-set-key (kbd "C-c t S") 'text-scale-adjust)
 #+end_src
 
 ** Emacs As Server

@@ -310,7 +310,7 @@ fonts in Emacs.
             (let ((fixed-pitch-font (fp/font-profile-fixed-pitch-font profile))
                   (weight (fp/font-profile-weight profile))
                   (variable-pitch-font (fp/font-profile-variable-pitch-font profile)))
-              (fp/setup-fonts fixed-pitch-font fp/font-size 'regular variable-pitch-font))
+              (fp/setup-fonts fixed-pitch-font fp/font-size weight variable-pitch-font))
             (setq fp/current-font-profile profile-name))
         (warn "No such font profile: FP/USE-FONT:" profile-name))))
 

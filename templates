@@ -15,6 +15,8 @@ latex-mode org-mode
 (equationn "\\begin{equation*}" r> n> "\\end{equation*}")
 (dndr "\\begin{DndReadAloud}" r> n> "\\end{DndReadAloud}")
 (ch "\\begin{chinese}" r> n> "\\end{chinese}")
+(powerset "\\mathcal{" q "}")
+(set "\\{" q "\\}")
 
 org-mode
 

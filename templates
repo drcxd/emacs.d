@@ -16,12 +16,13 @@ latex-mode org-mode
 (dndr "\\begin{DndReadAloud}" r> n> "\\end{DndReadAloud}")
 (ch "\\begin{chinese}" r> n> "\\end{chinese}")
 (powerset "\\mathcal{" q "}")
-(set "\\{" q "\\}")
+(set "\\{" p "\\}" q)
+(idf "\\mathbf{1}")
 
 org-mode
 
-(ilm "\\(" r "\\)")
-(olm "\\[" r "\\]")
+(ilm "\\(" p "\\)" q)
+(olm "\\[" p "\\]" q)
 
 prog-mode
 

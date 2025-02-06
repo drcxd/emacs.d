@@ -18,6 +18,10 @@ latex-mode org-mode
 (powerset "\\mathcal{" q "}")
 (set "\\{" p "\\}" q)
 (idf "\\mathbf{1}")
+(ns "\\mathbb{N}")
+(qs "\\mathbb{Q}")
+(rs "\\mathbb{R}")
+(cs "\\mathbb{C}")
 
 org-mode
 

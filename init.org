@@ -885,7 +885,7 @@ I'd like to enable truncating long lines by default.
 
 * Third-Party Packages
 
-** =staraight.el=
+** COMMENT =straight.el=
 
 #+begin_src emacs-lisp
   (setq straight-use-package-by-default t)
@@ -908,6 +908,58 @@ I'd like to enable truncating long lines by default.
   (straight-use-package 'org) ;; to fix org version mismatching
 #+end_src
 
+** elpaca
+
+#+begin_src emacs-lisp
+  (defvar elpaca-installer-version 0.9)
+  (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
+  (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
+  (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
+  (defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
+                                :ref nil :depth 1 :inherit ignore
+                                :files (:defaults "elpaca-test.el" (:exclude "extensions"))
+                                :build (:not elpaca--activate-package)))
+  (let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
+         (build (expand-file-name "elpaca/" elpaca-builds-directory))
+         (order (cdr elpaca-order))
+         (default-directory repo))
+    (add-to-list 'load-path (if (file-exists-p build) build repo))
+    (unless (file-exists-p repo)
+      (make-directory repo t)
+      (when (< emacs-major-version 28) (require 'subr-x))
+      (condition-case-unless-debug err
+          (if-let* ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
+                    ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
+                                                    ,@(when-let* ((depth (plist-get order :depth)))
+                                                        (list (format "--depth=%d" depth) "--no-single-branch"))
+                                                    ,(plist-get order :repo) ,repo))))
+                    ((zerop (call-process "git" nil buffer t "checkout"
+                                          (or (plist-get order :ref) "--"))))
+                    (emacs (concat invocation-directory invocation-name))
+                    ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
+                                          "--eval" "(byte-recompile-directory \".\" 0 'force)")))
+                    ((require 'elpaca))
+                    ((elpaca-generate-autoloads "elpaca" repo)))
+              (progn (message "%s" (buffer-string)) (kill-buffer buffer))
+            (error "%s" (with-current-buffer buffer (buffer-string))))
+        ((error) (warn "%s" err) (delete-directory repo 'recursive))))
+    (unless (require 'elpaca-autoloads nil t)
+      (require 'elpaca)
+      (elpaca-generate-autoloads "elpaca" repo)
+      (load "./elpaca-autoloads")))
+  (add-hook 'after-init-hook #'elpaca-process-queues)
+  (elpaca `(,@elpaca-order))
+
+  ;; Uncomment for systems which cannot create symlinks:
+  (elpaca-no-symlink-mode)
+
+  (elpaca elpaca-use-package
+    ;; Enable Elpaca's use-package support
+    (elpaca-use-package-mode))
+  ;; Block until package is installed/activated so we can use it at the top-level below.
+  (elpaca-wait)
+#+end_src
+
 ** Appearance
 
 *** Diminish
@@ -921,6 +973,7 @@ enabled. Diminish is a good package to solve this problem.
 #+begin_src emacs-lisp
   (use-package diminish
     :demand t
+    :ensure t
     :config
     (diminish 'abbrev-mode)
     (diminish 'visual-line-mode)
@@ -937,15 +990,18 @@ enabled. Diminish is a good package to solve this problem.
 
 #+begin_src emacs-lisp :noweb yes
   (use-package unicode-fonts
-   :config
-   (unicode-fonts-setup))
+    :ensure t
+    :config
+    (unicode-fonts-setup))
 #+end_src
 
 *** Themes
 
 **** Modus Themes
+
 #+begin_src emacs-lisp
   (use-package modus-themes
+    :ensure t
     :defer t
     :init
     (defun my/modus-themes-custom-face ()
@@ -986,7 +1042,7 @@ enabled. Diminish is a good package to solve this problem.
     (modus-themes-after-load-theme . my/modus-themes-custom-face))
 #+end_src
 
-**** Standard Themes
+**** COMMENT Standard Themes
 
 #+begin_src emacs-lisp
   (use-package standard-themes
@@ -1027,7 +1083,7 @@ enabled. Diminish is a good package to solve this problem.
     (standard-themes-post-load . my/standard-themes-custom-face))
 #+end_src
 
-**** Ef Themes
+**** COMMENT Ef Themes
 
 #+begin_src emacs-lisp
   (use-package ef-themes
@@ -1070,26 +1126,27 @@ enabled. Diminish is a good package to solve this problem.
 
 #+begin_src emacs-lisp :tangle no
   (use-package ligature
-   :config
-   (ligature-set-ligatures
-    'prog-mode
-    `("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
-      ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
-      "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
-      "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
-      "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
-      "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
-      "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
-      "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
-      ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
-      "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
-      "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
-      "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
-      "\\\\" "://"
-      ("=" ,(rx (one-or-more "=")))
-      ("-" ,(rx (one-or-more "-")))
-      ("<" ,(rx "<" (one-or-more "-") ">"))))
-   (global-ligature-mode t))
+    :ensure t
+    :config
+    (ligature-set-ligatures
+     'prog-mode
+     `("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
+       ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
+       "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
+       "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
+       "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
+       "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
+       "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
+       "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
+       ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
+       "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
+       "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
+       "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
+       "\\\\" "://"
+       ("=" ,(rx (one-or-more "=")))
+       ("-" ,(rx (one-or-more "-")))
+       ("<" ,(rx "<" (one-or-more "-") ">"))))
+    (global-ligature-mode t))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -1138,26 +1195,30 @@ Add some fancy icons. Require nerd fonts:
 https://www.nerdfonts.com/#home
 
 #+begin_src emacs-lisp
-  (use-package nerd-icons :demand t)
+  (use-package nerd-icons :ensure t :demand t)
 
   (use-package nerd-icons-completion
+    :ensure t
     :after marginalia
     :config
     (nerd-icons-completion-mode)
     (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
 
   (use-package nerd-icons-dired
+    :ensure t
     :diminish nerd-icons-dired-mode
     :hook
     (dired-mode . nerd-icons-dired-mode))
 
   (use-package nerd-icons-corfu
+    :ensure t
     :demand t
     :after corfu
     :init
     (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
   (use-package nerd-icons-ibuffer
+    :ensure t
     :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
 #+end_src
 
@@ -1165,9 +1226,11 @@ https://www.nerdfonts.com/#home
 
 #+begin_src emacs-lisp
   (use-package olivetti :defer t
+    :ensure t
     :diminish olivetti-mode)
   (use-package logos
     :diminish logos-focus-mode
+    :ensure t
     :defer t
     :config
     (setq logos-outlines-are-pages t)
@@ -1196,6 +1259,7 @@ https://www.nerdfonts.com/#home
   ;;; This sample configuration comes from the package's manual
 
   (use-package spacious-padding
+    :ensure (:wait t)
     :config
     (setq spacious-padding-widths
           '( :internal-border-width 16
@@ -1208,10 +1272,11 @@ https://www.nerdfonts.com/#home
   (spacious-padding-mode)
 #+end_src
 
-*** =lin=
+*** lin
 
 #+begin_src emacs-lisp
   (use-package lin
+    :ensure t
     :init
     (setq lin-face 'lin-green
           lin-mode-hooks '(dired-mode-hook
@@ -1231,7 +1296,7 @@ https://www.nerdfonts.com/#home
 htmlize is necessary to export code blocks to HTML.
 
 #+begin_src emacs-lisp
-  (use-package htmlize :defer t)
+  (use-package htmlize :ensure t :defer t)
 #+end_src
 
 *** org-mode Appearance: org-modern
@@ -1248,6 +1313,7 @@ can not be maintained on different systems.
 
 #+begin_src emacs-lisp
   (use-package org-modern
+    :ensure t
     :defer t
     :config
     (setq
@@ -1261,6 +1327,7 @@ can not be maintained on different systems.
 
 #+begin_src emacs-lisp
   (use-package org-msg :defer t
+    :ensure (:wait t)
     :config
     (setq
      org-msg-options "html-postamble:nil H:5 num:nil ^:{} toc:nil author:nil email:nil \\n:t"
@@ -1294,9 +1361,10 @@ using.
 
 #+begin_src emacs-lisp
   (use-package benchmark-init
-               :init
-               (require 'benchmark-init)
-               :hook (after-init . benchmark-init/deactivate))
+    :ensure t
+    :init
+    (require 'benchmark-init)
+    :hook (after-init . benchmark-init/deactivate))
 #+end_src
 
 ** Windows-Specific
@@ -1309,7 +1377,8 @@ does not work properly on Windows. This package also comes with a
 powershell mode to help editing powershell script files.
 
 #+begin_src emacs-lisp
-  (use-package powershell :defer t)
+  (use-package powershell :defer t
+    :ensure t)
 #+end_src
 
 *** Alert & Notifications
@@ -1321,6 +1390,7 @@ found this alert-toast package to implement this feature.
 #+begin_src emacs-lisp
   (if (eq system-type 'windows-nt)
       (use-package alert-toast
+        :ensure t
         :after alert
         :config
         (setq alert-default-style 'toast)))
@@ -1334,7 +1404,7 @@ ripgrep is a multi-threaded version of grep. It is quite useful when
 searching for certain text.
 
 #+begin_src emacs-lisp
-  (use-package ripgrep :defer t)
+  (use-package ripgrep :defer t :ensure t)
 #+end_src
 
 *** wgrep
@@ -1344,7 +1414,7 @@ to each output's original location. It is a really powerful
 interactive text file editing tool.
 
 #+begin_src emacs-lisp
-  (use-package wgrep :defer t)
+  (use-package wgrep :defer t :ensure t)
 #+end_src
 
 *** zoom
@@ -1362,12 +1432,13 @@ one single command.
 
 #+begin_src emacs-lisp
   (use-package zoom
-               :defer t
-               :config
-               (setq zoom-size '(0.618 . 0.618))
-               :bind
-               ("C-c z" . zoom)
-               ("C-c Z" . zoom-mode))
+    :defer t
+    :ensure t
+    :config
+    (setq zoom-size '(0.618 . 0.618))
+    :bind
+    ("C-c z" . zoom)
+    ("C-c Z" . zoom-mode))
 #+end_src
 
 *** scratch
@@ -1378,6 +1449,7 @@ so you can write anything in it.
 #+begin_src emacs-lisp
   (use-package scratch
     :defer t
+    :ensure t
     :init
     (defun my/scratch-with-prefix ()
       (interactive)
@@ -1400,6 +1472,7 @@ easy to use.
 #+begin_src emacs-lisp
   (use-package tmr
     :defer t
+    :ensure t
     :init
     (if (eq system-type 'windows-nt)
         (progn
@@ -1420,6 +1493,7 @@ easy to use.
 
   (use-package pomidor
     :defer t
+    :ensure t
     :bind (("C-c t p" . pomidor))
     :config
     (setq
@@ -1439,6 +1513,7 @@ easy to use.
 
 #+begin_src emacs-lisp
   (use-package ace-window
+    :ensure t
     :bind
     (("C-c o" . ace-window)
      ([remap other-window] . ace-window)))
@@ -1459,31 +1534,31 @@ display the completion candidates on the screen.
 
 #+begin_src emacs-lisp
   (use-package corfu
-   :init
-   (setq corfu-auto nil
-         corfu-cycle t
-         corfu-quit-at-boundary nil
-         corfu-quit-no-match nil
-         corfu-preview-current nil
-         corfu-excluded-modes '(gud-mode))
-   ;; disalbe corfu in gud-mode, see
-   ;; https://github.com/minad/corfu/issues/157 for more detail
-   (defun corfu-enable-in-minibuffer ()
-    "Enable Corfu in the minibuffer if `completion-at-point' is bound."
-    (when (where-is-internal #'completion-at-point (list (current-local-map)))
-      (corfu-mode 1)))
-   :hook
-   (minibuffer-setup . corfu-enable-in-minibuffer)
-   :bind
-   (:map corfu-map
-         ("C-n" . corfu-next)
-         ("C-p" . corfu-previous)
-         ("<tab>" . corfu-next)
-         ("S-<tab>" . corfu-previous)
-         ("C-g" . corfu-quit)
-         ("<escape>" . corfu-quit)
-         ("SPC" . corfu-insert-separator))
-   )
+    :ensure (:wait t)
+    :init
+    (setq corfu-auto nil
+          corfu-cycle t
+          corfu-quit-at-boundary nil
+          corfu-quit-no-match nil
+          corfu-preview-current nil
+          corfu-excluded-modes '(gud-mode))
+    ;; disalbe corfu in gud-mode, see
+    ;; https://github.com/minad/corfu/issues/157 for more detail
+    (defun corfu-enable-in-minibuffer ()
+      "Enable Corfu in the minibuffer if `completion-at-point' is bound."
+      (when (where-is-internal #'completion-at-point (list (current-local-map)))
+        (corfu-mode 1)))
+    :hook
+    (minibuffer-setup . corfu-enable-in-minibuffer)
+    :bind
+    (:map corfu-map
+          ("C-n" . corfu-next)
+          ("C-p" . corfu-previous)
+          ("<tab>" . corfu-next)
+          ("S-<tab>" . corfu-previous)
+          ("C-g" . corfu-quit)
+          ("<escape>" . corfu-quit)
+          ("SPC" . corfu-insert-separator)))
 
   (unless (display-graphic-p)
     (progn
@@ -1499,13 +1574,14 @@ cape provides a set of completion backends. A completion back ends
 decides what are the completion candidates.
 
 #+begin_src emacs-lisp
-  (use-package company :defer t)
+  (use-package company :defer t :ensure t)
   (use-package cape
-   :demand t
-   :config
-   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-   (add-to-list 'completion-at-point-functions #'cape-file)
-   (add-to-list 'completion-at-point-functions (cape-company-to-capf #'company-clang)))
+    :ensure t
+    :demand t
+    :config
+    (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+    (add-to-list 'completion-at-point-functions #'cape-file)
+    (add-to-list 'completion-at-point-functions (cape-company-to-capf #'company-clang)))
 #+end_src
 
 *** COMMENT Code Formatting :dependency:
@@ -1530,7 +1606,7 @@ hint for possible code warning or error. Currently, I only use it as
 a facility for lsp.
 
 #+begin_src emacs-lisp
-  (use-package flycheck :defer t :diminish flycheck-mode)
+  (use-package flycheck :defer t :diminish flycheck-mode :ensure t)
 #+end_src
 
 *** hl-todo
@@ -1540,19 +1616,20 @@ literals.
 
 #+begin_src emacs-lisp
   (use-package hl-todo
-   :defer t
-   :config
-   (setq hl-todo-highlight-punctuation ":"
-        hl-todo-keyword-faces
-        `(("TODO" warning bold)
-          ("FIXME" error bold)
-          ("HACK" font-lock-constant-face bold)
-          ("REVIEW" font-lock-keyword-face bold)
-          ("NOTE" success bold)
-          ("DEPRECATED" font-lock-doc-face bold)
-          ("BUG" error bold)))
-   :hook
-   (prog-mode . hl-todo-mode))
+    :ensure t
+    :defer t
+    :config
+    (setq hl-todo-highlight-punctuation ":"
+          hl-todo-keyword-faces
+          `(("TODO" warning bold)
+            ("FIXME" error bold)
+            ("HACK" font-lock-constant-face bold)
+            ("REVIEW" font-lock-keyword-face bold)
+            ("NOTE" success bold)
+            ("DEPRECATED" font-lock-doc-face bold)
+            ("BUG" error bold)))
+    :hook
+    (prog-mode . hl-todo-mode))
 #+end_src
 
 *** git-gutter :dependency:
@@ -1563,17 +1640,18 @@ version control system.
 
 #+begin_src emacs-lisp
   (use-package git-gutter
-   :diminish git-gutter-mode
-   :defer t
-   :config
-   (setq git-gutter:handled-backends '(git svn))
-   :hook
-   (prog-mode . git-gutter-mode)
-   :bind
-   (("C-c v v" . git-gutter)
-    ("C-c v n" . git-gutter:next-hunk)
-    ("C-c v p" . git-gutter:previous-hunk)
-    ("C-c v r" . git-gutter:revert-hunk)))
+    :ensure t
+    :diminish git-gutter-mode
+    :defer t
+    :config
+    (setq git-gutter:handled-backends '(git svn))
+    :hook
+    (prog-mode . git-gutter-mode)
+    :bind
+    (("C-c v v" . git-gutter)
+     ("C-c v n" . git-gutter:next-hunk)
+     ("C-c v p" . git-gutter:previous-hunk)
+     ("C-c v r" . git-gutter:revert-hunk)))
 #+end_src
 
 *** evil-nerd-commenter
@@ -1585,10 +1663,11 @@ need.
 
 #+begin_src emacs-lisp
   (use-package evil-nerd-commenter
-   :defer t
-   :bind
-   (("C-c c" . evilnc-comment-or-uncomment-lines)
-    ("C-c C" . evilnc-copy-and-comment-lines)))
+    :ensure t
+    :defer t
+    :bind
+    (("C-c c" . evilnc-comment-or-uncomment-lines)
+     ("C-c C" . evilnc-copy-and-comment-lines)))
 #+end_src
 
 *** Symbol Highlighting
@@ -1599,12 +1678,13 @@ symbol-overlay is the best package I have known for this task.
 
 #+begin_src emacs-lisp
   (use-package symbol-overlay
-   :defer t
-   :bind
-   (("C-c s p" . symbol-overlay-put)
-    ("C-c s r" . symbol-overlay-remove-all))
-   :config
-   (setq symbol-overlay-inhibit-map t))
+    :defer t
+    :ensure t
+    :bind
+    (("C-c s p" . symbol-overlay-put)
+     ("C-c s r" . symbol-overlay-remove-all))
+    :config
+    (setq symbol-overlay-inhibit-map t))
 #+end_src
 
 *** lsp :dependency:
@@ -1616,51 +1696,54 @@ variable-rename.
 
 #+begin_src emacs-lisp
   (use-package lsp-mode
-   :defer t
-   :init
-   (defun corfu-lsp-setup ()
-     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-           '(orderless))
-     (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible))
-   :config
-   (setq lsp-headerline-breadcrumb-enable nil
-         lsp-semantic-tokens-apply-modifiers nil
-         lsp-semantic-tokens-enable t
-         read-process-output-max (* 1024 1024)) ;; to increase lsp performance
-   (if (and (package-installed-p 'corfu) (package-installed-p 'cape))
-       (progn
-         (add-hook 'lsp-completion-mode-hook #'corfu-lsp-setup)
-         (setq lsp-completion-provider :none)))
-   :hook
-   (lua-mode . (lambda () (setq-local lsp-enable-indentation nil)))
-   :bind
-   (("C-c l l" . lsp)
-    :map lsp-mode-map
-    ("C-c l c" . lsp-find-declaration)
-    ("C-c l f" . lsp-find-definition)
-    ("C-c l o" . lsp-clangd-find-other-file)
-    ("C-c l r" . lsp-workspace-restart)
-    ("C-c l d" . lsp-workspace-shutdown)
-    ("C-c l a" . lsp-execute-code-action)
-    ("C-c l n" . lsp-rename)
-    ("C-c l t" . lsp-semantic-tokens-mode)))
+    :ensure t
+    :defer t
+    :init
+    (defun corfu-lsp-setup ()
+      (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+            '(orderless))
+      (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible))
+    :config
+    (setq lsp-headerline-breadcrumb-enable nil
+          lsp-semantic-tokens-apply-modifiers nil
+          lsp-semantic-tokens-enable t
+          read-process-output-max (* 1024 1024)) ;; to increase lsp performance
+    (if (and (package-installed-p 'corfu) (package-installed-p 'cape))
+        (progn
+          (add-hook 'lsp-completion-mode-hook #'corfu-lsp-setup)
+          (setq lsp-completion-provider :none)))
+    :hook
+    (lua-mode . (lambda () (setq-local lsp-enable-indentation nil)))
+    :bind
+    (("C-c l l" . lsp)
+     :map lsp-mode-map
+     ("C-c l c" . lsp-find-declaration)
+     ("C-c l f" . lsp-find-definition)
+     ("C-c l o" . lsp-clangd-find-other-file)
+     ("C-c l r" . lsp-workspace-restart)
+     ("C-c l d" . lsp-workspace-shutdown)
+     ("C-c l a" . lsp-execute-code-action)
+     ("C-c l n" . lsp-rename)
+     ("C-c l t" . lsp-semantic-tokens-mode)))
 
   (use-package lsp-ui
-   :defer t
-   :bind
-   (:map lsp-ui-mode-map
-         ("C-c l g" . lsp-ui-doc-glance)
-         ("C-c l F" . lsp-ui-doc-focus-frame))
-   :config
-   (setq lsp-ui-doc-show-with-mouse nil))
+    :ensure t
+    :defer t
+    :bind
+    (:map lsp-ui-mode-map
+          ("C-c l g" . lsp-ui-doc-glance)
+          ("C-c l F" . lsp-ui-doc-focus-frame))
+    :config
+    (setq lsp-ui-doc-show-with-mouse nil))
 
   (use-package consult-lsp
-   :after (lsp-mode consult)
-   :bind
-   (:map lsp-mode-map
-         ("C-c l S" . consult-lsp-symbols)
-         ("C-c l s" . consult-lsp-file-symbols)
-         ("C-c l i" . consult-lsp-diagnostics)))
+    :ensure (:wait t)
+    :after (lsp-mode consult)
+    :bind
+    (:map lsp-mode-map
+          ("C-c l S" . consult-lsp-symbols)
+          ("C-c l s" . consult-lsp-file-symbols)
+          ("C-c l i" . consult-lsp-diagnostics)))
 
   (with-eval-after-load 'lsp-clangd
     (setq lsp-clients-clangd-args
@@ -1740,7 +1823,7 @@ specific language major mode.
 **** Lua
 
 #+begin_src emacs-lisp
-  (use-package lua-mode :defer t)
+  (use-package lua-mode :defer t :ensure t)
 #+end_src
 
 **** COMMENT Scheme
@@ -1868,6 +1951,7 @@ Racket backend each time you evaluate a code block.
 
 #+begin_src emacs-lisp
   (use-package graphviz-dot-mode :defer t
+    :ensure t
     :init
     (add-to-list 'org-src-lang-modes '("dot" . graphviz-dot)))
 #+end_src
@@ -1892,6 +1976,7 @@ Thus, I decide to include both solutions in my configuration for now.
 
 #+begin_src emacs-lisp
   (use-package ob-racket :defer t
+    :ensure t
     :after org
     :config
     (add-hook 'ob-racket-pre-runtime-library-load-hook
@@ -1901,6 +1986,7 @@ Thus, I decide to include both solutions in my configuration for now.
   	       :files ("*.el" "*.rkt")))
 
   (use-package racket-mode :defer t
+    :ensure t
     :hook
     (racket-mode . racket-xp-mode))
 #+end_src
@@ -2020,34 +2106,36 @@ such as lsp-mode, depends on it somehow, so I still install it.
 
 #+begin_src emacs-lisp
   (use-package tempel
-   :defer t
-   :init
-   ;; Setup completion at point
-   (defun tempel-setup-capf ()
-     ;; Add the Tempel Capf to `completion-at-point-functions'.
-     ;; `tempel-expand' only triggers on exact matches. Alternatively use
-     ;; `tempel-complete' if you want to see all matches, but then you
-     ;; should also configure `tempel-trigger-prefix', such that Tempel
-     ;; does not trigger too often when you don't expect it. NOTE: We add
-     ;; `tempel-expand' *before* the main programming mode Capf, such
-     ;; that it will be tried first.
-     (setq-local completion-at-point-functions
-                 (cons #'tempel-expand
-                       completion-at-point-functions)))
-   :bind
-   (("M-+" . tempel-insert)
-    ("M-*" . tempel-complete))
-   :hook
-   ((prog-mode . tempel-setup-capf)
-    (text-mode . tempel-setup-capf)))
+    :ensure t
+    :defer t
+    :init
+    ;; Setup completion at point
+    (defun tempel-setup-capf ()
+      ;; Add the Tempel Capf to `completion-at-point-functions'.
+      ;; `tempel-expand' only triggers on exact matches. Alternatively use
+      ;; `tempel-complete' if you want to see all matches, but then you
+      ;; should also configure `tempel-trigger-prefix', such that Tempel
+      ;; does not trigger too often when you don't expect it. NOTE: We add
+      ;; `tempel-expand' *before* the main programming mode Capf, such
+      ;; that it will be tried first.
+      (setq-local completion-at-point-functions
+                  (cons #'tempel-expand
+                        completion-at-point-functions)))
+    :bind
+    (("M-+" . tempel-insert)
+     ("M-*" . tempel-complete))
+    :hook
+    ((prog-mode . tempel-setup-capf)
+     (text-mode . tempel-setup-capf)))
 
   (use-package yasnippet
-   :diminish yas-minor-mode
-   :defer t
-   :hook
-   (prog-mode . yas-minor-mode)
-   :bind
-   ("C-c Y" . yas-reload-all))
+    :ensure t
+    :diminish yas-minor-mode
+    :defer t
+    :hook
+    (prog-mode . yas-minor-mode)
+    :bind
+    ("C-c Y" . yas-reload-all))
 #+end_src
 
 ** Citation
@@ -2059,6 +2147,7 @@ citation issues.
 
 #+begin_src emacs-lisp
   (use-package citar
+    :ensure t
     :init
     (setq org-cite-global-bibliography '("~/org-roam/references.bib")
           org-cite-insert-processor 'citar
@@ -2071,6 +2160,7 @@ citation issues.
 
   (use-package citar-embark
     ;; :defer t
+    :ensure t
     :after (citar embark)
     ;; :no-require
     :diminish citar-embark-mode
@@ -2095,6 +2185,7 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
 
 #+begin_src emacs-lisp
   (use-package org-roam
+    :ensure t
     :defer t
     :init
     (setq
@@ -2181,6 +2272,7 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
      ("C-c n A" . org-roam-alias-remove)))
 
   (use-package org-roam-ui :defer t
+    :ensure t
     :diminish ((org-roam-ui-mode . "") (org-roam-ui-follow-mode . "")))
 #+end_src
 
@@ -2191,31 +2283,32 @@ and backward links. It improves the workflow and thus efficiency.
 
 #+begin_src emacs-lisp
   (use-package consult-org-roam
-     :after (org-roam consult)
-     :diminish consult-org-roam-mode
-     :init
-     (setq consult-org-roam-buffer-enabled nil)
-     ;; Activate the minor mode
-     (consult-org-roam-mode 1)
-     :custom
-     ;; Use `ripgrep' for searching with `consult-org-roam-search'
-     (consult-org-roam-grep-func #'consult-ripgrep)
-     ;; Configure a custom narrow key for `consult-buffer'
-     (consult-org-roam-buffer-narrow-key ?r)
-     ;; Display org-roam buffers right after non-org-roam buffers
-     ;; in consult-buffer (and not down at the bottom)
-     ;; (consult-org-roam-buffer-after-buffers t)
-     :config
-     ;; Eventually suppress previewing for certain functions
-     ;; (consult-customize
-     ;;  consult-org-roam-forward-links
-     ;;  :preview-key (kbd "M-."))
-     :bind
-     ;; Define some convenient keybindings as an addition
-     ;; ("C-c n f" . consult-org-roam-file-find)
-     ("C-c n l" . consult-org-roam-backlinks)
-     ("C-c n L" . consult-org-roam-forward-links)
-     ("C-c n s" . consult-org-roam-search))
+    :ensure t
+    :after (org-roam consult)
+    :diminish consult-org-roam-mode
+    :init
+    (setq consult-org-roam-buffer-enabled nil)
+    ;; Activate the minor mode
+    (consult-org-roam-mode 1)
+    :custom
+    ;; Use `ripgrep' for searching with `consult-org-roam-search'
+    (consult-org-roam-grep-func #'consult-ripgrep)
+    ;; Configure a custom narrow key for `consult-buffer'
+    (consult-org-roam-buffer-narrow-key ?r)
+    ;; Display org-roam buffers right after non-org-roam buffers
+    ;; in consult-buffer (and not down at the bottom)
+    ;; (consult-org-roam-buffer-after-buffers t)
+    :config
+    ;; Eventually suppress previewing for certain functions
+    ;; (consult-customize
+    ;;  consult-org-roam-forward-links
+    ;;  :preview-key (kbd "M-."))
+    :bind
+    ;; Define some convenient keybindings as an addition
+    ;; ("C-c n f" . consult-org-roam-file-find)
+    ("C-c n l" . consult-org-roam-backlinks)
+    ("C-c n L" . consult-org-roam-forward-links)
+    ("C-c n s" . consult-org-roam-search))
 #+end_src
 
 **** citar-org-roam
@@ -2225,6 +2318,7 @@ bibliographic notes can be easily created in org-roam context.
 
 #+begin_src emacs-lisp
   (use-package citar-org-roam
+    :ensure t
     :diminish citar-org-roam-mode
     :after (citar org-roam)
     ;; :no-require
@@ -2246,6 +2340,7 @@ you to browse those information.
 
 #+begin_src emacs-lisp
   (use-package vertico
+    :ensure (:wait t)
     :demand t
     :config
     (setq read-extended-command-predicate #'command-completion-default-include-p
@@ -2266,6 +2361,7 @@ in these situations.
 
 #+begin_src emacs-lisp
   (use-package orderless
+    :ensure t
     :demand t
     :config
     (setq completion-styles '(orderless basic)
@@ -2280,7 +2376,7 @@ of a variable or function in the completion interface. This may help
 you locate your target more quickly.
 
 #+begin_src emacs-lisp
-  (use-package marginalia :defer t)
+  (use-package marginalia :defer t :ensure (:wait t))
   (marginalia-mode)
 #+end_src
 
@@ -2293,6 +2389,7 @@ etc..
 #+begin_src emacs-lisp
   (use-package consult
     :demand t
+    :ensure t
     :init
     (setq xref-show-xrefs-function #'consult-xref
           xref-show-definitions-function #'consult-xref)
@@ -2337,9 +2434,10 @@ convenient.
 
 #+begin_src emacs-lisp
   (use-package embark
-               :defer t
-               :bind ("<f5>" . embark-act))
-  (use-package embark-consult :defer t)
+    :ensure t
+    :defer t
+    :bind ("<f5>" . embark-act))
+  (use-package embark-consult :defer t :ensure t)
 #+end_src
 
 ** projectile
@@ -2352,17 +2450,18 @@ programming project).
 
 #+begin_src emacs-lisp
   (use-package projectile
-   :diminish projectile-mode
-   :defer t
-   :bind
-   (("C-c p f" . projectile-find-file)
-    ("C-c p i" . projectile-invalidate-cache)
-    ("C-c p s" . (lambda () (interactive) (projectile-switch-project t)))
-    ("C-c p d" . projectile-dired)
-    ("C-c p r" . projectile-ripgrep))
-   :config
-   (projectile-global-mode)
-   (def-projectile-commander-method ?e "Open eshell at project root." (projectile-run-eshell)))
+    :ensure t
+    :diminish projectile-mode
+    :defer t
+    :bind
+    (("C-c p f" . projectile-find-file)
+     ("C-c p i" . projectile-invalidate-cache)
+     ("C-c p s" . (lambda () (interactive) (projectile-switch-project t)))
+     ("C-c p d" . projectile-dired)
+     ("C-c p r" . projectile-ripgrep))
+    :config
+    (projectile-global-mode)
+    (def-projectile-commander-method ?e "Open eshell at project root." (projectile-run-eshell)))
 #+end_src
 
 ** magit :dependency:
@@ -2370,10 +2469,12 @@ programming project).
 magit is the well-known Emacs interface for git.
 
 #+begin_src emacs-lisp
+  (use-package transient :ensure t)
   (use-package magit
-   :defer t
-   :bind
-   ("C-c M" . magit))
+    :ensure t
+    :defer t
+    :bind
+    ("C-c M" . magit))
 #+end_src
 
 ** Key Binding
@@ -2391,6 +2492,7 @@ add some additional configuration specific to meow.
 
 #+begin_src emacs-lisp
   (use-package meow
+    :ensure t
     :demand t
     :init
     (defun meow-setup ()
@@ -2595,7 +2697,7 @@ calibredb. I have added some custom functions to open the directory
 that contains a book in Dired.
 
 #+begin_src emacs-lisp
-  (use-package calibre :defer t)
+  (use-package calibre :defer t :ensure t)
     ;; :config
     ;; (use-package calibre-library
     ;;   :ensure nil
@@ -2636,6 +2738,7 @@ nov is a package that allows you read EPUB files inside Emacs.
 
 #+begin_src emacs-lisp
   (use-package nov
+    :ensure t
     :defer t
     :init
     (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
@@ -2650,6 +2753,10 @@ Finally, after all the other settings have been done, we load the
 local customization file.
 
 #+begin_src emacs-lisp
+  ;; wait for elpaca until all packages are installed since some code in
+  ;; the custom file may depend on some packages
+  (elpaca-wait)
+
   (when (file-exists-p custom-file)
     (load custom-file))
 #+end_src

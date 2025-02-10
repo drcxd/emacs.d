@@ -973,7 +973,7 @@ enabled. Diminish is a good package to solve this problem.
 #+begin_src emacs-lisp
   (use-package diminish
     :demand t
-    :ensure t
+    :ensure (:wait t)
     :config
     (diminish 'abbrev-mode)
     (diminish 'visual-line-mode)

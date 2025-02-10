@@ -980,9 +980,11 @@ enabled. Diminish is a good package to solve this problem.
     (diminish 'eldoc-mode))
 
   (use-package hideshow
+    :ensure nil
     :diminish hs-minor-mode)
 
   (use-package face-remap
+    :ensure nil
     :diminish buffer-face-mode)
 #+end_src
 
@@ -1287,6 +1289,116 @@ https://www.nerdfonts.com/#home
                            occur-mode-hook
                            tabulated-list-mode-hook))
     (lin-global-mode 1))
+#+end_src
+
+** Completion
+
+*** vertico
+
+Emacs has a tons of variables, commands and documents. When you
+exploring them, vertico provides a much more informative interface for
+you to browse those information.
+
+#+begin_src emacs-lisp
+  (use-package vertico
+    :ensure (:wait t)
+    :demand t
+    :config
+    (setq read-extended-command-predicate #'command-completion-default-include-p
+          enable-recursive-minibuffers t))
+  (vertico-mode)
+#+end_src
+
+*** orderless
+
+orderless allows the completion systems using a different completion
+strategy. The default completion systems completes based on prefix
+matching. orderless enable it to use a fuzzy matching strategy. This
+is quite useful because you do not always remember exactly what you
+want to search. Sometimes, you do not even know if the things in your
+head exist or not, but you want to use the completions system as a
+tool to verify your assumption. Orderless completion is really helpful
+in these situations.
+
+#+begin_src emacs-lisp
+  (use-package orderless
+    :ensure t
+    :demand t
+    :config
+    (setq completion-styles '(orderless basic)
+          completion-category-defaults nil
+          completion-category-overrides '((file (styles partial-completion)))))
+#+end_src
+
+*** marginalia
+
+marginalia works together with vertico, it provides more information
+of a variable or function in the completion interface. This may help
+you locate your target more quickly.
+
+#+begin_src emacs-lisp
+  (use-package marginalia :defer t :ensure (:wait t))
+  (marginalia-mode)
+#+end_src
+
+*** consult
+
+consult works together with vertico. It helps you complete among lots
+of things, such as buffers, file contents, grep results, find results,
+etc..
+
+#+begin_src emacs-lisp
+  (use-package consult
+    :demand t
+    :ensure t
+    :init
+    (setq xref-show-xrefs-function #'consult-xref
+          xref-show-definitions-function #'consult-xref)
+    (defun consult-ripgrep-with-prefix ()
+      (interactive)
+      (let ((current-prefix-arg '(4)))
+        (call-interactively 'consult-ripgrep)))
+    :config
+    (setq consult-fontify-max-size 262144) ;; 262144 = 2 ^ 18
+    (setq consult-preview-excluded-files '(".*epub"))
+
+    ;; this handles problems when consult results contains
+    ;; Chinese characters
+    (if (eq system-type 'windows-nt)
+        (progn
+          ;; https://github.com/minad/consult/issues/572
+          (add-to-list 'process-coding-system-alist
+                       '("[rR][gG]" . (utf-8 . gbk-dos)))
+          ;; https://github.com/minad/consult/issues/601
+          (setq consult-find-args (concat find-program " . "))))
+    :bind
+    (([remap switch-to-buffer] . consult-buffer)
+     ("C-c i" . consult-line)
+     ("C-c r" . consult-ripgrep-with-prefix)
+     ("C-c R" . consult-ripgrep)
+     ("C-c I" . consult-imenu)
+     ("C-c f" . consult-fd)
+     ("C-c H" . consult-org-heading)))
+#+end_src
+
+*** embark
+
+embark allows users perform certain tasks in the completion
+interface. This reduces the number of operations users have to
+perform. For example, when you are trying to delete a certain file,
+you have to =find-file= to open the directory the file is located. Then
+mark the file to be deleted in dired and finally execute the delete
+operation. With embark, you can simply browse to the file in
+completion system and then execute =embark-act= then use its delete file
+function to delete the current completion candidate. Much more
+convenient.
+
+#+begin_src emacs-lisp
+  (use-package embark
+    :ensure t
+    :defer t
+    :bind ("<f5>" . embark-act))
+  (use-package embark-consult :defer t :ensure t)
 #+end_src
 
 ** org-mode
@@ -1976,14 +2088,13 @@ Thus, I decide to include both solutions in my configuration for now.
 
 #+begin_src emacs-lisp
   (use-package ob-racket :defer t
-    :ensure t
     :after org
     :config
     (add-hook 'ob-racket-pre-runtime-library-load-hook
-  	      #'ob-racket-raco-make-runtime-library)
-    :straight (ob-racket
-  	       :type git :host github :repo "hasu/emacs-ob-racket"
-  	       :files ("*.el" "*.rkt")))
+              #'ob-racket-raco-make-runtime-library)
+    :ensure (ob-racket
+             :type git :host github :repo "hasu/emacs-ob-racket"
+             :files ("*.el" "*.rkt")))
 
   (use-package racket-mode :defer t
     :ensure t
@@ -2328,116 +2439,6 @@ bibliographic notes can be easily created in org-roam context.
                                                (file+head "%<%Y%m%d%H%M%S>.org" "#+title: ${note-title}\n")
                                                :unnarrowed t) t)
     (setq citar-org-roam-capture-template-key "r"))
-#+end_src
-
-** Completion
-
-*** vertico
-
-Emacs has a tons of variables, commands and documents. When you
-exploring them, vertico provides a much more informative interface for
-you to browse those information.
-
-#+begin_src emacs-lisp
-  (use-package vertico
-    :ensure (:wait t)
-    :demand t
-    :config
-    (setq read-extended-command-predicate #'command-completion-default-include-p
-          enable-recursive-minibuffers t))
-  (vertico-mode)
-#+end_src
-
-*** orderless
-
-orderless allows the completion systems using a different completion
-strategy. The default completion systems completes based on prefix
-matching. orderless enable it to use a fuzzy matching strategy. This
-is quite useful because you do not always remember exactly what you
-want to search. Sometimes, you do not even know if the things in your
-head exist or not, but you want to use the completions system as a
-tool to verify your assumption. Orderless completion is really helpful
-in these situations.
-
-#+begin_src emacs-lisp
-  (use-package orderless
-    :ensure t
-    :demand t
-    :config
-    (setq completion-styles '(orderless basic)
-          completion-category-defaults nil
-          completion-category-overrides '((file (styles partial-completion)))))
-#+end_src
-
-*** marginalia
-
-marginalia works together with vertico, it provides more information
-of a variable or function in the completion interface. This may help
-you locate your target more quickly.
-
-#+begin_src emacs-lisp
-  (use-package marginalia :defer t :ensure (:wait t))
-  (marginalia-mode)
-#+end_src
-
-*** consult
-
-consult works together with vertico. It helps you complete among lots
-of things, such as buffers, file contents, grep results, find results,
-etc..
-
-#+begin_src emacs-lisp
-  (use-package consult
-    :demand t
-    :ensure t
-    :init
-    (setq xref-show-xrefs-function #'consult-xref
-          xref-show-definitions-function #'consult-xref)
-    (defun consult-ripgrep-with-prefix ()
-      (interactive)
-      (let ((current-prefix-arg '(4)))
-        (call-interactively 'consult-ripgrep)))
-    :config
-    (setq consult-fontify-max-size 262144) ;; 262144 = 2 ^ 18
-    (setq consult-preview-excluded-files '(".*epub"))
-
-    ;; this handles problems when consult results contains
-    ;; Chinese characters
-    (if (eq system-type 'windows-nt)
-        (progn
-          ;; https://github.com/minad/consult/issues/572
-          (add-to-list 'process-coding-system-alist
-                       '("[rR][gG]" . (utf-8 . gbk-dos)))
-          ;; https://github.com/minad/consult/issues/601
-          (setq consult-find-args (concat find-program " . "))))
-    :bind
-    (([remap switch-to-buffer] . consult-buffer)
-     ("C-c i" . consult-line)
-     ("C-c r" . consult-ripgrep-with-prefix)
-     ("C-c R" . consult-ripgrep)
-     ("C-c I" . consult-imenu)
-     ("C-c f" . consult-fd)
-     ("C-c H" . consult-org-heading)))
-#+end_src
-
-*** embark
-
-embark allows users perform certain tasks in the completion
-interface. This reduces the number of operations users have to
-perform. For example, when you are trying to delete a certain file,
-you have to =find-file= to open the directory the file is located. Then
-mark the file to be deleted in dired and finally execute the delete
-operation. With embark, you can simply browse to the file in
-completion system and then execute =embark-act= then use its delete file
-function to delete the current completion candidate. Much more
-convenient.
-
-#+begin_src emacs-lisp
-  (use-package embark
-    :ensure t
-    :defer t
-    :bind ("<f5>" . embark-act))
-  (use-package embark-consult :defer t :ensure t)
 #+end_src
 
 ** projectile

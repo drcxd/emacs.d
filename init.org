@@ -2748,6 +2748,22 @@ nov is a package that allows you read EPUB files inside Emacs.
     (nov-mode . (lambda () (setq truncate-lines nil))))
 #+end_src
 
+** Typst :dependency:
+
+Typst is a new markup language for typesetting document. The following
+packages provides support for writing Typst document in Emacs.
+
+#+begin_src emacs-lisp
+  ;; tree sitter mode Typst
+  (use-package typst-ts-mode
+    :ensure (:type git :host codeberg :repo "meow_king/typst-ts-mode"))
+
+  ;; typst-preview provides live preview for Typst documents
+  (use-package typst-preview
+    :after websocket ;; typst-preview require websocket
+    :ensure (:type git :host github :repo "havarddj/typst-preview.el"))
+#+end_src
+
 * Load Custom File
 
 Finally, after all the other settings have been done, we load the

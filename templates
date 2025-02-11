@@ -6,6 +6,11 @@ text-mode
 
 (godel "Gödel")
 
+typst-ts-mode
+
+(title "#align(center, text(17pt)[*" p "*])" q)
+(idi "bb(1)")
+
 latex-mode org-mode
 
 (align "\\begin{align}\n" r> n> "\\end{align}")

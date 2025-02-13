@@ -2233,8 +2233,10 @@ such as lsp-mode, depends on it somehow, so I still install it.
                   (cons #'tempel-expand
                         completion-at-point-functions)))
     :bind
-    (("M-+" . tempel-insert)
-     ("M-*" . tempel-complete))
+    (("C-c t i" . tempel-insert)
+     ("C-c t c" . tempel-complete)
+     ("<f7>" . tempel-insert)
+     ("<f8>" . tempel-complete))
     :hook
     ((prog-mode . tempel-setup-capf)
      (text-mode . tempel-setup-capf)))

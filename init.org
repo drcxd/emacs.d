@@ -1397,7 +1397,7 @@ convenient.
   (use-package embark
     :ensure t
     :defer t
-    :bind ("<f5>" . embark-act))
+    :bind ("<f6>" . embark-act))
   (use-package embark-consult :defer t :ensure t)
 #+end_src
 
@@ -2611,7 +2611,7 @@ add some additional configuration specific to meow.
     (advice-add 'meow--mode-guess-state :filter-return #'my/meow-guess-state)
     (meow-setup)
     (meow-global-mode 1)
-    (global-set-key (kbd "<f6>") 'meow-keypad)
+    (global-set-key (kbd "<f5>") 'meow-keypad)
     :hook
     (meow-insert-exit . (lambda ()
                           (if (and meow-normal-mode (not buffer-read-only))

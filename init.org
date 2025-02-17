@@ -1,5 +1,5 @@
 #+property: header-args:emacs-lisp :tangle init.el :comments org
-#+STARTUP: OVERVIEW
+#+STARTUP: content
 
 * Abstract
 
@@ -2767,7 +2767,11 @@ packages provides support for writing Typst document in Emacs.
 
   (use-package org-typst-preview :defer t
     :after org
-    :ensure (:type git :host github :repo "drcxd/org-typst-preview.el"))
+    :ensure (:type git :host github :repo "drcxd/org-typst-preview.el")
+    :bind
+    (("C-c t y" . org-typst-preview)
+     ("C-c t b" . org-typst-preview-render-buffer)
+     ("C-c t B" . org-typst-preview-clear-buffer)))
 #+end_src
 
 * Load Custom File

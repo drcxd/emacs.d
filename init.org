@@ -605,110 +605,6 @@ Emacs 28 supports syntax highlighting for documentations in comments.
                   (c++-mode  . doxygen)))
 #+end_src
 
-** org-mode
-
-#+begin_src emacs-lisp
-  (use-package org
-    :defer t
-    :init
-    (defvar my/org-babel-languages (list '(C . t)
-                                         '(racket . t)
-                                         '(emacs-lisp . t)
-                                         '(dot . t)))
-    :hook
-    (emacs-startup . (lambda ()
-                       (org-babel-do-load-languages 'org-babel-load-languages my/org-babel-languages)))
-    :config
-    (setq org-ellipsis "…"
-          org-auto-align-tags nil
-          org-tags-column 0
-          org-catch-invisible-edits 'show-and-error
-          org-special-ctrl-a/e t
-          org-hide-emphasis-markers t
-          org-pretty-entities t
-          org-babel-C-compiler "clang"
-          org-babel-C++-compiler "clang++"
-          ;; org-edit-special will replace the current window with the
-          ;; special window
-          org-src-window-setup 'current-window)
-    (add-to-list 'org-modules 'org-habit t)
-    ;; The following code makes org emphasis markup covers more lines
-    (setcar (nthcdr 4 org-emphasis-regexp-components) 5)
-    (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
-    (setq org-preview-latex-default-process 'dvisvgm))
-#+end_src
-
-*** Exporting Chinese Paragraph to HTML
-
-Due to the difference between English and Chinese, there are some
-extra spaces in exported Chinese paragraph when exporting to
-HTML. These spaces are necessary since English uses spaces to separate
-words, but Chinese don't. We have to override this behavior.
-
-#+begin_src emacs-lisp
-  (defadvice org-html-paragraph (before org-html-paragraph-advice
-                                        (paragraph contents info) activate)
-    "Join consecutive Chinese lines into a single long line without
-     unwanted space when exporting org-mode to html."
-    (let* ((origin-contents (ad-get-arg 1))
-           (fix-regexp "[[:multibyte:]]")
-           (fixed-contents
-            (replace-regexp-in-string
-             (concat
-              "\\(" fix-regexp "\\) *\n *\\(" fix-regexp "\\)") "\\1\\2" origin-contents)))
-      (ad-set-arg 1 fixed-contents)))
-#+end_src
-
-*** COMMENT Show org-agenda Buffer at Start-up
-
-#+begin_src emacs-lisp
-  (defun my/get-org-agenda-buffer ()
-    (org-agenda-list)
-    (get-buffer "*Org Agenda*"))
-  (setq initial-buffer-choice #'my/get-org-agenda-buffer)
-#+end_src
-
-*** COMMENT capture
-
-#+begin_src emacs-lisp
-  (use-package org
-               :defer t
-               :config
-               (setq org-default-notes-file (concat org-directory "/notes.org")))
-#+end_src
-
-*** Delete Link
-
-This is inspired by this [[https://emacs.stackexchange.com/a/10714][stackexchange answer]].
-
-#+begin_src emacs-lisp
-  (defun my/org-remove-link ()
-    "Remove an org link"
-    (interactive)
-    (if (org-in-regexp org-link-bracket-re 1)
-        (save-excursion
-          (let ((remove (list (match-beginning 0) (match-end 0))))
-            (apply 'delete-region remove)))))
-#+end_src
-
-*** Replace Link
-
-This function comes from this [[https://emacs.stackexchange.com/a/10714][stackexchange answer]].
-
-#+begin_src emacs-lisp
-  (defun my/org-replace-link-by-link-description ()
-    "Replace an org link by its description or if empty its address"
-    (interactive)
-    (if (org-in-regexp org-link-bracket-re 1)
-        (save-excursion
-          (let ((remove (list (match-beginning 0) (match-end 0)))
-                (description
-                 (if (match-end 2)
-                     (org-match-string-no-properties 2)
-                   (org-match-string-no-properties 1))))
-            (apply 'delete-region remove)
-            (insert description)))))
-#+end_src
 ** project
 
 #+begin_src emacs-lisp
@@ -1402,6 +1298,109 @@ convenient.
 #+end_src
 
 ** org-mode
+
+#+begin_src emacs-lisp
+  (use-package org :defer t
+    :ensure t
+    :init
+    (defvar my/org-babel-languages (list '(C . t)
+                                         '(racket . t)
+                                         '(emacs-lisp . t)
+                                         '(dot . t)))
+    :hook
+    (emacs-startup . (lambda ()
+                       (org-babel-do-load-languages 'org-babel-load-languages my/org-babel-languages)))
+    :config
+    (setq org-ellipsis "…"
+          org-auto-align-tags nil
+          org-tags-column 0
+          org-catch-invisible-edits 'show-and-error
+          org-special-ctrl-a/e t
+          org-hide-emphasis-markers t
+          org-pretty-entities t
+          org-babel-C-compiler "clang"
+          org-babel-C++-compiler "clang++"
+          ;; org-edit-special will replace the current window with the
+          ;; special window
+          org-src-window-setup 'current-window)
+    (add-to-list 'org-modules 'org-habit t)
+    ;; The following code makes org emphasis markup covers more lines
+    (setcar (nthcdr 4 org-emphasis-regexp-components) 5)
+    (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
+    (setq org-preview-latex-default-process 'dvisvgm))
+#+end_src
+
+*** Exporting Chinese Paragraph to HTML
+
+Due to the difference between English and Chinese, there are some
+extra spaces in exported Chinese paragraph when exporting to
+HTML. These spaces are necessary since English uses spaces to separate
+words, but Chinese don't. We have to override this behavior.
+
+#+begin_src emacs-lisp
+  (defadvice org-html-paragraph (before org-html-paragraph-advice
+                                        (paragraph contents info) activate)
+    "Join consecutive Chinese lines into a single long line without
+     unwanted space when exporting org-mode to html."
+    (let* ((origin-contents (ad-get-arg 1))
+           (fix-regexp "[[:multibyte:]]")
+           (fixed-contents
+            (replace-regexp-in-string
+             (concat
+              "\\(" fix-regexp "\\) *\n *\\(" fix-regexp "\\)") "\\1\\2" origin-contents)))
+      (ad-set-arg 1 fixed-contents)))
+#+end_src
+
+*** COMMENT Show org-agenda Buffer at Start-up
+
+#+begin_src emacs-lisp
+  (defun my/get-org-agenda-buffer ()
+    (org-agenda-list)
+    (get-buffer "*Org Agenda*"))
+  (setq initial-buffer-choice #'my/get-org-agenda-buffer)
+#+end_src
+
+*** COMMENT capture
+
+#+begin_src emacs-lisp
+  (use-package org
+               :defer t
+               :config
+               (setq org-default-notes-file (concat org-directory "/notes.org")))
+#+end_src
+
+*** Delete Link
+
+This is inspired by this [[https://emacs.stackexchange.com/a/10714][stackexchange answer]].
+
+#+begin_src emacs-lisp
+  (defun my/org-remove-link ()
+    "Remove an org link"
+    (interactive)
+    (if (org-in-regexp org-link-bracket-re 1)
+        (save-excursion
+          (let ((remove (list (match-beginning 0) (match-end 0))))
+            (apply 'delete-region remove)))))
+#+end_src
+
+*** Replace Link
+
+This function comes from this [[https://emacs.stackexchange.com/a/10714][stackexchange answer]].
+
+#+begin_src emacs-lisp
+  (defun my/org-replace-link-by-link-description ()
+    "Replace an org link by its description or if empty its address"
+    (interactive)
+    (if (org-in-regexp org-link-bracket-re 1)
+        (save-excursion
+          (let ((remove (list (match-beginning 0) (match-end 0)))
+                (description
+                 (if (match-end 2)
+                     (org-match-string-no-properties 2)
+                   (org-match-string-no-properties 1))))
+            (apply 'delete-region remove)
+            (insert description)))))
+#+end_src
 
 *** org-mode Export: htmlize
 

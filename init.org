@@ -1334,7 +1334,7 @@ convenient.
             :message "you need to install the programs: divlualatex dvisvgm"
             :image-input-type "dvi"
             :image-output-type "svg"
-            :image-size-adjust (1.0 . 1.0)
+            :image-size-adjust (1.7 . 1.5)
             :latex-compiler
             ("dvilualatex -shell-escape -interaction nonstopmode -output-directory %o %f")
             :image-converter
@@ -1343,7 +1343,7 @@ convenient.
     (setq org-preview-latex-default-process 'luasvg)
     ;; latex export use lualatex
     (setq org-latex-pdf-process '("lualatex -shell-escape -interaction=nonstopmode -output-directory=%o %f"))
-    (setq org-latex-packages-alist '("\\usepackage{unicode-math}")))
+    (setq org-latex-packages-alist '("\\usepackage{unicode-math}" "\\usepackage{fontsetup}")))
 #+end_src
 
 *** Exporting Chinese Paragraph to HTML

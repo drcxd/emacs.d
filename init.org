@@ -1340,7 +1340,9 @@ convenient.
             :image-converter
             ("dvisvgm %f --no-fonts --exact-bbox --scale=%S --output=%O"))
           org-preview-latex-process-alist)
-    (setq org-preview-latex-default-process 'luasvg))
+    (setq org-preview-latex-default-process 'luasvg)
+    ;; latex export use lualatex
+    (setq org-latex-pdf-process '("lualatex -shell-escape -interaction=nonstopmode -output-directory=%o %f")))
 #+end_src
 
 *** Exporting Chinese Paragraph to HTML

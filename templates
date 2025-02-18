@@ -22,7 +22,7 @@ latex-mode org-mode
 (ch "\\begin{chinese}" r> n> "\\end{chinese}")
 (powerset "\\mathcal{P}(" p ")" q)
 (set "\\{" p "\\}" q)
-(idi "\\mathbf{1}")
+(idi "\\mathbb{1}") ;; this requires LaTeX package unicode-math
 (ide "\\mathrm{id}")
 (implies "\\Longrightarrow")
 (iff "\\Longleftrightarrow")

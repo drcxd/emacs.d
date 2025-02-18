@@ -1328,7 +1328,7 @@ convenient.
     (setcar (nthcdr 4 org-emphasis-regexp-components) 5)
     (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
     ;; latex preview use dvilualatex and dvisvgm
-    (push '(luasvg
+    (push '(luasvgm
             :programs ("dvilualatex" "dvisvgm")
             :descrition "dvi > svg"
             :message "you need to install the programs: divlualatex dvisvgm"
@@ -1340,10 +1340,9 @@ convenient.
             :image-converter
             ("dvisvgm %f --no-fonts --exact-bbox --scale=%S --output=%O"))
           org-preview-latex-process-alist)
-    (setq org-preview-latex-default-process 'luasvg)
+    (setq org-preview-latex-default-process 'luasvgm)
     ;; latex export use lualatex
-    (setq org-latex-pdf-process '("lualatex -shell-escape -interaction=nonstopmode -output-directory=%o %f"))
-    (setq org-latex-packages-alist '("\\usepackage{unicode-math}" "\\usepackage{fontsetup}")))
+    (setq org-latex-pdf-process '("lualatex -shell-escape -interaction=nonstopmode -output-directory=%o %f")))
 #+end_src
 
 *** Exporting Chinese Paragraph to HTML

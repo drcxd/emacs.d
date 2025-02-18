@@ -1342,7 +1342,8 @@ convenient.
           org-preview-latex-process-alist)
     (setq org-preview-latex-default-process 'luasvg)
     ;; latex export use lualatex
-    (setq org-latex-pdf-process '("lualatex -shell-escape -interaction=nonstopmode -output-directory=%o %f")))
+    (setq org-latex-pdf-process '("lualatex -shell-escape -interaction=nonstopmode -output-directory=%o %f"))
+    (setq org-latex-packages-alist '("\\usepackage{unicode-math}")))
 #+end_src
 
 *** Exporting Chinese Paragraph to HTML

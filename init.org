@@ -495,12 +495,12 @@ I would like the welcome message displayed in the scratch buffer be
 some mottoes selected randomly from a pre-defined list.
 
 #+begin_src emacs-lisp
-    (defun my/process-raw-mottoes (lines)
-      "Process motto strings so that they could be displayed in the
+  (defun my/process-raw-mottoes (lines)
+    "Process motto strings so that they could be displayed in the
     scratch buffer."
-      (let ((ret ""))
-        (dolist (line lines ret)
-          (setq ret (concat ret ";; " line "\n")))))
+    (let ((ret ""))
+      (dolist (line lines ret)
+        (setq ret (concat ret ";; " line "\n")))))
 
   (defvar my/raw-mottoes
     '(("困于心衡于虑而后作" "征于色发于声而后喻")
@@ -524,12 +524,12 @@ some mottoes selected randomly from a pre-defined list.
        "except for the problem of too many layers of indirection.") ;; David Wheeler
       ("希望越大 失望越大" "能力越小 责任越小")))
 
-    (setq initial-scratch-message
-          (concat ";; Hello, " user-full-name "\n"
-                  (my/process-raw-mottoes
-                   (nth (random (length my/raw-mottoes))
-                        my/raw-mottoes))
-                  "\n"))
+  (setq initial-scratch-message
+        (concat ";; Hello, " user-full-name "\n\n"
+                (my/process-raw-mottoes
+                 (nth (random (length my/raw-mottoes))
+                      my/raw-mottoes))
+                "\n"))
 #+end_src
 
 ** Hide Async Shell Command Buffer

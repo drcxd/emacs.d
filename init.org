@@ -331,8 +331,9 @@ fonts in Emacs.
   (defun fp/use-font-rand ()
     "Select a font randomly."
     (interactive)
-    (let ((n (random)))
-      (fp/use-font-by-num n)))
+    (let* ((profile (seq-random-elt fp/font-profiles))
+           (profile-name (car profile)))
+      (fp/use-font profile-name)))
 
   (use-package savehist
     :init

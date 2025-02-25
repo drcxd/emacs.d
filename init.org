@@ -256,7 +256,9 @@ fonts in Emacs.
     "Return true if font specified by FONT-NAME is installed."
     (find-font (font-spec :name font-name)))
 
-  (defvar fp/font-size 160)
+  (defvar fp/default-font-height 160)
+  (defvar fp/default-variable-pitch-font "")
+  (defvar fp/default-font-weight 'regular)
   (defvar fp/current-font-profile "")
   (defvar fp/font-profiles '())
   (defvar fp/launch-counter 0)
@@ -306,11 +308,21 @@ fonts in Emacs.
        (list (completing-read "Font profile name: " (fp/get-font-profile-names)))))
     (let ((profile (fp/get-font-profile profile-name)))
       (if profile
-          (progn
-            (let ((fixed-pitch-font (fp/font-profile-fixed-pitch-font profile))
-                  (weight (fp/font-profile-weight profile))
-                  (variable-pitch-font (fp/font-profile-variable-pitch-font profile)))
-              (fp/setup-fonts fixed-pitch-font fp/font-size weight variable-pitch-font))
+          (let ((fixed-pitch-font
+                 (fp/font-profile-fixed-pitch-font profile))
+                (weight
+                 (or (fp/font-profile-weight profile)
+                     fp/default-font-weight))
+                (variable-pitch-font
+                 (or (fp/font-profile-variable-pitch-font profile)
+                     fp/default-variable-pitch-font))
+                (height
+                 (or (fp/font-profile-height profile)
+                     fp/default-font-height)))
+            (fp/setup-fonts fixed-pitch-font
+                            height
+                            weight
+                            variable-pitch-font)
             (setq fp/current-font-profile profile-name))
         (warn "No such font profile: FP/USE-FONT:" profile-name))))
 
@@ -354,8 +366,8 @@ fonts in Emacs.
     (interactive)
     (message "The current font profile is %s" fp/current-font-profile))
 
-  (defun fp/add-font-profile (name fixed weight variable)
-    (push (fp/make-font-profile name fixed weight variable)
+  (defun fp/add-font-profile (name fixed weight &optional variable height)
+    (push (fp/make-font-profile name fixed weight variable height)
           fp/font-profiles))
 
   (defun fp/add-font-profiles (profile-list)
@@ -364,7 +376,8 @@ fonts in Emacs.
           (fp/add-font-profile (nth 0 first)
                                (nth 1 first)
                                (nth 2 first)
-                               (nth 3 first))
+                               (nth 3 first)
+                               (nth 4 first))
           (fp/add-font-profiles (cdr profile-list)))))
 
   (defun fp/get-font-profile-names ()
@@ -373,8 +386,8 @@ fonts in Emacs.
   (defun fp/get-font-profile (name)
     (assoc name fp/font-profiles))
 
-  (defun fp/make-font-profile (name fixed weight variable)
-    (cons name (list fixed weight variable)))
+  (defun fp/make-font-profile (name fixed weight variable height)
+    (cons name (list fixed weight variable height)))
 
   (defun fp/font-profile-fixed-pitch-font (profile)
     (nth 1 profile))
@@ -384,6 +397,9 @@ fonts in Emacs.
 
   (defun fp/font-profile-variable-pitch-font (profile)
     (nth 3 profile))
+
+  (defun fp/font-profile-height (profile)
+    (nth 4 profile))
 #+end_src
 
 ** Mode Line

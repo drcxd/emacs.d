@@ -400,6 +400,49 @@ fonts in Emacs.
 
   (defun fp/font-profile-height (profile)
     (nth 4 profile))
+
+  (defvar fp/font-urls
+    '(("Iosevka" . "https://github.com/be5invis/Iosevka/releases/download/v32.5.0/PkgTTF-Iosevka-32.5.0.zip")
+      ("Iosevka Aile" . "https://github.com/be5invis/Iosevka/releases/download/v32.5.0/PkgTTF-IosevkaAile-32.5.0.zip")
+      ("Cascadia Code" . "https://github.com/microsoft/cascadia-code/releases/download/v2407.24/CascadiaCode-2407.24.zip")
+      ("Victor Mono" . "https://rubjo.github.io/victor-mono/VictorMonoAll.zip")
+      ("Aporetic" . "https://github.com/protesilaos/aporetic/archive/refs/heads/main.zip")
+      ("IBM Plex Sans" . "https://github.com/IBM/plex/releases/download/%40ibm%2Fplex-sans%401.1.0/ibm-plex-sans.zip")
+      ("IBM Plex Mono" . "https://github.com/IBM/plex/releases/download/%40ibm%2Fplex-mono%401.1.0/ibm-plex-mono.zip")
+      ("JetBrains Mono" . "https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip")
+      ("Red Hat" . "https://github.com/RedHatOfficial/RedHatFont/archive/refs/heads/master.zip")
+      ("Source Code Pro" . "https://github.com/adobe-fonts/source-code-pro/releases/download/2.042R-u%2F1.062R-i%2F1.026R-vf/TTF-source-code-pro-2.042R-u_1.062R-i.zip")
+      ("Source Sans" . "https://github.com/adobe-fonts/source-sans/releases/download/3.052R/TTF-source-sans-3.052R.zip")
+      ("Intel One Mono" . "https://github.com/intel/intel-one-mono/releases/download/V1.4.0/ttf.zip")
+      ("Clear Sans" . "https://github.com/intel/clear-sans/archive/refs/heads/main.zip")
+      ("DejaVu" . "https://github.com/dejavu-fonts/dejavu-fonts/releases/download/version_2_37/dejavu-fonts-ttf-2.37.zip")
+      ("JuliaMono" . "https://github.com/cormullion/juliamono/releases/download/v0.059/JuliaMono-ttf.zip")))
+
+  (defvar fp/fonts-dir (file-name-concat user-emacs-directory "fonts"))
+
+  (defun fp/download-font-url-pair (pair)
+    (unless (file-exists-p fp/fonts-dir)
+      (dired-create-directory fp/fonts-dir))
+    (require 'url)
+    (if pair
+        (progn
+          (let* ((name (car pair))
+                 (url (cdr pair))
+                 (file-name (file-name-nondirectory url)))
+            (url-copy-file url (file-name-concat fp/fonts-dir file-name) t)
+            (message "Font %s has been downloaded" name)))
+      (warn "Font %s has no URL!" font)))
+
+  (defun fp/download-all-fonts ()
+    (interactive)
+    (mapc #'fp/download-font-url-pair fp/font-urls))
+
+  (defun fp/download-font (font)
+    (interactive
+     (let ((completion-ignore-case t))
+       (list (completing-read "Font name: " (mapcar #'car fp/font-urls)))))
+    (let ((pair (assoc font fp/font-urls)))
+      (fp/download-font-url-pair pair)))
 #+end_src
 
 ** Mode Line

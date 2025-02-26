@@ -738,21 +738,6 @@ checking.
     ("C-c s b" . flyspell-buffer))
 #+end_src
 
-** Key Bindings
-
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-c E") 'eval-region)
-  (global-set-key (kbd "C-c P") 'compile)
-  (global-set-key (kbd "C-c b") 'switch-to-buffer)
-  (global-set-key (kbd "C-c k") 'kill-buffer)
-  (global-set-key (kbd "C-c S") 'shell-command)
-  (global-set-key (kbd "C-c s t") 'hs-toggle-hiding)
-  (global-set-key (kbd "C-c w m") 'woman)
-  (global-set-key (kbd "C-<tab>") 'completion-at-point)
-  (global-set-key (kbd "C-c t s") 'global-text-scale-adjust)
-  (global-set-key (kbd "C-c t S") 'text-scale-adjust)
-#+end_src
-
 ** Emacs As Server
 
 #+begin_src emacs-lisp
@@ -795,6 +780,27 @@ I'd like to enable truncating long lines by default.
     (interactive "r")
     (replace-string-in-region "{" "(" start end)
     (replace-string-in-region "}" ")" start end))
+
+  (defun my/visit-emacs-config ()
+    "Open init.org."
+    (interactive)
+    (find-file (locate-user-emacs-file "init.org")))
+#+end_src
+
+** Key Bindings
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c E") 'eval-region)
+  (global-set-key (kbd "C-c P") 'compile)
+  (global-set-key (kbd "C-c b") 'switch-to-buffer)
+  (global-set-key (kbd "C-c k") 'kill-buffer)
+  (global-set-key (kbd "C-c S") 'shell-command)
+  (global-set-key (kbd "C-c s t") 'hs-toggle-hiding)
+  (global-set-key (kbd "C-c w m") 'woman)
+  (global-set-key (kbd "C-<tab>") 'completion-at-point)
+  (global-set-key (kbd "C-c t s") 'global-text-scale-adjust)
+  (global-set-key (kbd "C-c t S") 'text-scale-adjust)
+  (global-set-key (kbd "C-c v l") 'visual-line-mode)
 #+end_src
 
 * Third-Party Packages

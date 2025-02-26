@@ -893,11 +893,7 @@ enabled. Diminish is a good package to solve this problem.
 #+begin_src emacs-lisp
   (use-package diminish
     :demand t
-    :ensure (:wait t)
-    :config
-    (diminish 'abbrev-mode)
-    (diminish 'visual-line-mode)
-    (diminish 'eldoc-mode))
+    :ensure (:wait t))
 
   (use-package hideshow
     :ensure nil
@@ -1149,14 +1145,12 @@ https://www.nerdfonts.com/#home
 #+begin_src emacs-lisp
   (use-package olivetti :defer t
     :ensure t
-    :diminish olivetti-mode
     :config
     (setq olivetti-body-width 0.618
           olivetti-minimum-body-width 80
           olivetti-recall-visual-line-mode-entry-state t))
   (use-package logos :defer t
     :ensure t
-    :diminish logos-focus-mode
     :config
     (setq logos-outlines-are-pages t)
     (setq-default logos-hide-mode-line nil

@@ -604,7 +604,8 @@ EOL characters. This would make some lines ended with additional
 #+begin_src emacs-lisp
   (defun prog-mode-setup ()
     (display-fill-column-indicator-mode t)
-    (setq show-trailing-whitespace t)
+    (setq show-trailing-whitespace t
+          truncate-lines t)
     (electric-pair-mode t)
     (hs-minor-mode 1)
     (hl-line-mode 1))
@@ -764,12 +765,10 @@ checking.
     (setq imenu-max-item-length 'Unlimited))
 #+end_src
 
-** Truncating Lines
-
-I'd like to enable truncating long lines by default.
+** Filling and Wrapping
 
 #+begin_src emacs-lisp
-  (setq-default truncate-lines t)
+  (add-hook 'text-mode-hook #'turn-on-auto-fill)
 #+end_src
 
 ** Utility Code
@@ -801,6 +800,7 @@ I'd like to enable truncating long lines by default.
   (global-set-key (kbd "C-c t s") 'global-text-scale-adjust)
   (global-set-key (kbd "C-c t S") 'text-scale-adjust)
   (global-set-key (kbd "C-c v l") 'visual-line-mode)
+  (global-set-key (kbd "C-c v a") 'auto-fill-mode)
 #+end_src
 
 * Third-Party Packages
@@ -1149,11 +1149,14 @@ https://www.nerdfonts.com/#home
 #+begin_src emacs-lisp
   (use-package olivetti :defer t
     :ensure t
-    :diminish olivetti-mode)
-  (use-package logos
-    :diminish logos-focus-mode
+    :diminish olivetti-mode
+    :config
+    (setq olivetti-body-width 0.7
+          olivetti-minimum-body-width 80
+          olivetti-recall-visual-line-mode-entry-state t))
+  (use-package logos :defer t
     :ensure t
-    :defer t
+    :diminish logos-focus-mode
     :config
     (setq logos-outlines-are-pages t)
     (setq-default logos-hide-mode-line nil
@@ -1161,6 +1164,7 @@ https://www.nerdfonts.com/#home
                   logos-hide-fringe t
                   logos-variable-pitch nil
                   logos-buffer-read-only nil
+                  logos-scroll-lock t
                   logos-olivetti t)
     (with-eval-after-load 'modus-themes
       (add-hook 'modus-themes-after-load-theme-hook #'logos-update-fringe-in-buffers))
@@ -2810,6 +2814,16 @@ packages provides support for writing Typst document in Emacs.
     (("C-c t y" . org-typst-preview)
      ("C-c t b" . org-typst-preview-render-buffer)
      ("C-c t B" . org-typst-preview-clear-buffer)))
+#+end_src
+
+** Filling and Wrapping
+
+#+begin_src emacs-lisp
+  (use-package adaptive-wrap :defer t :ensure t)
+  (use-package visual-fill-column :defer t
+    :ensure t
+    :bind
+    ("C-c v f" . visual-line-fill-column-mode))
 #+end_src
 
 * Load Custom File

@@ -1151,7 +1151,7 @@ https://www.nerdfonts.com/#home
     :ensure t
     :diminish olivetti-mode
     :config
-    (setq olivetti-body-width 0.7
+    (setq olivetti-body-width 0.618
           olivetti-minimum-body-width 80
           olivetti-recall-visual-line-mode-entry-state t))
   (use-package logos :defer t

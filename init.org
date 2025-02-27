@@ -808,7 +808,7 @@ checking.
     (setq imenu-max-item-length 'Unlimited))
 #+end_src
 
-** Filling and Wrapping
+** COMMENT Filling and Wrapping
 
 #+begin_src emacs-lisp
   (add-hook 'text-mode-hook #'turn-on-auto-fill)
@@ -2295,9 +2295,8 @@ actively. However, since yasnippet is well-known, some other packages,
 such as lsp-mode, depends on it somehow, so I still install it.
 
 #+begin_src emacs-lisp
-  (use-package tempel
+  (use-package tempel :defer t
     :ensure t
-    :defer t
     :init
     ;; Setup completion at point
     (defun tempel-setup-capf ()
@@ -2860,8 +2859,10 @@ packages provides support for writing Typst document in Emacs.
   (use-package visual-fill-column :defer t
     :ensure t
     :bind
-    ("C-c v f" . visual-line-fill-column-mode))
-  (use-package unfill :defert :ensure t)
+    ("C-c v f" . visual-line-fill-column-mode)
+    :hook
+    (text-mode . visual-line-fill-column-mode))
+  (use-package unfill :defer t :ensure t)
 #+end_src
 
 * Load Custom File

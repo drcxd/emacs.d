@@ -2861,6 +2861,7 @@ packages provides support for writing Typst document in Emacs.
     :ensure t
     :bind
     ("C-c v f" . visual-line-fill-column-mode))
+  (use-package unfill :defert :ensure t)
 #+end_src
 
 * Load Custom File

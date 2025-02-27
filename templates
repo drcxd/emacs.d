@@ -30,6 +30,8 @@ latex-mode org-mode
 (qs "\\mathbb{Q}")
 (rs "\\mathbb{R}")
 (cs "\\mathbb{C}")
+(cal "\\mathcal{" p "}" q)
+(bb "\\mathbb{" p "}" q)
 
 org-mode
 

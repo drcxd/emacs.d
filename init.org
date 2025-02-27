@@ -647,8 +647,7 @@ EOL characters. This would make some lines ended with additional
 #+begin_src emacs-lisp
   (defun prog-mode-setup ()
     (display-fill-column-indicator-mode t)
-    (setq show-trailing-whitespace t
-          truncate-lines t)
+    (setq show-trailing-whitespace t)
     (electric-pair-mode t)
     (hs-minor-mode 1)
     (hl-line-mode 1))
@@ -808,10 +807,11 @@ checking.
     (setq imenu-max-item-length 'Unlimited))
 #+end_src
 
-** COMMENT Filling and Wrapping
+** Filling and Wrapping
 
 #+begin_src emacs-lisp
-  (add-hook 'text-mode-hook #'turn-on-auto-fill)
+  (setq-default truncate-lines t)
+  (add-hook 'text-mode-hook (lambda () (setq truncate-lines nil)))
 #+end_src
 
 ** Utility Code

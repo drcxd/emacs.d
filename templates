@@ -8,7 +8,7 @@ text-mode
 
 typst-ts-mode
 
-(title "#align(center, text(17pt)[*" p "*])" q)
+(title "#align(center, text(17pt)[*" (p "title") "*])" q)
 (idi "bb(1)")
 
 latex-mode org-mode
@@ -32,6 +32,8 @@ latex-mode org-mode
 (cs "\\mathbb{C}")
 (cal "\\mathcal{" p "}" q)
 (bb "\\mathbb{" p "}" q)
+(nt "\\newtheorem{" (p "set") "}{" (p "name") "}" q)
+(nt* "\\newtheorem*{" (p "set") "}{" (p "name") "}" q)
 
 org-mode
 

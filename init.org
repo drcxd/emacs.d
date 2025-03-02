@@ -416,7 +416,9 @@ fonts in Emacs.
       ("Intel One Mono" . "https://github.com/intel/intel-one-mono/releases/download/V1.4.0/ttf.zip")
       ("Clear Sans" . "https://github.com/intel/clear-sans/archive/refs/heads/main.zip")
       ("DejaVu" . "https://github.com/dejavu-fonts/dejavu-fonts/releases/download/version_2_37/dejavu-fonts-ttf-2.37.zip")
-      ("JuliaMono" . "https://github.com/cormullion/juliamono/releases/download/v0.059/JuliaMono-ttf.zip")))
+      ("JuliaMono" . "https://github.com/cormullion/juliamono/releases/download/v0.059/JuliaMono-ttf.zip")
+      ("Nerd Icons" . "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/NerdFontsSymbolsOnly.zip")
+      ("LXGW WenKai" . "https://github.com/lxgw/LxgwWenKai/releases/download/v1.510/lxgw-wenkai-v1.510.zip")))
 
   (defvar fp/fonts-dir (file-name-concat user-emacs-directory "fonts"))
 

@@ -37,6 +37,10 @@ latex-mode org-mode
 
 org-mode
 
+(tt "#+title: ")
+(lh "#+latex_header: ")
+(lhp "#+latex_header: \\usepackage{" (p "package name") "}" q)
+
 (ilm "\\(" p "\\)" q)
 (olm "\\[" p "\\]" q)
 (typm "#[$" p "$#]" q)

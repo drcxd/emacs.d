@@ -812,6 +812,9 @@ checking.
 #+begin_src emacs-lisp
   (setq-default truncate-lines t)
   (add-hook 'text-mode-hook (lambda () (setq truncate-lines nil)))
+  ;; Enable wrapping after any Chinese characters
+  ;; More information about this issue: https://debbugs.gnu.org/cgi/bugreport.cgi?bug=29364
+  (setq word-wrap-by-category t)
 #+end_src
 
 ** Utility Code

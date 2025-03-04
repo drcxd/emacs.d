@@ -13,6 +13,8 @@ typst-ts-mode
 
 latex-mode org-mode
 
+(ilm "\\(" p "\\)" q)
+(olm "\\[" p "\\]" q)
 (align "\\begin{align}\n" r> n> "\\end{align}")
 (alignn "\\begin{align*}\n" r> n> "\\end{align*}")
 (cases "\\begin{cases}\n" r> n> "\\end{cases}")
@@ -39,10 +41,8 @@ org-mode
 
 (tt "#+title: ")
 (lh "#+latex_header: ")
-(lhp "#+latex_header: \\usepackage{" (p "package name") "}" q)
+(lhup "#+latex_header: \\usepackage{" (p "package name") "}" q)
 
-(ilm "\\(" p "\\)" q)
-(olm "\\[" p "\\]" q)
 (typm "#[$" p "$#]" q)
 
 prog-mode

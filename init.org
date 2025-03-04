@@ -2841,7 +2841,9 @@ packages provides support for writing Typst document in Emacs.
 #+begin_src emacs-lisp
   ;; tree sitter mode Typst
   (use-package typst-ts-mode :defer t
-    :ensure (:type git :host codeberg :repo "meow_king/typst-ts-mode"))
+    :ensure (:type git :host codeberg :repo "meow_king/typst-ts-mode")
+    :init
+    (add-to-list 'org-src-lang-modes '("typst" . typst-ts)))
 
   ;; typst-preview provides live preview for Typst documents
   (use-package typst-preview :defer t
@@ -2855,6 +2857,8 @@ packages provides support for writing Typst document in Emacs.
     (("C-c t y" . org-typst-preview)
      ("C-c t b" . org-typst-preview-render-buffer)
      ("C-c t B" . org-typst-preview-clear-buffer)))
+
+  (use-package ox-typst :after org :ensure t)
 #+end_src
 
 ** Filling and Wrapping

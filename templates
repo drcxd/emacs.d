@@ -10,6 +10,10 @@ typst-ts-mode
 
 (title "#align(center, text(17pt)[*" (p "title") "*])" q)
 (idi "bb(1)")
+(thm-pre "#import \"@preview/ctheorems:1.1.3\": *\n"
+         "#show: thmrules.with(qed-symbol: $square$)")
+
+(thm "#let " (p "command") " = " (r "thmtype") "(\"" (p "identifier") "\", \"" (p "head") "\"" p ")" q)
 
 latex-mode org-mode
 

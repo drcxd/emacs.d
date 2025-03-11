@@ -2874,16 +2874,20 @@ packages provides support for writing Typst document in Emacs.
   (use-package unfill :defer t :ensure t)
 #+end_src
 
+** Finalizing
+
+#+begin_src emacs-lisp
+  ;; wait for elpaca until all packages are installed since some code in
+  ;; the custom file may depend on some packages
+  (elpaca-wait)
+#+end_src
+
 * Load Custom File
 
 Finally, after all the other settings have been done, we load the
 local customization file.
 
 #+begin_src emacs-lisp
-  ;; wait for elpaca until all packages are installed since some code in
-  ;; the custom file may depend on some packages
-  (elpaca-wait)
-
   (when (file-exists-p custom-file)
     (load custom-file))
 #+end_src

@@ -2255,6 +2255,16 @@ provides a mode which generates the compilation database.
      (format-message
       "%s -mode=GenerateClangDatabase"
       (my/build-ubt-op-string project opt platform editor))))
+
+  (defun my/unreal-generate-clang-database-for-engine (opt platform)
+    (interactive
+     (let ((completion-ignore-case t))
+       (list (completing-read "Optimization level: " my/unreal-opts nil nil)
+             (completing-read "Platform: " my/unreal-platforms nil nil))))
+    (async-shell-command
+     (format-message
+      "% -mode=GenerateClangDatabase -Target=UnrealEditor %s %s"
+      my/ubt-location opt platform)))
 #+end_src
 
 **** Generate Header Files

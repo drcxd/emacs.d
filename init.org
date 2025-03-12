@@ -2874,7 +2874,6 @@ packages provides support for writing Typst document in Emacs.
 ** Filling and Wrapping
 
 #+begin_src emacs-lisp
-  (use-package adaptive-wrap :defer t :ensure t)
   (use-package visual-fill-column :defer t
     :ensure t
     :bind

@@ -2263,7 +2263,7 @@ provides a mode which generates the compilation database.
              (completing-read "Platform: " my/unreal-platforms nil nil))))
     (async-shell-command
      (format-message
-      "% -mode=GenerateClangDatabase -Target=UnrealEditor %s %s"
+      "%s -mode=GenerateClangDatabase -Target=UnrealEditor %s %s"
       my/ubt-location opt platform)))
 #+end_src
 

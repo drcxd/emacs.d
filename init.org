@@ -2858,7 +2858,7 @@ packages provides support for writing Typst document in Emacs.
   ;; typst-preview provides live preview for Typst documents
   (use-package typst-preview :defer t
     :after websocket ;; typst-preview require websocket
-    :ensure (:type git :host github :repo "havarddj/typst-preview.el"))
+    :ensure (:type git :host github :repo "drcxd/typst-preview.el"))
 
   (use-package org-typst-preview :defer t
     :after org

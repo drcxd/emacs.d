@@ -2698,7 +2698,8 @@ add some additional configuration specific to meow.
                                  (prog-mode . normal)
                                  (conf-mode . normal)
                                  (bibtex-mode . normal))
-          meow-use-clipboard t)
+          meow-use-clipboard t
+          meow-keypad-describe-keymap-function nil)
     ;; use motion state by default
     (defun my/meow-guess-state (state) 'motion)
     (advice-add 'meow--mode-guess-state :filter-return #'my/meow-guess-state)

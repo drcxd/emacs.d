@@ -15,6 +15,14 @@ This part contains configurations about all Emacs native options and
 built-in packages. This part does not depends on any third-party
 packages.
 
+** Android Environment Settings
+
+#+begin_src emacs-lisp :tangle (if (eq system-type 'android) "early-init.el" "no")
+  (setenv "PATH" (format "%s:%s" "/data/data/com.termux/files/usr/bin"
+  		       (getenv "PATH")))
+  (push "/data/data/com.termux/files/usr/bin" exec-path)
+#+end_src
+
 ** Garbage Collection Settings
 
 Adjust garbage collection thresholds during startup, and restore it
@@ -1602,7 +1610,7 @@ interact nicely with the OS. Emacs built-in eshell mode and term mode
 does not work properly on Windows. This package also comes with a
 powershell mode to help editing powershell script files.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle (if (eq system-type 'windows-nt) "init.el" "no")
   (use-package powershell :defer t
     :ensure t)
 #+end_src
@@ -1613,7 +1621,7 @@ On Linux, Emacs could use D-BUS to send desktop
 notifications. However, I could not make dbus work on Windows, so I
 found this alert-toast package to implement this feature.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle (if (eq system-type 'windows-nt) "init.el" "no")
   (if (eq system-type 'windows-nt)
       (use-package alert-toast
         :ensure t

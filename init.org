@@ -832,6 +832,36 @@ checking.
     "Open init.org."
     (interactive)
     (find-file (locate-user-emacs-file "init.org")))
+
+  (defvar my/workout-plan
+    '(() ;; Sunday
+      ("Barbell Bench Press"
+       "Inclined Barbell Bench Press"
+       "Dumbbell Bench Press"
+       "Triceps Pushdown") ;; Monday
+      ("Barbell Deadlift"
+       "One-Arm Dumbbell Row"
+       "Lat Pull Down"
+       "Alternating Dumbbell Curl") ;; Tuesday
+      ("The Press"
+       "Seated Cable Row"
+       "Close-Grip Bench Press"
+       "Dumbbell Rear Lateral Raise") ;; Wednesday
+      ("Barbell Squat"
+       "Leg Curl"
+       "Hanging Leg Lift")
+      ))
+
+  (defun my/insert-workout-plan-for-tody ()
+    (interactive)
+    (let* ((date (calendar-current-date))
+           (weekday (calendar-day-of-week date))
+           (profile (nth weekday my/workout-plan)))
+      (mapc (lambda (exercise)
+              (insert (format "| %s | %s | | | | | |\n"
+                              (calendar-date-string date)
+                              exercise)))
+            profile)))
 #+end_src
 
 ** Key Bindings

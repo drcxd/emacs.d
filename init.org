@@ -862,6 +862,7 @@ checking.
 
   (defun my/insert-workout-plan-for-tody ()
     (interactive)
+    (require 'calendar)
     (let* ((date (calendar-current-date))
            (weekday (calendar-day-of-week date))
            (profile (nth weekday my/workout-plan)))

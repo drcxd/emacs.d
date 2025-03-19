@@ -1949,8 +1949,6 @@ variable-rename.
         (progn
           (add-hook 'lsp-completion-mode-hook #'corfu-lsp-setup)
           (setq lsp-completion-provider :none)))
-    :hook
-    (lua-mode . (lambda () (setq-local lsp-enable-indentation nil)))
     :bind
     (("C-c l l" . lsp)
      :map lsp-mode-map

@@ -2059,8 +2059,11 @@ specific language major mode.
 
 **** Lua
 
+Since Emacs provides built-in tree-sitter support, and it provides more accurate analysis than the major mode for Lua, I would use =lua-ts-mode= whenever possible.
+
 #+begin_src emacs-lisp
   (use-package lua-mode :defer t :ensure t)
+  (add-to-list 'major-mode-remap-alist '(lua-mode . lua-ts-mode))
 #+end_src
 
 **** COMMENT Scheme

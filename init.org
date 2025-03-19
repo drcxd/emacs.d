@@ -842,35 +842,38 @@ checking.
     (find-file (locate-user-emacs-file "init.org")))
 
   (defvar my/workout-plan
-    '(() ;; Sunday
-      ("Barbell Bench Press"
-       "Inclined Barbell Bench Press"
-       "Dumbbell Bench Press"
-       "Triceps Pushdown") ;; Monday
-      ("Barbell Deadlift"
-       "One-Arm Dumbbell Row"
-       "Lat Pull Down"
-       "Alternating Dumbbell Curl") ;; Tuesday
-      ("The Press"
-       "Seated Cable Row"
-       "Close-Grip Bench Press"
-       "Dumbbell Rear Lateral Raise") ;; Wednesday
-      ("Barbell Squat"
-       "Leg Curl"
-       "Hanging Leg Lift")
-      ))
+    '(("Push" . ("Barbell Bench Press"
+                 "Inclined Barbell Bench Press"
+                 "Dumbbell Bench Press"
+                 "Triceps Pushdown")) ;; Monday
+      ("Pull" . ("Barbell Deadlift"
+                 "One-Arm Dumbbell Row"
+                 "Lat Pull Down"
+                 "Alternating Dumbbell Curl")) ;; Tuesday
+      ("Upper Body" . ("The Press"
+                       "Seated Cable Row"
+                       "Close-Grip Bench Press"
+                       "Dumbbell Rear Lateral Raise")) ;; Wednesday
+      ("Squat" . ("Barbell Squat"
+                  "Leg Curl"
+                  "Hanging Leg Lift"))))
 
-  (defun my/insert-workout-plan-for-tody ()
+  (defun my/insert-workout-plan ()
     (interactive)
     (require 'calendar)
     (let* ((date (calendar-current-date))
-           (weekday (calendar-day-of-week date))
-           (profile (nth weekday my/workout-plan)))
+           (plan (if current-prefix-arg
+                     (let ((key (completing-read "Workout plan: " (mapcar 'car my/workout-plan))))
+                       (assoc key my/workout-plan))
+                   (let* ((weekday (calendar-day-of-week date)))
+                     (nth (- weekday 1) my/workout-plan)))))
       (mapc (lambda (exercise)
               (insert (format "| %s | %s | | | | | |\n"
                               (calendar-date-string date)
                               exercise)))
-            profile)))
+            (cdr plan))))
+
+  (global-set-key (kbd "C-c w") 'my/insert-workout-plan)
 #+end_src
 
 ** Key Bindings
@@ -882,7 +885,6 @@ checking.
   (global-set-key (kbd "C-c k") 'kill-buffer)
   (global-set-key (kbd "C-c S") 'shell-command)
   (global-set-key (kbd "C-c s t") 'hs-toggle-hiding)
-  (global-set-key (kbd "C-c w m") 'woman)
   (global-set-key (kbd "C-<tab>") 'completion-at-point)
   (global-set-key (kbd "C-c t s") 'global-text-scale-adjust)
   (global-set-key (kbd "C-c t S") 'text-scale-adjust)

@@ -860,16 +860,14 @@ checking.
 
   (defun my/insert-workout-plan ()
     (interactive)
-    (require 'calendar)
-    (let* ((date (calendar-current-date))
-           (plan (if current-prefix-arg
-                     (let ((key (completing-read "Workout plan: " (mapcar 'car my/workout-plan))))
-                       (assoc key my/workout-plan))
-                   (let* ((weekday (calendar-day-of-week date)))
-                     (nth (- weekday 1) my/workout-plan)))))
+    (let ((plan (if current-prefix-arg
+                    (let ((key (completing-read "Workout plan: " (mapcar 'car my/workout-plan))))
+                      (assoc key my/workout-plan))
+                  (let* ((weekday (string-to-number (format-time-string "%u"))))
+                    (nth (- weekday 1) my/workout-plan)))))
       (mapc (lambda (exercise)
               (insert (format "| %s | %s | | | | | |\n"
-                              (calendar-date-string date)
+                              (format-time-string "%Y/%m/%d")
                               exercise)))
             (cdr plan))))
 

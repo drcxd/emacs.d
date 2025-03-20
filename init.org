@@ -438,7 +438,7 @@ fonts in Emacs.
         (progn
           (let* ((name (car pair))
                  (url (cdr pair))
-                 (file-name (file-name-nondirectory url)))
+                 (file-name (format "%s.%s" name (file-name-extension url))))
             (url-copy-file url (file-name-concat fp/fonts-dir file-name) t)
             (message "Font %s has been downloaded" name)))
       (warn "Font %s has no URL!" font)))

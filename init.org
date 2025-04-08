@@ -593,7 +593,9 @@ some mottoes selected randomly from a pre-defined list.
       ("All problems in computer science can be solved by another level of indirection,"
        "except for the problem of too many layers of indirection.") ;; David Wheeler
       ("希望越大 失望越大" "能力越小 责任越小")
-      ("人固有一死" "或重于泰山 或轻于鸿毛" "用之所趋异也")))
+      ("人固有一死" "或重于泰山 或轻于鸿毛" "用之所趋异也")
+      ("水至清则无鱼" "人至察则无徒")
+      ("是我们改变了世界" "还是世界改变了我和你")))
 
   (setq initial-scratch-message
         (concat ";; Hello, " user-full-name "\n\n"

@@ -857,7 +857,7 @@ checking.
                        "Close-Grip Bench Press"
                        "Dumbbell Rear Lateral Raise")) ;; Wednesday
       ("Squat" . ("Barbell Squat"
-                  "Leg Curl"
+                  "Lunge"
                   "Hanging Leg Lift"))))
 
   (defun my/insert-workout-plan ()

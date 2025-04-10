@@ -601,10 +601,12 @@ some mottoes selected randomly from a pre-defined list.
 
   (setq initial-scratch-message
         (concat ";; Hello, " user-full-name "\n\n"
-                (my/process-raw-mottoes
-                 (nth (random (length my/raw-mottoes))
-                      my/raw-mottoes))
+                (my/process-raw-mottoes (seq-random-elt my/raw-mottoes))
                 "\n"))
+
+  (defun my/show-motto ()
+    (interactive)
+    (message (my/process-raw-mottoes (seq-random-elt my/raw-mottoes))))
 #+end_src
 
 ** Hide Async Shell Command Buffer

@@ -597,7 +597,9 @@ some mottoes selected randomly from a pre-defined list.
       ("水至清则无鱼" "人至察则无徒")
       ("是我们改变了世界" "还是世界改变了我和你")
       ("君子求诸己" "小人求诸人")
-      ("但恐名誉不立" "何患无妻子乎")))
+      ("但恐名誉不立" "何患无妻子乎")
+      ("多情自古空余恨")
+      ("情到深处人孤独")))
 
   (setq initial-scratch-message
         (concat ";; Hello, " user-full-name "\n\n"

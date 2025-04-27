@@ -600,7 +600,9 @@ some mottoes selected randomly from a pre-defined list.
       ("多情自古空余恨")
       ("情到深处人孤独")
       ("让子弹飞一会儿")
-      ("鞠躬尽瘁" "死而后已")))
+      ("鞠躬尽瘁" "死而后已")
+      ("塞翁失马" "焉知非福")
+      ("福兮祸之所倚" "祸兮福之所伏")))
 
   (setq initial-scratch-message
         (concat ";; Hello, " user-full-name "\n\n"

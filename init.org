@@ -2453,11 +2453,11 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
      org-roam-capture-templates '(("d" "default" plain "%?" :target
                                    (file+head "%<%Y%m%d%H%M%S>.org" "#+title: ${title}\n"))
                                   ("p" "private" plain "%?" :target
-                                   (file+head "private/%<%Y%m%d%H%M%S>.org.gpg" "#+title: ${title}\n")))
+                                   (file+head "private/%<%Y%m%d%H%M%S>.org" "#+title: ${title}\n")))
      org-roam-dailies-capture-templates '(("d" "default" entry "* %?" :target
                                            (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))
                                           ("p" "private" entry "* %?" :target
-                                           (file+head "%<%Y-%m-%d>.org.gpg" "#+title: %<%Y-%m-%d>\n"))))
+                                           (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
 
     (defun my/title->file-name (title)
       "Process the input string so that it only contains valid

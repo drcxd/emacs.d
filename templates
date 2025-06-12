@@ -107,6 +107,12 @@ c++-mode
 (ulog "UE_LOG(" (p "category") ", " (p "verbosity") ", TEXT(\"" p "\")" p ");" q)
 (umsg "GEngine->AddOnScreenDebugMessage(INDEX_NONE, 4.0F, FColor::Cyan, FString::Printf(TEXT(\"" p "\")" q "));")
 
+(cc "FAutoConsoleCommand " (p "var") "(" n
+    "TEXT(\"" (p "name") "\")," n
+    "TEXT(\"" (p "help") "\")," n
+    "FConsoleCommandWithArgsDelegate::CreateLambda([](const TArray<FString>& Args){})," n
+    (p "ECVF_Cheat") n
+    ");" q )
 ;; Local Variables:
 ;; mode: lisp-data
 ;; End:

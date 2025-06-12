@@ -603,7 +603,8 @@ some mottoes selected randomly from a pre-defined list.
       ("塞翁失马" "焉知非福")
       ("福兮祸之所倚" "祸兮福之所伏")
       ("人生代代无穷已" "江月年年望相似")
-      ("担当生前事" "何计身后评")))
+      ("担当生前事" "何计身后评")
+      ("The spirit is willing" "but the flesh is weak")))
 
   (setq initial-scratch-message
         (concat ";; Hello, " user-full-name "\n\n"

@@ -2075,7 +2075,7 @@ Since Emacs provides built-in tree-sitter support, and it provides more accurate
 
 #+begin_src emacs-lisp
   (use-package lua-mode :defer t :ensure t)
-  (add-to-list 'major-mode-remap-alist '(lua-mode . lua-ts-mode))
+  ;; (add-to-list 'major-mode-remap-alist '(lua-mode . lua-ts-mode))
 #+end_src
 
 **** COMMENT Scheme

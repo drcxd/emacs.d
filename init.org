@@ -2930,13 +2930,15 @@ packages provides support for writing Typst document in Emacs.
 
 ** Filling and Wrapping
 
+~visual-line-fill-column-mode~ is useful when writing Chinese prose or
+scientific prose which contains mathematics symbols, but there is no
+good using it when writing English prose. Since using this mode mainly requires you write very long lines, it would make reading the =diff= between versions really difficult. Also, it destroys code blocks in =org-mode=, so I decide to not automatically enable it from now on.
+
 #+begin_src emacs-lisp
   (use-package visual-fill-column :defer t
     :ensure t
     :bind
-    ("C-c v f" . visual-line-fill-column-mode)
-    :hook
-    (text-mode . visual-line-fill-column-mode))
+    ("C-c v f" . visual-line-fill-column-mode))
   (use-package unfill :defer t :ensure t)
 #+end_src
 

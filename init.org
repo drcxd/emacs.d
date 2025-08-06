@@ -2932,7 +2932,10 @@ packages provides support for writing Typst document in Emacs.
 
 ~visual-line-fill-column-mode~ is useful when writing Chinese prose or
 scientific prose which contains mathematics symbols, but there is no
-good using it when writing English prose. Since using this mode mainly requires you write very long lines, it would make reading the =diff= between versions really difficult. Also, it destroys code blocks in =org-mode=, so I decide to not automatically enable it from now on.
+good using it when writing English prose. Since using this mode mainly
+requires you write very long lines, it would make reading the =diff=
+between versions really difficult. Also, it destroys code blocks in
+=org-mode=, so I decide to not automatically enable it from now on.
 
 #+begin_src emacs-lisp
   (use-package visual-fill-column :defer t
@@ -2941,6 +2944,15 @@ good using it when writing English prose. Since using this mode mainly requires 
     ("C-c v f" . visual-line-fill-column-mode))
   (use-package unfill :defer t :ensure t)
 #+end_src
+
+** Transient
+
+A tutorial about using transient. I tried to use transient to develop
+a menu for my day-to-day workflow, but its manual is not intuitive for
+me, so the idea has been infinitely delayed. Maybe someday I can use
+this tutorial.
+
+https://cocode.se/emacs/transient_cont.html
 
 ** Finalizing
 

@@ -2006,6 +2006,19 @@ variable-rename.
   (add-to-list 'safe-local-eval-forms '(lsp))
 #+end_src
 
+*** eglot
+
+eglot is the Emacs built-in client for language server
+protocol. Generally, its performance is better than lsp-mode, but
+lacks several features, e.g., the semantic token highlighting. I have
+been using lsp-mode for a long time, but I decide to give eglot a try.
+
+#+begin_src emacs-lisp
+  (use-package consult-eglot
+    :ensure t
+    :defer t)
+#+end_src
+
 *** COMMENT citre
 
 citre is a package that use tags files to provide IDE-like features

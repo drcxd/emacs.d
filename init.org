@@ -2006,7 +2006,7 @@ variable-rename.
   (add-to-list 'safe-local-eval-forms '(lsp))
 #+end_src
 
-*** eglot
+*** COMMENT eglot
 
 eglot is the Emacs built-in client for language server
 protocol. Generally, its performance is better than lsp-mode, but
@@ -2605,7 +2605,7 @@ bibliographic notes can be easily created in org-roam context.
     (setq citar-org-roam-capture-template-key "r"))
 #+end_src
 
-** projectile
+** COMMENT projectile
 
 Project can be applied to organize anything you are working on. Not
 only programming project, but also writing project, note-taking

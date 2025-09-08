@@ -2605,6 +2605,20 @@ bibliographic notes can be easily created in org-roam context.
     (setq citar-org-roam-capture-template-key "r"))
 #+end_src
 
+*** COMMENT howm
+
+#+begin_src emacs-lisp
+  (use-package howm
+    :ensure t
+    :init
+    (require 'howm-org)
+    (setq howm-follow-theme t)
+    (with-eval-after-load 'meow
+      (add-hook 'howm-menu-hook (lambda ()
+                                  (if (not meow-motion-mode)
+                                      (meow-motion-mode))))))
+#+end_src
+
 ** COMMENT projectile
 
 Project can be applied to organize anything you are working on. Not

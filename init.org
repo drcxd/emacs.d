@@ -1599,6 +1599,17 @@ can not be maintained on different systems.
   (org-msg-mode)
 #+end_src
 
+*** org-insight
+
+#+begin_src emacs-lisp
+  (use-package org-insight :defer t
+    :ensure (org-insight
+             :type git :host github :repo "drcxd/org-insight"
+             :files ("*.el"))
+    :init
+    (setq org-insight-default-directory "~/org-roam"))
+#+end_src
+
 ** Benchmark
 
 Some Emacs users don't care about bootstrap time, they claim that they

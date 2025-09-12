@@ -1607,7 +1607,9 @@ can not be maintained on different systems.
              :type git :host github :repo "drcxd/org-insight"
              :files ("*.el"))
     :init
-    (setq org-insight-default-directory "~/org-roam"))
+    (setq org-insight-default-directory "~/org-roam"
+          org-insight-live-preview-debounce 0.5
+          org-insight-live-preview-display 'replace))
 #+end_src
 
 ** Benchmark

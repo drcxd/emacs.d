@@ -1968,6 +1968,7 @@ variable-rename.
     (setq lsp-headerline-breadcrumb-enable nil
           lsp-semantic-tokens-apply-modifiers nil
           lsp-semantic-tokens-enable t
+          lsp-enable-on-type-formatting nil
           read-process-output-max (* 1024 1024)) ;; to increase lsp performance
     (if (and (package-installed-p 'corfu) (package-installed-p 'cape))
         (progn

@@ -2996,6 +2996,23 @@ this tutorial.
 
 https://cocode.se/emacs/transient_cont.html
 
+** elfeed
+
+I used to collect interesting blogs in my personal notes. However, the
+problem is that I  always forget to revisit them unless I encounter
+something reminds me of them. Now I learned that RSS feed solves my
+problem perfectly, and I am going to use elfeed for it. Gnus may do
+the same work, but elfeed seems more dedicated and easy to use.
+
+#+begin_src emacs-lisp
+  (use-package elfeed :defer t :ensure t
+    :init
+    (setq elfeed-feeds
+          '("https://www.filfre.net/feed/rss/"
+            "https://hsu.cy/feed.xml"
+            "https://hnrss.org/bestcomments/")))
+#+end_src
+
 ** Finalizing
 
 #+begin_src emacs-lisp

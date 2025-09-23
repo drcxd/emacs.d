@@ -1396,7 +1396,8 @@ etc..
      ("C-c R" . consult-ripgrep)
      ("C-c I" . consult-imenu)
      ("C-c f" . consult-fd)
-     ("C-c H" . consult-org-heading)))
+     ("C-c H" . consult-org-heading)
+     ("C-c p" . consult-project-buffer)))
 #+end_src
 
 *** embark

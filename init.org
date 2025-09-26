@@ -1389,6 +1389,11 @@ etc..
                        '("[rR][gG]" . (utf-8 . gbk-dos)))
           ;; https://github.com/minad/consult/issues/601
           (setq consult-find-args (concat find-program " . "))))
+    (with-eval-after-load 'project
+      (add-to-list 'project-switch-commands
+                   '(consult-project-buffer "Consult buffer" "b"))
+      (add-to-list 'project-switch-commands
+                   '(consult-fd "Consult fd" "i")))
     :bind
     (([remap switch-to-buffer] . consult-buffer)
      ("C-c i" . consult-line)

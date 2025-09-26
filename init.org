@@ -1393,7 +1393,8 @@ etc..
       (add-to-list 'project-switch-commands
                    '(consult-project-buffer "Consult buffer" "b"))
       (add-to-list 'project-switch-commands
-                   '(consult-fd "Consult fd" "i")))
+                   '(consult-fd "Consult fd" "f"))
+      (assoc-delete-all 'project-find-file project-switch-commands))
     :bind
     (([remap switch-to-buffer] . consult-buffer)
      ("C-c i" . consult-line)

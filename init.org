@@ -3007,10 +3007,10 @@ the same work, but elfeed seems more dedicated and easy to use.
 #+begin_src emacs-lisp
   (use-package elfeed :defer t :ensure t
     :init
-    (setq elfeed-feeds
-          '("https://www.filfre.net/feed/rss/"
-            "https://hsu.cy/feed.xml"
-            "https://hnrss.org/bestcomments/")))
+    (setq elfeed-feeds '("https://www.filfre.net/feed/rss/"
+                         "https://hsu.cy/feed.xml"
+                         "https://hnrss.org/bestcomments/")
+          elfeed-search-filter "@1-month-ago +unread"))
 #+end_src
 
 ** Finalizing

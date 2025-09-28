@@ -840,6 +840,12 @@ checking.
   (setq word-wrap-by-category t)
 #+end_src
 
+** Completion
+
+#+begin_src emacs-lisp
+  (setq completion-ignore-case t)
+#+end_src
+
 ** Utility Code
 
 #+begin_src emacs-lisp

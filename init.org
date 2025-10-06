@@ -2133,7 +2133,7 @@ To execute scheme code in org-mode, org-babel's [[https://orgmode.org/worg/org-c
 [[https://www.nongnu.org/geiser/][Geiser]].
 
 #+begin_src emacs-lisp
-  (use-package geiser :defer t)
+  (use-package geiser :defer t :ensure t)
 #+end_src
 
 Geiser is an Emacs front end of a Scheme interpreter, and it supports
@@ -2181,7 +2181,7 @@ Emacs. The only thing I have to do is to expose its binary =scheme= in
 the =PATH=, or customize ~geiser-chez-binary~.
 
 #+begin_src emacs-lisp
-  (use-package geiser-chez :defer t)
+  (use-package geiser-chez :defer t :ensure t)
 #+end_src
 
 ****** COMMENT Racket :dependency:

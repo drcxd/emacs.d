@@ -1847,14 +1847,20 @@ cape provides a set of completion backends. A completion back ends
 decides what are the completion candidates.
 
 #+begin_src emacs-lisp
-  (use-package company :defer t :ensure t)
+  ;; (use-package company :defer t :ensure t)
   (use-package cape
     :ensure t
     :demand t
     :config
+    (add-to-list 'completion-at-point-functions #'cape-abbrev)
     (add-to-list 'completion-at-point-functions #'cape-dabbrev)
     (add-to-list 'completion-at-point-functions #'cape-file)
-    (add-to-list 'completion-at-point-functions (cape-company-to-capf #'company-clang)))
+    ;; (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+    ;; (add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
+    (add-to-list 'completion-at-point-functions #'cape-history)
+    (add-to-list 'completion-at-point-functions #'cape-keyword)
+    ;; (add-to-list 'completion-at-point-functions (cape-company-to-capf #'company-clang))
+    )
 #+end_src
 
 *** COMMENT Code Formatting :dependency:

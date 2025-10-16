@@ -1450,8 +1450,8 @@ convenient.
           org-tags-column 0
           org-catch-invisible-edits 'show-and-error
           org-special-ctrl-a/e t
-          org-hide-emphasis-markers t
-          org-pretty-entities t
+          org-hide-emphasis-markers nil
+          org-pretty-entities nil
           org-babel-C-compiler "clang"
           org-babel-C++-compiler "clang++"
           ;; org-edit-special will replace the current window with the

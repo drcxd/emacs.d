@@ -1966,12 +1966,52 @@ symbol-overlay is the best package I have known for this task.
     (setq symbol-overlay-inhibit-map t))
 #+end_src
 
-*** lsp :dependency:
+*** Language Server Protocols
 
 Language server protocol is a powerful tool. It enables Eamcs provide
 IDE-like functions, such as auto-completion,
 jump-to-definition/declaration, find-references and even
 variable-rename.
+
+**** lsp-mode :dependency:
+
+#+begin_src emacs-lisp
+  (defun lsp-booster--advice-json-parse (old-fn &rest args)
+    "Try to parse bytecode instead of json."
+    (or
+     (when (equal (following-char) ?#)
+       (let ((bytecode (read (current-buffer))))
+         (when (byte-code-function-p bytecode)
+           (funcall bytecode))))
+     (apply old-fn args)))
+
+
+  (defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
+    "Prepend emacs-lsp-booster command to lsp CMD."
+    (let ((orig-result (funcall old-fn cmd test?)))
+      (if (and (not test?)                             ;; for check lsp-server-present?
+               (not (file-remote-p default-directory)) ;; see lsp-resolve-final-command, it would add extra shell wrapper
+               lsp-use-plists
+               (not (functionp 'json-rpc-connection))  ;; native json-rpc
+               (executable-find "emacs-lsp-booster"))
+          (progn
+            (when-let ((command-from-exec-path (executable-find (car orig-result))))  ;; resolve command from exec-path (in case not found in $PATH)
+              (setcar orig-result command-from-exec-path))
+            (message "Using emacs-lsp-booster for %s!" orig-result)
+            (cons "emacs-lsp-booster" orig-result))
+        orig-result)))
+  (if (executable-find "emacs-lsp-booster")
+      (progn
+        (advice-add (if (progn (require 'json)
+                               (fboundp 'json-parse-buffer))
+                        'json-parse-buffer
+                      'json-read)
+                    :around
+                    #'lsp-booster--advice-json-parse)
+        (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)))
+
+
+#+end_src
 
 #+begin_src emacs-lisp
   (use-package lsp-mode
@@ -2038,7 +2078,7 @@ variable-rename.
   (add-to-list 'safe-local-eval-forms '(lsp))
 #+end_src
 
-*** COMMENT eglot
+**** COMMENT eglot
 
 eglot is the Emacs built-in client for language server
 protocol. Generally, its performance is better than lsp-mode, but
@@ -2049,6 +2089,29 @@ been using lsp-mode for a long time, but I decide to give eglot a try.
   (use-package consult-eglot
     :ensure t
     :defer t)
+#+end_src
+
+**** COMMENT lsp-bridge :dependency:
+
+I try lsp-bridge because it works with the language servers
+asynchronously, which makes the editing experience more
+smooth. However, after testing it, I found it does not integrate with
+Emacs as well as lsp-mode. Also, it lacks some of the features I enjoy
+in lsp-mode.
+
+#+begin_src emacs-lisp
+  ;; Dependencies
+  (use-package markdown-mode :defer t :ensure t)
+  (use-package yasnippet :defer t :ensure t)
+
+  (use-package lsp-bridge :defer t
+    :ensure (lsp-bridge
+             :type git :host github :repo "manateelazycat/lsp-bridge"
+             :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
+             :build (:not compile))
+    :init
+    ;; (global-lsp-bridge-mode)
+    )
 #+end_src
 
 *** COMMENT citre

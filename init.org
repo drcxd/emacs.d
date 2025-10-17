@@ -977,7 +977,8 @@ checking.
   (elpaca `(,@elpaca-order))
 
   ;; Uncomment for systems which cannot create symlinks:
-  (elpaca-no-symlink-mode)
+  (if (eq system-type 'windows-nt)
+      (elpaca-no-symlink-mode))
 
   (elpaca elpaca-use-package
     ;; Enable Elpaca's use-package support

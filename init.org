@@ -253,7 +253,7 @@ to manage these buffers just as you manage files in dired.
   (global-set-key (kbd "C-x C-b") 'ibuffer)
 #+end_src
 
-** Fonts and Faces :dependency:
+** COMMENT Fonts and Faces :dependency:
 
 The following are data objects and functions used to apply different
 fonts in Emacs.
@@ -374,7 +374,7 @@ fonts in Emacs.
     (interactive)
     (message "The current font profile is %s" fp/current-font-profile))
 
-  (defun fp/add-font-profile (name fixed weight &optional variable height)
+  (defun fp/add-font-profile (name fixed &optional variable weight height)
     (push (fp/make-font-profile name fixed weight variable height)
           fp/font-profiles))
 
@@ -3092,6 +3092,51 @@ the same work, but elfeed seems more dedicated and easy to use.
                          "https://hsu.cy/feed.xml"
                          "https://hnrss.org/bestcomments/")
           elfeed-search-filter "@1-month-ago +unread"))
+#+end_src
+
+** foma
+
+#+begin_src emacs-lisp
+  (use-package foma
+    :ensure (foma :type git :host github :repo "drcxd/foma" :files ("*.el")))
+
+  (elpaca-wait)
+  (require 'foma)
+
+  (setq foma-default-variable-pitch-font "Clear Sans"
+        foma-default-weight 'regular
+        foma-default-height 160)
+
+  (foma-register-fonts
+   '(("Cascadia Code" . "https://github.com/microsoft/cascadia-code/releases/download/v2407.24/CascadiaCode-2407.24.zip")
+     ("Victor Mono" . "https://rubjo.github.io/victor-mono/VictorMonoAll.zip")
+     ("Aporetic" . "https://github.com/protesilaos/aporetic/archive/refs/heads/main.zip")
+     ("IBM Plex Sans" . "https://github.com/IBM/plex/releases/download/%40ibm%2Fplex-sans%401.1.0/ibm-plex-sans.zip")
+     ("IBM Plex Mono" . "https://github.com/IBM/plex/releases/download/%40ibm%2Fplex-mono%401.1.0/ibm-plex-mono.zip")
+     ("JetBrains Mono" . "https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip")
+     ("Red Hat" . "https://github.com/RedHatOfficial/RedHatFont/archive/refs/heads/master.zip")
+     ("Source Code Pro" . "https://github.com/adobe-fonts/source-code-pro/releases/download/2.042R-u%2F1.062R-i%2F1.026R-vf/TTF-source-code-pro-2.042R-u_1.062R-i.zip")
+     ("Source Sans" . "https://github.com/adobe-fonts/source-sans/releases/download/3.052R/TTF-source-sans-3.052R.zip")
+     ("Intel One Mono" . "https://github.com/intel/intel-one-mono/releases/download/V1.4.0/ttf.zip")
+     ("Clear Sans" . "https://github.com/intel/clear-sans/archive/refs/heads/main.zip")
+     ("DejaVu" . "https://github.com/dejavu-fonts/dejavu-fonts/releases/download/version_2_37/dejavu-fonts-ttf-2.37.zip")
+     ("JuliaMono" . "https://github.com/cormullion/juliamono/releases/download/v0.059/JuliaMono-ttf.zip")
+     ("Nerd Icons" . "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/NerdFontsSymbolsOnly.zip")
+     ("LXGW WenKai" . "https://github.com/lxgw/LxgwWenKai/releases/download/v1.510/lxgw-wenkai-v1.510.zip")))
+
+  (foma-register-profiles
+   `(("Cascadia" "Cascadia Code")
+     ("Victor" "Victor Mono")
+     ("Aporetic" "Aporetic Sans Mono" "Aporetic Sans")
+     ("IBM" "IBM Plex Mono" "IBM Plex Sans")
+     ("JetBrains" "JetBrains Mono")
+     ("Red Hat" "Red Hat Mono" "Red Hat Text")
+     ("Source" "Source Code Pro" "Source Sans 3")
+     ("Intel" "Intel One Mono" "Clear Sans")
+     ("DejaVu" "DejaVu Sans Mono" "DejaVu Sans")
+     ("Julia" "JuliaMono")
+     ;; Noto fonts have to be installed manually
+     ("Noto" "Noto Sans Mono" "Noto Sans")))
 #+end_src
 
 ** Finalizing

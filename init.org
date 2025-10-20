@@ -3139,7 +3139,7 @@ the same work, but elfeed seems more dedicated and easy to use.
                         ("Julia" "JuliaMono")
                         ("Noto" "Noto Sans Mono" "Noto Sans") ;; NOTE: Have to download Noto fonts manually!
                         ("Red Hat" "Red Hat Mono" "Red Hat Text")
-                        ("Source" "Source Code Pro" "Source Sans 3")
+                        ("Source" "Source Code Pro" "Source Sans Pro")
                         ("Victor" "Victor Mono")))
 #+end_src
 

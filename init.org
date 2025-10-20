@@ -2079,6 +2079,18 @@ variable-rename.
   (add-to-list 'safe-local-eval-forms '(lsp))
 #+end_src
 
+***** Python in lsp-mode :dependency:
+
+=lsp-mode= requires a dedicated package -- =lsp-pyright= -- for the
+language server =pyright= or =basedpyright=, an open source
+alternative for =pyright=.
+
+#+begin_src emacs-lisp
+  (use-package lsp-pyright
+    :ensure t
+    :custom (lsp-pyright-langserver-command "basedpyright"))
+#+end_src
+
 **** COMMENT eglot
 
 eglot is the Emacs built-in client for language server

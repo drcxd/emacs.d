@@ -1,0 +1,52 @@
+Cloning into '/data/data/org.gnu.emacs/files/.emacs.d/elpaca/repos/elpaca'...
+Your branch is up to date with 'origin/master'.
+java.io.FileNotFoundException: /data/system/theme_config/theme_compatibility.xml: open failed: ENOENT (No such file or directory)
+	at libcore.io.IoBridge.open(IoBridge.java:575)
+	at java.io.FileInputStream.<init>(FileInputStream.java:160)
+	at java.io.FileInputStream.<init>(FileInputStream.java:115)
+	at java.io.FileReader.<init>(FileReader.java:58)
+	at miui.content.res.ThemeCompatibilityLoader.getVersion(ThemeCompatibilityLoader.java:108)
+	at miui.content.res.ThemeCompatibilityLoader.getConfigDocumentTree(ThemeCompatibilityLoader.java:126)
+	at miui.content.res.ThemeCompatibilityLoader.loadConfig(ThemeCompatibilityLoader.java:59)
+	at miui.content.res.ThemeCompatibility.<clinit>(ThemeCompatibility.java:31)
+	at miui.content.res.ThemeCompatibility.isThemeEnabled(ThemeCompatibility.java:111)
+	at android.content.res.MiuiResourcesImpl.<clinit>(MiuiResourcesImpl.java:41)
+	at android.content.res.MiuiResources.<init>(MiuiResources.java:58)
+	at android.content.res.IMiuiResourceImpl.createResources(IMiuiResourceImpl.java:13)
+	at android.content.res.ThemeManagerStub.createMiuiResources(ThemeManagerStub.java:56)
+	at android.content.res.Resources.getSystem(Resources.java:235)
+	at android.app.ActivityManager.isHighEndGfx(ActivityManager.java:1097)
+	at android.view.ThreadedRenderer.initForSystemProcess(ThreadedRenderer.java:217)
+	at android.app.ActivityThread.systemMain(ActivityThread.java:8031)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at org.gnu.emacs.EmacsNoninteractive.main(Unknown Source:29)
+	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:384)
+Caused by: android.system.ErrnoException: open failed: ENOENT (No such file or directory)
+	at libcore.io.Linux.open(Native Method)
+	at libcore.io.ForwardingOs.open(ForwardingOs.java:567)
+	at libcore.io.BlockGuardOs.open(BlockGuardOs.java:273)
+	at libcore.io.IoBridge.open(IoBridge.java:561)
+	... 20 more
+Internal error: java.lang.reflect.InvocationTargetException
+This means that the Android platform changed,
+and that Emacs needs adjustments in order to
+obtain required system internal resources.
+Please report this bug to bug-gnu-emacs@gnu.org.
+java.lang.reflect.InvocationTargetException
+	at java.lang.reflect.Method.invoke(Native Method)
+	at org.gnu.emacs.EmacsNoninteractive.main(Unknown Source:29)
+	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:384)
+Caused by: java.lang.ExceptionInInitializerError
+	at miui.contentcatcher.InterceptorProxy.addMiuiApplication(InterceptorProxy.java:82)
+	at android.app.ApplicationImpl.onCreate(ApplicationImpl.java:19)
+	at android.app.Application.onCreate(Application.java:251)
+	at android.app.ActivityThread.attach(ActivityThread.java:7984)
+	at android.app.ActivityThread.systemMain(ActivityThread.java:8035)
+	... 4 more
+Caused by: java.lang.NullPointerException: Attempt to read from field 'android.os.MessageQueue android.os.Looper.mQueue' on a null object reference
+	at android.os.Handler.<init>(Handler.java:257)
+	at android.os.Handler.<init>(Handler.java:162)
+	at miui.contentcatcher.InterceptorProxy.<clinit>(InterceptorProxy.java:42)
+	... 9 more

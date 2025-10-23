@@ -109,12 +109,6 @@ really helpful when your network environment is not good.
   (setq use-package-always-ensure t)
 #+end_src
 
-** Disable =package.el=
-
-#+begin_src emacs-lisp :tangle "early-init.el"
-  (setq package-enable-at-startup nil)
-#+end_src
-
 ** Who am I?
 
 #+begin_src emacs-lisp
@@ -251,208 +245,6 @@ to manage these buffers just as you manage files in dired.
   ;;   (setq ibuffer-filter-group-name-face 'font-lock-doc-face))
 
   (global-set-key (kbd "C-x C-b") 'ibuffer)
-#+end_src
-
-** COMMENT Fonts and Faces :dependency:
-
-The following are data objects and functions used to apply different
-fonts in Emacs.
-
-#+begin_src emacs-lisp
-  ;; credit: https://emacsredux.com/blog/2021/12/22/check-if-a-font-is-available-with-emacs-lisp/
-  (defun font-available-p (font-name)
-    "Return true if font specified by FONT-NAME is installed."
-    (find-font (font-spec :name font-name)))
-
-  (defvar fp/default-font-height 160)
-  (defvar fp/default-variable-pitch-font "")
-  (defvar fp/default-font-weight 'regular)
-  (defvar fp/current-font-profile "")
-  (defvar fp/font-profiles '())
-  (defvar fp/launch-counter 0)
-
-  (defun fp/setup-fixed-pitch-font (font height weight)
-    "Setup default and fixed-pitch faces."
-    (interactive "sFont name: \nn Font height: \nSFont weight: ")
-    (if (font-available-p font)
-        (progn
-          (set-face-attribute 'default nil
-                              :font font
-                              :weight weight
-                              :height height)
-          (set-face-attribute 'fixed-pitch nil
-                              :font font
-                              :weight weight
-                              :height 1.0))
-      (warn (format "Fonts %s is not available!" font))))
-
-  (defun fp/setup-variable-pitch-font (font)
-    "Setup variable pitch font."
-    (interactive "sFont name: ")
-    (if (font-available-p font)
-        (set-face-attribute 'variable-pitch nil
-                              :font font
-                              :height 1.0)
-      (warn (format "Fonts %s is not available!" font))))
-
-  (defun fp/setup-fonts (fixed-pitch-font height fixed-pitch-weight variable-pitch-font)
-    "Setup default, fixed-pitch and variable-pitch faces using the
-  fonts given."
-    (interactive "sFixed pitch font name: \nn Font height: \nSFont weight: \nsVariable pitch font name: ")
-    (fp/setup-fixed-pitch-font fixed-pitch-font height fixed-pitch-weight)
-    (fp/setup-variable-pitch-font variable-pitch-font))
-
-  (defun fp/setup-chinese-font (font)
-    "Make Chinese characters use the given font."
-    (interactive "sFont name: ")
-    (if (font-available-p font)
-        (set-fontset-font "fontset-default" 'han font)
-      (warn (format "Font %s is not available!" font))))
-
-  (defun fp/use-font (profile-name)
-    "Apply the font profile specified by the given profile name."
-    (interactive
-     (let ((completion-ignore-case t))
-       (list (completing-read "Font profile name: " (fp/get-font-profile-names)))))
-    (let ((profile (fp/get-font-profile profile-name)))
-      (if profile
-          (let ((fixed-pitch-font
-                 (fp/font-profile-fixed-pitch-font profile))
-                (weight
-                 (or (fp/font-profile-weight profile)
-                     fp/default-font-weight))
-                (variable-pitch-font
-                 (or (fp/font-profile-variable-pitch-font profile)
-                     fp/default-variable-pitch-font))
-                (height
-                 (or (fp/font-profile-height profile)
-                     fp/default-font-height)))
-            (fp/setup-fonts fixed-pitch-font
-                            height
-                            weight
-                            variable-pitch-font)
-            (setq fp/current-font-profile profile-name))
-        (warn "No such font profile: FP/USE-FONT:" profile-name))))
-
-  (defun fp/use-font-by-num (n)
-    (let ((len (length fp/font-profiles)))
-      (if (= 0 len)
-          (message "Empty font profiles!")
-        (let* ((idx (% n len))
-               (profile-name (car (nth idx fp/font-profiles))))
-          (fp/use-font profile-name)))))
-
-  (defun fp/use-font-by-day ()
-    "Select a font profile depends on the date."
-    (interactive)
-    (let ((day (/ (time-convert (current-time) 'integer) (* 60 60 24))))
-      (fp/use-font-by-num day)))
-
-  (defun fp/use-font-rand ()
-    "Select a font randomly."
-    (interactive)
-    (let* ((profile (seq-random-elt fp/font-profiles))
-           (profile-name (car profile)))
-      (fp/use-font profile-name)))
-
-  (use-package savehist
-    :init
-    (setq savehist-save-minibuffer-history nil)
-    :config
-    (push 'fp/launch-counter savehist-additional-variables))
-
-  (defun fp/use-font-by-launch ()
-    "Select a different font each time Emacs is launched."
-    (savehist-mode)
-    (fp/use-font-by-num fp/launch-counter)
-    (setq fp/launch-counter (+ fp/launch-counter 1))
-    (savehist-save)
-    (savehist-mode -1))
-
-  (defun fp/describe-current-font-profile ()
-    "Describe the font profile currently used."
-    (interactive)
-    (message "The current font profile is %s" fp/current-font-profile))
-
-  (defun fp/add-font-profile (name fixed &optional variable weight height)
-    (push (fp/make-font-profile name fixed weight variable height)
-          fp/font-profiles))
-
-  (defun fp/add-font-profiles (profile-list)
-    (if (not (null profile-list))
-        (let ((first (car profile-list)))
-          (fp/add-font-profile (nth 0 first)
-                               (nth 1 first)
-                               (nth 2 first)
-                               (nth 3 first)
-                               (nth 4 first))
-          (fp/add-font-profiles (cdr profile-list)))))
-
-  (defun fp/get-font-profile-names ()
-    (mapcar #'car fp/font-profiles))
-
-  (defun fp/get-font-profile (name)
-    (assoc name fp/font-profiles))
-
-  (defun fp/make-font-profile (name fixed weight variable height)
-    (cons name (list fixed weight variable height)))
-
-  (defun fp/font-profile-fixed-pitch-font (profile)
-    (nth 1 profile))
-
-  (defun fp/font-profile-weight (profile)
-    (nth 2 profile))
-
-  (defun fp/font-profile-variable-pitch-font (profile)
-    (nth 3 profile))
-
-  (defun fp/font-profile-height (profile)
-    (nth 4 profile))
-
-  (defvar fp/font-urls
-    '(("Iosevka" . "https://github.com/be5invis/Iosevka/releases/download/v32.5.0/PkgTTF-Iosevka-32.5.0.zip")
-      ("Iosevka Aile" . "https://github.com/be5invis/Iosevka/releases/download/v32.5.0/PkgTTF-IosevkaAile-32.5.0.zip")
-      ("Cascadia Code" . "https://github.com/microsoft/cascadia-code/releases/download/v2407.24/CascadiaCode-2407.24.zip")
-      ("Victor Mono" . "https://rubjo.github.io/victor-mono/VictorMonoAll.zip")
-      ("Aporetic" . "https://github.com/protesilaos/aporetic/archive/refs/heads/main.zip")
-      ("IBM Plex Sans" . "https://github.com/IBM/plex/releases/download/%40ibm%2Fplex-sans%401.1.0/ibm-plex-sans.zip")
-      ("IBM Plex Mono" . "https://github.com/IBM/plex/releases/download/%40ibm%2Fplex-mono%401.1.0/ibm-plex-mono.zip")
-      ("JetBrains Mono" . "https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip")
-      ("Red Hat" . "https://github.com/RedHatOfficial/RedHatFont/archive/refs/heads/master.zip")
-      ("Source Code Pro" . "https://github.com/adobe-fonts/source-code-pro/releases/download/2.042R-u%2F1.062R-i%2F1.026R-vf/TTF-source-code-pro-2.042R-u_1.062R-i.zip")
-      ("Source Sans" . "https://github.com/adobe-fonts/source-sans/releases/download/3.052R/TTF-source-sans-3.052R.zip")
-      ("Intel One Mono" . "https://github.com/intel/intel-one-mono/releases/download/V1.4.0/ttf.zip")
-      ("Clear Sans" . "https://github.com/intel/clear-sans/archive/refs/heads/main.zip")
-      ("DejaVu" . "https://github.com/dejavu-fonts/dejavu-fonts/releases/download/version_2_37/dejavu-fonts-ttf-2.37.zip")
-      ("JuliaMono" . "https://github.com/cormullion/juliamono/releases/download/v0.059/JuliaMono-ttf.zip")
-      ("Nerd Icons" . "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/NerdFontsSymbolsOnly.zip")
-      ("LXGW WenKai" . "https://github.com/lxgw/LxgwWenKai/releases/download/v1.510/lxgw-wenkai-v1.510.zip")))
-
-  (defvar fp/fonts-dir (file-name-concat user-emacs-directory "fonts"))
-
-  (defun fp/download-font-url-pair (pair)
-    (unless (file-exists-p fp/fonts-dir)
-      (dired-create-directory fp/fonts-dir))
-    (require 'url)
-    (if pair
-        (progn
-          (let* ((name (car pair))
-                 (url (cdr pair))
-                 (file-name (format "%s.%s" name (file-name-extension url))))
-            (url-copy-file url (file-name-concat fp/fonts-dir file-name) t)
-            (message "Font %s has been downloaded" name)))
-      (warn "Font %s has no URL!" font)))
-
-  (defun fp/download-all-fonts ()
-    (interactive)
-    (mapc #'fp/download-font-url-pair fp/font-urls))
-
-  (defun fp/download-font (font)
-    (interactive
-     (let ((completion-ignore-case t))
-       (list (completing-read "Font name: " (mapcar #'car fp/font-urls)))))
-    (let ((pair (assoc font fp/font-urls)))
-      (fp/download-font-url-pair pair)))
 #+end_src
 
 ** Mode Line
@@ -651,20 +443,6 @@ accepts Linux find program conventional arguments.
       (setq find-program "C:/msys64/usr/bin/find.exe"))
 #+end_src
 
-** Hide DOS EOL
-
-When working on Windows, sometimes I encounter files containing mixed
-EOL characters. This would make some lines ended with additional
-=^M=. To hide these annoying characters, I use the following function.
-
-#+begin_src emacs-lisp
-  (defun remove-dos-eol ()
-    "Do not show ^M in files containing mixed UNIX and DOS line endings."
-    (interactive)
-    (setq buffer-display-table (make-display-table))
-    (aset buffer-display-table ?\^M []))
-#+end_src
-
 ** prog-mode
 
 #+begin_src emacs-lisp
@@ -726,8 +504,7 @@ Credit: https://stackoverflow.com/questions/944614/emacs-does-hideshow-work-with
 #+begin_src emacs-lisp
   (use-package gnus
     :bind
-    (
-     :map gnus-summary-mode-map
+    (:map gnus-summary-mode-map
      ("v n" . gnus-summary-next-subject)
      ("v p" . gnus-summary-prev-subject)
      (:repeat-map gnus-summary-mode-repeat-map
@@ -735,7 +512,10 @@ Credit: https://stackoverflow.com/questions/944614/emacs-does-hideshow-work-with
                   ("p" . gnus-summary-prev-subject))))
 #+end_src
 
-*** News
+*** COMMENT RSS Feeds
+
+I no longer read RSS feeds in Gnus for its complexity to setup and
+inconvenience to use. Now I switch to [[*elfeed]].
 
 Subscribing a RSS feed in Gnus can not be done by simply setting a
 variable. Emacs has to execute the function
@@ -749,28 +529,12 @@ RSS feeds:
 - https://sachachua.com/blog/category/emacs-news/feed/
 - https://protesilaos.com/codelog.xml
 
-*** Mail in Emacs
+*** Mail
 
-I still can't get Gnus work, but the config I copied from this [[https://news.ycombinator.com/item?id=23420308][thread]]
-does work. I'll paste them here for future reference.
-
-#+begin_src emacs-lisp :tangle no
-  (setq
-   user-full-name "Chang Xiaoduan"
-   user-mail-address "drcxd@sina.com"
-   send-mail-function 'smtpmail-send-it
-   smtpmail-smtp-server "smtp.sina.com"
-   smtpmail-stream-type 'starttls
-   smtpmail-smtp-service 587
-   gnus-select-method
-   '(nnimap "sina"
-            (nnimap-address "imap.sina.com")
-            (nnimap-server-port 993)
-            (nnimap-stream ssl)
-            (nnmail-expiry-wait immediate)))
-#+end_src
-
-The config I figured out by reading the manual myself is like this:
+Reading E-mail in Emacs is difficult to configure since most E-mail
+service requires complicated authentication methods. Now a days I
+mostly read and write E-mail on Thunderbird. However, I keep this
+configuration in case I need to read/write E-mail on Emacs.
 
 #+begin_src emacs-lisp
   (setq
@@ -781,12 +545,12 @@ The config I figured out by reading the manual myself is like this:
    smtpmail-servers-requiring-authorization "sina")
 #+end_src
 
-The second variable is necessary. Otherwise, I got an
-"smtpmail-send-it: Sending failed: 530 Authentication required".
-According to smtpmail.el, it should try again when the server is
-requesting authentication. However, it does not. By setting the
-variable ~smtpmail-servers-requiring-authorization~, smtpmail would ask
-for authentication by default.
+The last variable is necessary. Otherwise, I got "smtpmail-send-it:
+Sending failed: 530 Authentication required".  According to
+=smtpmail.el=, it should try again when the server is requesting
+authentication. However, it does not. By setting the variable
+~smtpmail-servers-requiring-authorization~, smtpmail would ask for
+authentication by default.
 
 ** Spell Checking
 
@@ -816,9 +580,9 @@ checking.
 ** ediff
 
 #+begin_src emacs-lisp
-  (setq ediff-keep-variants nil)
-  (setq ediff-show-clashes-only t)
-  (setq ediff-split-window-function 'split-window-horizontally)
+  (setq ediff-keep-variants nil
+        ediff-show-clashes-only t
+        ediff-split-window-function 'split-window-horizontally)
 #+end_src
 
 ** imenu
@@ -893,15 +657,25 @@ checking.
   (global-set-key (kbd "C-c w") 'my/insert-workout-plan)
 #+end_src
 
+When working on Windows, sometimes I encounter files containing mixed
+EOL characters. This would make some lines ended with additional
+=^M=. To hide these annoying characters, I use the following function.
+
+#+begin_src emacs-lisp
+  (defun remove-dos-eol ()
+    "Do not show ^M in files containing mixed UNIX and DOS line endings."
+    (interactive)
+    (setq buffer-display-table (make-display-table))
+    (aset buffer-display-table ?\^M []))
+#+end_src
+
 ** Key Bindings
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-c E") 'eval-region)
-  (global-set-key (kbd "C-c P") 'compile)
+  (global-set-key (kbd "C-c e") 'eval-region)
   (global-set-key (kbd "C-c b") 'switch-to-buffer)
   (global-set-key (kbd "C-c k") 'kill-buffer)
   (global-set-key (kbd "C-c S") 'shell-command)
-  (global-set-key (kbd "C-c s t") 'hs-toggle-hiding)
   (global-set-key (kbd "C-<tab>") 'completion-at-point)
   (global-set-key (kbd "C-c t s") 'global-text-scale-adjust)
   (global-set-key (kbd "C-c t S") 'text-scale-adjust)
@@ -911,30 +685,14 @@ checking.
 
 * Third-Party Packages
 
-** COMMENT =straight.el=
+** elpaca
 
-#+begin_src emacs-lisp
-  (setq straight-use-package-by-default t)
-  (defvar bootstrap-version)
-  (let ((bootstrap-file
-         (expand-file-name
-          "straight/repos/straight.el/bootstrap.el"
-          (or (bound-and-true-p straight-base-dir)
-              user-emacs-directory)))
-        (bootstrap-version 7))
-    (unless (file-exists-p bootstrap-file)
-      (with-current-buffer
-          (url-retrieve-synchronously
-           "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-           'silent 'inhibit-cookies)
-        (goto-char (point-max))
-        (eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage))
+Using elpaca requires disabling the built-in package manager.
 
-  (straight-use-package 'org) ;; to fix org version mismatching
+#+begin_src emacs-lisp :tangle "early-init.el"
+  (setq package-enable-at-startup nil)
 #+end_src
 
-** elpaca
 
 #+begin_src emacs-lisp
   (defvar elpaca-installer-version 0.11)
@@ -1658,26 +1416,7 @@ found this alert-toast package to implement this feature.
         (setq alert-default-style 'toast)))
 #+end_src
 
-** Life Quality
-
-*** ripgrep
-
-ripgrep is a multi-threaded version of grep. It is quite useful when
-searching for certain text.
-
-#+begin_src emacs-lisp
-  (use-package ripgrep :defer t :ensure t)
-#+end_src
-
-*** wgrep
-
-wgrep allows users to modify grep/ripgrep outputs and save the changes
-to each output's original location. It is a really powerful
-interactive text file editing tool.
-
-#+begin_src emacs-lisp
-  (use-package wgrep :defer t :ensure t)
-#+end_src
+** Window Management
 
 *** zoom
 
@@ -1701,6 +1440,36 @@ one single command.
     :bind
     ("C-c z" . zoom)
     ("C-c Z" . zoom-mode))
+#+end_src
+
+*** switch-window
+
+#+begin_src emacs-lisp
+  (use-package switch-window :ensure t
+    :bind
+    (("C-c o" . switch-window)
+     ([remap other-window] . switch-window)))
+#+end_src
+
+** Life Quality
+
+*** ripgrep
+
+ripgrep is a multi-threaded version of grep. It is quite useful when
+searching for certain text.
+
+#+begin_src emacs-lisp
+  (use-package ripgrep :defer t :ensure t)
+#+end_src
+
+*** wgrep
+
+wgrep allows users to modify grep/ripgrep outputs and save the changes
+to each output's original location. It is a really powerful
+interactive text file editing tool.
+
+#+begin_src emacs-lisp
+  (use-package wgrep :defer t :ensure t)
 #+end_src
 
 *** scratch
@@ -1769,16 +1538,6 @@ easy to use.
                               (let ((message (pomidor-default-alert-message)))
                                 (when message
                                   (alert message :title "Pomidor")))))))
-#+end_src
-
-*** ace-window
-
-#+begin_src emacs-lisp
-  (use-package ace-window
-    :ensure t
-    :bind
-    (("C-c o" . ace-window)
-     ([remap other-window] . ace-window)))
 #+end_src
 
 ** Programming

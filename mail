@@ -1,0 +1,158 @@
+From: Chang Xiaoduan <drcxd@sina.com>
+To: bug-gnu-emacs@gnu.org
+Subject: 30.1; FileNotFoundException
+X-Debbugs-Cc: 
+Date: Thu, 23 Oct 2025 10:46:12 +0800
+Message-ID: <s0vy0p2pc7f.fsf@sina.com>
+--text follows this line--
+
+Hello,
+
+I get the following error on my android phone, when executing the elpaca
+initializing code.
+
+```
+java.io.FileNotFoundException: /data/system/theme_config/theme_compatibility.xml: open failed: ENOENT (No such file or directory)
+	at libcore.io.IoBridge.open(IoBridge.java:575)
+	at java.io.FileInputStream.<init>(FileInputStream.java:160)
+	at java.io.FileInputStream.<init>(FileInputStream.java:115)
+	at java.io.FileReader.<init>(FileReader.java:58)
+	at miui.content.res.ThemeCompatibilityLoader.getVersion(ThemeCompatibilityLoader.java:108)
+	at miui.content.res.ThemeCompatibilityLoader.getConfigDocumentTree(ThemeCompatibilityLoader.java:126)
+	at miui.content.res.ThemeCompatibilityLoader.loadConfig(ThemeCompatibilityLoader.java:59)
+	at miui.content.res.ThemeCompatibility.<clinit>(ThemeCompatibility.java:31)
+	at miui.content.res.ThemeCompatibility.isThemeEnabled(ThemeCompatibility.java:111)
+	at android.content.res.MiuiResourcesImpl.<clinit>(MiuiResourcesImpl.java:41)
+	at android.content.res.MiuiResources.<init>(MiuiResources.java:58)
+	at android.content.res.IMiuiResourceImpl.createResources(IMiuiResourceImpl.java:13)
+	at android.content.res.ThemeManagerStub.createMiuiResources(ThemeManagerStub.java:56)
+	at android.content.res.Resources.getSystem(Resources.java:235)
+	at android.app.ActivityManager.isHighEndGfx(ActivityManager.java:1097)
+	at android.view.ThreadedRenderer.initForSystemProcess(ThreadedRenderer.java:217)
+	at android.app.ActivityThread.systemMain(ActivityThread.java:8031)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at org.gnu.emacs.EmacsNoninteractive.main(Unknown Source:29)
+	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:384)
+Caused by: android.system.ErrnoException: open failed: ENOENT (No such file or directory)
+	at libcore.io.Linux.open(Native Method)
+	at libcore.io.ForwardingOs.open(ForwardingOs.java:567)
+	at libcore.io.BlockGuardOs.open(BlockGuardOs.java:273)
+	at libcore.io.IoBridge.open(IoBridge.java:561)
+	... 20 more
+Internal error: java.lang.reflect.InvocationTargetException
+This means that the Android platform changed,
+and that Emacs needs adjustments in order to
+obtain required system internal resources.
+Please report this bug to bug-gnu-emacs@gnu.org.
+java.lang.reflect.InvocationTargetException
+	at java.lang.reflect.Method.invoke(Native Method)
+	at org.gnu.emacs.EmacsNoninteractive.main(Unknown Source:29)
+	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:384)
+Caused by: java.lang.ExceptionInInitializerError
+	at miui.contentcatcher.InterceptorProxy.addMiuiApplication(InterceptorProxy.java:82)
+	at android.app.ApplicationImpl.onCreate(ApplicationImpl.java:19)
+	at android.app.Application.onCreate(Application.java:251)
+	at android.app.ActivityThread.attach(ActivityThread.java:7984)
+	at android.app.ActivityThread.systemMain(ActivityThread.java:8035)
+	... 4 more
+Caused by: java.lang.NullPointerException: Attempt to read from field 'android.os.MessageQueue android.os.Looper.mQueue' on a null object reference
+	at android.os.Handler.<init>(Handler.java:257)
+	at android.os.Handler.<init>(Handler.java:162)
+	at miui.contentcatcher.InterceptorProxy.<clinit>(InterceptorProxy.java:42)
+	... 9 more
+```
+
+Is it possible to fix this, or is it the OS vendor's fault?
+
+
+In GNU Emacs 30.1 (build 1, aarch64-unknown-linux-android29) of
+ 2025-02-28 built on xeon
+Repository revision: 92e96a117525885bc2c725600aca3683e4b28b7a
+Windowing system distributor 'Xiaomi', version 31.0.0
+System Description: Redmi/xaga/xaga:12/SP1A.210812.016/V13.0.14.0.SLOCNXM:user/release-keys
+
+Configured using:
+ 'configure --with-png=yes --with-webp=yes --with-gif=yes
+ --with-jpeg=yes --with-xml2=yes --with-sqlite3=yes --with-gnutls=yes
+ --with-tiff=yes --with-selinux=yes --with-modules=yes
+ --with-tree-sitter=yes --with-imagemagick=no --with-lcms2=yes
+ --with-mailutils= --with-pop=no-by-default --with-harfbuzz=yes
+ --with-threads=yes --with-rsvg=yes --enable-check-lisp-object-type=
+ 'CFLAGS=-O2 -Werror=implicit-function-declaration''
+
+Configured features:
+GIF GLIB GMP GNUTLS HARFBUZZ JPEG LIBSELINUX LIBXML2 MODULES NOTIFY
+INOTIFY PDUMPER PNG RSVG SECCOMP SQLITE3 THREADS TIFF TREE_SITTER WEBP
+ZLIB
+
+Important settings:
+  value of $LANG: en_US.utf8
+  locale-coding-system: utf-8-unix
+
+Major mode: Fundamental
+
+Minor modes in effect:
+  electric-pair-mode: t
+  server-mode: t
+  override-global-mode: t
+  repeat-mode: t
+  recentf-mode: t
+  global-auto-revert-mode: t
+  display-time-mode: t
+  tooltip-mode: t
+  global-eldoc-mode: t
+  show-paren-mode: t
+  electric-indent-mode: t
+  mouse-wheel-mode: t
+  file-name-shadow-mode: t
+  global-font-lock-mode: t
+  font-lock-mode: t
+  blink-cursor-mode: t
+  minibuffer-regexp-mode: t
+  column-number-mode: t
+  line-number-mode: t
+  transient-mark-mode: t
+  auto-composition-mode: t
+  auto-encryption-mode: t
+  auto-compression-mode: t
+  auto-save-visited-mode: t
+
+Load-path shadows:
+None found.
+
+Features:
+(shadow sort face-remap mail-extr emacsbug message mailcap yank-media
+puny dired-x dired dired-loaddefs rfc822 mml mml-sec password-cache epa
+derived epg rfc6068 epg-config gnus-util text-property-search time-date
+subr-x mm-decode mm-bodies mm-encode mail-parse rfc2231 mailabbrev
+gmm-utils mailheader sendmail rfc2047 rfc2045 ietf-drums mm-util
+mail-prsvr mail-utils hl-line hideshow elec-pair
+display-fill-column-indicator flyspell ispell warnings icons server
+use-package-diminish edmacro kmacro byte-opt cl-macs gv cl-extra
+help-mode use-package-bind-key bind-key easy-mmode cl-seq
+use-package-core bytecomp byte-compile repeat recentf tree-widget
+wid-edit autorevert filenotify cl-loaddefs cl-lib time rmc iso-transl
+tooltip cus-start cconv eldoc paren electric uniquify ediff-hook
+vc-hooks lisp-float-type elisp-mode mwheel android-win term/common-win
+touch-screen ls-lisp tool-bar dnd fontset image regexp-opt fringe
+tabulated-list replace newcomment text-mode lisp-mode prog-mode register
+page tab-bar menu-bar rfn-eshadow isearch easymenu timer select
+scroll-bar mouse jit-lock font-lock syntax font-core term/tty-colors
+frame minibuffer nadvice seq simple cl-generic indonesian philippine
+cham georgian utf-8-lang misc-lang vietnamese tibetan thai tai-viet lao
+korean japanese eucjp-ms cp51932 hebrew greek romanian slovak czech
+european ethiopic indian cyrillic chinese composite emoji-zwj charscript
+charprop case-table epa-hook jka-cmpr-hook help abbrev obarray oclosure
+cl-preloaded button loaddefs theme-loaddefs faces cus-face macroexp
+files window text-properties overlay sha1 md5 base64 format env
+code-pages mule custom widget keymap hashtable-print-readable backquote
+threads inotify android multi-tty move-toolbar make-network-process
+emacs)
+
+Memory information:
+((conses 16 76731 214486) (symbols 48 8413 51)
+ (strings 32 22203 11308) (string-bytes 1 550532) (vectors 16 16448)
+ (vector-slots 8 244338 68681) (floats 8 44 438)
+ (intervals 56 503 364) (buffers 992 12))

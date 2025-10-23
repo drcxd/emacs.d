@@ -987,7 +987,7 @@ checking.
   (elpaca-wait)
 #+end_src
 
-** Appearance
+** COMMENT Appearance
 
 *** Diminish
 
@@ -1316,7 +1316,7 @@ https://www.nerdfonts.com/#home
     (lin-global-mode 1))
 #+end_src
 
-** Completion
+** COMMENT Completion
 
 *** vertico
 
@@ -1432,7 +1432,7 @@ convenient.
   (use-package embark-consult :defer t :ensure t)
 #+end_src
 
-** org-mode
+** COMMENT org-mode
 
 #+begin_src emacs-lisp
   (use-package org :defer t
@@ -1613,7 +1613,7 @@ appearance of header line, table, time stamp and other things.
           org-insight-live-preview-display 'replace))
 #+end_src
 
-** Benchmark
+** COMMENT Benchmark
 
 Some Emacs users don't care about bootstrap time, they claim that they
 only launch Emacs once and never close it until they turn off the
@@ -1629,7 +1629,7 @@ using.
     :hook (after-init . benchmark-init/deactivate))
 #+end_src
 
-** Windows-Specific
+** COMMENT Windows-Specific
 
 *** powershell
 
@@ -1658,7 +1658,7 @@ found this alert-toast package to implement this feature.
         (setq alert-default-style 'toast)))
 #+end_src
 
-** Life Quality
+** COMMENT Life Quality
 
 *** ripgrep
 
@@ -1781,7 +1781,7 @@ easy to use.
      ([remap other-window] . ace-window)))
 #+end_src
 
-** Programming
+** COMMENT Programming
 
 *** Completion
 
@@ -2459,7 +2459,7 @@ some macro's line number has changed.
       (my/build-ubt-op-string project opt platform editor))))
 #+end_src
 
-** Templates & Snippets
+** COMMENT Templates & Snippets
 
 When programming, we have to write some boilerplate code: the
 structure of the piece of code is conventional, we only need to
@@ -2509,7 +2509,7 @@ such as lsp-mode, depends on it somehow, so I still install it.
     ("C-c Y" . yas-reload-all))
 #+end_src
 
-** Citation
+** COMMENT Citation
 
 Currently I am using org-cite, citar plus citeproc to deal with
 citation issues.
@@ -2545,7 +2545,7 @@ citation issues.
 
 Also, =org-cite-csl-styles-dir= must be set for the csl styles to work.
 
-** Taking Notes
+** COMMENT Taking Notes
 
 As a text editor, Emacs is a good place to take notes. There are also
 packages helps you organize your notes. The most popular one is
@@ -2739,7 +2739,7 @@ programming project).
     (def-projectile-commander-method ?e "Open eshell at project root." (projectile-run-eshell)))
 #+end_src
 
-** magit :dependency:
+** COMMENT magit :dependency:
 
 magit is the well-known Emacs interface for git.
 
@@ -2752,7 +2752,7 @@ magit is the well-known Emacs interface for git.
     ("C-c M" . magit))
 #+end_src
 
-** Key Binding
+** COMMENT Key Binding
 
 *** meow
 
@@ -2943,7 +2943,7 @@ binding.
    (which-key-mode))
 #+end_src
 
-** EBooks
+** COMMENT EBooks
 
 *** calibre Interface
 
@@ -3023,7 +3023,7 @@ nov is a package that allows you read EPUB files inside Emacs.
     (nov-mode . (lambda () (setq truncate-lines nil))))
 #+end_src
 
-** Typst :dependency:
+** COMMENT Typst :dependency:
 
 Typst is a new markup language for typesetting document. The following
 packages provides support for writing Typst document in Emacs.
@@ -3051,7 +3051,7 @@ packages provides support for writing Typst document in Emacs.
   (use-package ox-typst :after org :ensure t)
 #+end_src
 
-** Filling and Wrapping
+** COMMENT Filling and Wrapping
 
 ~visual-line-fill-column-mode~ is useful when writing Chinese prose or
 scientific prose which contains mathematics symbols, but there is no
@@ -3068,7 +3068,7 @@ between versions really difficult. Also, it destroys code blocks in
   (use-package unfill :defer t :ensure t)
 #+end_src
 
-** Transient
+** COMMENT Transient
 
 A tutorial about using transient. I tried to use transient to develop
 a menu for my day-to-day workflow, but its manual is not intuitive for
@@ -3077,7 +3077,7 @@ this tutorial.
 
 https://cocode.se/emacs/transient_cont.html
 
-** elfeed
+** COMMENT elfeed
 
 I used to collect interesting blogs in my personal notes. However, the
 problem is that I  always forget to revisit them unless I encounter
@@ -3094,7 +3094,7 @@ the same work, but elfeed seems more dedicated and easy to use.
           elfeed-search-filter "@1-month-ago +unread"))
 #+end_src
 
-** foma
+** COMMENT foma
 
 #+begin_src emacs-lisp
   (use-package foma

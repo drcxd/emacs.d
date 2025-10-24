@@ -1,5 +1,5 @@
 #+property: header-args:emacs-lisp :tangle init.el :comments org
-#+STARTUP: content
+#+STARTUP: overview
 
 * Abstract
 

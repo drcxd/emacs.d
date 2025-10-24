@@ -1,5 +1,5 @@
 #+property: header-args:emacs-lisp :tangle init.el :comments org
-#+STARTUP: content
+#+STARTUP: overview
 
 * Abstract
 
@@ -439,7 +439,7 @@ on Windows I have to tell Emacs where the find program is, one that
 accepts Linux find program conventional arguments.
 
 #+begin_src emacs-lisp
-  (if (eq system-type 'windows-nt)
+  (if (eq system-type 'windows-nt)
       (setq find-program "C:/msys64/usr/bin/find.exe"))
 #+end_src
 

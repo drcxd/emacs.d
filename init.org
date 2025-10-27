@@ -1358,17 +1358,16 @@ appearance of header line, table, time stamp and other things.
   (org-msg-mode)
 #+end_src
 
-*** org-insight
+*** orin
 
 #+begin_src emacs-lisp
-  (use-package org-insight :defer t
-    :ensure (org-insight
-             :type git :host github :repo "drcxd/org-insight"
+  (use-package orin :defer t
+    :ensure (orin
+             :type git :host github :repo "drcxd/orin"
              :files ("*.el"))
     :init
-    (setq org-insight-default-directory "~/org-roam"
-          org-insight-live-preview-debounce 0.5
-          org-insight-live-preview-display 'replace))
+    (setq orin-dir "~/org-roam"
+          orin-operating-mode 'modern))
 #+end_src
 
 ** Benchmark

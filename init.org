@@ -2536,20 +2536,16 @@ magit is the well-known Emacs interface for git.
     :ensure t
     :defer t
     :init
+    ;; Required. But note that this _does_ change Magit's default buffer display behavior.
     (setq magit-display-buffer-function #'display-buffer)
     (add-to-list 'display-buffer-alist
-            `((derived-mode . magit-mode)
-              (display-buffer-reuse-mode-window
-               display-buffer-same-window
-               display-buffer-pop-up-window)
-              (mode magit-mode)))
+            `((major-mode . magit-status-mode)
+              (display-buffer-reuse-window
+               display-buffer-in-direction)
+              (direction . left)
+              (window-width . 0.382)))
     :bind
     ("C-c M" . magit))
-
-
-  ;; Required. But note that this _does_ change Magit's default buffer display behavior.
-
-
 #+end_src
 
 ** Key Binding

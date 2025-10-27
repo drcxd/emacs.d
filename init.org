@@ -2941,6 +2941,20 @@ the same work, but elfeed seems more dedicated and easy to use.
   (elpaca-wait)
 #+end_src
 
+* Keyboard Macros
+
+Since keyboard macros may depends on built-in or third party packages,
+I put them here.
+
+To add new keyboard macros, first name the keyboard macros with
+~kmacro-name-last-macro~, then insert its definition with
+~insert-kbd-macro~.
+
+#+begin_src emacs-lisp
+  (defalias 'my/default-window-layout
+     (kmacro "C-x 1 C-x 3 C-x o C-x 2 C-x o 3 C-c z"))
+#+end_src
+
 * Load Custom File
 
 Finally, after all the other settings have been done, we load the

@@ -654,7 +654,7 @@ checking.
                               exercise)))
             (cdr plan))))
 
-  (global-set-key (kbd "C-c w") 'my/insert-workout-plan)
+  ;; (global-set-key (kbd "C-c w") 'my/insert-workout-plan)
 #+end_src
 
 When working on Windows, sometimes I encounter files containing mixed
@@ -1448,6 +1448,10 @@ one single command.
   (use-package switch-window :ensure t
     :bind
     (("C-c o" . switch-window)
+     ("C-c w d" . switch-window-then-delete)
+     ("C-c w m" . switch-window-then-maximize)
+     ("C-c w s" . switch-window-then-swap-buffer)
+     ("C-c w b" . switch-window-then-display-buffer)
      ([remap other-window] . switch-window)))
 #+end_src
 

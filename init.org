@@ -428,16 +428,16 @@ some mottoes selected randomly from a pre-defined list.
                '((or (major-mode . Info-mode)
                      (major-mode . help-mode))
                  (display-buffer-reuse-window
-                  display-buffer-in-direction)
-                 (direction . left)
+                  display-buffer-in-side-window)
+                 (side . left)
                  (window . root)
                  (window-width . 80)))
 
   (add-to-list 'display-buffer-alist
                '((major-mode . dired-mode)
                  (display-buffer-reuse-window
-                  display-buffer-in-direction)
-                 (direction . left)
+                  display-buffer-in-side-window)
+                 (side . left)
                  (window . root)
                  (window-width . 0.2)))
 

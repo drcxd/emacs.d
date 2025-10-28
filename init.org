@@ -2433,7 +2433,8 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
      ("C-c n b" . org-roam-buffer-toggle)
      ("C-c n B" . org-roam-buffer)
      ("C-c n a" . org-roam-alias-add)
-     ("C-c n A" . org-roam-alias-remove)))
+     ("C-c n A" . org-roam-alias-remove)
+     ("C-c n s" . org-roam-db-sync)))
 
   (use-package org-roam-ui :defer t
     :ensure t

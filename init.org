@@ -2550,8 +2550,7 @@ magit is the well-known Emacs interface for git.
             `((major-mode . magit-status-mode)
               (display-buffer-reuse-window
                display-buffer-in-direction)
-              (direction . left)
-              (window-width . 0.382)))
+              (direction . left)))
     :bind
     ("C-c M" . magit))
 #+end_src

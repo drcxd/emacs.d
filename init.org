@@ -1621,6 +1621,7 @@ display the completion candidates on the screen.
       (corfu-terminal-mode +1)))
 
   (global-corfu-mode)
+  (corfu-popupinfo-mode)
 #+end_src
 
 **** cape

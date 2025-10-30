@@ -2625,6 +2625,9 @@ add some additional configuration specific to meow.
        '("e" . meow-next-word)
        '("E" . meow-next-symbol)
        '("f" . meow-find)
+       ;; `fill-region' is assigned to F in normal mode because I
+       ;; usually select region in normal mode.
+       '("F" . fill-region)
        '("g" . meow-cancel-selection)
        '("G" . meow-grab)
        '("h" . meow-block)

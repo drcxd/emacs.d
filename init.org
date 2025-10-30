@@ -1492,6 +1492,7 @@ one single command.
      ("C-c w m" . switch-window-then-maximize)
      ("C-c w s" . switch-window-then-swap-buffer)
      ("C-c w b" . switch-window-then-display-buffer)
+     ("C-c w f" . switch-window-then-find-file)
      ([remap other-window] . switch-window)))
 #+end_src
 

@@ -433,15 +433,6 @@ some mottoes selected randomly from a pre-defined list.
                  (window . root)
                  (window-width . 80)))
 
-
-  (add-to-list 'display-buffer-alist
-               '("\\*Ibuffer\\*"
-                 (display-buffer-reuse-window
-                  display-buffer-in-side-window)
-                 (side . left)
-                 (window . root)
-                 (window-width . 0.2)))
-
   (add-to-list 'display-buffer-alist
                '((or (major-mode . dired-mode)
                      (major-mode . process-menu-mode))

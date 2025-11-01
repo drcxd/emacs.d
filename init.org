@@ -710,8 +710,8 @@ EOL characters. This would make some lines ended with additional
   (global-set-key (kbd "C-c k") 'kill-buffer)
   (global-set-key (kbd "C-c S") 'shell-command)
   (global-set-key (kbd "C-<tab>") 'completion-at-point)
-  (global-set-key (kbd "C-c t s") 'global-text-scale-adjust)
-  (global-set-key (kbd "C-c t S") 'text-scale-adjust)
+  (global-set-key (kbd "C-c t S") 'global-text-scale-adjust)
+  (global-set-key (kbd "C-c t s") 'text-scale-adjust)
   (global-set-key (kbd "C-c v l") 'visual-line-mode)
   (global-set-key (kbd "C-c v a") 'auto-fill-mode)
 #+end_src

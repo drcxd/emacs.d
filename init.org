@@ -2877,7 +2877,9 @@ between versions really difficult. Also, it destroys code blocks in
   (use-package visual-fill-column :defer t
     :ensure t
     :bind
-    ("C-c v f" . visual-line-fill-column-mode))
+    ("C-c v f" . visual-line-fill-column-mode)
+    :hook
+    (visual-fill-column-mode . visual-wrap-prefix-mode))
   (use-package unfill :defer t :ensure t)
 #+end_src
 

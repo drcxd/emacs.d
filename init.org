@@ -2911,7 +2911,7 @@ the same work, but elfeed seems more dedicated and easy to use.
 
   (setq foma-default-variable-pitch-font "Clear Sans"
         foma-default-weight 'regular
-        foma-default-height 160
+        foma-default-height 140
         foma-fonts '(("Cascadia Code" zip "https://github.com/microsoft/cascadia-code/releases/download/v2407.24/CascadiaCode-2407.24.zip")
                      ("Victor Mono" zip "https://rubjo.github.io/victor-mono/VictorMonoAll.zip")
                      ("Aporetic" zip "https://github.com/protesilaos/aporetic/archive/refs/heads/main.zip")

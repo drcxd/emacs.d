@@ -836,7 +836,7 @@ enabled. Diminish is a good package to solve this problem.
          `(symbol-overlay-face-8 ((,c :inherit modus-themes-subtle-green))))))
     (defun my/use-modus-themes ()
       (interactive)
-      (progn (global-set-key (kbd "C-c t g") 'modus-themes-select)
+      (progn (global-set-key (kbd "C-c t g") 'modus-themes-toggle)
              (modus-themes-select 'modus-operandi)))
     (setq modus-themes-disable-other-themes t)
     :config
@@ -1038,7 +1038,7 @@ https://www.nerdfonts.com/#home
     :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
 #+end_src
 
-*** logos
+*** COMMENT logos
 
 #+begin_src emacs-lisp
   (use-package olivetti :defer t
@@ -1403,7 +1403,7 @@ appearance of header line, table, time stamp and other things.
           orin-operating-mode 'modern))
 #+end_src
 
-** Benchmark
+** COMMENT Benchmark
 
 Some Emacs users don't care about bootstrap time, they claim that they
 only launch Emacs once and never close it until they turn off the
@@ -1527,7 +1527,7 @@ so you can write anything in it.
     ("C-c s c" . my/scratch-with-prefix))
 #+end_src
 
-*** Pomodoro and Timers
+*** COMMENT Pomodoro and Timers
 
 Sometimes I use the [[https://en.wikipedia.org/wiki/Pomodoro_Technique][pomodoro technique]] to force myself focus on my
 task. I have tried [[https://github.com/SqrtMinusOne/pomm.el][pomm]] but I do not like its behavior. It
@@ -2439,10 +2439,6 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
      ("C-c n a" . org-roam-alias-add)
      ("C-c n A" . org-roam-alias-remove)
      ("C-c n y" . org-roam-db-sync)))
-
-  (use-package org-roam-ui :defer t
-    :ensure t
-    :diminish ((org-roam-ui-mode . "") (org-roam-ui-follow-mode . "")))
 #+end_src
 
 **** consult-org-roam
@@ -2497,6 +2493,14 @@ bibliographic notes can be easily created in org-roam context.
                                                (file+head "%<%Y%m%d%H%M%S>.org" "#+title: ${note-title}\n")
                                                :unnarrowed t) t)
     (setq citar-org-roam-capture-template-key "r"))
+#+end_src
+
+**** COMMENT org-roam-ui
+
+#+begin_src emacs-lisp
+  (use-package org-roam-ui :defer t
+    :ensure t
+    :diminish ((org-roam-ui-mode . "") (org-roam-ui-follow-mode . "")))
 #+end_src
 
 *** COMMENT howm
@@ -2752,7 +2756,7 @@ binding.
    (which-key-mode))
 #+end_src
 
-** EBooks
+** COMMENT EBooks
 
 *** calibre Interface
 
@@ -2832,7 +2836,7 @@ nov is a package that allows you read EPUB files inside Emacs.
     (nov-mode . (lambda () (setq truncate-lines nil))))
 #+end_src
 
-** Typst :dependency:
+** COMMENT Typst :dependency:
 
 Typst is a new markup language for typesetting document. The following
 packages provides support for writing Typst document in Emacs.
@@ -2899,7 +2903,9 @@ the same work, but elfeed seems more dedicated and easy to use.
     :init
     (setq elfeed-feeds '("https://www.filfre.net/feed/rss/"
                          "https://hsu.cy/feed.xml"
-                         "https://hnrss.org/bestcomments/")
+                         "https://hnrss.org/bestcomments/"
+                         "https://sachachua.com/blog/category/emacs-news/feed/"
+                         "https://protesilaos.com/codelog.xml")
           elfeed-search-filter "@1-month-ago +unread"))
 #+end_src
 

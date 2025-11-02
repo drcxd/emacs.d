@@ -778,7 +778,7 @@ Using elpaca requires disabling the built-in package manager.
   (elpaca-wait)
 #+end_src
 
-** COMMENT Appearance
+** Appearance
 
 *** Diminish
 
@@ -1107,7 +1107,7 @@ https://www.nerdfonts.com/#home
     (lin-global-mode 1))
 #+end_src
 
-** COMMENT Completion
+** Completion
 
 *** vertico
 
@@ -1223,7 +1223,7 @@ convenient.
   (use-package embark-consult :defer t :ensure t)
 #+end_src
 
-** COMMENT org-mode
+** org-mode
 
 #+begin_src emacs-lisp
   (use-package org :defer t
@@ -1403,7 +1403,7 @@ appearance of header line, table, time stamp and other things.
           orin-operating-mode 'modern))
 #+end_src
 
-** COMMENT Benchmark
+** Benchmark
 
 Some Emacs users don't care about bootstrap time, they claim that they
 only launch Emacs once and never close it until they turn off the
@@ -1419,7 +1419,7 @@ using.
     :hook (after-init . benchmark-init/deactivate))
 #+end_src
 
-** COMMENT Windows-Specific
+** Windows-Specific
 
 *** powershell
 
@@ -2256,7 +2256,7 @@ some macro's line number has changed.
       (my/build-ubt-op-string project opt platform editor))))
 #+end_src
 
-** COMMENT Templates & Snippets
+** Templates & Snippets
 
 When programming, we have to write some boilerplate code: the
 structure of the piece of code is conventional, we only need to
@@ -2306,7 +2306,7 @@ such as lsp-mode, depends on it somehow, so I still install it.
     ("C-c Y" . yas-reload-all))
 #+end_src
 
-** COMMENT Citation
+** Citation
 
 Currently I am using org-cite, citar plus citeproc to deal with
 citation issues.
@@ -2342,7 +2342,7 @@ citation issues.
 
 Also, =org-cite-csl-styles-dir= must be set for the csl styles to work.
 
-** COMMENT Taking Notes
+** Taking Notes
 
 As a text editor, Emacs is a good place to take notes. There are also
 packages helps you organize your notes. The most popular one is
@@ -2513,7 +2513,7 @@ bibliographic notes can be easily created in org-roam context.
                                       (meow-motion-mode))))))
 #+end_src
 
-** COMMENT projectile
+** projectile
 
 Project can be applied to organize anything you are working on. Not
 only programming project, but also writing project, note-taking
@@ -2537,7 +2537,7 @@ programming project).
     (def-projectile-commander-method ?e "Open eshell at project root." (projectile-run-eshell)))
 #+end_src
 
-** COMMENT magit :dependency:
+** magit :dependency:
 
 magit is the well-known Emacs interface for git.
 
@@ -2558,7 +2558,7 @@ magit is the well-known Emacs interface for git.
     ("C-c M" . magit))
 #+end_src
 
-** COMMENT Key Binding
+** Key Binding
 
 *** meow
 
@@ -2752,7 +2752,7 @@ binding.
    (which-key-mode))
 #+end_src
 
-** COMMENT EBooks
+** EBooks
 
 *** calibre Interface
 
@@ -2832,7 +2832,7 @@ nov is a package that allows you read EPUB files inside Emacs.
     (nov-mode . (lambda () (setq truncate-lines nil))))
 #+end_src
 
-** COMMENT Typst :dependency:
+** Typst :dependency:
 
 Typst is a new markup language for typesetting document. The following
 packages provides support for writing Typst document in Emacs.
@@ -2860,7 +2860,7 @@ packages provides support for writing Typst document in Emacs.
   (use-package ox-typst :after org :ensure t)
 #+end_src
 
-** COMMENT Filling and Wrapping
+** Filling and Wrapping
 
 ~visual-line-fill-column-mode~ is useful when writing Chinese prose or
 scientific prose which contains mathematics symbols, but there is no
@@ -2877,7 +2877,7 @@ between versions really difficult. Also, it destroys code blocks in
   (use-package unfill :defer t :ensure t)
 #+end_src
 
-** COMMENT Transient
+** Transient
 
 A tutorial about using transient. I tried to use transient to develop
 a menu for my day-to-day workflow, but its manual is not intuitive for
@@ -2886,7 +2886,7 @@ this tutorial.
 
 https://cocode.se/emacs/transient_cont.html
 
-** COMMENT elfeed
+** elfeed
 
 I used to collect interesting blogs in my personal notes. However, the
 problem is that I  always forget to revisit them unless I encounter
@@ -2903,7 +2903,7 @@ the same work, but elfeed seems more dedicated and easy to use.
           elfeed-search-filter "@1-month-ago +unread"))
 #+end_src
 
-** COMMENT foma
+** foma
 
 #+begin_src emacs-lisp
   (use-package foma

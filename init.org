@@ -643,6 +643,15 @@ checking.
   (setq completion-ignore-case t)
 #+end_src
 
+** System Time Locale
+
+Use English for datetime string regardless of the operating system
+language. Credit to this SO [[https://stackoverflow.com/questions/28913294/emacs-org-mode-language-of-time-stamps][post]].
+
+#+begin_src emacs-lisp
+  (setq system-time-locale "C")
+#+end_src
+
 ** Utility Code
 
 #+begin_src emacs-lisp
@@ -1527,7 +1536,7 @@ so you can write anything in it.
     ("C-c s c" . my/scratch-with-prefix))
 #+end_src
 
-*** COMMENT Pomodoro and Timers
+*** Pomodoro and Timers
 
 Sometimes I use the [[https://en.wikipedia.org/wiki/Pomodoro_Technique][pomodoro technique]] to force myself focus on my
 task. I have tried [[https://github.com/SqrtMinusOne/pomm.el][pomm]] but I do not like its behavior. It

@@ -2361,88 +2361,88 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
 *** COMMENT org-roam
 
 #+begin_src emacs-lisp
-    (use-package org-roam
-      :ensure t
-      :defer t
-      :init
-      (setq
-       org-roam-database-connector 'sqlite-builtin
-       org-roam-directory "~/org-roam/"
-       org-roam-node-display-template (concat "${title} " (propertize "${tags}" 'face 'org-tag))
-       org-roam-capture-templates '(("d" "default" plain "%?" :target
-                                     (file+head "%<%Y%m%d%H%M%S>.org" "#+title: ${title}\n"))
-                                    ("p" "private" plain "%?" :target
-                                     (file+head "private/%<%Y%m%d%H%M%S>.org" "#+title: ${title}\n"))))
+      (use-package org-roam
+        :ensure t
+        :defer t
+        :init
+        (setq
+         org-roam-database-connector 'sqlite-builtin
+         org-roam-directory "~/org-roam/"
+         org-roam-node-display-template (concat "${title} " (propertize "${tags}" 'face 'org-tag))
+         org-roam-capture-templates '(("d" "default" plain "%?" :target
+                                       (file+head "%<%Y%m%d%H%M%S>.org" "#+title: ${title}\n"))
+                                      ("p" "private" plain "%?" :target
+                                       (file+head "private/%<%Y%m%d%H%M%S>.org" "#+title: ${title}\n"))))
 
-      (defun my/title->file-name (title)
-        "Process the input string so that it only contains valid
-    characters for file names and is no more than 32 characters."
-        (string-limit (replace-regexp-in-string file-name-invalid-regexp "" title) 32))
+        (defun my/title->file-name (title)
+          "Process the input string so that it only contains valid
+      characters for file names and is no more than 32 characters."
+          (string-limit (replace-regexp-in-string file-name-invalid-regexp "" title) 32))
 
-      (defun my/org-roam-rename-file ()
-        "Rename the current org-roam file according to its title field."
-        (if (org-roam-buffer-p)
-            (let ((title (org-roam-db--file-title))
-                  (full-name (buffer-file-name)))
-              (let ((new-name (format "%s.org" (my/title->file-name title)))
-                    (current-name (file-name-nondirectory full-name)))
-                (if (not (string= new-name current-name))
-                    (if (file-exists-p current-name)
-                        (warn (format "File %s already exists. Renaming skipped!" current-name))
+        (defun my/org-roam-rename-file ()
+          "Rename the current org-roam file according to its title field."
+          (if (org-roam-buffer-p)
+              (let ((title (org-roam-db--file-title))
+                    (full-name (buffer-file-name)))
+                (let ((new-name (format "%s.org" (my/title->file-name title)))
+                      (current-name (file-name-nondirectory full-name)))
+                  (if (not (string= new-name current-name))
                       (if (file-exists-p current-name)
-                          (rename-file buffer-file-name new-name))
-                      (set-visited-file-name new-name)))))))
+                          (warn (format "File %s already exists. Renaming skipped!" current-name))
+                        (if (file-exists-p current-name)
+                            (rename-file buffer-file-name new-name))
+                        (set-visited-file-name new-name)))))))
 
-      (defun my/org-roam-rename-buffer (&optional buffer)
-        "Try to rename the current buffer if it is an org roam buffer and
-    has a title. If possible, rename it using both its title and tags."
-        (if (org-roam-buffer-p)
-            (let ((node (org-roam-node-at-point)))
-              (if node
-                  (let ((tags (org-roam-node-tags node))
-                        (title (org-roam-node-title node)))
-                    (if title
-                        (rename-buffer (format "%s%s"
-                                               title
-                                               (apply #'concat
-                                                      (seq-map (lambda (tag) (format " #%s" tag)) tags)))
-                                       t)
-                      (let ((title (org-roam-db--file-title)))
-                        (if (> (length title) 0)
-                            (rename-buffer title t)))))))))
+        (defun my/org-roam-rename-buffer (&optional buffer)
+          "Try to rename the current buffer if it is an org roam buffer and
+      has a title. If possible, rename it using both its title and tags."
+          (if (org-roam-buffer-p)
+              (let ((node (org-roam-node-at-point)))
+                (if node
+                    (let ((tags (org-roam-node-tags node))
+                          (title (org-roam-node-title node)))
+                      (if title
+                          (rename-buffer (format "%s%s"
+                                                 title
+                                                 (apply #'concat
+                                                        (seq-map (lambda (tag) (format " #%s" tag)) tags)))
+                                         t)
+                        (let ((title (org-roam-db--file-title)))
+                          (if (> (length title) 0)
+                              (rename-buffer title t)))))))))
 
-      ;; This is inspired by denote's denote-rename-buffer-mode
-      (define-minor-mode org-roam-rename-buffer-file-mode
-        "Minor mode rename org mode buffer when opening org roam files,
-    creating new org roam nodes, and saving org roam files."
-        :global t
-        (if org-roam-rename-buffer-file-mode
-            (progn
-              (add-hook 'org-roam-find-file-hook #'my/org-roam-rename-buffer)
-              (add-hook 'org-roam-capture-new-node-hook #'my/org-roam-rename-buffer)
-              ;; (add-hook 'before-save-hook #'my/org-roam-rename-file)
-              (add-hook 'after-save-hook #'my/org-roam-rename-buffer))
-          (remove-hook 'org-roam-find-file-hook #'my/org-roam-rename-buffer)
-          (remove-hook 'org-roam-capture-new-node-hook #'my/org-roam-rename-buffer)
-          ;; (remove-hook 'before-save-hook #'my/org-roam-rename-file)
-          (remove-hook 'after-save-hook #'my/org-roam-rename-buffer)))
-      :config
-      (org-roam-rename-buffer-file-mode)
-      (org-roam-db-autosync-mode)
-      :bind
-      (("C-c n f" . org-roam-node-find)
-       ("C-c n i" . org-roam-node-insert)
-       ("C-c n c" . org-roam-dailies-goto-date)
-       ("C-c n d" . org-roam-dailies-goto-today)
-       ("C-c n t" . org-roam-tag-add)
-       ("C-c n T" . org-roam-tag-remove)
-       ("C-c n r" . org-roam-ref-add)
-       ("C-c n R" . org-roam-ref-remove)
-       ("C-c n b" . org-roam-buffer-toggle)
-       ("C-c n B" . org-roam-buffer)
-       ("C-c n a" . org-roam-alias-add)
-       ("C-c n A" . org-roam-alias-remove)
-       ("C-c n y" . org-roam-db-sync)))
+        ;; This is inspired by denote's denote-rename-buffer-mode
+        (define-minor-mode org-roam-rename-buffer-file-mode
+          "Minor mode rename org mode buffer when opening org roam files,
+      creating new org roam nodes, and saving org roam files."
+          :global t
+          (if org-roam-rename-buffer-file-mode
+              (progn
+                (add-hook 'org-roam-find-file-hook #'my/org-roam-rename-buffer)
+                (add-hook 'org-roam-capture-new-node-hook #'my/org-roam-rename-buffer)
+                ;; (add-hook 'before-save-hook #'my/org-roam-rename-file)
+                (add-hook 'after-save-hook #'my/org-roam-rename-buffer))
+            (remove-hook 'org-roam-find-file-hook #'my/org-roam-rename-buffer)
+            (remove-hook 'org-roam-capture-new-node-hook #'my/org-roam-rename-buffer)
+            ;; (remove-hook 'before-save-hook #'my/org-roam-rename-file)
+            (remove-hook 'after-save-hook #'my/org-roam-rename-buffer)))
+        :config
+        (org-roam-rename-buffer-file-mode)
+        (org-roam-db-autosync-mode)
+        :bind
+        (("C-c n f" . org-roam-node-find)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-dailies-goto-date)
+         ("C-c n d" . org-roam-dailies-goto-today)
+         ("C-c n t" . org-roam-tag-add)
+         ("C-c n T" . org-roam-tag-remove)
+         ("C-c n r" . org-roam-ref-add)
+         ("C-c n R" . org-roam-ref-remove)
+         ("C-c n b" . org-roam-buffer-toggle)
+         ("C-c n B" . org-roam-buffer)
+         ("C-c n a" . org-roam-alias-add)
+         ("C-c n A" . org-roam-alias-remove)
+         ("C-c n y" . org-roam-db-sync)))
 #+end_src
 
 **** consult-org-roam

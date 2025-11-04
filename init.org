@@ -2358,7 +2358,7 @@ packages helps you organize your notes. The most popular one is
 org-roam. A lighter-weight choice is denote. These two packages are
 often used to practice a note-taking methodology called [[https://zettelkasten.de/introduction/][Zettelkasten]].
 
-*** org-roam
+*** COMMENT org-roam
 
 #+begin_src emacs-lisp
     (use-package org-roam

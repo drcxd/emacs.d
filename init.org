@@ -2372,11 +2372,7 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
      org-roam-capture-templates '(("d" "default" plain "%?" :target
                                    (file+head "%<%Y%m%d%H%M%S>.org" "#+title: ${title}\n"))
                                   ("p" "private" plain "%?" :target
-                                   (file+head "private/%<%Y%m%d%H%M%S>.org" "#+title: ${title}\n")))
-     org-roam-dailies-capture-templates '(("d" "default" entry "* %?" :target
-                                           (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))
-                                          ("p" "private" entry "* %?" :target
-                                           (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
+                                   (file+head "private/%<%Y%m%d%H%M%S>.org" "#+title: ${title}\n"))))
 
     (defun my/title->file-name (title)
       "Process the input string so that it only contains valid
@@ -2437,7 +2433,7 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
     (("C-c n f" . org-roam-node-find)
      ("C-c n i" . org-roam-node-insert)
      ("C-c n c" . org-roam-dailies-goto-date)
-     ("C-c n d" . org-roam-dailies-map)
+     ("C-c n d" . org-roam-dailies-goto-today)
      ("C-c n t" . org-roam-tag-add)
      ("C-c n T" . org-roam-tag-remove)
      ("C-c n r" . org-roam-ref-add)

@@ -2507,7 +2507,7 @@ bibliographic notes can be easily created in org-roam context.
     :diminish ((org-roam-ui-mode . "") (org-roam-ui-follow-mode . "")))
 #+end_src
 
-*** Denote
+*** denote
 
 #+begin_src emacs-lisp
   ;; Remember that the website version of this manual shows the latest
@@ -2533,17 +2533,19 @@ bibliographic notes can be easily created in org-roam context.
     ;; decide.  For example:
     ( :map global-map
       ("C-c n n" . denote-open-or-create)
-      ("C-c n d" . denote-dired)
-      ("C-c n g" . denote-grep)
+      ;; ("C-c n d" . denote-dired)
+      ;; ("C-c n g" . denote-grep)
       ;; If you intend to use Denote with a variety of file types, it is
       ;; easier to bind the link-related commands to the `global-map', as
       ;; shown here.  Otherwise follow the same pattern for `org-mode-map',
       ;; `markdown-mode-map', and/or `text-mode-map'.
-      ("C-c n l" . denote-link)
-      ("C-c n L" . denote-add-links)
-      ("C-c n b" . denote-backlinks)
-      ("C-c n q c" . denote-query-contents-link) ; create link that triggers a grep
-      ("C-c n q f" . denote-query-filenames-link) ; create link that triggers a dired
+      ("C-c n i" . denote-link)
+      ("C-c n I" . denote-add-links)
+      ("C-c n b" . denote-find-backlink)
+      ("C-c n f" . denote-find-link)
+      ;; ("C-c n b" . denote-backlinks)
+      ;; ("C-c n q c" . denote-query-contents-link) ; create link that triggers a grep
+      ;; ("C-c n q f" . denote-query-filenames-link) ; create link that triggers a dired
       ;; Note that `denote-rename-file' can work from any context, not just
       ;; Dired bufffers.  That is why we bind it here to the `global-map'.
       ("C-c n r" . denote-rename-file)
@@ -2551,12 +2553,13 @@ bibliographic notes can be easily created in org-roam context.
 
       ;; Key bindings specifically for Dired.
       :map dired-mode-map
-      ("C-c C-d C-i" . denote-dired-link-marked-notes)
-      ("C-c C-d C-r" . denote-dired-rename-files)
-      ("C-c C-d C-k" . denote-dired-rename-marked-files-with-keywords)
-      ("C-c C-d C-R" . denote-dired-rename-marked-files-using-front-matter))
+      ;; ("C-c C-d C-i" . denote-dired-link-marked-notes)
+      ;; ("C-c C-d C-r" . denote-dired-rename-files)
+      ;; ("C-c C-d C-k" . denote-dired-rename-marked-files-with-keywords)
+      ;; ("C-c C-d C-R" . denote-dired-rename-marked-files-using-front-matter)
+      )
 
-    :config
+    :init
     ;; Remember to check the doc string of each of those variables.
     (setq denote-directory (expand-file-name "~/notes/"))
     (setq denote-save-buffers nil)
@@ -2571,6 +2574,7 @@ bibliographic notes can be easily created in org-roam context.
     ;; Pick dates, where relevant, with Org's advanced interface:
     (setq denote-date-prompt-use-org-read-date t)
 
+    :config
     ;; Automatically rename Denote buffers using the `denote-rename-buffer-format'.
     (denote-rename-buffer-mode 1))
 
@@ -2596,10 +2600,41 @@ bibliographic notes can be easily created in org-roam context.
     :after (consult denote)
     :ensure t
     :bind
-    (("C-c n f" . consult-denote-find)
-     ("C-c n g" . consult-denote-grep))
+    ("C-c n g" . consult-denote-grep)
     :config
     (consult-denote-mode 1))
+
+  (use-package citar-denote
+    :ensure t
+    :demand t ;; Ensure minor mode loads
+    :after (citar denote)
+    :init
+    ;; Package defaults
+    (setq citar-denote-file-type 'org)
+    (setq citar-denote-keyword "bib")
+    (setq citar-denote-signature nil)
+    (setq citar-denote-subdir nil)
+    (setq citar-denote-template nil)
+    (setq citar-denote-title-format "title")
+    (setq citar-denote-title-format-andstr "and")
+    (setq citar-denote-title-format-authors 1)
+    (setq citar-denote-use-bib-keywords nil)
+    :config
+    (citar-denote-mode)
+    ;; :preface
+    ;; (bind-key "C-c w n" #'citar-denote-open-note)
+    ;; Bind all available commands
+    ;; :bind (("C-c w d" . citar-denote-dwim)
+    ;;        ("C-c w e" . citar-denote-open-reference-entry)
+    ;;        ("C-c w a" . citar-denote-add-citekey)
+    ;;        ("C-c w k" . citar-denote-remove-citekey)
+    ;;        ("C-c w r" . citar-denote-find-reference)
+    ;;        ("C-c w l" . citar-denote-link-reference)
+    ;;        ("C-c w f" . citar-denote-find-citation)
+    ;;        ("C-c w x" . citar-denote-nocite)
+    ;;        ("C-c w y" . citar-denote-cite-nocite)
+    ;;        ("C-c w z" . citar-denote-nobib))
+    )
 #+end_src
 
 *** COMMENT howm

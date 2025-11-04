@@ -2436,9 +2436,8 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
     :bind
     (("C-c n f" . org-roam-node-find)
      ("C-c n i" . org-roam-node-insert)
-     ("C-c n c" . org-roam-capture)
-     ("C-c n d" . org-roam-dailies-goto-today)
-     ("C-c n D" . org-roam-dailies-goto-date)
+     ("C-c n c" . org-roam-dailies-goto-date)
+     ("C-c n d" . org-roam-dailies-map)
      ("C-c n t" . org-roam-tag-add)
      ("C-c n T" . org-roam-tag-remove)
      ("C-c n r" . org-roam-ref-add)

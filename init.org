@@ -429,8 +429,8 @@ some mottoes selected randomly from a pre-defined list.
                      (major-mode . help-mode)
                      (major-mode . messages-buffer-mode))
                  (display-buffer-reuse-window
-                  display-buffer-in-direction)
-                 (direction . left)
+                  display-buffer-in-side-window)
+                 (side . left)
                  (window . root)
                  (window-width . 80)))
 
@@ -438,8 +438,8 @@ some mottoes selected randomly from a pre-defined list.
                '((or (major-mode . dired-mode)
                      (major-mode . process-menu-mode))
                  (display-buffer-reuse-window
-                  display-buffer-in-direction)
-                 (direction . left)
+                  display-buffer-in-side-window)
+                 (side . left)
                  (window . root)
                  (window-width . 40)))
 

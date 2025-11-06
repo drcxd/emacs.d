@@ -652,6 +652,14 @@ language. Credit to this SO [[https://stackoverflow.com/questions/28913294/emacs
   (setq system-time-locale "C")
 #+end_src
 
+** HTML Rendering
+
+Use the same width as ~fill-column~ for ~shr-width~.
+
+#+begin_src emacs-lisp
+  (setq shr-width fill-column)
+#+end_src
+
 ** Utility Code
 
 #+begin_src emacs-lisp

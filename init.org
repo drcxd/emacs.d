@@ -2377,13 +2377,13 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
      org-roam-database-connector 'sqlite-builtin
      org-roam-directory "~/org-roam/"
      org-roam-node-display-template (concat "${title} " (propertize "${tags}" 'face 'org-tag))
-     org-roam-capture-templates '(("d" "default" plain "%?"
+     org-roam-capture-templates '(("d" "default file" plain "%?"
                                    :target
                                    (file+head "%<%Y%m%d%H%M%S>.org" "#+title: ${title}\n"))
-                                  ("p" "private" plain "%?"
+                                  ("p" "private file" plain "%?"
                                    :target
                                    (file+head "private/%<%Y%m%d%H%M%S>.org" "#+title: ${title}\n"))
-                                  ("e" "entry" entry "* %?\n%a"
+                                  ("e" "capture entry" entry "* %?<%<%Y-%m-%d %a %H:%M>>"
                                    :target
                                    (file+head "%<%Y%m%d%H%M%S>.org" "#+title: ${title}\n")
                                    :prepend))

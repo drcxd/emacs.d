@@ -2462,16 +2462,17 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
      ("C-c n A" . org-roam-alias-remove)
      ("C-c n y" . org-roam-db-sync)
      ("C-c n c" . org-roam-capture)
+     ("C-c n F" . org-roam-refile)
      ("C-c n d d" . org-roam-dailies-goto-date)
      ("C-c n d o" . org-roam-dailies-goto-today)
      ("C-c n d y" . org-roam-dailies-goto-yesterday)
      ("C-c n d t" . org-roam-dailies-goto-tomorrow)
      ("C-c n d n" . org-roam-dailies-goto-next-note)
      ("C-c n d p" . org-roam-dailies-goto-previous-note)
-     ("C-c n d c d" . org-roam-dailies-goto-date)
-     ("C-c n d c o" . org-roam-dailies-goto-today)
-     ("C-c n d c y" . org-roam-dailies-goto-yesterday)
-     ("C-c n d c t" . org-roam-dailies-goto-tomorrow)))
+     ("C-c n d c d" . org-roam-dailies-capture-date)
+     ("C-c n d c o" . org-roam-dailies-capture-today)
+     ("C-c n d c y" . org-roam-dailies-capture-yesterday)
+     ("C-c n d c t" . org-roam-dailies-capture-tomorrow)))
 #+end_src
 
 **** consult-org-roam

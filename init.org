@@ -2383,10 +2383,11 @@ often used to practice a note-taking methodology called [[https://zettelkasten.d
                                   ("p" "private file" plain "%?"
                                    :target
                                    (file+head "private/%<%Y%m%d%H%M%S>.org" "#+title: ${title}\n"))
-                                  ("e" "capture entry" entry "* %?<%<%Y-%m-%d %a %H:%M>>"
+                                  ("e" "capture" plain "* %?<%<%Y-%m-%d %a %H:%M>>"
                                    :target
                                    (file+head "%<%Y%m%d%H%M%S>.org" "#+title: ${title}\n")
-                                   :prepend))
+                                   :prepend t
+                                   :kill-buffer t))
      org-roam-dailies-capture-templates '(("d" "default" plain "%?"
                                            :target
                                            (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d %A>\n"))))

@@ -1281,7 +1281,7 @@ etc..
      ("C-c I" . consult-imenu)
      ("C-c f" . consult-fd)
      ("C-c H" . consult-org-heading)
-     ("C-c p" . consult-project-buffer)))
+     ("C-c P" . consult-project-buffer)))
 #+end_src
 
 **** embark
@@ -1781,7 +1781,7 @@ this tutorial.
 
 https://cocode.se/emacs/transient_cont.html
 
-**** perspective
+**** COMMENT perspective
 
 #+begin_src emacs-lisp
   (use-package perspective
@@ -1789,7 +1789,7 @@ https://cocode.se/emacs/transient_cont.html
     ;; :bind
     ;; ("C-x C-b" . persp-list-buffers)         ; or use a nicer switcher, see below
     :custom
-    (persp-mode-prefix-key (kbd "C-c P"))  ; pick your own prefix key here
+    (persp-mode-prefix-key (kbd "C-c p"))  ; pick your own prefix key here
     :init
     (persp-mode)
     (with-eval-after-load 'consult

@@ -1781,6 +1781,21 @@ this tutorial.
 
 https://cocode.se/emacs/transient_cont.html
 
+**** perspective
+
+#+begin_src emacs-lisp
+  (use-package perspective
+    :ensure t
+    ;; :bind
+    ;; ("C-x C-b" . persp-list-buffers)         ; or use a nicer switcher, see below
+    :custom
+    (persp-mode-prefix-key (kbd "C-c P"))  ; pick your own prefix key here
+    :init
+    (persp-mode)
+    (with-eval-after-load 'consult
+      (consult-customize consult--source-buffer :hidden t :default nil)
+      (add-to-list 'consult-buffer-sources persp-consult-source)))
+#+end_src
 *** Programming
 
 **** COMMENT Code Formatting :dependency:

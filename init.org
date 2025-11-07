@@ -669,7 +669,7 @@ Use the same width as ~fill-column~ for ~shr-width~.
     (replace-string-in-region "{" "(" start end)
     (replace-string-in-region "}" ")" start end))
 
-  (defun my/visit-emacs-config ()
+  (defun my/config ()
     "Open init.org."
     (interactive)
     (find-file (locate-user-emacs-file "init.org")))

@@ -220,6 +220,12 @@ language. Credit to this SO [[https://stackoverflow.com/questions/28913294/emacs
   (setq word-wrap-by-category t)
 #+end_src
 
+*** Alert
+
+#+begin_src emacs-lisp
+  (setq alert-default-style 'notifications)
+#+end_src
+
 ** Development Settings
 
 *** C++
@@ -1781,7 +1787,7 @@ this tutorial.
 
 https://cocode.se/emacs/transient_cont.html
 
-**** COMMENT perspective
+**** perspective
 
 #+begin_src emacs-lisp
   (use-package perspective

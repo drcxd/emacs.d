@@ -2440,7 +2440,9 @@ between versions really difficult. Also, it destroys code blocks in
     :bind
     ("C-c v f" . visual-line-fill-column-mode)
     :hook
-    (visual-fill-column-mode . visual-wrap-prefix-mode))
+    (visual-fill-column-mode . visual-wrap-prefix-mode)
+    :init
+    (setq visual-fill-column-center-text t))
   (use-package unfill :defer t :ensure t)
 #+end_src
 

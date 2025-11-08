@@ -1789,7 +1789,7 @@ this tutorial.
 
 https://cocode.se/emacs/transient_cont.html
 
-**** perspective
+**** COMMENT perspective
 
 #+begin_src emacs-lisp
   (use-package perspective

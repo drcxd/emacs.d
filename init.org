@@ -1180,7 +1180,8 @@ https://www.nerdfonts.com/#home
                      ("Nerd Icons" zip "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/NerdFontsSymbolsOnly.zip")
                      ("LXGW WenKai" zip "https://github.com/lxgw/LxgwWenKai/releases/download/v1.510/lxgw-wenkai-v1.510.zip")
                      ("Noto Sans" google)
-                     ("Noto Sans Mono" google))
+                     ("Noto Sans Mono" google)
+                     ("Myna" zip "https://github.com/sayyadirfanali/Myna/archive/refs/heads/main.zip"))
         foma-profiles `(("Aporetic" "Aporetic Sans Mono" "Aporetic Sans")
                         ("Cascadia" "Cascadia Code")
                         ("DejaVu" "DejaVu Sans Mono" "DejaVu Sans")
@@ -1191,7 +1192,8 @@ https://www.nerdfonts.com/#home
                         ("Noto" "Noto Sans Mono" "Noto Sans")
                         ("Red Hat" "Red Hat Mono" "Red Hat Text")
                         ("Source" "Source Code Pro" "Source Sans Pro")
-                        ("Victor" "Victor Mono")))
+                        ("Victor" "Victor Mono")
+                        ("Myna" "Myna")))
 #+end_src
 
 *** Completion

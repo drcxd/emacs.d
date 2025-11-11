@@ -868,6 +868,7 @@ enabled. Diminish is a good package to solve this problem.
     :ensure t
     :defer t
     :init
+    (global-set-key (kbd "C-c t g") 'modus-themes-toggle)
     (defun my/modus-themes-custom-face ()
       (modus-themes-with-colors
         (custom-set-faces
@@ -882,10 +883,6 @@ enabled. Diminish is a good package to solve this problem.
          `(symbol-overlay-face-6 ((,c :inherit modus-themes-intense-magenta)))
          `(symbol-overlay-face-7 ((,c :inherit modus-themes-subtle-red)))
          `(symbol-overlay-face-8 ((,c :inherit modus-themes-subtle-green))))))
-    (defun my/use-modus-themes ()
-      (interactive)
-      (progn (global-set-key (kbd "C-c t g") 'modus-themes-toggle)
-             (modus-themes-select 'modus-operandi)))
     (setq modus-themes-disable-other-themes t)
     :config
     (setq modus-themes-italic-constructs t

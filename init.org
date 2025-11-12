@@ -873,21 +873,6 @@ enabled. Diminish is a good package to solve this problem.
     :defer t
     :init
     (global-set-key (kbd "C-c t g") 'modus-themes-toggle)
-    (defun my/modus-themes-custom-face ()
-      (modus-themes-with-colors
-        (custom-set-faces
-         ;; Faces used by lsp-mode package
-         `(lsp-ui-doc-background ((,c :background ,bg-dim)))
-         ;; Faces used by symbol overlay package
-         `(symbol-overlay-face-1 ((,c :inherit modus-themes-intense-blue)))
-         `(symbol-overlay-face-2 ((,c :inherit modus-themes-intense-red)))
-         `(symbol-overlay-face-3 ((,c :inherit modus-themes-intense-cyan)))
-         `(symbol-overlay-face-4 ((,c :inherit modus-themes-intense-green)))
-         `(symbol-overlay-face-5 ((,c :inherit modus-themes-intense-yellow)))
-         `(symbol-overlay-face-6 ((,c :inherit modus-themes-intense-magenta)))
-         `(symbol-overlay-face-7 ((,c :inherit modus-themes-subtle-red)))
-         `(symbol-overlay-face-8 ((,c :inherit modus-themes-subtle-green))))))
-
     (setq modus-themes-italic-constructs t
           modus-themes-bold-constructs nil
           modus-themes-mixed-fonts t
@@ -904,9 +889,7 @@ enabled. Diminish is a good package to solve this problem.
                                   (t . (variable-pitch 1.0)))
           modus-themes-disable-other-themes t)
     :config
-    (modus-themes-include-derivatives-mode)
-    :hook
-    (modus-themes-after-load-theme . my/modus-themes-custom-face))
+    (modus-themes-include-derivatives-mode))
 #+end_src
 
 **** Ligature

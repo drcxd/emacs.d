@@ -864,6 +864,8 @@ enabled. Diminish is a good package to solve this problem.
 ***** Modus Themes
 
 #+begin_src emacs-lisp
+  (use-package standard-themes :ensure t)
+  (use-package ef-themes :ensure t)
   (use-package modus-themes
     :ensure t
     :defer t
@@ -883,8 +885,7 @@ enabled. Diminish is a good package to solve this problem.
          `(symbol-overlay-face-6 ((,c :inherit modus-themes-intense-magenta)))
          `(symbol-overlay-face-7 ((,c :inherit modus-themes-subtle-red)))
          `(symbol-overlay-face-8 ((,c :inherit modus-themes-subtle-green))))))
-    (setq modus-themes-disable-other-themes t)
-    :config
+
     (setq modus-themes-italic-constructs t
           modus-themes-bold-constructs nil
           modus-themes-mixed-fonts t
@@ -898,89 +899,12 @@ enabled. Diminish is a good package to solve this problem.
                                   (5 . (variable-pitch 1.05573))
                                   (6 . (variable-pitch 1.03444))
                                   (7 . (variable-pitch 1.02129))
-                                  (t . (variable-pitch 1.0))))
+                                  (t . (variable-pitch 1.0)))
+          modus-themes-disable-other-themes t)
+    :config
+    (modus-themes-include-derivatives-mode)
     :hook
     (modus-themes-after-load-theme . my/modus-themes-custom-face))
-#+end_src
-
-***** COMMENT Standard Themes
-
-#+begin_src emacs-lisp
-  (use-package standard-themes
-    :defer t
-    :init
-    (defun my/standard-themes-custom-face ()
-      (standard-themes-with-colors
-       (custom-set-faces
-        `(lsp-ui-doc-background ((,c :background ,bg-dim)))
-        `(symbol-overlay-face-1 ((,c :inherit standard-themes-intense-blue)))
-        `(symbol-overlay-face-2 ((,c :inherit standard-themes-intense-red)))
-        `(symbol-overlay-face-3 ((,c :inherit standard-themes-intense-cyan)))
-        `(symbol-overlay-face-4 ((,c :inherit standard-themes-intense-green)))
-        `(symbol-overlay-face-5 ((,c :inherit standard-themes-intense-yello)))
-        `(symbol-overlay-face-6 ((,c :inherit standard-themes-intense-magenta)))
-        `(symbol-overlay-face-7 ((,c :inherit standard-themes-subtle-red)))
-        `(symbol-overlay-face-8 ((,c :inherit standard-themes-subtle-green))))))
-    (defun my/use-standard-themes ()
-      (interactive)
-      (progn (global-set-key (kbd "C-c t g") 'standard-themes-toggle)
-             (standard-themes-load-light)))
-    (setq standard-themes-disable-other-themes t)
-    :config
-    (setq standard-themes-bold-constructs nil
-          standard-themes-italic-constructs t
-          standard-themes-mixed-fonts t
-          standard-themes-variable-pitch-ui t
-          standard-themes-headings '((0 . (variable-pitch 1.61803))
-                                     (1 . (variable-pitch 1.38196))
-                                     (2 . (variable-pitch 1.23607))
-                                     (3 . (variable-pitch 1.1459))
-                                     (4 . (variable-pitch 1.09017))
-                                     (5 . (variable-pitch 1.05573))
-                                     (6 . (variable-pitch 1.03444))
-                                     (7 . (variable-pitch 1.02129))
-                                     (t . (variable-pitch 1.0))))
-    :hook
-    (standard-themes-post-load . my/standard-themes-custom-face))
-#+end_src
-
-***** COMMENT Ef Themes
-
-#+begin_src emacs-lisp
-  (use-package ef-themes
-    :defer t
-    :init
-    (defun my/ef-themes-custom-face ()
-      (ef-themes-with-colors
-       (custom-set-faces
-        `(lsp-ui-doc-background ((,c :background ,bg-dim)))
-        `(symbol-overlay-face-1 ((,c :background ,bg-red-intense)))
-        `(symbol-overlay-face-2 ((,c :background ,bg-green-intense)))
-        `(symbol-overlay-face-3 ((,c :background ,bg-yellow-intense)))
-        `(symbol-overlay-face-4 ((,c :background ,bg-blue-intense)))
-        `(symbol-overlay-face-5 ((,c :background ,bg-magenta-intense)))
-        `(symbol-overlay-face-6 ((,c :background ,bg-cyan-intense)))
-        `(symbol-overlay-face-7 ((,c :background ,bg-red-subtle)))
-        `(symbol-overlay-face-8 ((,c :background ,bg-green-subtle))))))
-    (defun my/use-ef-themes ()
-      (interactive)
-      (progn (global-set-key (kbd "C-c t g") 'ef-themes-select)
-             (ef-themes-select 'ef-cyprus)))
-    (setq ef-themes-disable-other-themes t)
-    :config
-    (setq ef-themes-mixed-fonts t
-          ef-themes-variable-pitch-ui t
-          ef-themes-headings '((0 . (variable-pitch 1.61803))
-                               (1 . (variable-pitch 1.38196))
-                               (2 . (variable-pitch 1.23607))
-                               (3 . (variable-pitch 1.1459))
-                               (4 . (variable-pitch 1.09017))
-                               (5 . (variable-pitch 1.05573))
-                               (6 . (variable-pitch 1.03444))
-                               (7 . (variable-pitch 1.02129))
-                               (t . (variable-pitch 1.0))))
-    :hook
-    (ef-themes-post-load . my/ef-themes-custom-face))
 #+end_src
 
 **** Ligature

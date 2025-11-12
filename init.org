@@ -319,6 +319,12 @@ the splash screen manually.
                  (window-height . 0.2)))
 
   (add-to-list 'display-buffer-alist
+               '("^\\*.*eshell\\*$" display-buffer-in-direction
+                 (direction . bottom)
+                 (window . root)
+                 (window-height . 0.3)))
+
+  (add-to-list 'display-buffer-alist
                '((or (major-mode . Info-mode)
                      (major-mode . help-mode)
                      (major-mode . messages-buffer-mode))
@@ -326,6 +332,7 @@ the splash screen manually.
                   display-buffer-in-side-window)
                  (side . left)
                  (window . root)
+                 (dedicated . t)
                  (window-width . 80)))
 
   (add-to-list 'display-buffer-alist
@@ -334,14 +341,9 @@ the splash screen manually.
                  (display-buffer-reuse-window
                   display-buffer-in-side-window)
                  (side . left)
+                 (dedicated . t)
                  (window . root)
-                 (window-width . 40)))
-
-  (add-to-list 'display-buffer-alist
-               '("^\\*.*eshell\\*$" display-buffer-in-direction
-                 (direction . bottom)
-                 (window . root)
-                 (window-height . 0.3)))
+                 (window-width . 80)))
 #+end_src
 
 *** Variable-Pitch Mode

@@ -2517,6 +2517,20 @@ packages provides support for writing Typst document in Emacs.
   (use-package ox-typst :after org :ensure t)
 #+end_src
 
+**** Mathematics in Emacs
+
+***** COMMENT math-preview
+
+This package only works on Linux out-of-the-box. On Windows, it can
+not properly pass =json= objects arguments to =math-preview=. Since I
+have to use Emacs on Windows, I would try to look for another solution
+that works across platform.
+
+#+begin_src emacs-lisp
+  (use-package math-preview :defer t
+    :ensure t)
+#+end_src
+
 **** Taking Notes
 
 As a text editor, Emacs is a good place to take notes. There are also

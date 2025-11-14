@@ -2840,6 +2840,18 @@ bibliographic notes can be easily created in org-roam context.
                                       (meow-motion-mode))))))
 #+end_src
 
+**** Input Method
+
+#+begin_src emacs-lisp
+  (use-package pyim :ensure t
+    :config
+    (setq default-input-method "pyim"))
+  (use-package pyim-wbdict :ensure t
+    :config
+    (setq pyim-default-scheme 'wubi)
+    (pyim-wbdict-v98-enable))
+#+end_src
+
 *** Key Binding
 
 **** meow

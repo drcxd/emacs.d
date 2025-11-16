@@ -2695,6 +2695,12 @@ bibliographic notes can be easily created in org-roam context.
     :after (citar org-roam)
     ;; :no-require
     :config
+    ;; Redefine citar-org-roam-setup to skip the call to org-roam-db-sync
+    (defun citar-org-roam-setup ()
+      "Setup `citar-org-roam-mode'."
+      (citar-register-notes-source
+       'citar-org-roam citar-org-roam-notes-config)
+      (setq citar-notes-source 'citar-org-roam))
     (citar-org-roam-mode)
     (add-to-list 'org-roam-capture-templates '("r" "reference" plain "%?" :target
                                                (file+head "%<%Y%m%d%H%M%S>.org" "#+title: ${note-title}\n")

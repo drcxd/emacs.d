@@ -307,7 +307,7 @@ the splash screen manually.
 
 #+begin_src emacs-lisp
   (setq switch-to-buffer-in-dedicated-window 'pop
-        switch-to-buffer-obey-display-actions nil
+        switch-to-buffer-obey-display-actions t
         ;; left top right bottom
         window-sides-slots '(1 0 0 0))
 

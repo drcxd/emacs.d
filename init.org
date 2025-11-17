@@ -218,6 +218,7 @@ language. Credit to this SO [[https://stackoverflow.com/questions/28913294/emacs
   ;; Enable wrapping after any Chinese characters
   ;; More information about this issue: https://debbugs.gnu.org/cgi/bugreport.cgi?bug=29364
   (setq word-wrap-by-category t)
+  (global-visual-wrap-prefix-mode)
 #+end_src
 
 *** Alert
@@ -2333,12 +2334,8 @@ magit is the well-known Emacs interface for git.
 
 **** Filling and Wrapping
 
-~visual-line-fill-column-mode~ is useful when writing Chinese prose or
-scientific prose which contains mathematics symbols, but there is no
-good using it when writing English prose. Since using this mode mainly
-requires you write very long lines, it would make reading the =diff=
-between versions really difficult. Also, it destroys code blocks in
-=org-mode=, so I decide to not automatically enable it from now on.
+I use ~visual-line-fill-column-mode~ to center text consists of long
+lines. It is mainly for writing prose rather than code.
 
 #+begin_src emacs-lisp
   (use-package visual-fill-column

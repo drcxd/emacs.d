@@ -1837,7 +1837,7 @@ IDE-like functions, such as auto-completion,
 jump-to-definition/declaration, find-references and even
 variable-rename.
 
-***** COMMENT lsp-mode :dependency:
+***** lsp-mode :dependency:
 
 #+begin_src emacs-lisp
   (defun lsp-booster--advice-json-parse (old-fn &rest args)
@@ -1954,7 +1954,7 @@ alternative for =pyright=.
     :custom (lsp-pyright-langserver-command "basedpyright"))
 #+end_src
 
-***** eglot
+***** COMMENT eglot
 
 eglot is the Emacs built-in client for language server protocol. It's
 more lightweight than lsp-mode, and it had been lacking a feature I

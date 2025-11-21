@@ -1886,9 +1886,9 @@ variable-rename.
       (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
             '(orderless))
       ;; Optionally configure the first word as flex filtered.
-      ;; (add-hook 'orderless-style-dispatchers #'my/orderless-dispatch-flex-first nil 'local)
+      (setq-local orderless-style-dispatchers (list #'my/orderless-dispatch-flex-first))
       ;; Optionally configure the cape-capf-buster.
-      ;; (setq-local completion-at-point-functions (list (cape-capf-buster #'lsp-completion-at-point)))
+      (setq-local completion-at-point-functions (list (cape-capf-buster #'lsp-completion-at-point)))
       (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible))
     (with-eval-after-load 'orderless
       (with-eval-after-load 'corfu

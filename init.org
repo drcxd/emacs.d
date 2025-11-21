@@ -1147,7 +1147,7 @@ in these situations.
     :ensure t
     :demand t
     :config
-    (setq completion-styles '(orderless basic)
+    (setq completion-styles '(orderless partial-completion basic)
           completion-category-defaults nil
           completion-category-overrides '((file (styles partial-completion)))))
 #+end_src
@@ -1873,8 +1873,6 @@ variable-rename.
                     :around
                     #'lsp-booster--advice-json-parse)
         (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)))
-
-
 #+end_src
 
 #+begin_src emacs-lisp
@@ -1882,20 +1880,27 @@ variable-rename.
     :ensure t
     :defer t
     :init
+    (defun my/orderless-dispatch-flex-first (_pattern index _total)
+      (and (eq index 0) 'orderless-flex))
     (defun corfu-lsp-setup ()
       (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
             '(orderless))
+      ;; Optionally configure the first word as flex filtered.
+      ;; (add-hook 'orderless-style-dispatchers #'my/orderless-dispatch-flex-first nil 'local)
+      ;; Optionally configure the cape-capf-buster.
+      ;; (setq-local completion-at-point-functions (list (cape-capf-buster #'lsp-completion-at-point)))
       (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible))
+    (with-eval-after-load 'orderless
+      (with-eval-after-load 'corfu
+        (with-eval-after-load 'cape
+          (setq lsp-completion-provider :none)
+          (add-hook 'lsp-completion-mode-hook #'corfu-lsp-setup))))
     :config
     (setq lsp-headerline-breadcrumb-enable nil
           lsp-semantic-tokens-apply-modifiers nil
           lsp-semantic-tokens-enable t
           lsp-enable-on-type-formatting nil
           read-process-output-max (* 1024 1024)) ;; to increase lsp performance
-    (if (and (package-installed-p 'corfu) (package-installed-p 'cape))
-        (progn
-          (add-hook 'lsp-completion-mode-hook #'corfu-lsp-setup)
-          (setq lsp-completion-provider :none)))
     :hook
     (lua-mode . (lambda () (setq-local lsp-enable-indentation nil)))
     (lua-ts-mode . (lambda () (setq-local lsp-enable-indentation nil)))

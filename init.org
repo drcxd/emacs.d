@@ -1940,12 +1940,37 @@ alternative for =pyright=.
 
 ***** COMMENT eglot
 
-eglot is the Emacs built-in client for language server
-protocol. Generally, its performance is better than lsp-mode, but
-lacks several features, e.g., the semantic token highlighting. I have
-been using lsp-mode for a long time, but I decide to give eglot a try.
+eglot is the Emacs built-in client for language server protocol. It's
+more lightweight than lsp-mode, and it had been lacking a feature I
+always want, the semantic token highlighting. However, the feature is
+merged into the package recently, and lsp-mode is experiencing a
+completion problem, so I have to use eglot for a while.
+
+The following code installs the latest version of eglot, rather than
+the one built-in Emacs, because I am so eager to use the semantic
+token highlighting. This requires I install other two packages:
+jsonrpc and flymake.
 
 #+begin_src emacs-lisp
+  (use-package jsonrpc
+    :ensure (jsonrpc
+             :host github
+             :repo "emacs-mirror/emacs"
+             :files ("lisp/jsonrpc.el")))
+
+  (use-package flymake
+    :ensure (flymake
+             :host github
+             :repo "emacs-mirror/emacs"
+             :files ("lisp/progmodes/flymake.el")))
+
+  (use-package eglot
+    :ensure (eglot
+             :type git
+             :host github
+             :repo "emacs-mirror/emacs"    ; mirrors Savannah instantly
+             :files ("lisp/progmodes/eglot.el" "etc/EGLOT-NEWS")))
+
   (use-package consult-eglot
     :ensure t
     :defer t)

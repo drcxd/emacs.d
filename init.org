@@ -1102,6 +1102,15 @@ https://www.nerdfonts.com/#home
                         ("Myna" "Myna")))
 #+end_src
 
+**** eldoc-box
+
+#+begin_src emacs-lisp
+  (use-package eldoc-box :defer t
+    :ensure t
+    :bind
+    ("C-c d" . eldoc-box-help-at-point))
+#+end_src
+
 *** Completion
 
 **** vertico

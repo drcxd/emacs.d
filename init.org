@@ -1194,7 +1194,7 @@ etc..
      ("C-c I" . consult-imenu)
      ("C-c f" . consult-fd)
      ("C-c H" . consult-org-heading)
-     ("C-c P" . consult-project-buffer)))
+     ("C-c p" . consult-project-buffer)))
 #+end_src
 
 **** embark

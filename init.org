@@ -1030,7 +1030,9 @@ https://www.nerdfonts.com/#home
   ;;; This sample configuration comes from the package's manual
 
   (use-package spacious-padding
-    :ensure (:wait t)
+    :ensure t
+    :init
+    (spacious-padding-mode)
     :config
     (setq spacious-padding-widths
           '( :internal-border-width 16
@@ -1040,7 +1042,6 @@ https://www.nerdfonts.com/#home
           spacious-padding-subtle-mode-line
           '( :mode-line-active error
              :mode-line-inactive shadow)))
-  (spacious-padding-mode)
 #+end_src
 
 **** lin
@@ -1111,12 +1112,14 @@ you to browse those information.
 
 #+begin_src emacs-lisp
   (use-package vertico
-    :ensure (:wait t)
+    :ensure t
     :demand t
+    :init
+    (vertico-mode)
     :config
     (setq read-extended-command-predicate #'command-completion-default-include-p
           enable-recursive-minibuffers t))
-  (vertico-mode)
+
 #+end_src
 
 **** orderless
@@ -1147,8 +1150,9 @@ of a variable or function in the completion interface. This may help
 you locate your target more quickly.
 
 #+begin_src emacs-lisp
-  (use-package marginalia :defer t :ensure (:wait t))
-  (marginalia-mode)
+  (use-package marginalia :ensure t
+    :init
+    (marginalia-mode))
 #+end_src
 
 **** consult
@@ -1224,7 +1228,7 @@ display the completion candidates on the screen.
 
 #+begin_src emacs-lisp
   (use-package corfu
-    :ensure (:wait t)
+    :ensure t
     :init
     (setq corfu-auto nil
           corfu-cycle t
@@ -1238,6 +1242,8 @@ display the completion candidates on the screen.
       "Enable Corfu in the minibuffer if `completion-at-point' is bound."
       (when (where-is-internal #'completion-at-point (list (current-local-map)))
         (corfu-mode 1)))
+    (global-corfu-mode)
+    (corfu-popupinfo-mode)
     :hook
     (minibuffer-setup . corfu-enable-in-minibuffer)
     :bind
@@ -1252,11 +1258,10 @@ display the completion candidates on the screen.
 
   (unless (display-graphic-p)
     (progn
-      (use-package corfu-terminal :defer t)
-      (corfu-terminal-mode +1)))
+      (use-package corfu-terminal
+        :ensure t
+        (corfu-terminal-mode +1))))
 
-  (global-corfu-mode)
-  (corfu-popupinfo-mode)
 #+end_src
 
 **** cape
@@ -1474,8 +1479,10 @@ appearance of header line, table, time stamp and other things.
 **** org-mode & E-Mail: org-msg
 
 #+begin_src emacs-lisp
-  (use-package org-msg :defer t
-    :ensure (:wait t)
+  (use-package org-msg
+    :ensure t
+    :init
+    (org-msg-mode)
     :config
     (setq
      org-msg-options "html-postamble:nil H:5 num:nil ^:{} toc:nil author:nil email:nil \\n:t"
@@ -1496,7 +1503,7 @@ appearance of header line, table, time stamp and other things.
   ,*Chang Xiaoduan*
   ,#+end_signature"))
 
-  (org-msg-mode)
+
 #+end_src
 
 **** orin
@@ -1821,7 +1828,7 @@ IDE-like functions, such as auto-completion,
 jump-to-definition/declaration, find-references and even
 variable-rename.
 
-***** lsp-mode :dependency:
+***** COMMENT lsp-mode :dependency:
 
 #+begin_src emacs-lisp
   (defun lsp-booster--advice-json-parse (old-fn &rest args)
@@ -1906,7 +1913,7 @@ variable-rename.
     (setq lsp-ui-doc-show-with-mouse nil))
 
   (use-package consult-lsp
-    :ensure (:wait t)
+    :ensure t
     :after (lsp-mode consult)
     :bind
     (:map lsp-mode-map
@@ -1938,7 +1945,7 @@ alternative for =pyright=.
     :custom (lsp-pyright-langserver-command "basedpyright"))
 #+end_src
 
-***** COMMENT eglot
+***** eglot
 
 eglot is the Emacs built-in client for language server protocol. It's
 more lightweight than lsp-mode, and it had been lacking a feature I

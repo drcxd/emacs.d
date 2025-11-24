@@ -3159,6 +3159,7 @@ window then start moving cursor around.
     :bind
     (("C-c a c" . avy-goto-char-timer)
      ("C-c a l" . avy-goto-line)
+     ("C-c a e" . avy-goto-end-of-line)
      ("C-c a w" . avy-goto-world)
      ("C-c a s" . avy-goto-symbol)))
 #+end_src

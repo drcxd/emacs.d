@@ -2950,7 +2950,7 @@ bibliographic notes can be easily created in org-roam context.
     (pyim-wbdict-v98-enable))
 #+end_src
 
-*** Key Binding
+*** Editing
 
 **** meow
 
@@ -3142,6 +3142,25 @@ binding.
    :diminish
    :config
    (which-key-mode))
+#+end_src
+
+**** avy
+
+avy is a package I find useful for navigating around text. It help
+reduce repeatedly moving cursor to the next line, next char. Using
+avy, I can first think about where I want to place my cursor and then
+navigate to there with a feel key strokes. It also can move cursor
+across windows, so I do not have to first =C-x o= to switch to other
+window then start moving cursor around.
+
+#+begin_src emacs-lisp
+  (use-package avy
+    :ensure t
+    :bind
+    (("C-c a c" . avy-goto-char-timer)
+     ("C-c a l" . avy-goto-line)
+     ("C-c a w" . avy-goto-world)
+     ("C-c a s" . avy-goto-symbol)))
 #+end_src
 
 *** Finalizing

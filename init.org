@@ -678,6 +678,14 @@ The code I write but not enough for a package.
             (cdr plan))))
 
   ;; (global-set-key (kbd "C-c w") 'my/insert-workout-plan)
+  (defun my/find-line-matching (file regex)
+    "Return the first line in FILE whose text matches REGEX, or nil."
+    (with-temp-buffer
+      (insert-file-contents file)
+      (goto-char (point-min))
+      (when (re-search-forward regex nil t)
+        (buffer-substring-no-properties (line-beginning-position)
+                                        (line-end-position)))))
 #+end_src
 
 When working on Windows, sometimes I encounter files containing mixed
@@ -889,6 +897,15 @@ enabled. Diminish is a good package to solve this problem.
           modus-themes-disable-other-themes t)
     :config
     (modus-themes-include-derivatives-mode))
+
+  (defun my/select-modus-theme-using-os-theme ()
+    "Select a proper modus theme depends on the os theme."
+    (interactive)
+    (let ((os-theme (my/find-line-matching "~/.config/kdeglobals" "LookAndFeelPackage")))
+      (if (and os-theme
+               (string-match "dark" os-theme))
+          (modus-themes-select 'modus-vivendi)
+        (modus-themes-select 'modus-operandi))))
 #+end_src
 
 **** Ligature

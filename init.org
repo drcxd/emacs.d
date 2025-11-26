@@ -1283,10 +1283,10 @@ display the completion candidates on the screen.
           ("SPC" . corfu-insert-separator)))
 
   (unless (display-graphic-p)
-    (progn
-      (use-package corfu-terminal
-        :ensure t
-        (corfu-terminal-mode +1))))
+    (use-package corfu-terminal
+        :ensure (:type git :host codeberg :repo "akib/emacs-corfu-terminal")
+        :init
+        (corfu-terminal-mode +1)))
 
 #+end_src
 

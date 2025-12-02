@@ -2984,8 +2984,7 @@ relies on dictionary packages such as =aspell_en=.
     :hook
     (text-mode . jinx-mode)
     :bind
-    (("C-." . jinx-correct)
-     ("C-," . jinx-next)))
+    (("C-." . jinx-correct)))
 #+end_src
 
 *** Editing

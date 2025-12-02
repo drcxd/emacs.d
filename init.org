@@ -598,7 +598,7 @@ authentication. However, it does not. By setting the variable
 ~smtpmail-servers-requiring-authorization~, smtpmail would ask for
 authentication by default.
 
-*** Spell Checking
+*** COMMENT Spell Checking
 
 Currently I use Emacs' built-in spell checker, flyspell mode for spell
 checking.
@@ -2970,6 +2970,22 @@ bibliographic notes can be easily created in org-roam context.
     :config
     (setq pyim-default-scheme 'wubi)
     (pyim-wbdict-v98-enable))
+#+end_src
+
+**** Spell Checking -- jinx :dependency:
+
+To use jinx, you have to install =enchant= on your system. It also
+relies on dictionary packages such as =aspell_en=.
+
+#+begin_src emacs-lisp
+  (use-package jinx
+    :ensure t
+    :diminish
+    :hook
+    (text-mode . jinx-mode)
+    :bind
+    (("C-." . jinx-correct)
+     ("C-," . jinx-next)))
 #+end_src
 
 *** Editing

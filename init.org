@@ -631,6 +631,12 @@ checking.
     (setq imenu-max-item-length 'Unlimited))
 #+end_src
 
+*** dictionary
+
+#+begin_src emacs-lisp
+  (setq dictionary-server "dict.org")
+#+end_src
+
 ** Not a Package
 
 The code I write but not enough for a package.

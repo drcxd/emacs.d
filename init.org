@@ -2977,10 +2977,31 @@ bibliographic notes can be easily created in org-roam context.
 To use jinx, you have to install =enchant= on your system. It also
 relies on dictionary packages such as =aspell_en=.
 
+Using jinx on Windows requires manual compilation of the dynamic
+library. Without the dll file, when jinx is enabled, it tries to
+compile it. It fails due to the compilation command is written for
+Linux systems:
+
+#+begin_example
+  gcc -I. -O2 -Wall -Wextra -fPIC -shared -o jinx-mod.dll jinx-mod.c -I/usr/include/enchant-2 -I/usr/local/include/enchant-2 -L/usr/local/lib -lenchant-2
+#+end_example
+
+We can install =enchant= on MinGW64, and the library is usually
+located at =msys64/mingw64/include/enchant-2=. Thus, we have to
+manually compile the dll using the following command in MinGW64 shell:
+
+#+begin_example
+  gcc -I. -O2 -Wall -Wextra -fPIC -shared -o jinx-mod.dll jinx-mod.c -I/mingw64/lib/enchant-2 -L/usr/local/lib -lenchant-2
+#+end_example
+
+Finally, we have to put the =.dll= file to the load path of the jinx package.
+
 #+begin_src emacs-lisp
   (use-package jinx
     :ensure t
     :diminish
+    :init
+    (setq jinx-languages "en_US")
     :hook
     (text-mode . jinx-mode)
     :bind

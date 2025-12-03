@@ -2971,7 +2971,8 @@ bibliographic notes can be easily created in org-roam context.
     ;; Disable pyim when not in meow-insert-mode
     (with-eval-after-load 'meow
       (setq-default pyim-english-input-switch-functions
-                    `((lambda () (not meow-insert-mode))))))
+                    `((lambda () (and (not meow-insert-mode)
+                                      (not (minibufferp))))))))
   (use-package pyim-wbdict :ensure t
     :config
     (setq pyim-default-scheme 'wubi)

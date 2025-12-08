@@ -583,12 +583,30 @@ mostly read and write E-mail on Thunderbird. However, I keep this
 configuration in case I need to read/write E-mail on Emacs.
 
 #+begin_src emacs-lisp
+  (setopt
+   ;; mail-user-agent 'gnus-user-agent
+   ;; read-mail-command #'gnus
+
+   gnus-save-newsrc-file nil
+   gnus-read-newsrc-file nil
+
+   gnus-interactive-exit nil)
+
   (setq
-   gnus-select-method '(nnimap "imap.sina.com")
-   send-mail-function 'smtpmail-send-it
+   gnus-select-method '(nnnil "")
+
+   ;; Receving mails
+   gnus-secondary-select-methods
+   '((nnimap
+      "sina"
+      (nnimap-stream tls)
+      (nnimap-address "imap.sina.com")))
+
+   ;; Send mails
    smtpmail-smtp-server "smtp.sina.com"
    smtpmail-stream-type 'starttls
-   smtpmail-servers-requiring-authorization "sina")
+   smtpmail-servers-requiring-authorization "sina"
+   send-mail-function 'smtpmail-send-it)
 #+end_src
 
 The last variable is necessary. Otherwise, I got "smtpmail-send-it:

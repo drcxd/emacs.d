@@ -1139,7 +1139,7 @@ https://www.nerdfonts.com/#home
                         ("Julia" "JuliaMono")
                         ("Noto" "Noto Sans Mono" "Noto Sans")
                         ("Red Hat" "Red Hat Mono" "Red Hat Text")
-                        ("Source" "Source Code Pro" "Source Sans Pro")
+                        ("Source" "Source Code Pro" "Source Sans3")
                         ("Victor" "Victor Mono")
                         ("Myna" "Myna")))
 #+end_src

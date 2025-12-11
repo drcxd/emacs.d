@@ -3251,6 +3251,23 @@ window then start moving cursor around.
      ("C-c a s" . avy-goto-symbol)))
 #+end_src
 
+*** Multimedia -- ready-player :dependency:
+
+ready-player is a package that allows you to open multimedia files in
+Emacs and play them just as you open any ordinary text file. Though
+emms is the default package for multimedia on Emacs, it does not work
+on Windows. See this [[https://www.eduardorobles.com/posts/streaming-music-in-emacs/][post]] for another one who struggled to make it
+work on Windows. I personally can not make emms work on Windows for my
+case -- playing local multimedia files. Currently, I do not use Emacs
+to play albums, so ready-player is exactly what I need.
+
+#+begin_src emacs-lisp
+  (use-package ready-player
+    :ensure t
+    :init
+    (ready-player-mode +1))
+#+end_src
+
 *** Finalizing
 
 #+begin_src emacs-lisp

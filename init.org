@@ -3251,7 +3251,7 @@ window then start moving cursor around.
      ("C-c a s" . avy-goto-symbol)))
 #+end_src
 
-*** Multimedia -- ready-player :dependency:
+*** COMMENT Multimedia -- ready-player :dependency:
 
 ready-player is a package that allows you to open multimedia files in
 Emacs and play them just as you open any ordinary text file. Though

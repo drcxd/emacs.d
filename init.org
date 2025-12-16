@@ -2493,7 +2493,9 @@ the same work, but elfeed seems more dedicated and easy to use.
                          "https://hnrss.org/bestcomments/"
                          "https://sachachua.com/blog/category/emacs-news/feed/"
                          "https://protesilaos.com/codelog.xml")
-          elfeed-search-filter "@1-month-ago +unread"))
+          elfeed-search-filter "@1-month-ago +unread")
+    :hook
+    (elfeed-show-mode . visual-line-mode))
 #+end_src
 
 **** Citation

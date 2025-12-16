@@ -2471,7 +2471,7 @@ lines. It is mainly for writing prose rather than code.
     (advice-add 'text-scale-adjust :after #'visual-fill-column-adjust)
     :init
     (setq visual-fill-column-center-text t
-          visual-fill-column-width (+ fill-column 4)
+          visual-fill-column-width (+ fill-column 8)
           visual-fill-column-fringes-outside-margins nil
           visual-fill-column-adjust-for-text-scale t))
   (use-package unfill :defer t :ensure t)

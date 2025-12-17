@@ -3040,6 +3040,25 @@ Finally, we have to put the =.dll= file to the load path of the jinx package.
     (("C-." . jinx-correct)))
 #+end_src
 
+**** reader :dependency:
+
+reader is a package that provides enhanced =pdf= and =epub= reading
+experience than packages such as doc-view, nov.el, and pdf-tools.
+
+Like jinx-mode, reader also requires manually compile a shared library
+to work. This also requires we manually compile it in MinGW64 shell on
+Windows and put the =.dll= file into the load path of the package.
+
+#+begin_src emacs-lisp
+  (if (eq system-type 'windows-nt)
+      (use-package reader
+        :ensure '(reader :type git :host codeberg :repo "divyaranjan/emacs-reader"))
+    (use-package reader
+      :ensure '(reader :type git :host codeberg :repo "divyaranjan/emacs-reader"
+                       :files ("*.el" "render-core.so")
+                       :pre-build (("make" "all")))))
+#+end_src
+
 *** Editing
 
 **** meow

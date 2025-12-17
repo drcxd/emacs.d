@@ -1952,11 +1952,12 @@ variable-rename.
     :bind
     (("C-c l l" . lsp)
      :map lsp-mode-map
-     ("C-c l c" . lsp-find-declaration)
-     ("C-c l f" . lsp-find-definition)
+     ("C-c l D" . lsp-find-declaration)
+     ("C-c l d" . lsp-find-definition)
      ("C-c l o" . lsp-clangd-find-other-file)
-     ("C-c l r" . lsp-workspace-restart)
-     ("C-c l d" . lsp-workspace-shutdown)
+     ("C-c l r" . lsp-find-references)
+     ("C-c l R" . lsp-workspace-restart)
+     ("C-c l S" . lsp-workspace-shutdown)
      ("C-c l a" . lsp-execute-code-action)
      ("C-c l n" . lsp-rename)
      ("C-c l t" . lsp-semantic-tokens-mode)))

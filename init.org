@@ -1518,7 +1518,7 @@ htmlize is necessary to export code blocks to HTML.
   (use-package htmlize :ensure t :defer t)
 #+end_src
 
-**** org-mode Appearance: org-modern
+**** COMMENT org-mode Appearance: org-modern
 
 org-modern is a package that beautify org-mode. It changes the
 appearance of header line, table, time stamp and other things.

@@ -2535,7 +2535,7 @@ citation issues.
 
 Also, =org-cite-csl-styles-dir= must be set for the csl styles to work.
 
-**** COMMENT EBooks
+**** E-Books
 
 ***** calibre Interface
 
@@ -2600,7 +2600,9 @@ Also, we can specify an external program to open a certain format of a book:
 
 Otherwise, the book is opened inside Emacs.
 
-***** nov
+***** E-books reader
+
+****** COMMENT nov
 
 nov is a package that allows you read EPUB files inside Emacs.
 
@@ -2613,6 +2615,25 @@ nov is a package that allows you read EPUB files inside Emacs.
     (setq nov-text-width t)
     :hook
     (nov-mode . (lambda () (setq truncate-lines nil))))
+#+end_src
+
+****** reader :dependency:
+
+reader is a package that provides enhanced =pdf= and =epub= reading
+experience than packages such as doc-view, nov.el, and pdf-tools.
+
+Like jinx-mode, reader also requires manually compile a shared library
+to work. This also requires we manually compile it in MinGW64 shell on
+Windows and put the =.dll= file into the load path of the package.
+
+#+begin_src emacs-lisp
+  (if (eq system-type 'windows-nt)
+      (use-package reader
+        :ensure '(reader :type git :host codeberg :repo "divyaranjan/emacs-reader"))
+    (use-package reader
+      :ensure '(reader :type git :host codeberg :repo "divyaranjan/emacs-reader"
+                       :files ("*.el" "render-core.so")
+                       :pre-build (("make" "all")))))
 #+end_src
 
 **** COMMENT Typst :dependency:
@@ -3038,25 +3059,6 @@ Finally, we have to put the =.dll= file to the load path of the jinx package.
     (text-mode . jinx-mode)
     :bind
     (("C-." . jinx-correct)))
-#+end_src
-
-**** reader :dependency:
-
-reader is a package that provides enhanced =pdf= and =epub= reading
-experience than packages such as doc-view, nov.el, and pdf-tools.
-
-Like jinx-mode, reader also requires manually compile a shared library
-to work. This also requires we manually compile it in MinGW64 shell on
-Windows and put the =.dll= file into the load path of the package.
-
-#+begin_src emacs-lisp
-  (if (eq system-type 'windows-nt)
-      (use-package reader
-        :ensure '(reader :type git :host codeberg :repo "divyaranjan/emacs-reader"))
-    (use-package reader
-      :ensure '(reader :type git :host codeberg :repo "divyaranjan/emacs-reader"
-                       :files ("*.el" "render-core.so")
-                       :pre-build (("make" "all")))))
 #+end_src
 
 *** Editing

@@ -1523,6 +1523,20 @@ htmlize is necessary to export code blocks to HTML.
 org-modern is a package that beautify org-mode. It changes the
 appearance of header line, table, time stamp and other things.
 
+After using it for a long time, I decide to disable this package. This
+starts with the difficulty of distinguishing headers of different
+levels, especially when the level number increases. I started a
+discussion thread in the package's GitHub repository about this
+issue. Then, when reading the README of the package again, I found
+that the package is incompatible with lots of other functions, such as
+~org-indent-mode~, ~org-num-mode~ and ~visual-wrap-prefix-mode~. I do
+not use ~org-indent-mode~ anyway, but I sometimes use ~org-num-mode~
+and ~visual-wrap-prefix-mode~. Considering ~org-modern~ only provides
+aesthetics changes, I prefer actual functionality. Also, it renders
+some characters using layers, which hides the actual characters. Not
+being able to see what are actually there makes me feel a bit
+insecure, but this is only my personal opinion.
+
 #+begin_src emacs-lisp
   (use-package org-modern
     :ensure t

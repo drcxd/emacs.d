@@ -1117,6 +1117,7 @@ https://www.nerdfonts.com/#home
                      ("Aporetic" zip "https://github.com/protesilaos/aporetic/archive/refs/heads/main.zip")
                      ("IBM Plex Sans" zip "https://github.com/IBM/plex/releases/download/%40ibm%2Fplex-sans%401.1.0/ibm-plex-sans.zip")
                      ("IBM Plex Mono" zip "https://github.com/IBM/plex/releases/download/%40ibm%2Fplex-mono%401.1.0/ibm-plex-mono.zip")
+                     ("IBM Plex Serif" zip "https://github.com/IBM/plex/releases/download/%40ibm%2Fplex-serif%401.1.0/ibm-plex-serif.zip")
                      ("JetBrains Mono" zip "https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip")
                      ("Red Hat" zip "https://github.com/RedHatOfficial/RedHatFont/archive/refs/heads/master.zip")
                      ("Source Code Pro" zip "https://github.com/adobe-fonts/source-code-pro/releases/download/2.042R-u%2F1.062R-i%2F1.026R-vf/TTF-source-code-pro-2.042R-u_1.062R-i.zip")
@@ -1129,30 +1130,32 @@ https://www.nerdfonts.com/#home
                      ("LXGW WenKai" zip "https://github.com/lxgw/LxgwWenKai/releases/download/v1.510/lxgw-wenkai-v1.510.zip")
                      ("Noto Sans" google)
                      ("Noto Sans Mono" google)
+                     ("Noto Serif" google)
                      ("Myna" zip "https://github.com/sayyadirfanali/Myna/archive/refs/heads/main.zip")
                      ("Maple Mono" zip "https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-CN-unhinted.zip"))
         foma-profiles '((:name "Aporetic"
-                               :fixed-pitch-font "Aporetic Sans Mono"
-                               :variable-ptich-font "Aporetic Sans")
-                        (:name "Cascadia" :fixed-pitch-font "Cascadia Code")
-                        (:name"DejaVu"
-                              :fixed-pitch-font "DejaVu Sans Mono" :variable-pitch-font "DejaVu Sans")
-                        (:name "IBM" :fixed-pitch-font "IBM Plex Mono" :variable-pitch-font "IBM Plex Sans")
-                        (:name "Intel" :fixed-pitch-font "Intel One Mono" :variable-pitch-font "Clear Sans")
-                        (:name "JetBrains" :fixed-pitch-font "JetBrains Mono")
-                        (:name "Julia" :fixed-pitch-font "JuliaMono")
+                               :fixed "Aporetic Sans Mono"
+                               :variable "Aporetic Sans")
+                        (:name "Cascadia" :fixed "Cascadia Code")
+                        (:name "DejaVu"
+                               :fixed "DejaVu Sans Mono" :variable "DejaVu Sans")
+                        (:name "IBM" :fixed "IBM Plex Mono" :variable "IBM Plex Sans" :serif "IBM Plex Serif")
+                        (:name "Intel" :fixed "Intel One Mono" :variable "Clear Sans")
+                        (:name "JetBrains" :fixed "JetBrains Mono")
+                        (:name "Julia" :fixed "JuliaMono")
                         (:name "Noto"
-                               :fixed-pitch-font "Noto Sans Mono"
-                               :variable-pitch-font "Noto Sans")
+                               :fixed "Noto Sans Mono"
+                               :variable "Noto Sans"
+                               :serif "Noto Serif")
                         (:name "Red Hat"
-                               :fixed-pitch-font "Red Hat Mono"
-                               :variable-pitch-font "Red Hat Text")
+                               :fixed "Red Hat Mono"
+                               :variable "Red Hat Text")
                         (:name "Source"
-                               :fixed-pitch-font "Source Code Pro"
-                               :variable-pitch-font "Source Sans3")
-                        (:name "Victor" :fixed-pitch-font "Victor Mono")
-                        (:name "Myna" :fixed-pitch-font "Myna")
-                        (:name "Maple Mono" :fixed-pitch-font "Maple Mono CN" :chinese-font "Maple Mono CN")))
+                               :fixed "Source Code Pro"
+                               :variable "Source Sans3")
+                        (:name "Victor" :fixed "Victor Mono")
+                        (:name "Myna" :fixed "Myna")
+                        (:name "Maple Mono" :fixed "Maple Mono CN" :chinese "Maple Mono CN")))
 #+end_src
 
 **** COMMENT eldoc-box

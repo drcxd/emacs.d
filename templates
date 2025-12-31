@@ -69,10 +69,10 @@ emacs-lisp-mode
 
 c-mode c++-mode
 
-(main "int main(int argc, char* argv[]) {" n
-      q n
-      "return 0;" n
-      "}" n)
+(main "int main(int argc, char* argv[]) {"> n
+      ""> q n
+      "return 0;"> n
+      "}"> n)
 
 (i "#include " q)
 
@@ -113,6 +113,13 @@ c++-mode
     "FConsoleCommandWithArgsDelegate::CreateLambda([](const TArray<FString>& Args){})," n
     (p "ECVF_Cheat") n
     ");" q )
+
+csharp-mode
+
+(s "/// <summary>"> n
+   "/// "> q n
+   "/// </summary>">)
+
 ;; Local Variables:
 ;; mode: lisp-data
 ;; End:

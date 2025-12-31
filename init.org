@@ -2521,7 +2521,8 @@ the same work, but elfeed seems more dedicated and easy to use.
                          "https://hsu.cy/feed.xml"
                          "https://hnrss.org/bestcomments/"
                          "https://sachachua.com/blog/category/emacs-news/feed/"
-                         "https://protesilaos.com/codelog.xml")
+                         "https://protesilaos.com/codelog.xml"
+                         "https://nonzerosum.games/rss.xml")
           elfeed-search-filter "@1-month-ago +unread")
     :hook
     (elfeed-show-mode . visual-line-mode))

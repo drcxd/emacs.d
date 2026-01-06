@@ -926,8 +926,8 @@ enabled. Diminish is a good package to solve this problem.
                 (if (eq system-type 'windows-nt)
                     (modus-themes-with-colors
                       (custom-set-faces
-                       `(fill-column-indicator ((,c :height 1.1
-                                                    :foreground ,fg-main
+                       `(fill-column-indicator ((,c :height 1.0
+                                                    :foreground ,border
                                                     :background ,bg-main))))))))
     (modus-themes-include-derivatives-mode))
 

@@ -921,6 +921,14 @@ enabled. Diminish is a good package to solve this problem.
                                   (t . (variable-pitch 1.0)))
           modus-themes-disable-other-themes t)
     :config
+    (add-hook 'modus-themes-post-load-hook
+              (lambda ()
+                (if (eq system-type 'windows-nt)
+                    (modus-themes-with-colors
+                      (custom-set-faces
+                       `(fill-column-indicator ((,c :height 1.1
+                                                    :foreground ,fg-main
+                                                    :background ,bg-main))))))))
     (modus-themes-include-derivatives-mode))
 
   (defun my/select-modus-theme-using-os-theme ()

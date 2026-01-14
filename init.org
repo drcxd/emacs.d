@@ -2511,7 +2511,9 @@ lines. It is mainly for writing prose rather than code.
           visual-fill-column-width (+ fill-column 8)
           visual-fill-column-fringes-outside-margins nil
           visual-fill-column-adjust-for-text-scale t))
-  (use-package unfill :defer t :ensure t)
+  (use-package unfill :defer t :ensure t
+    :bind
+    ("M-q" . unfill-toggle))
 #+end_src
 
 **** elfeed

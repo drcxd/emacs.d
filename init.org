@@ -1143,7 +1143,8 @@ https://www.nerdfonts.com/#home
                      ("Maple Mono" zip "https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-CN-unhinted.zip"))
         foma-profiles '((:name "Aporetic"
                                :fixed "Aporetic Sans Mono"
-                               :variable "Aporetic Sans")
+                               :variable "Aporetic Sans"
+                               :serif "Aporetic Serif")
                         (:name "Cascadia" :fixed "Cascadia Code")
                         (:name "DejaVu"
                                :fixed "DejaVu Sans Mono" :variable "DejaVu Sans")

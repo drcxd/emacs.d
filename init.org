@@ -3047,6 +3047,26 @@ bibliographic notes can be easily created in org-roam context.
                                       (meow-motion-mode))))))
 #+end_src
 
+***** COMMENT vulpea
+
+#+begin_quote
+Vulpea is a database layer for your org-mode notes.
+#+end_quote
+
+It provides better database functions than org roam. For example, org
+roam does not update the database when note files are modified by
+external processes such as git. Vulpea also performance better than
+org roam in my opinion, though I have not verified this.
+
+However, vulpea lacks some functions provided by org-roam and its
+companion packages such as citar-org-roam. For example, org-roam
+provides multiple capture templates which allows users to capture
+files to different locations easily. Vulpea still lacks this feature
+and users have to write customized code to implement it themselves. Of
+course it is not vulpea's fault, since its purpose is to be library
+rather than an application. As a result, from a user's perspective, I
+can not use it to replace org roam fully now.
+
 **** Input Method -- pyim
 
 #+begin_src emacs-lisp

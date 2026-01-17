@@ -3121,6 +3121,54 @@ Finally, we have to put the =.dll= file to the load path of the jinx package.
     (("C-." . jinx-correct)))
 #+end_src
 
+**** Publishing
+
+#+begin_src emacs-lisp
+  (defvar my/publish-tag "publish"
+    "Tag that marks the files require publishing.")
+
+  (defvar my/posts-dir "~/data/workplace/blog/posts"
+    "Directory to store published notes.")
+
+  (defun my/publish-notes (tag &optional dst-dir)
+    "Export note files that contains `tag' as one of its file tags in
+  `org-roam-directory' as HTML files and move them to `dst-dir' if
+  provided."
+    (dolist (file (directory-files org-roam-directory))
+      (if (string-suffix-p ".org" file)
+          (with-temp-buffer
+            (let* ((org-name (file-name-concat org-roam-directory file))
+                   (html-name (file-name-with-extension org-name "html")))
+              (insert-file-contents org-name)
+              (let ((beg (or (search-forward "#+filetags: " nil t)
+                             (search-forward "#+FILETAGS: " nil t))))
+                (if beg
+                    (let* ((end (line-end-position))
+                           (tags (buffer-substring beg end)))
+                      (if (string-match-p tag tags)
+                          (let* ((name-nondir (file-name-nondirectory html-name))
+                                 (dst-name (file-name-concat dst-dir name-nondir))
+                                 (org-html-postamble nil))
+                            (org-export-to-file 'html html-name)
+                            (if dst-dir
+                                (rename-file html-name dst-name t))))))))))))
+
+  (defun my/publish-notes-helper ()
+    "Helper functions that export all notes tagged with `my/publish-tag' to
+  directory `my/posts-dir'."
+    (interactive)
+    (my/publish-notes my/publish-tag my/posts-dir))
+
+  (defun my/publish-current-note ()
+    "Publish current org roam note file to `my/post-dir' as HTML file."
+    (interactive)
+    (let* ((org-html-postamble nil)
+           (html-file (org-html-export-to-html))
+           (name-nondir (file-name-nondirectory html-name))
+           (dst-name (file-name-concat my/posts-dir name-nondir)))
+      (rename-file html-file dst-name t)))
+#+end_src
+
 *** Editing
 
 **** meow

@@ -342,7 +342,7 @@ the splash screen manually.
                   display-buffer-in-side-window)
                  (side . left)
                  (window . root)
-                 (window-width . 80)))
+                 (window-width . 0.381)))
 #+end_src
 
 *** Variable-Pitch Mode

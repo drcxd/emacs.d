@@ -1417,15 +1417,18 @@ such as lsp-mode, depends on it somehow, so I still install it.
 
 #+begin_src emacs-lisp
   (use-package org :defer t
-    :ensure t
+    :ensure '(org :type git
+                  :repo "https://code.tecosaur.net/tec/org-mode.git/"
+                  :branch "dev")
     :init
     (defvar my/org-babel-languages (list '(C . t)
                                          '(racket . t)
                                          '(emacs-lisp . t)
                                          '(dot . t)))
     :hook
-    (emacs-startup . (lambda ()
-                       (org-babel-do-load-languages 'org-babel-load-languages my/org-babel-languages)))
+    ((emacs-startup . (lambda ()
+                        (org-babel-do-load-languages 'org-babel-load-languages my/org-babel-languages)))
+     (org-mode . org-latex-preview-mode))
     :config
     (setq org-ellipsis "…"
           org-auto-align-tags nil
@@ -1444,21 +1447,25 @@ such as lsp-mode, depends on it somehow, so I still install it.
     (setcar (nthcdr 4 org-emphasis-regexp-components) 5)
     (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
     ;; latex preview use dvilualatex and dvisvgm
-    (push '(luasvgm
-            :programs ("dvilualatex" "dvisvgm")
-            :descrition "dvi > svg"
-            :message "you need to install the programs: divlualatex dvisvgm"
-            :image-input-type "dvi"
-            :image-output-type "svg"
-            :image-size-adjust (1.7 . 1.5)
-            :latex-compiler
-            ("dvilualatex -shell-escape -interaction nonstopmode -output-directory %o %f")
-            :image-converter
-            ("dvisvgm %f --no-fonts --exact-bbox --scale=%S --output=%O"))
-          org-preview-latex-process-alist)
-    (setq org-preview-latex-default-process 'luasvgm)
+    ;; (push '(luasvgm
+    ;;         :programs ("dvilualatex" "dvisvgm")
+    ;;         :descrition "dvi > svg"
+    ;;         :message "you need to install the programs: divlualatex dvisvgm"
+    ;;         :image-input-type "dvi"
+    ;;         :image-output-type "svg"
+    ;;         :image-size-adjust (1.7 . 1.5)
+    ;;         :latex-compiler
+    ;;         ("dvilualatex -shell-escape -interaction nonstopmode -output-directory %o %f")
+    ;;         :image-converter
+    ;;         ("dvisvgm %f --no-fonts --exact-bbox --scale=%S --output=%O"))
+    ;;       org-preview-latex-process-alist)
+    ;; (setq org-preview-latex-default-process 'luasvgm)
     ;; latex export use lualatex
-    (setq org-latex-pdf-process '("lualatex -shell-escape -interaction=nonstopmode -output-directory=%o %f")))
+    ;; (setq org-latex-pdf-process '("lualatex -shell-escape -interaction=nonstopmode -output-directory=%o %f"))
+    ;; org latex preview settings
+    (setq
+     org-latex-preview-mode-display-live t
+     org-latex-preview-mode-update-delay 0.25))
 #+end_src
 
 **** Exporting Chinese Paragraph to HTML

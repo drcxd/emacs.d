@@ -855,6 +855,100 @@ some macro's line number has changed.
      (my/build-ubt-op-string project opt platform editor "-SkipBuild")))
 #+end_src
 
+*** Build Ignore
+
+This piece of code provides the function ~my/build-ignore~ which
+generates the =.ignore= file for git or fd using a description that
+lists the files should not be ignored. The generated =.ignore= file
+will ignore everything at the beginning. The given description is a
+multiple-line string, where each line is a directory relative to the
+=.ignore= file. Everything inside each given directory will not be
+ignored. The function returns a string that is the content of the
+=.ignore= file.
+
+I create this function since writing =.ignore= file by hand using such
+exception rules is tedious and error prone.
+
+#+begin_src emacs-lisp
+  (defun my/build-ignore--new-node (name parent)
+    "Create a new node that represents a direcotry. `NAME' is a string and
+  `PARENT' is a node created by this function. For the root node, `PARENT'
+  should be `nil'."
+    `(:name ,name
+            :children ,(make-hash-table :test 'equal)
+            :parent ,parent))
+
+  (defun my/build-ignore--build-dir-tree-iter (parent names)
+    "Auxliary function that helps build a tree structure that represents the
+  relationship between the directories mentioned by the
+  description. `PARENT' is the parent node of the first directiory in
+  `NAMES'. `NAMES' is a list of directory names where the each following
+  element is the direct child directory of its prior element.."
+    (when names
+      (let* ((name (car names))
+             (children (plist-get parent :children))
+             (node (gethash name children)))
+        (if node
+            (my/build-ignore--build-dir-tree-iter node (cdr names))
+          (let ((new-node (my/build-ignore--new-node name parent)))
+            (puthash name new-node children)
+            (my/build-ignore--build-dir-tree-iter new-node (cdr names)))))))
+
+  (defun my/build-ignore--build-dir-tree (desc)
+    "Build a tree structure represents the relationship of the directories
+  described by `DESC'."
+    (let ((lines (split-string desc "\n"))
+          (root (my/build-ignore--new-node "" nil)))
+      (dolist (line lines)
+        (let ((dirs (split-string line "/")))
+          (my/build-ignore--build-dir-tree-iter root dirs)))
+      root))
+
+
+  (defun my/build-ignore--traverse-tree (tree iter)
+    "Helper function that calls `ITER' on each node of `TREE', including the
+  root node."
+    (funcall iter tree)
+    (maphash (lambda (key value)
+               (my/build-ignore--traverse-tree value iter))
+             (plist-get tree :children)))
+
+  (defun my/build-ignore--build-full-path (node path)
+    "Helper function that returns the full path starting from the root to the
+  current node. `NODE' is the node that holds the ending directory. `PATH'
+  is an iterative argument, used to accumulate the in construction full
+  path."
+    (let ((parent (plist-get node :parent)))
+      (if parent
+          (my/build-ignore--build-full-path parent (format "%s/%s" (plist-get node :name) path))
+        (format "!%s" path))))
+
+  (defun my/build-ignore (desc)
+    "Generate the content of an .ignore file. Every file is ignored at the
+  very beginning. `DESC' is a string of multiple lines where each line is
+  a directory relative to the .ignore file. All files under each directory
+  mentioned will not be ignored. For example:
+
+  src/
+  config/
+  data/scripts/
+
+  Note that the ending slash is not necessary. Each line can also begins
+  with a starting slash."
+    (let ((ignore "*"))
+      (my/build-ignore--traverse-tree
+       (my/build-ignore--build-dir-tree desc)
+       (lambda (node)
+         ;; build node's full dir
+         (unless (string= (plist-get node :name) "")
+           (let* ((children (plist-get node :children))
+                  (is-leaf (= (hash-table-count children) 0))
+                  (full-path (my/build-ignore--build-full-path node "")))
+             (setq ignore (format "%s\n%s" ignore full-path))
+             (if is-leaf (setq ignore (format "%s\n%s**" ignore full-path)))))))
+      ignore))
+#+end_src
+
 ** Key Bindings
 
 #+begin_src emacs-lisp

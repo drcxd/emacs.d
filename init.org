@@ -2157,6 +2157,14 @@ variable-rename.
           lsp-semantic-tokens-enable t
           lsp-enable-on-type-formatting nil
           read-process-output-max (* 1024 1024)) ;; to increase lsp performance
+    ;; Require emmylua_ls https://github.com/EmmyLuaLs/emmylua-analyzer-rust
+    (with-eval-after-load 'lsp-mode
+      (lsp-register-client
+       (make-lsp-client
+        :new-connection (lsp-stdio-connection "emmylua_ls")
+        :activation-fn (lsp-activate-on "lua")
+        :priority 1
+        :server-id 'emmylua-rust)))
     :hook
     (lua-mode . (lambda () (setq-local lsp-enable-indentation nil)))
     (lua-ts-mode . (lambda () (setq-local lsp-enable-indentation nil)))

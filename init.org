@@ -1284,10 +1284,7 @@ https://www.nerdfonts.com/#home
   (use-package foma
     :ensure (foma :type git :host github :repo "drcxd/foma" :files ("*.el")))
 
-  (setq foma-default-variable-pitch-font "Clear Sans"
-        foma-default-weight 'regular
-        foma-default-height 140
-        foma-fonts '(("Cascadia Code" zip "https://github.com/microsoft/cascadia-code/releases/download/v2407.24/CascadiaCode-2407.24.zip")
+  (setq foma-fonts '(("Cascadia Code" zip "https://github.com/microsoft/cascadia-code/releases/download/v2407.24/CascadiaCode-2407.24.zip")
                      ("Victor Mono" zip "https://rubjo.github.io/victor-mono/VictorMonoAll.zip")
                      ("Aporetic" zip "https://github.com/protesilaos/aporetic/archive/refs/heads/main.zip")
                      ("IBM Plex Sans" zip "https://github.com/IBM/plex/releases/download/%40ibm%2Fplex-sans%401.1.0/ibm-plex-sans.zip")
@@ -1309,29 +1306,29 @@ https://www.nerdfonts.com/#home
                      ("Myna" zip "https://github.com/sayyadirfanali/Myna/archive/refs/heads/main.zip")
                      ("Maple Mono" zip "https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-CN-unhinted.zip"))
         foma-profiles '((:name "Aporetic"
-                               :fixed "Aporetic Sans Mono"
-                               :variable "Aporetic Sans"
+                               :mono "Aporetic Sans Mono"
+                               :sans "Aporetic Sans"
                                :serif "Aporetic Serif")
-                        (:name "Cascadia" :fixed "Cascadia Code")
+                        (:name "Cascadia" :mono "Cascadia Code")
                         (:name "DejaVu"
-                               :fixed "DejaVu Sans Mono" :variable "DejaVu Sans")
-                        (:name "IBM" :fixed "IBM Plex Mono" :variable "IBM Plex Sans" :serif "IBM Plex Serif")
-                        (:name "Intel" :fixed "Intel One Mono" :variable "Clear Sans")
-                        (:name "JetBrains" :fixed "JetBrains Mono")
-                        (:name "Julia" :fixed "JuliaMono")
+                               :mono "DejaVu Sans Mono" :sans "DejaVu Sans")
+                        (:name "IBM" :mono "IBM Plex Mono" :sans "IBM Plex Sans" :serif "IBM Plex Serif")
+                        (:name "Intel" :mono "Intel One Mono" :sans "Clear Sans")
+                        (:name "JetBrains" :mono "JetBrains Mono")
+                        (:name "Julia" :mono "JuliaMono")
                         (:name "Noto"
-                               :fixed "Noto Sans Mono"
-                               :variable "Noto Sans"
+                               :mono "Noto Sans Mono"
+                               :sans "Noto Sans"
                                :serif "Noto Serif")
                         (:name "Red Hat"
-                               :fixed "Red Hat Mono"
-                               :variable "Red Hat Text")
+                               :mono "Red Hat Mono"
+                               :sans "Red Hat Text")
                         (:name "Source"
-                               :fixed "Source Code Pro"
-                               :variable "Source Sans3")
-                        (:name "Victor" :fixed "Victor Mono")
-                        (:name "Myna" :fixed "Myna")
-                        (:name "Maple Mono" :fixed "Maple Mono CN" :chinese "Maple Mono CN")))
+                               :mono "Source Code Pro"
+                               :sans "Source Sans3")
+                        (:name "Victor" :mono "Victor Mono")
+                        (:name "Myna" :mono "Myna")
+                        (:name "Maple Mono" :mono "Maple Mono CN" :chinese "Maple Mono CN")))
 #+end_src
 
 **** COMMENT eldoc-box

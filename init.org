@@ -3141,6 +3141,15 @@ course it is not vulpea's fault, since its purpose is to be library
 rather than an application. As a result, from a user's perspective, I
 can not use it to replace org roam fully now.
 
+#+begin_src emacs-lisp
+  (use-package vulpea :ensure t
+    :init
+    (setq vulpea-db-sync-directories '("~/org-roam")
+          vulpea-default-notes-directory "~/org-roam")
+    :config
+    (vulpea-db-autosync-mode +1))
+#+end_src
+
 **** Input Method -- pyim
 
 #+begin_src emacs-lisp

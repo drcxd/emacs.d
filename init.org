@@ -1943,7 +1943,7 @@ one single command.
 ***** switch-window
 
 #+begin_src emacs-lisp
-  (use-package switch-window :ensure t
+  (use-package switch-window :ensure (:type git :host github :repo "drcxd/switch-window")
     :bind
     (("C-c o" . switch-window)
      ("C-c w d" . switch-window-then-delete)

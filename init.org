@@ -3150,6 +3150,39 @@ can not use it to replace org roam fully now.
     (vulpea-db-autosync-mode +1))
 #+end_src
 
+To use vulpea, I must implement the functions provided by org-roam by
+myself. It may not be difficult but it definitely requires some
+effort. To list some of the features I need to implement:
+
+1. Capture to a certain file with some template content.
+2. Add/Remove tags to/from a file.
+3. Citar integration.
+
+
+I come up with some code to implement feature 1:
+
+#+begin_src emacs-lisp
+  (setq org-capture-templates
+        `(("n" "Create a new note file."
+           plain
+           (file ,(lambda ()
+                    (file-name-concat
+                     org-directory
+                     (format-time-string "%Y%m%d%H%M%S.org"))))
+           ":PROPERTIES:
+  :ID: %(org-id-new)
+  :END:
+  ,#+title: %^{title}
+
+  ")))
+#+end_src
+
+For feature 2, I can implement a function to ask for file
+tags. However, it is not trivial to provide completion for all
+existing tags.
+
+Feature 3 also requires reading the documentation and code of citar.
+
 **** Input Method -- pyim
 
 #+begin_src emacs-lisp

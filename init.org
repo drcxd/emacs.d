@@ -2,7 +2,7 @@
 
 * Abstract
 
-Trying literate programming with my emacs configuration. This is
+Trying literate programming with my Emacs configuration. This is
 inspired by http://alhassy.com/emacs.d/. Protesilaos
 (https://protesilaos.com/) uses such a method as well. His
 configuration (https://git.sr.ht/~protesilaos/dotfiles) is also a good
@@ -808,8 +808,8 @@ some macro's line number has changed.
 #+begin_src emacs-lisp
   (defvar my/ubt-location nil "Unreal Build Tool executable location.")
 
-  (defvar my/ue-profiles '("DebugGame"
-                           "Development")
+  (defvar my/ue-profiles
+    '("Debug" "DebugGame" "Development" "Test" "Shipping")
     "A list of frequently used optimization levels for Unreal projects.")
 
   (defvar my/ue-platforms '("Win64")

@@ -2740,9 +2740,9 @@ Windows and put the =.dll= file into the load path of the package.
 #+begin_src emacs-lisp
   (if (eq system-type 'windows-nt)
       (use-package reader
-        :ensure '(reader :type git :host codeberg :repo "divyaranjan/emacs-reader"))
+        :ensure '(reader :type git :host codeberg :repo "MonadicSheep/emacs-reader"))
     (use-package reader
-      :ensure '(reader :type git :host codeberg :repo "divyaranjan/emacs-reader"
+      :ensure '(reader :type git :host codeberg :repo "MonadicSheep/emacs-reader"
                        :files ("*.el" "render-core.so")
                        :pre-build (("make" "all")))))
 

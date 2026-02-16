@@ -3495,7 +3495,7 @@ window then start moving cursor around.
     (("C-c a c" . avy-goto-char-timer)
      ("C-c a L" . avy-goto-line)
      ("C-c a l" . avy-goto-end-of-line)
-     ("C-c a w" . avy-goto-world)
+     ("C-c a w" . avy-goto-word)
      ("C-c a s" . avy-goto-symbol)))
 #+end_src
 

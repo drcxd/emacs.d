@@ -1053,6 +1053,10 @@ enabled. Diminish is a good package to solve this problem.
   (use-package eldoc
     :ensure nil
     :diminish eldoc-mode)
+
+  (use-package abbrev
+    :ensure nil
+    :diminish abbrev-mode)
 #+end_src
 
 **** Unicode Support

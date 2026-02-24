@@ -3499,6 +3499,27 @@ window then start moving cursor around.
      ("C-c a s" . avy-goto-symbol)))
 #+end_src
 
+**** flash
+
+#+begin_src emacs-lisp
+  (use-package flash
+    :ensure t
+    :commands (flash-jump flash-jump-continue
+               flash-treesitter)
+    :bind ("C-c a j" . flash-jump)
+    :custom
+    (flash-multi-window t)
+    ;; :init
+    ;; Evil integration (simple setup)
+    ;; (with-eval-after-load 'evil
+    ;;   (require 'flash-evil)
+    ;;   (flash-evil-setup t))  ; t = also set up f/t/F/T char motions
+    :init
+    ;; Search integration (labels during C-s, /, ?)
+    (require 'flash-isearch)
+    (flash-isearch-mode 1))
+#+end_src
+
 *** COMMENT Multimedia -- ready-player :dependency:
 
 ready-player is a package that allows you to open multimedia files in

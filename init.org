@@ -1049,6 +1049,10 @@ enabled. Diminish is a good package to solve this problem.
   (use-package face-remap
     :ensure nil
     :diminish buffer-face-mode)
+
+  (use-package eldoc
+    :ensure nil
+    :diminish eldoc-mode)
 #+end_src
 
 **** Unicode Support
@@ -3504,6 +3508,7 @@ window then start moving cursor around.
 #+begin_src emacs-lisp
   (use-package flash
     :ensure t
+    :diminish flash-isearch-mode
     :commands (flash-jump flash-jump-continue
                flash-treesitter)
     :bind ("C-c a j" . flash-jump)

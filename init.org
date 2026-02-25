@@ -3515,18 +3515,9 @@ window then start moving cursor around.
     :diminish flash-isearch-mode
     :commands (flash-jump flash-jump-continue
                flash-treesitter)
-    :bind ("C-c a j" . flash-jump)
+    :bind ("C-c j" . flash-jump)
     :custom
-    (flash-multi-window t)
-    ;; :init
-    ;; Evil integration (simple setup)
-    ;; (with-eval-after-load 'evil
-    ;;   (require 'flash-evil)
-    ;;   (flash-evil-setup t))  ; t = also set up f/t/F/T char motions
-    :init
-    ;; Search integration (labels during C-s, /, ?)
-    (require 'flash-isearch)
-    (flash-isearch-mode 1))
+    (flash-multi-window t))
 #+end_src
 
 *** COMMENT Multimedia -- ready-player :dependency:

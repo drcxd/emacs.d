@@ -3295,6 +3295,54 @@ Finally, we have to put the =.dll= file to the load path of the jinx package.
 
 *** Editing
 
+**** COMMENT which-key
+
+With so many key bindings, it is impossible to memorize all of
+them. which-key is a package that displays all viable commands and
+their key bindings when you are in the middle of a sequence of key
+binding.
+
+#+begin_src emacs-lisp
+  (use-package which-key
+   :diminish
+   :config
+   (which-key-mode))
+#+end_src
+
+**** avy
+
+avy is a package I find useful for navigating around text. It help
+reduce repeatedly moving cursor to the next line, next char. Using
+avy, I can first think about where I want to place my cursor and then
+navigate to there with a feel key strokes. It also can move cursor
+across windows, so I do not have to first =C-x o= to switch to other
+window then start moving cursor around.
+
+#+begin_src emacs-lisp
+  (use-package avy
+    :ensure t
+    :bind
+    (("C-c a c" . avy-goto-char-timer)
+     ("C-c a L" . avy-goto-line)
+     ("C-c a l" . avy-goto-end-of-line)
+     ("C-c a w" . avy-goto-word-1)
+     ("C-c a s" . avy-goto-symbol-1)))
+#+end_src
+
+**** flash
+
+#+begin_src emacs-lisp
+  (use-package flash
+    :ensure t
+    :diminish flash-isearch-mode
+    :commands (flash-jump flash-jump-continue
+               flash-treesitter)
+    :bind ("C-c j" . flash-jump)
+    :custom
+    (flash-multi-window t))
+#+end_src
+
+
 **** meow
 
 meow is a modal editing package. It looks like evil, but I think it
@@ -3360,7 +3408,8 @@ add some additional configuration specific to meow.
        '("D" . meow-backward-delete)
        '("e" . meow-next-word)
        '("E" . meow-next-symbol)
-       '("f" . meow-find)
+       ;; '("f" . meow-find)
+       '("f" . flash-jump)
        ;; `fill-region' is assigned to F in normal mode because I
        ;; usually select region in normal mode.
        '("F" . fill-region)
@@ -3472,53 +3521,6 @@ to fit this change. There are two additional functions
 =meow--keypad-format-keys= and =meow--keypad-get-keymap-for-describe=, they all
 have similar structures to that of =meow-keypad-self-insert=, deal with
 them so that Meow generate the correct hints.
-
-**** COMMENT which-key
-
-With so many key bindings, it is impossible to memorize all of
-them. which-key is a package that displays all viable commands and
-their key bindings when you are in the middle of a sequence of key
-binding.
-
-#+begin_src emacs-lisp
-  (use-package which-key
-   :diminish
-   :config
-   (which-key-mode))
-#+end_src
-
-**** avy
-
-avy is a package I find useful for navigating around text. It help
-reduce repeatedly moving cursor to the next line, next char. Using
-avy, I can first think about where I want to place my cursor and then
-navigate to there with a feel key strokes. It also can move cursor
-across windows, so I do not have to first =C-x o= to switch to other
-window then start moving cursor around.
-
-#+begin_src emacs-lisp
-  (use-package avy
-    :ensure t
-    :bind
-    (("C-c a c" . avy-goto-char-timer)
-     ("C-c a L" . avy-goto-line)
-     ("C-c a l" . avy-goto-end-of-line)
-     ("C-c a w" . avy-goto-word-1)
-     ("C-c a s" . avy-goto-symbol-1)))
-#+end_src
-
-**** flash
-
-#+begin_src emacs-lisp
-  (use-package flash
-    :ensure t
-    :diminish flash-isearch-mode
-    :commands (flash-jump flash-jump-continue
-               flash-treesitter)
-    :bind ("C-c j" . flash-jump)
-    :custom
-    (flash-multi-window t))
-#+end_src
 
 *** COMMENT Multimedia -- ready-player :dependency:
 

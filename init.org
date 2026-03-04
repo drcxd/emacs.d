@@ -3321,8 +3321,10 @@ window then start moving cursor around.
 #+begin_src emacs-lisp
   (use-package avy
     :ensure t
+    :config
+    (avy-setup-default)
     :bind
-    (("C-c a c" . avy-goto-char-timer)
+    (("C-c a c" . avy-goto-char-2)
      ("C-c a L" . avy-goto-line)
      ("C-c a l" . avy-goto-end-of-line)
      ("C-c a w" . avy-goto-word-1)

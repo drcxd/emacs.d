@@ -2388,6 +2388,15 @@ Since Emacs provides built-in tree-sitter support, and it provides more accurate
   ;; (add-to-list 'major-mode-remap-alist '(lua-mode . lua-ts-mode))
 #+end_src
 
+***** C#
+
+Use =csharp-ts-mode= by default since it provides more consistent
+syntax highlighting.
+
+#+begin_src emacs-lisp
+  (add-to-list 'major-mode-remap-alist '(csharp-mode . csharp-ts-mode))
+#+end_src
+
 ***** Scheme
 
 Scheme is a dialect of Lisp. It is also the language used in the book

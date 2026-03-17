@@ -1319,7 +1319,7 @@ https://www.nerdfonts.com/#home
                                :serif "Aporetic Serif")
                         (:name "Cascadia" :mono "Cascadia Code")
                         (:name "DejaVu"
-                               :mono "DejaVu Sans Mono" :sans "DejaVu Sans")
+                               :mono "DejaVu Sans Mono" :sans "DejaVu Sans" :serif "DejaVu Serif")
                         (:name "IBM" :mono "IBM Plex Mono" :sans "IBM Plex Sans" :serif "IBM Plex Serif")
                         (:name "Intel" :mono "Intel One Mono" :sans "Clear Sans")
                         (:name "JetBrains" :mono "JetBrains Mono")

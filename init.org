@@ -1806,18 +1806,6 @@ using.
 
 *** Windows-Specific
 
-**** powershell
-
-Since I mostly use Emacs on Windows platform, I need this package to
-interact nicely with the OS. Emacs built-in eshell mode and term mode
-does not work properly on Windows. This package also comes with a
-powershell mode to help editing powershell script files.
-
-#+begin_src emacs-lisp :tangle (if (eq system-type 'windows-nt) "init.el" "no")
-  (use-package powershell :defer t
-    :ensure t)
-#+end_src
-
 **** Alert & Notifications
 
 On Linux, Emacs could use D-BUS to send desktop
@@ -2561,6 +2549,17 @@ Thus, I decide to include both solutions in my configuration for now.
     (racket-mode . racket-xp-mode))
 #+end_src
 
+***** powershell
+
+Since I mostly use Emacs on Windows platform, I need this package to
+interact nicely with the OS. Emacs built-in eshell mode and term mode
+does not work properly on Windows. This package also comes with a
+powershell mode to help editing powershell script files.
+
+#+begin_src emacs-lisp :tangle (if (eq system-type 'windows-nt) "init.el" "no")
+  (use-package powershell :defer t :ensure t)
+#+end_src
+
 *** magit :dependency:
 
 magit is the well-known Emacs interface for git.
@@ -2580,6 +2579,16 @@ magit is the well-known Emacs interface for git.
     ;;           (direction . left)))
     :bind
     ("C-c M" . magit))
+#+end_src
+
+*** COMMENT vterm
+
+#+begin_src emacs-lisp
+  (if (eq system-type 'windows-nt)
+      (use-package vterm :defer t
+        :ensure (:type git :host github :repo "kiennq/emacs-libvterm"))
+    (use-package vterm :defer t
+      :ensure t))
 #+end_src
 
 *** Reading & Writing
@@ -3352,7 +3361,6 @@ window then start moving cursor around.
     :custom
     (flash-multi-window t))
 #+end_src
-
 
 **** meow
 

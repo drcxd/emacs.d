@@ -2581,12 +2581,23 @@ magit is the well-known Emacs interface for git.
     ("C-c M" . magit))
 #+end_src
 
-*** COMMENT vterm
+*** vterm
+
+Using vterm on Windows is difficult for now. First, it depends on an
+external program [[https://github.com/xhcoding/conpty-proxy][conpty-proxy]]. Second, it requires compile a shared
+library in MSYS UCRT shell. Yes, the library does not compile in a
+MinGW shell. However, I consider having a built in terminal in Emacs
+is worthy for all the troubles. At least for now. Maybe tomorrow I
+will just use another terminal program and get rid of all these
+nuances at all.
 
 #+begin_src emacs-lisp
   (if (eq system-type 'windows-nt)
       (use-package vterm :defer t
-        :ensure (:type git :host github :repo "kiennq/emacs-libvterm"))
+        :ensure (:type git :host github :repo "xhcoding/emacs-libvterm")
+        :init
+        (setq vterm-shell "pwsh.exe"))
+        ;; :ensure (:type git :host github :repo "kiennq/emacs-libvterm"))
     (use-package vterm :defer t
       :ensure t))
 #+end_src

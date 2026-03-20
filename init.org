@@ -8,6 +8,16 @@ inspired by http://alhassy.com/emacs.d/. Protesilaos
 configuration (https://git.sr.ht/~protesilaos/dotfiles) is also a good
 resource to learn about Emacs.
 
+* Lexical Bindings
+
+#+begin_src emacs-lisp :tangle "early-init.el" :comments no
+  ;;; -*- lexical-binding: t -*-
+#+end_src
+
+#+begin_src emacs-lisp :comments no
+  ;;; -*- lexical-binding: t -*-
+#+end_src
+
 * Emacs Native Configurations
 
 This part contains configurations about all Emacs native options and
@@ -2586,20 +2596,22 @@ magit is the well-known Emacs interface for git.
 Using vterm on Windows is difficult for now. First, it depends on an
 external program [[https://github.com/xhcoding/conpty-proxy][conpty-proxy]]. Second, it requires compile a shared
 library in MSYS UCRT shell. Yes, the library does not compile in a
-MinGW shell. See this [[https://github.com/akermu/emacs-libvterm/pull/777][pull request]] for more detail. Anyhow, I consider
-having a built in terminal in Emacs is worthy for all the troubles. At
-least for now. Maybe tomorrow I will just use another terminal program
-and get rid of all these nuances at all.
+MinGW shell. See this [[https://github.com/akermu/emacs-libvterm/pull/777][pull request]] for more detail. Only to make
+things worse, vterm's does not perform well when running certain
+application. My use case is to run Gemini-CLI in vterm, but every time
+the vterm window resizes, Emacs just stops responding. As a result, I
+decide to use a separate terminal program, at least on Windows, for
+now.
 
 #+begin_src emacs-lisp
-  (if (eq system-type 'windows-nt)
+  (if (not (eq system-type 'windows-nt))
       (use-package vterm :defer t
-        :ensure (:type git :host github :repo "xhcoding/emacs-libvterm")
-        :init
-        (setq vterm-shell "pwsh.exe"))
-        ;; :ensure (:type git :host github :repo "kiennq/emacs-libvterm"))
-    (use-package vterm :defer t
-      :ensure t))
+        :ensure t))
+    ;; (use-package vterm :defer t
+    ;;   ;; :ensure (:type git :host github :repo "xhcoding/emacs-libvterm")
+    ;;   :ensure (:type git :host github :repo "kiennq/emacs-libvterm")
+    ;;   :init
+    ;;   (setq vterm-shell "pwsh.exe")))
 #+end_src
 
 *** Reading & Writing
@@ -3360,7 +3372,7 @@ window then start moving cursor around.
      ("C-c a s" . avy-goto-symbol-1)))
 #+end_src
 
-**** flash
+**** COMMENT flash
 
 #+begin_src emacs-lisp
   (use-package flash
@@ -3438,11 +3450,8 @@ add some additional configuration specific to meow.
        '("D" . meow-backward-delete)
        '("e" . meow-next-word)
        '("E" . meow-next-symbol)
-       ;; '("f" . meow-find)
-       '("f" . flash-jump)
-       ;; `fill-region' is assigned to F in normal mode because I
-       ;; usually select region in normal mode.
-       '("F" . fill-region)
+       '("f" . meow-find)
+       '("F" . avy-goto-char-2)
        '("g" . meow-cancel-selection)
        '("G" . meow-grab)
        '("h" . meow-block)
@@ -3456,7 +3465,6 @@ add some additional configuration specific to meow.
        '("l" . meow-right)
        '("L" . meow-right-expand)
        '("m" . meow-join)
-       '("M" . magit)
        '("n" . meow-search)
        '("o" . meow-insert)
        '("O" . meow-open-above)
@@ -3467,7 +3475,6 @@ add some additional configuration specific to meow.
        '("r" . meow-replace)
        '("R" . meow-swap-grab)
        '("s" . meow-kill)
-       '("S" . shell-command)
        '("t" . meow-till)
        '("u" . meow-undo)
        '("U" . meow-undo-in-selection)

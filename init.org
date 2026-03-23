@@ -2614,6 +2614,23 @@ now.
     ;;   (setq vterm-shell "pwsh.exe")))
 #+end_src
 
+*** LLMs
+
+I am not not fond of the current state of LLMs, but I have to admit
+they are helpful tools. Currently there are multiple Emacs packages
+that support working with LLMs. Some are built-upon agents, such as
+agent-shell. Some are built-upon API keys and act like agents, such as
+gptel. I have experimented with Editor Code Assistant which acts like
+an agent and is mostly model indifferent. It is simple to install and
+setup. Though billing by API is usually more expensive than by
+subscription, I do not use LLMs too much and I can afford DeepSeek
+API, so I will stick with ECA for a little while.
+
+#+begin_src emacs-lisp
+  (use-package eca
+    :ensure t)
+#+end_src
+
 *** Reading & Writing
 
 **** Filling and Wrapping

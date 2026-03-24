@@ -658,6 +658,12 @@ checking.
     (setq imenu-max-item-length 'Unlimited))
 #+end_src
 
+*** isearch
+
+#+begin_src emacs-lisp
+  (setq isearch-lazy-count t)
+#+end_src
+
 *** dictionary
 
 #+begin_src emacs-lisp
@@ -1520,7 +1526,6 @@ display the completion candidates on the screen.
         :ensure (:type git :host codeberg :repo "akib/emacs-corfu-terminal")
         :init
         (corfu-terminal-mode +1)))
-
 #+end_src
 
 **** cape

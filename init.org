@@ -3302,8 +3302,11 @@ Finally, we have to put the =.dll= file to the load path of the jinx package.
     :diminish
     :init
     (setq jinx-languages "en_US")
+    :config
+    (add-to-list 'jinx-exclude-regexps '(t "\\cc"))
     :hook
     (text-mode . jinx-mode)
+    (prog-mode . jinx-mode)
     :bind
     (("C-." . jinx-correct)))
 #+end_src

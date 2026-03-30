@@ -2202,6 +2202,8 @@ variable-rename.
   (use-package consult-lsp
     :ensure t
     :after (lsp-mode consult)
+    :init
+    (setq lsp-ui-doc-max-width 120)
     :bind
     (:map lsp-mode-map
           ("C-c l S" . consult-lsp-symbols)

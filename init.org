@@ -991,15 +991,15 @@ Using elpaca requires disabling the built-in package manager.
 
 
 #+begin_src emacs-lisp
-  (defvar elpaca-installer-version 0.11)
+  (defvar elpaca-installer-version 0.12)
   (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
   (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
-  (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
+  (defvar elpaca-sources-directory (expand-file-name "sources/" elpaca-directory))
   (defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
                                 :ref nil :depth 1 :inherit ignore
                                 :files (:defaults "elpaca-test.el" (:exclude "extensions"))
-                                :build (:not elpaca--activate-package)))
-  (let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
+                                :build (:not elpaca-activate)))
+  (let* ((repo  (expand-file-name "elpaca/" elpaca-sources-directory))
          (build (expand-file-name "elpaca/" elpaca-builds-directory))
          (order (cdr elpaca-order))
          (default-directory repo))
@@ -1026,7 +1026,7 @@ Using elpaca requires disabling the built-in package manager.
     (unless (require 'elpaca-autoloads nil t)
       (require 'elpaca)
       (elpaca-generate-autoloads "elpaca" repo)
-      (load "./elpaca-autoloads")))
+      (let ((load-source-file-function nil)) (load "./elpaca-autoloads"))))
   (add-hook 'after-init-hook #'elpaca-process-queues)
   (elpaca `(,@elpaca-order))
 
@@ -2784,7 +2784,7 @@ Also, we can specify an external program to open a certain format of a book:
 
 Otherwise, the book is opened inside Emacs.
 
-***** E-books reader
+***** COMMENT E-books reader
 
 ****** COMMENT nov
 
@@ -2817,7 +2817,8 @@ Windows and put the =.dll= file into the load path of the package.
     (use-package reader
       :ensure '(reader :type git :host codeberg :repo "MonadicSheep/emacs-reader"
                        :files ("*.el" "render-core.so")
-                       :pre-build (("make" "all")))))
+                       ;; :pre-build (("make" "all")))))
+                       :pre-build ((message "all")))))
 
   (with-eval-after-load 'meow
     (add-to-list 'meow-mode-state-list '(reader-outline-mode . motion)))

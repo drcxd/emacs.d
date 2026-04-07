@@ -797,7 +797,6 @@ some mottoes selected randomly from a pre-defined list.
     (message (my/process-raw-mottoes (seq-random-elt my/raw-mottoes))))
 #+end_src
 
-
 *** Unreal :dependency:
 
 I am working with Unreal Engine, using Emacs + clangd + lsp-mode as my
@@ -963,6 +962,14 @@ exception rules is tedious and error prone.
              (setq ignore (format "%s\n%s" ignore full-path))
              (if is-leaf (setq ignore (format "%s\n%s**" ignore full-path)))))))
       ignore))
+#+end_src
+
+** Navigation
+
+Learned about this feature from this post, it feels quite good.
+
+#+begin_src emacs-lisp
+  (windmove-default-keybindings)
 #+end_src
 
 ** Key Bindings

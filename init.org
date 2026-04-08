@@ -236,6 +236,37 @@ language. Credit to this SO [[https://stackoverflow.com/questions/28913294/emacs
   (setq alert-default-style 'notifications)
 #+end_src
 
+*** Performance
+
+Copied from [[https://emacsredux.com/blog/2026/04/07/stealing-from-the-best-emacs-configs/][Emacs Redux]].
+
+#+begin_src emacs-lisp
+  ;; Disable Bidirectional Text Scanning (Doom Emacs)
+  (setq-default bidi-display-reordering 'left-to-right
+                bidi-paragraph-direction 'left-to-right)
+  (setq bidi-inhibit-bpa t)
+
+  ;; Skip Fontification During Input (Doom Emacs)
+  (setq redisplay-skip-fontification-on-input t)
+
+  ;; Increase Process Output Buffer for LSP (Doom, Purcell, Centaur)
+  (setq read-process-output-max (* 4 1024 1024)) ; 4MB
+
+  ;; Don’t Render Cursors in Non-Focused Windows (Doom Emacs)
+  (setq-default cursor-in-non-selected-windows nil)
+  (setq highlight-nonselected-windows nil)
+#+end_src
+
+*** Kill Ring
+
+#+begin_src emacs-lisp
+  ;; Save the Clipboard Before Killing (Purcell, Prot, Centaur)
+  (setq save-interprogram-paste-before-kill t)
+
+  ;; No Duplicates in the Kill Ring (Doom, Prot)
+  (setq kill-do-not-save-duplicates t)
+#+end_src
+
 ** Development Settings
 
 *** C++
@@ -352,6 +383,26 @@ the splash screen manually.
                  (side . left)
                  (window . root)
                  (window-width . 0.381)))
+
+  ;; Proportional Window Resizing (Purcell, Prot)
+  (setq window-combination-resize t)
+
+  ;; Reversible C-x 1 (Purcell)
+
+  (winner-mode +1)
+
+  (defun toggle-delete-other-windows ()
+    "Delete other windows in frame if any, or restore previous window config."
+    (interactive)
+    (if (and winner-mode
+             (equal (selected-window) (next-window)))
+        (winner-undo)
+      (delete-other-windows)))
+
+  (global-set-key (kbd "C-x 1") #'toggle-delete-other-windows)
+
+  ;; Auto-Select Help Windows (Prot)
+  (setq help-window-select t)
 #+end_src
 
 *** Variable-Pitch Mode

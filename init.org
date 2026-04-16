@@ -2237,8 +2237,8 @@ variable-rename.
     :bind
     (("C-c l l" . lsp)
      :map lsp-mode-map
-     ("C-c l D" . lsp-find-declaration)
-     ("C-c l d" . lsp-find-definition)
+     ("C-c l d" . lsp-find-declaration)
+     ;; ("C-c l D" . lsp-find-definition)
      ("C-c l o" . lsp-clangd-find-other-file)
      ("C-c l r" . lsp-find-references)
      ("C-c l R" . lsp-workspace-restart)

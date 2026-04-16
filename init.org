@@ -3471,6 +3471,16 @@ window then start moving cursor around.
     (flash-multi-window t))
 #+end_src
 
+**** occult
+
+occult allows collapsing arbitrary region into one single line of
+text, which is a nice complementary package to hideshow.
+
+#+begin_src emacs-lisp
+  (use-package occult
+    :ensure t)
+#+end_src
+
 **** meow
 
 meow is a modal editing package. It looks like evil, but I think it
@@ -3578,7 +3588,10 @@ add some additional configuration specific to meow.
        '("`" . delete-horizontal-space)
        '("{" . backward-paragraph)
        '("}" . forward-paragraph)
-       '("/" . hs-toggle-hiding))
+       '("/" . hs-toggle-hiding)
+       '("\\" . occult-toggle)
+       '("|" . occult-reveal-all)
+       '("_" . occult-edit-region))
       ;; disable SPC in motion mode since it might be used
       (define-key meow-motion-state-keymap (kbd "SPC") nil))
     (setq meow-replace-state-name-list '((normal . "[N]")

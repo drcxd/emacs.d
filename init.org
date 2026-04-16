@@ -2199,7 +2199,7 @@ variable-rename.
 
 #+begin_src emacs-lisp
   (use-package lsp-mode
-    :ensure t
+    :ensure (lsp-mode :host github :repo "drcxd/lsp-mode" :branch "indirect-buffer-fix")
     :defer t
     :init
     (defun my/orderless-dispatch-flex-first (_pattern index _total)

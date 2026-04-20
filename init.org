@@ -3478,6 +3478,7 @@ text, which is a nice complementary package to hideshow.
 
 #+begin_src emacs-lisp
   (use-package occult
+    :diminish occult-mode
     :ensure t)
 #+end_src
 

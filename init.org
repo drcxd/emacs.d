@@ -21,7 +21,7 @@ resource to learn about Emacs.
 * Emacs Native Configurations
 
 This part contains configurations about all Emacs native options and
-built-in packages. This part does not depends on any third-party
+built-in packages. This part does not depend on any third-party
 packages.
 
 ** Platform Dependent Settings
@@ -49,8 +49,8 @@ accepts Linux find program conventional arguments.
 
 ** COMMENT Package
 
-I use package.el to manage almost all the packages I use, except those
-are only available on github. package.el is flexible since it can
+I use =package.el= to manage almost all the packages I use, except those
+are only available on GitHub. =package.el= is flexible since it can
 easily be configured to use a local repository or a mirror. This is
 really helpful when your network environment is not good.
 
@@ -623,7 +623,7 @@ Credit: https://stackoverflow.com/questions/944614/emacs-does-hideshow-work-with
 I no longer read RSS feeds in Gnus for its complexity to setup and
 inconvenience to use. Now I switch to [[*elfeed]].
 
-Subscribing a RSS feed in Gnus can not be done by simply setting a
+Subscribing an RSS feed in Gnus can not be done by simply setting a
 variable. Emacs has to execute the function
 =gnus-group-make-rss-group=. This can be done in the Gnus group buffer
 by typing =G R= and input the RSS feed URL. Thus, on every PC, the
@@ -3333,7 +3333,9 @@ Feature 3 also requires reading the documentation and code of citar.
     (pyim-wbdict-v98-enable))
 #+end_src
 
-**** Spell Checking -- jinx :dependency:
+**** Spell Checking
+
+***** jinx :dependency:
 
 To use jinx, you have to install =enchant= on your system. It also
 relies on dictionary packages such as =aspell_en=.
@@ -3370,6 +3372,25 @@ Finally, we have to put the =.dll= file to the load path of the jinx package.
     (prog-mode . jinx-mode)
     :bind
     (("C-." . jinx-correct)))
+#+end_src
+
+***** emacs-ltex-plus :dependency:
+
+LTex+ is a grammar/spell checking tool. It is more advanced than
+simple spell checking tools since it can detect improper language
+usage. The checker program run totally offline, so there is no privacy
+concerns. However, the performance on large files is not ideal. After
+I edit this file, it takes tens of seconds for the server to
+synchronize. Thus, I decide to use this with jinx-mode and only enable
+it for prose writing.
+
+#+begin_src emacs-lisp
+  (use-package lsp-ltex-plus :defer t
+    :ensure (:repo "https://github.com/alberti42/emacs-ltex-plus")
+    :init
+    (setq lsp-ltex-plus-additional-rules-enable-picky-rules t))
+          ;; lsp-ltex-plus-show-latency t
+          ;; lsp-ltex-plus-debug t))
 #+end_src
 
 **** Publishing
@@ -3441,7 +3462,7 @@ binding.
 avy is a package I find useful for navigating around text. It help
 reduce repeatedly moving cursor to the next line, next char. Using
 avy, I can first think about where I want to place my cursor and then
-navigate to there with a feel key strokes. It also can move cursor
+navigate to there with a feel keystrokes. It also can move cursor
 across windows, so I do not have to first =C-x o= to switch to other
 window then start moving cursor around.
 

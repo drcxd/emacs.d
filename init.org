@@ -3500,7 +3500,17 @@ text, which is a nice complementary package to hideshow.
 #+begin_src emacs-lisp
   (use-package occult
     :diminish occult-mode
-    :ensure t)
+    :ensure t
+    :init
+    (defun my/toggle-hiding ()
+      "Helper function that automatically call `occult-toggle' if region is
+  active. Otherwise, call `hs-toggle-hiding'."
+      (interactive)
+      (if (region-active-p)
+          (occult-toggle)
+        (if (occult--overlay-at-point)
+            (occult-toggle)
+          (hs-toggle-hiding)))))
 #+end_src
 
 **** meow
@@ -3610,8 +3620,9 @@ add some additional configuration specific to meow.
        '("`" . delete-horizontal-space)
        '("{" . backward-paragraph)
        '("}" . forward-paragraph)
-       '("/" . hs-toggle-hiding)
-       '("\\" . occult-toggle)
+       `("/" . ,(if (functionp 'my/toggle-hiding)
+                    'my/toggle-hiding
+                  'hs-toggle-hiding))
        '("|" . occult-reveal-all)
        '("_" . occult-edit-region))
       ;; disable SPC in motion mode since it might be used

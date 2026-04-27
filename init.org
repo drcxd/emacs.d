@@ -2684,7 +2684,9 @@ now.
     ;;   (setq vterm-shell "pwsh.exe")))
 #+end_src
 
-*** LLMs
+*** Agents and Large Language Models
+
+**** ECA :dependency:
 
 I am not not fond of the current state of LLMs, but I have to admit
 they are helpful tools. Currently there are multiple Emacs packages

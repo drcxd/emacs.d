@@ -3618,9 +3618,7 @@ add some additional configuration specific to meow.
        '("{" . backward-paragraph)
        '("}" . forward-paragraph)
        '("/" . hs-toggle-hiding)
-       '("\\" . occult-toggle)
-       '("|" . occult-reveal-all)
-       '("_" . occult-edit-region))
+       '("\\" . occult-toggle))
       ;; disable SPC in motion mode since it might be used
       (define-key meow-motion-state-keymap (kbd "SPC") nil))
     (setq meow-replace-state-name-list '((normal . "[N]")

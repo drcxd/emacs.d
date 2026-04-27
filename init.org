@@ -1443,6 +1443,11 @@ you to browse those information.
     (setq read-extended-command-predicate #'command-completion-default-include-p
           enable-recursive-minibuffers t))
 
+  (use-package vertico-quick
+    :ensure `(:type file :main ,(file-name-concat elpaca-sources-directory "vertico" "extensions" "vertico-quick.el"))
+    :after vertico
+    :config
+    (keymap-set vertico-map "M-q" #'vertico-quick-insert))
 #+end_src
 
 **** orderless

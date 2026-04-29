@@ -224,6 +224,7 @@ language. Credit to this SO [[https://stackoverflow.com/questions/28913294/emacs
 #+begin_src emacs-lisp
   (setq-default truncate-lines t)
   ;; (add-hook 'text-mode-hook (lambda () (setq truncate-lines nil)))
+  (add-hook 'text-mode-hook #'auto-fill-mode)
   ;; Enable wrapping after any Chinese characters
   ;; More information about this issue: https://debbugs.gnu.org/cgi/bugreport.cgi?bug=29364
   (setq word-wrap-by-category t)

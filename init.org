@@ -3606,7 +3606,6 @@ add some additional configuration specific to meow.
        '("e" . meow-next-word)
        '("E" . meow-next-symbol)
        '("f" . meow-find)
-       '("F" . avy-goto-char-2)
        '("g" . meow-cancel-selection)
        '("G" . meow-grab)
        '("h" . meow-block)

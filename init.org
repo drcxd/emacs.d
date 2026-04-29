@@ -747,7 +747,7 @@ function ~toggle-hi-lock-symbol-at-point~ comes from [[https://www.jamescherti.c
     ;;       (hi-lock-face-symbol-at-point))))
     :bind
     (("C-c s p" . hi-lock-face-symbol-at-point)
-     ("C-c s r" . hi-lock-unface-symbol)))
+     ("C-c s r" . hi-lock-unface-buffer)))
 #+end_src
 
 ** Not a Package

@@ -722,6 +722,34 @@ checking.
   (global-set-key (kbd "C-c d") #'dictionary-lookup-definition)
 #+end_src
 
+*** hi-lock
+
+I am trying to use hi-lock to replace symbol highlighting. To
+highlight a symbol, either use ~hi-lock-face-symbol-at-point~ or
+~hi-lock-face-buffer~ with a regular expression. To remove highlighting
+of a symbol, use ~hi-lock-unface-buffer~. To remove all the symbol
+highlighting in the buffer, turn off ~hi-lock-mode~.
+
+The idea of using this package for symbol highlighting and the
+function ~toggle-hi-lock-symbol-at-point~ comes from [[https://www.jamescherti.com/emacs-symbol-highlighting-built-in-functions/][James Cherti]].
+
+#+begin_src emacs-lisp
+  (use-package hi-lock
+    ;; :init
+    ;; (defun toggle-hi-lock-symbol-at-point ()
+    ;;   "Toggle highlighting for the symbol at point."
+    ;;   (interactive)
+    ;;   (when-let* ((regexp (find-tag-default-as-symbol-regexp)))
+    ;;     (if (member regexp (hi-lock--regexps-at-point))
+    ;;         ;; Unhighlight symbol at point
+    ;;         (hi-lock-unface-buffer regexp)
+    ;;       ;; Highlight symbol at point
+    ;;       (hi-lock-face-symbol-at-point))))
+    :bind
+    (("C-c s p" . hi-lock-face-symbol-at-point)
+     ("C-c s r" . hi-lock-unface-symbol)))
+#+end_src
+
 ** Not a Package
 
 The code I write but not enough for a package.
@@ -2140,11 +2168,13 @@ need.
      ("C-c C" . evilnc-copy-and-comment-lines)))
 #+end_src
 
-**** Symbol Highlighting
+**** COMMENT Symbol Highlighting
 
 When inspecting a piece of code, I need to highlight some of the
 symbols to help me quickly locate the places they are referenced.
 symbol-overlay is the best package I have known for this task.
+
+The built-in package hi-lock can serve this purpose as well.
 
 #+begin_src emacs-lisp
   (use-package symbol-overlay

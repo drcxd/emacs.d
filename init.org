@@ -608,74 +608,53 @@ Credit: https://stackoverflow.com/questions/944614/emacs-does-hideshow-work-with
 
 *** Gnus
 
+Gnus is a complicated piece of software. It can be used to read email
+and RSS feeds, for example.
+
+It might be powerful, but it is difficult to set up correctly. For
+email, it is complicated to set up with an email server which requires
+two-step authentication. For RSS feeds, I have not figure out a way to
+set up in a declarative way. That is, I can only set up RSS feeds with
+an interactive process: by executing
+~gnus-group-make-rss-group~. Maybe I can read its source code and see
+which states it changes.
+
 #+begin_src emacs-lisp
   (use-package gnus
     :bind
     (:map gnus-summary-mode-map
-     ("v n" . gnus-summary-next-subject)
-     ("v p" . gnus-summary-prev-subject)
-     (:repeat-map gnus-summary-mode-repeat-map
-                  ("n" . gnus-summary-next-subject)
-                  ("p" . gnus-summary-prev-subject))))
+          ("v n" . gnus-summary-next-subject)
+          ("v p" . gnus-summary-prev-subject)
+          (:repeat-map gnus-summary-mode-repeat-map
+                       ("n" . gnus-summary-next-subject)
+                       ("p" . gnus-summary-prev-subject)))
+    :config
+    (setopt
+     ;; mail-user-agent 'gnus-user-agent
+     ;; read-mail-command #'gnus
+
+     gnus-save-newsrc-file nil
+     gnus-read-newsrc-file nil
+
+     gnus-interactive-exit nil)
+
+    (setq
+     gnus-select-method '(nnnil "")
+
+     ;; Receving mails
+     gnus-secondary-select-methods
+     '((nnimap
+        "sina"
+        (nnimap-stream tls)
+        (nnimap-address "imap.sina.com")))
+
+     ;; Send mails
+     smtpmail-smtp-server "smtp.sina.com"
+     smtpmail-stream-type 'starttls
+     ;; Without this, sending fails for authorization reasons
+     smtpmail-servers-requiring-authorization "sina"
+     send-mail-function 'smtpmail-send-it))
 #+end_src
-
-**** COMMENT RSS Feeds
-
-I no longer read RSS feeds in Gnus for its complexity to setup and
-inconvenience to use. Now I switch to [[*elfeed]].
-
-Subscribing an RSS feed in Gnus can not be done by simply setting a
-variable. Emacs has to execute the function
-=gnus-group-make-rss-group=. This can be done in the Gnus group buffer
-by typing =G R= and input the RSS feed URL. Thus, on every PC, the
-subscription has to be done manually during the initial setup. See
-[[info:gnus#RSS][gnus#RSS]] for more details.
-
-RSS feeds:
-
-- https://sachachua.com/blog/category/emacs-news/feed/
-- https://protesilaos.com/codelog.xml
-
-**** Mail
-
-Reading E-mail in Emacs is difficult to configure since most E-mail
-service requires complicated authentication methods. Now a days I
-mostly read and write E-mail on Thunderbird. However, I keep this
-configuration in case I need to read/write E-mail on Emacs.
-
-#+begin_src emacs-lisp
-  (setopt
-   ;; mail-user-agent 'gnus-user-agent
-   ;; read-mail-command #'gnus
-
-   gnus-save-newsrc-file nil
-   gnus-read-newsrc-file nil
-
-   gnus-interactive-exit nil)
-
-  (setq
-   gnus-select-method '(nnnil "")
-
-   ;; Receving mails
-   gnus-secondary-select-methods
-   '((nnimap
-      "sina"
-      (nnimap-stream tls)
-      (nnimap-address "imap.sina.com")))
-
-   ;; Send mails
-   smtpmail-smtp-server "smtp.sina.com"
-   smtpmail-stream-type 'starttls
-   smtpmail-servers-requiring-authorization "sina"
-   send-mail-function 'smtpmail-send-it)
-#+end_src
-
-The last variable is necessary. Otherwise, I got "smtpmail-send-it:
-Sending failed: 530 Authentication required".  According to
-=smtpmail.el=, it should try again when the server is requesting
-authentication. However, it does not. By setting the variable
-~smtpmail-servers-requiring-authorization~, smtpmail would ask for
-authentication by default.
 
 *** COMMENT Spell Checking
 

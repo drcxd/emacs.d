@@ -1109,6 +1109,14 @@ Using elpaca requires disabling the built-in package manager.
 
 ** Other Packages
 
+*** compat
+
+#+begin_src emacs-lisp
+  (use-package compat
+    :ensure (:repo "https://github.com/emacs-compat/compat"))
+  (elpaca-wait)
+#+end_src
+
 *** Appearance
 
 **** Diminish

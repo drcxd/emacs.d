@@ -2426,6 +2426,17 @@ LSP. However, it is still useful when the project can not be compiled.
     (require 'citre-config))
 #+end_src
 
+**** dump-jump
+
+#+begin_src emacs-lisp
+  (use-package dumb-jump :ensure t
+    :custom
+    (dump-jump-prefer-searcher 'rg)
+    (xref-show-definition-function #'consult-xref)
+    :config
+    (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
+#+end_src
+
 **** COMMENT Syntax Highlighting
 
 Eamcs has built-in syntax highlighting support, however it is based on

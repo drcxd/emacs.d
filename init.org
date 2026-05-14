@@ -3508,11 +3508,11 @@ window then start moving cursor around.
     :init
     (avy-setup-default)
     :bind
-    (("<f9>" . avy-goto-char-2)
+    (("<f9>" . avy-goto-symbol-1)
      ("C-c a L" . avy-goto-line)
      ("C-c a l" . avy-goto-end-of-line)
      ("C-c a w" . avy-goto-word-1)
-     ("C-c a s" . avy-goto-symbol-1)))
+     ("C-c a c" . avy-goto-char-2)))
 #+end_src
 
 **** COMMENT flash

@@ -845,7 +845,7 @@ some mottoes selected randomly from a pre-defined list.
       ("人生代代无穷已" "江月年年望相似")
       ("担当生前事" "何计身后评")
       ("The spirit is willing" "but the flesh is weak")
-      ("Res severa verum verum gaudium")))
+      ("Res severa verum gaudium")))
 
   (setq initial-scratch-message
         (concat ";; Hello, " user-full-name "\n\n"
@@ -3405,8 +3405,8 @@ Finally, we have to put the =.dll= file to the load path of the jinx package.
     :config
     (add-to-list 'jinx-exclude-regexps '(t "\\cc"))
     :hook
-    (text-mode . jinx-mode)
-    (prog-mode . jinx-mode)
+    ((text-mode . jinx-mode)
+     (prog-mode . jinx-mode))
     :bind
     (("C-." . jinx-correct)))
 #+end_src

@@ -3477,6 +3477,14 @@ it for prose writing.
       (rename-file html-file dst-name t)))
 #+end_src
 
+**** org-markdown-preview
+
+#+begin_src emacs-lisp
+  (use-package org-markdown-preview
+    :ensure (:repo "https://github.com/KarimAziev/org-markdown-preview")
+    :commands (org-markdown-preview-mode))
+#+end_src
+
 *** Editing
 
 **** COMMENT which-key

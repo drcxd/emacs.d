@@ -2765,17 +2765,21 @@ problem perfectly, and I am going to use elfeed for it. Gnus may do
 the same work, but elfeed seems more dedicated and easy to use.
 
 #+begin_src emacs-lisp
-  (use-package elfeed :defer t :ensure t
+  (use-package elfeed :defer t
+    :ensure t
     :init
-    (setq elfeed-feeds '("https://www.filfre.net/feed/rss/"
-                         "https://hsu.cy/feed.xml"
-                         "https://hnrss.org/bestcomments"
-                         "https://sachachua.com/blog/category/emacs-news/feed/"
-                         "https://protesilaos.com/codelog.xml"
-                         "https://nonzerosum.games/rss.xml")
-          elfeed-search-filter "@1-month-ago +unread")
+    (setq elfeed-feeds '(("https://www.filfre.net/feed/rss/" blog video-game)
+                         ("https://hsu.cy/feed.xml" blog)
+                         ("https://hnrss.org/bestcomments" HN)
+                         ("https://sachachua.com/blog/category/emacs-news/feed/" emacs)
+                         ("https://protesilaos.com/codelog.xml" blog emacs)
+                         ("https://nonzerosum.games/rss.xml" blog video-game))
+          elfeed-search-filter "@2weeks +unread")
     :hook
-    (elfeed-show-mode . visual-line-mode))
+    ((elfeed-new-entry . (lambda ()
+                           (elfeed-make-tagger :before "2 weeks ago"
+                                               :remove 'unread)))
+     (elfeed-show-mode . visual-line-mode)))
 #+end_src
 
 **** Citation

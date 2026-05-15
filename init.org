@@ -3479,6 +3479,9 @@ it for prose writing.
 
 **** org-markdown-preview
 
+This package supports live previewing org/markdown buffer using your
+web browser or xwidget if Emacs is compiled with support for it.
+
 #+begin_src emacs-lisp
   (use-package org-markdown-preview
     :ensure (:repo "https://github.com/KarimAziev/org-markdown-preview")

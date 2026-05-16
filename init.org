@@ -3750,6 +3750,17 @@ to play albums, so ready-player is exactly what I need.
     (ready-player-mode +1))
 #+end_src
 
+*** i-ching
+
+This package simulates the divination process described by I-Ching. It
+is interesting to experiment sometimes. I also intend to expand this
+package so that it contains the original Chinese text for the
+hexagrams.
+
+#+begin_src emacs-lisp
+  (use-package i-ching :defer t
+    :ensure t)
+#+end_src
 *** Finalizing
 
 #+begin_src emacs-lisp

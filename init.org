@@ -3759,8 +3759,11 @@ hexagrams.
 
 #+begin_src emacs-lisp
   (use-package i-ching :defer t
-    :ensure t)
+    :ensure t
+    :init
+    (setq i-ching-randomness-source 'atmospheric))
 #+end_src
+
 *** Finalizing
 
 #+begin_src emacs-lisp

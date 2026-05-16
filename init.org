@@ -2774,7 +2774,8 @@ the same work, but elfeed seems more dedicated and easy to use.
                          ("https://sachachua.com/blog/category/emacs-news/feed/" emacs)
                          ("https://protesilaos.com/codelog.xml" blog emacs)
                          ("https://nonzerosum.games/rss.xml" blog video-game))
-          elfeed-search-filter "@2weeks +unread")
+          elfeed-search-filter "@2weeks +unread"
+          elfeed-tree-filter "@2weeks")
     :hook
     ((elfeed-new-entry . (lambda ()
                            (elfeed-make-tagger :before "2 weeks ago"
@@ -3488,8 +3489,11 @@ This package supports live previewing org/markdown buffer using your
 web browser or xwidget if Emacs is compiled with support for it.
 
 #+begin_src emacs-lisp
+  (use-package ghub :ensure t)
+
   (use-package org-markdown-preview
-    :ensure (:repo "https://github.com/KarimAziev/org-markdown-preview")
+    :ensure (:repo "https://github.com/KarimAziev/org-markdown-preview"
+                   :files ("*.el" "*.html"))
     :commands (org-markdown-preview-mode))
 #+end_src
 

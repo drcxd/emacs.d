@@ -2777,10 +2777,11 @@ the same work, but elfeed seems more dedicated and easy to use.
                          ("https://nonzerosum.games/rss.xml" blog video-game))
           elfeed-search-filter "@2weeks +unread"
           elfeed-tree-filter "@2weeks")
+    :config
+    (add-hook 'elfeed-new-entry-hook (elfeed-make-tagger :before "2 weeks ago"
+                                                         :remove 'unread))
     :hook
-    `((elfeed-new-entry . ,(elfeed-make-tagger :before "2 weeks ago"
-                                               :remove 'unread))
-      (elfeed-show-mode . visual-line-mode)))
+    (elfeed-show-mode . visual-line-mode))
 #+end_src
 
 **** Citation

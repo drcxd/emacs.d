@@ -2777,10 +2777,9 @@ the same work, but elfeed seems more dedicated and easy to use.
           elfeed-search-filter "@2weeks +unread"
           elfeed-tree-filter "@2weeks")
     :hook
-    ((elfeed-new-entry . (lambda ()
-                           (elfeed-make-tagger :before "2 weeks ago"
-                                               :remove 'unread)))
-     (elfeed-show-mode . visual-line-mode)))
+    `((elfeed-new-entry . ,(elfeed-make-tagger :before "2 weeks ago"
+                                               :remove 'unread))
+      (elfeed-show-mode . visual-line-mode)))
 #+end_src
 
 **** Citation

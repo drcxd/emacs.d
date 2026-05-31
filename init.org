@@ -1032,7 +1032,11 @@ exception rules is tedious and error prone.
 Learned about this feature from this post, it feels quite good.
 
 #+begin_src emacs-lisp
-  (windmove-default-keybindings)
+  ;; (windmove-default-keybindings)
+  (global-set-key (kbd "<left>") 'windmove-left)
+  (global-set-key (kbd "<right>") 'windmove-right)
+  (global-set-key (kbd "<up>") 'windmove-up)
+  (global-set-key (kbd "<down>") 'windmove-down)
 #+end_src
 
 ** Key Bindings

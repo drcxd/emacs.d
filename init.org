@@ -805,12 +805,12 @@ I would like the welcome message displayed in the scratch buffer be
 some mottoes selected randomly from a pre-defined list.
 
 #+begin_src emacs-lisp
-  (defun my/process-raw-mottoes (lines)
+  (defun my/process-raw-mottoes (lines &optional not-comment)
     "Process motto strings so that they could be displayed in the
     scratch buffer."
     (let ((ret ""))
       (dolist (line lines ret)
-        (setq ret (concat ret ";; " line "\n")))))
+        (setq ret (format "%s%s\n" (if not-comment "" ";; ") line)))))
 
   (defvar my/raw-mottoes
     '(("困于心衡于虑而后作" "征于色发于声而后喻")
@@ -855,7 +855,9 @@ some mottoes selected randomly from a pre-defined list.
 
   (defun my/show-motto ()
     (interactive)
-    (message (my/process-raw-mottoes (seq-random-elt my/raw-mottoes))))
+    (message (my/process-raw-mottoes
+              (seq-random-elt my/raw-mottoes)
+              t)))
 #+end_src
 
 *** Unreal :dependency:

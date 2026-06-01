@@ -810,7 +810,10 @@ some mottoes selected randomly from a pre-defined list.
     scratch buffer."
     (let ((ret ""))
       (dolist (line lines ret)
-        (setq ret (format "%s%s\n" (if not-comment "" ";; ") line)))))
+        (setq ret (format "%s%s%s\n"
+                          ret
+                          (if not-comment "" ";; ")
+                          line)))))
 
   (defvar my/raw-mottoes
     '(("困于心衡于虑而后作" "征于色发于声而后喻")

@@ -2740,7 +2740,9 @@ API, so I will stick with ECA for a little while.
 
 #+begin_src emacs-lisp
   (use-package eca
-    :ensure t)
+    :ensure t
+    :config
+    (setq eca-chat-use-side-window nil))
 #+end_src
 
 *** Reading & Writing

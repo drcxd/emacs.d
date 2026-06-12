@@ -378,7 +378,8 @@ the splash screen manually.
 
   (add-to-list 'display-buffer-alist
                '((or (major-mode . dired-mode)
-                     (major-mode . process-menu-mode))
+                     (major-mode . process-menu-mode)
+                     "*IBuffer*")
                  (display-buffer-reuse-window
                   display-buffer-in-side-window)
                  (side . left)

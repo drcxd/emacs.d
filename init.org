@@ -3549,8 +3549,8 @@ window then start moving cursor around.
     (avy-setup-default)
     :bind
     (("<f9>" . avy-goto-symbol-1)
-     ("C-c a L" . avy-goto-line)
-     ("C-c a l" . avy-goto-end-of-line)
+     ("C-c a b" . avy-goto-line)
+     ("C-c a e" . avy-goto-end-of-line)
      ("C-c a w" . avy-goto-word-1)
      ("C-c a c" . avy-goto-char-2)))
 #+end_src

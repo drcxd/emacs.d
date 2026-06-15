@@ -1555,6 +1555,13 @@ etc..
      ("C-c f" . consult-fd)
      ("C-c H" . consult-org-heading)
      ("C-c p" . consult-project-buffer)))
+
+  (if (eq system-type 'windows-nt)
+      (use-package consult-everything
+        :ensure (:repo "https://github.com/jthaman/consult-everything")
+        :after consult
+        :bind
+        ("C-c F" . consult-everything)))
 #+end_src
 
 **** embark

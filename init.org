@@ -569,7 +569,7 @@ Activate repeat mode to move among windows and repeat =M-x= commands.
   (defun prog-mode-setup ()
     (display-fill-column-indicator-mode t)
     (setq show-trailing-whitespace t)
-    (electric-pair-mode t)
+    ;; (electric-pair-mode t) ;; replace with smartparens
     (hs-minor-mode 1)
     (hl-line-mode 1))
   (add-hook 'prog-mode-hook 'prog-mode-setup)
@@ -2686,6 +2686,20 @@ powershell mode to help editing powershell script files.
 
 #+begin_src emacs-lisp :tangle (if (eq system-type 'windows-nt) "init.el" "no")
   (use-package powershell :defer t :ensure t)
+#+end_src
+
+**** smartparens
+
+Automatically insert/delete parenthesizes and replace matching
+parenthesizes with other symbols...
+
+#+begin_src emacs-lisp
+  (use-package smartparens
+    :ensure t
+    :hook
+    (prog-mode text-mode)
+    :config
+    (require 'smartparens-config))
 #+end_src
 
 *** magit :dependency:

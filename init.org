@@ -716,6 +716,7 @@ function ~toggle-hi-lock-symbol-at-point~ comes from [[https://www.jamescherti.c
 
 #+begin_src emacs-lisp
   (use-package hi-lock
+    :diminish hi-lock-mode
     ;; :init
     ;; (defun toggle-hi-lock-symbol-at-point ()
     ;;   "Toggle highlighting for the symbol at point."
@@ -2696,6 +2697,7 @@ parenthesizes with other symbols...
 #+begin_src emacs-lisp
   (use-package smartparens
     :ensure t
+    :diminish smartparens-mode
     :hook
     (prog-mode text-mode)
     :config
@@ -3595,7 +3597,7 @@ text, which is a nice complementary package to hideshow.
 
 #+begin_src emacs-lisp
   (use-package occult
-    :diminish occult-mode
+    :diminish occult--mode
     :ensure t)
 #+end_src
 

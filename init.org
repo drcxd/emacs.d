@@ -1056,6 +1056,7 @@ Learned about this feature from this post, it feels quite good.
   (global-set-key (kbd "C-c t s") 'text-scale-adjust)
   (global-set-key (kbd "C-c v l") 'visual-line-mode)
   (global-set-key (kbd "C-c v a") 'auto-fill-mode)
+  (global-set-key (kbd "C-c O") 'blink-matching-open)
 #+end_src
 
 * Third-Party Packages

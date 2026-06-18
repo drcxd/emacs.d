@@ -2291,7 +2291,7 @@ variable-rename.
      ("C-c l t" . lsp-semantic-tokens-mode)))
 
   (use-package lsp-ui
-    :ensure t
+    :ensure (:repo "https://github.com/drcxd/lsp-ui" :branch "personal-fixes")
     :defer t
     :bind
     (:map lsp-ui-mode-map

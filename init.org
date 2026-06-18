@@ -3599,7 +3599,8 @@ text, which is a nice complementary package to hideshow.
 #+begin_src emacs-lisp
   (use-package occult
     :diminish occult--mode
-    :ensure t)
+    :ensure (:repo "https://github.com/drcxd/occult.el"
+                   :branch "pfixes"))
 #+end_src
 
 **** meow

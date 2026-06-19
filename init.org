@@ -1044,6 +1044,14 @@ Learned about this feature from this post, it feels quite good.
   ;; (global-set-key (kbd "<down>") 'windmove-down)
 #+end_src
 
+*** Faster Mark Popping
+
+I learned about this from this [[https://emacsredux.com/blog/2026/04/07/stealing-from-the-best-emacs-configs/][post]] in Emacs Redux.
+
+#+begin_src emacs-lisp
+  (setq set-mark-command-repeat-pop t)
+#+end_src
+
 ** Key Bindings
 
 #+begin_src emacs-lisp

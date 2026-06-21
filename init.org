@@ -421,6 +421,17 @@ Use the same width as ~fill-column~ for ~shr-width~.
   (setq shr-width fill-column)
 #+end_src
 
+*** Blink Cursor Mode
+
+I find the blinking cursor distracting and annoying. If I want to
+figure out the location of the curosr, I can use =C-l=. Better, I can
+use avy commands to move the cursor to where I want it to be. Why
+should I care where the cursor is?
+
+#+begin_src emacs-lisp
+  (blink-cursor-mode -1)
+#+end_src
+
 ** Built-In Packages
 *** uniquify
 

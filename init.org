@@ -1539,22 +1539,20 @@ such as lsp-mode, depends on it somehow, so I still install it.
                   (cons #'tempel-expand
                         completion-at-point-functions)))
     :bind
-    (("C-c t i" . tempel-insert)
-     ("C-c t c" . tempel-complete)
-     ("<f7>" . tempel-insert)
+    (("<f7>" . tempel-insert)
      ("<f8>" . tempel-complete))
     :hook
     ((prog-mode . tempel-setup-capf)
      (text-mode . tempel-setup-capf)))
 
-  (use-package yasnippet
-    :ensure t
-    :diminish yas-minor-mode
-    :defer t
-    :hook
-    (prog-mode . yas-minor-mode)
-    :bind
-    ("C-c Y" . yas-reload-all))
+  ;; (use-package yasnippet
+  ;;   :ensure t
+  ;;   :diminish yas-minor-mode
+  ;;   :defer t
+  ;;   :hook
+  ;;   (prog-mode . yas-minor-mode)
+  ;;   :bind
+  ;;   ("C-c Y" . yas-reload-all))
 #+end_src
 
 *** org-mode
@@ -1867,8 +1865,7 @@ one single command.
     :config
     (setq zoom-size '(0.618 . 0.618))
     :bind
-    ("C-c z" . zoom)
-    ("C-c Z" . zoom-mode))
+    ("C-c z" . zoom))
 #+end_src
 
 ***** switch-window
@@ -2050,17 +2047,16 @@ variable-rename.
     (lua-mode . (lambda () (setq-local lsp-enable-indentation nil)))
     (lua-ts-mode . (lambda () (setq-local lsp-enable-indentation nil)))
     :bind
-    (("C-c l l" . lsp)
-     :map lsp-mode-map
-     ("C-c l d" . lsp-find-declaration)
-     ;; ("C-c l D" . lsp-find-definition)
-     ("C-c l o" . lsp-clangd-find-other-file)
-     ("C-c l r" . lsp-find-references)
-     ("C-c l R" . lsp-workspace-restart)
-     ("C-c l S" . lsp-workspace-shutdown)
-     ("C-c l a" . lsp-execute-code-action)
-     ("C-c l n" . lsp-rename)
-     ("C-c l t" . lsp-semantic-tokens-mode)))
+    (:map lsp-mode-map
+          ("C-c l d" . lsp-find-declaration)
+          ;; ("C-c l D" . lsp-find-definition)
+          ("C-c l o" . lsp-clangd-find-other-file)
+          ("C-c l r" . lsp-find-references)
+          ("C-c l R" . lsp-workspace-restart)
+          ("C-c l S" . lsp-workspace-shutdown)
+          ("C-c l a" . lsp-execute-code-action)
+          ("C-c l n" . lsp-rename)
+          ("C-c l t" . lsp-semantic-tokens-mode)))
 
   (use-package lsp-ui
     :ensure (:repo "https://github.com/drcxd/lsp-ui" :branch "personal-fixes")
@@ -3102,7 +3098,6 @@ window then start moving cursor around.
     (("<f9>" . avy-goto-symbol-1)
      ("C-c a b" . avy-goto-line)
      ("C-c a e" . avy-goto-end-of-line)
-     ("C-c a w" . avy-goto-word-1)
      ("C-c a c" . avy-goto-char-2)))
 #+end_src
 

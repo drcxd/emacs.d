@@ -24,9 +24,7 @@ This part contains configurations about all Emacs native options and
 built-in packages. This part does not depend on any third-party
 packages.
 
-** Platform Dependent Settings
-
-*** Android Environment Settings
+** Android Environment Settings
 
 #+begin_src emacs-lisp :tangle (if (eq system-type 'android) "early-init.el" "no")
   (setenv "PATH" (format "%s:%s" "/data/data/com.termux/files/usr/bin"
@@ -35,7 +33,10 @@ packages.
 #+end_src
 
 
-*** Set =find= on Windows :dependency:
+** COMMENT Set =find= on Windows :dependency:
+
+# Since we use consult-everything and consult-fd on Windows, this is
+# no longer necessary now.
 
 Windows provides a find program which accepts different arguments than
 the Linux one. Emacs works out-of-the-box with Linux find program, so
@@ -43,8 +44,11 @@ on Windows I have to tell Emacs where the find program is, one that
 accepts Linux find program conventional arguments.
 
 #+begin_src emacs-lisp
-  (if (eq system-type 'windows-nt)
-      (setq find-program "C:/msys64/usr/bin/find.exe"))
+  (use-package grep
+    :defer t
+    :config
+    (if (eq system-type 'windows-nt)
+        (setq find-program "C:/msys64/usr/bin/find.exe")))
 #+end_src
 
 ** COMMENT Package
@@ -97,9 +101,7 @@ really helpful when your network environment is not good.
   (setq use-package-always-ensure t)
 #+end_src
 
-** System Settings
-
-*** Garbage Collection Settings
+** Garbage Collection Settings
 
 Adjust garbage collection thresholds during startup, and restore it
 after startup. It is said that this reduces the boot time, but I have
@@ -123,7 +125,7 @@ not seen any observable change.
                     vc-handled-backends my/vc-handled-backends)))
 #+end_src
 
-*** Native Compilation
+** Native Compilation
 
 Native compilation tends to generate a lot of warnings, which
 interrupts whatever work you are doing. Disabling them reduces
@@ -135,14 +137,14 @@ distraction.
     (setq native-compile-prune-cache t)) ; Emacs 29
 #+end_src
 
-*** Who am I?
+** Who am I?
 
 #+begin_src emacs-lisp
   (setq user-full-name "Chang Xiaoduan"
         user-mail-address "drcxd@sina.com")
 #+end_src
 
-*** Custom File Location
+** Custom File Location
 
 It is good to place the custom file in =.emacs.d= directory. This way,
 we have all the files related to Emacs in one single directory. Some
@@ -157,7 +159,7 @@ local configuration file helps solve some specific issues.
   (setq custom-file (locate-user-emacs-file "custom.el"))
 #+end_src
 
-*** Auto Backup
+** Auto Backup
 
 By default, Emacs will automatically generate a backup file every time
 you edit an existing file. If your file name is =fname.txt=, then it
@@ -168,7 +170,7 @@ directory messy, so I prefer disable this feature.
   (setq make-backup-files nil)
 #+end_src
 
-*** Auto Save
+** Auto Save
 
 Emacs can automatically save edited files after some certain idle
 time. This feature is disabled by default. I would like to enable it
@@ -183,7 +185,7 @@ short since this would incur frequently disk I/O.
   (auto-save-visited-mode 1)
 #+end_src
 
-*** Auto Revert
+** Auto Revert
 
 I turn on auto-revert-mode because sometimes when a file is edited by
 some external programs, edit it again and save it in Emacs will
@@ -191,11 +193,14 @@ conflict with the external changes. Enable auto-revert-mode eliminate
 the chances of such problems.
 
 #+begin_src emacs-lisp
-  (global-auto-revert-mode)
-  (setq auto-revert-verbose nil)
+  (use-package autorevert
+    :init
+    (setq auto-revert-verbose nil)
+    :config
+    (global-auto-revert-mode))
 #+end_src
 
-*** System Time Locale
+** System Time Locale
 
 Use English for datetime string regardless of the operating system
 language. Credit to this SO [[https://stackoverflow.com/questions/28913294/emacs-org-mode-language-of-time-stamps][post]].
@@ -204,40 +209,37 @@ language. Credit to this SO [[https://stackoverflow.com/questions/28913294/emacs
   (setq system-time-locale "C")
 #+end_src
 
-*** Completion
+** Completion
 
 #+begin_src emacs-lisp
   (setq completion-ignore-case t)
 #+end_src
 
-*** Emacs As Server
+** Emacs As Server
 
 #+begin_src emacs-lisp
-  (require 'server)
-  (setq server-client-instructions nil)
-  (unless (server-running-p)
-    (server-start))
+  (use-package server
+    :init
+    (setq server-client-instructions nil)
+    :config
+    (unless (server-running-p)
+    (server-start)))
 #+end_src
 
-*** Filling and Wrapping
+** Filling and Wrapping
 
 #+begin_src emacs-lisp
   (setq-default truncate-lines t)
-  ;; (add-hook 'text-mode-hook (lambda () (setq truncate-lines nil)))
-  (add-hook 'text-mode-hook #'auto-fill-mode)
   ;; Enable wrapping after any Chinese characters
   ;; More information about this issue: https://debbugs.gnu.org/cgi/bugreport.cgi?bug=29364
   (setq word-wrap-by-category t)
-  (global-visual-wrap-prefix-mode)
+  (use-package visual-wrap
+    :defer t
+    :config
+    (global-visual-wrap-prefix-mode))
 #+end_src
 
-*** Alert
-
-#+begin_src emacs-lisp
-  (setq alert-default-style 'notifications)
-#+end_src
-
-*** Performance
+** Performance
 
 Copied from [[https://emacsredux.com/blog/2026/04/07/stealing-from-the-best-emacs-configs/][Emacs Redux]].
 
@@ -258,30 +260,26 @@ Copied from [[https://emacsredux.com/blog/2026/04/07/stealing-from-the-best-emac
   (setq highlight-nonselected-windows nil)
 #+end_src
 
-*** Kill Ring
+** simple
+
+Tab could be translated to different length spaces by different
+editors. To avoid such a difference, simply avoid using tab.
 
 #+begin_src emacs-lisp
-  ;; Save the Clipboard Before Killing (Purcell, Prot, Centaur)
-  (setq save-interprogram-paste-before-kill t)
-
-  ;; No Duplicates in the Kill Ring (Doom, Prot)
-  (setq kill-do-not-save-duplicates t)
+  (use-package simple
+    :init
+    (setq-default indent-tabs-mode nil)
+    ;; The following code is copied from Emacs Redux
+    ;; https://emacsredux.com/blog/2026/04/07/stealing-from-the-best-emacs-configs/
+    (setq save-interprogram-paste-before-kill t ;; Save the Clipboard Before Killing (Purcell, Prot, Centaur)
+          kill-do-not-save-duplicates t ;; No Duplicates in the Kill Ring (Doom, Prot)
+          set-mark-command-repeat-pop t)
+    :bind
+    (("C-c O" . blink-matching-open)
+     ("C-c S" . shell-command)))
 #+end_src
 
-** Development Settings
-
-*** C++
-
-#+begin_src emacs-lisp :tangle no
-  (defun my/c-indent-then-complete ()
-    (interactive)
-    (if (= 0 (c-indent-line-or-region))
-        (completion-at-point)))
-  (with-eval-after-load 'cc-mode
-    (define-key c++-mode-map [remap c-indent-line-or-region] 'my/c-indent-then-complete))
-#+end_src
-
-*** Documentation Style
+** Documentation Style
 
 Emacs 28 supports syntax highlighting for documentations in comments.
 
@@ -293,30 +291,23 @@ Emacs 28 supports syntax highlighting for documentations in comments.
                   (c++-mode  . doxygen)))
 #+end_src
 
-*** No Tab Character
-
-Tab could be translated to different length spaces by different
-editors. To avoid such a difference, simply avoid using tab.
-
-#+begin_src emacs-lisp
-  (setq-default indent-tabs-mode nil)
-#+end_src
-
-** Appearance Settings
-
-*** Frame Settings
-
-[[https://www.gnu.org/software/emacs/manual/html_node/elisp/Frame-Parameters.html][Frame parameters]] can be used to control the appearance of Emacs
-frame. We can use these parameters to hide menu bar, adjust frame's
-position and width, etc..
+** Menu, Tool, and Scroll Bar
 
 #+begin_src emacs-lisp :tangle "early-init.el"
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
+  (use-package menu-bar
+    :config
+    (menu-bar-mode -1))
+
+  (use-package tool-bar
+    :config
+    (tool-bar-mode -1))
+
+  (use-package scroll-bar
+    :config
+    (scroll-bar-mode -1))
 #+end_src
 
-*** Mode Line
+** Mode Line
 
 #+begin_src emacs-lisp
   (setq display-time-24hr-format t)
@@ -333,7 +324,7 @@ position and width, etc..
   ;; line setting.
 #+end_src
 
-*** Splash Screen
+** Splash Screen
 
 By default, Emacs shows a welcome screen every time it is
 launched. This might be useful to new Emacs users, but for experienced
@@ -345,260 +336,223 @@ the splash screen manually.
   (setq inhibit-splash-screen t)
 #+end_src
 
-*** Window Management
+** window
 
 #+begin_src emacs-lisp
-  (setq switch-to-buffer-in-dedicated-window 'pop
-        switch-to-buffer-obey-display-actions t
-        ;; left top right bottom
-        window-sides-slots '(1 0 0 0))
+  (use-package window
+    :init
+    (setq switch-to-buffer-in-dedicated-window 'pop
+          switch-to-buffer-obey-display-actions t
+          ;; left top right bottom
+          window-sides-slots '(1 0 0 0))
+    :bind
+    ("C-c b" . switch-to-buffer)
+    :config
+    (add-to-list 'display-buffer-alist
+                 '("\\*Async Shell Command\\*.*"
+                   (display-buffer-reuse-window
+                    display-buffer-at-bottom
+                    display-buffer-pop-up-frame)
+                   (window-height . 0.2)))
 
-  (add-to-list 'display-buffer-alist
-               '("\\*Async Shell Command\\*.*"
-                 (display-buffer-reuse-window
-                  display-buffer-at-bottom
-                  display-buffer-pop-up-frame)
-                 (window-height . 0.2)))
+    (add-to-list 'display-buffer-alist
+                 '("^\\*.*eshell\\*$" display-buffer-in-direction
+                   (direction . bottom)
+                   (window . root)
+                   (window-height . 0.3)))
 
-  (add-to-list 'display-buffer-alist
-               '("^\\*.*eshell\\*$" display-buffer-in-direction
-                 (direction . bottom)
-                 (window . root)
-                 (window-height . 0.3)))
+    (add-to-list 'display-buffer-alist
+                 '((or (major-mode . Info-mode)
+                       (major-mode . help-mode)
+                       (major-mode . messages-buffer-mode))
+                   (display-buffer-reuse-window
+                    display-buffer-in-side-window)
+                   (side . left)
+                   (window . root)
+                   (window-width . 80)))
 
-  (add-to-list 'display-buffer-alist
-               '((or (major-mode . Info-mode)
-                     (major-mode . help-mode)
-                     (major-mode . messages-buffer-mode))
-                 (display-buffer-reuse-window
-                  display-buffer-in-side-window)
-                 (side . left)
-                 (window . root)
-                 (window-width . 80)))
-
-  (add-to-list 'display-buffer-alist
-               '((or (major-mode . dired-mode)
-                     (major-mode . process-menu-mode)
-                     "*IBuffer*")
-                 (display-buffer-reuse-window
-                  display-buffer-in-side-window)
-                 (side . left)
-                 (window . root)
-                 (window-width . 0.381)))
+    (add-to-list 'display-buffer-alist
+                 '((or (major-mode . dired-mode)
+                       (major-mode . process-menu-mode)
+                       "*IBuffer*")
+                   (display-buffer-reuse-window
+                    display-buffer-in-side-window)
+                   (side . left)
+                   (window . root)
+                   (window-width . 0.381))))
 
   ;; Proportional Window Resizing (Purcell, Prot)
   (setq window-combination-resize t)
 
-  ;; Reversible C-x 1 (Purcell)
-
-  (winner-mode +1)
-
-  ;; (defun toggle-delete-other-windows ()
-  ;;   "Delete other windows in frame if any, or restore previous window config."
-  ;;   (interactive)
-  ;;   (if (and winner-mode
-  ;;            (equal (selected-window) (next-window)))
-  ;;       (winner-undo)
-  ;;     (delete-other-windows)))
-
-  ;; (global-set-key (kbd "C-x 1") #'toggle-delete-other-windows)
-
-  ;; Auto-Select Help Windows (Prot)
-  (setq help-window-select t)
+  (use-package winner
+    :config
+    (winner-mode +1))
 #+end_src
 
-*** Variable-Pitch Mode
+** help
 
 #+begin_src emacs-lisp
-  (add-hook 'text-mode-hook 'variable-pitch-mode)
+  ;; Auto-Select Help Windows (Prot)
+  (use-package help
+    :init
+    (setq help-window-select t))
 #+end_src
 
-*** HTML Rendering
+** text-mode
+
+Enable proportional font and auto filling in text mode.
+
+#+begin_src emacs-lisp
+  (use-package text-mode
+    :defer t
+    :hook
+    ((text-mode . variable-pitch-mode)
+     (text-mode . auto-fill-mode)))
+#+end_src
+
+** HTML Rendering
 
 Use the same width as ~fill-column~ for ~shr-width~.
 
 #+begin_src emacs-lisp
-  (setq shr-width fill-column)
+  (use-package shr
+    :defer t
+    :init
+    (setq shr-width fill-column))
 #+end_src
 
-*** Blink Cursor Mode
+** Blink Cursor Mode
 
 I find the blinking cursor distracting and annoying. If I want to
-figure out the location of the curosr, I can use =C-l=. Better, I can
+figure out the location of the cursor, I can use =C-l=. Better, I can
 use avy commands to move the cursor to where I want it to be. Why
 should I care where the cursor is?
 
 #+begin_src emacs-lisp
-  (blink-cursor-mode -1)
+  (use-package frame
+    :config
+    (blink-cursor-mode -1))
 #+end_src
 
-** Built-In Packages
-*** uniquify
+** uniquify
 
 When two buffers of the same name are opened, Emacs has to uniquify
 them so you can distinguish between them.
 
 #+begin_src emacs-lisp
-  (setq uniquify-buffer-name-style 'forward)
-  (setq uniquify-after-kill-buffer-p t)
-  (setq uniquify-strip-common-suffix t)
-  (setq uniquify-ignore-buffers-re "^\\*")
+  (use-package uniquify
+    :defer t
+    :init
+    (setq uniquify-buffer-name-style 'forward
+          uniquify-after-kill-buffer-p t
+          uniquify-strip-common-suffix t
+          uniquify-ignore-buffers-re "^\\*"))
 #+end_src
 
-*** ibuffer
+** ibuffer
 
 ibuffer is a buffer list all opened buffers in Emacs. You can use it
 to manage these buffers just as you manage files in dired.
 
 #+begin_src emacs-lisp
-  ;; (with-eval-after-load 'ibuffer
-  ;;   ;; Use human readable Size column instead of original one
-  ;;   (define-ibuffer-column size-h
-  ;;     (:name "Size" :inline t)
-  ;;     (cond
-  ;;      ((> (buffer-size) 1000000)
-  ;;       (format "%7.1fM" (/ (buffer-size) 1000000.0)))
-  ;;      ((> (buffer-size) 1000)
-  ;;       (format "%7.1fk" (/ (buffer-size) 1000.0)))
-  ;;      (t
-  ;;       (format "%8d" (buffer-size)))))
-
-  ;;   (setq ibuffer-expert t
-  ;;         ibuffer-show-empty-filter-groups nil
-  ;;         ibuffer-display-summary nil)
-
-  ;;   (setq ibuffer-saved-filter-groups
-  ;;         (quote (("default"
-  ;;                  ("code" (or (mode . emacs-lisp-mode)
-  ;;                              (mode . cperl-mode)
-  ;;                              (mode . c-mode)
-  ;;                              (mode . java-mode)
-  ;;                              (mode . idl-mode)
-  ;;                              (mode . web-mode)
-  ;;                              (mode . lisp-mode)
-  ;;                              (mode . js2-mode)
-  ;;                              (mode . c++-mode)
-  ;;                              (mode . lua-mode)
-  ;;                              (mode . cmake-mode)
-  ;;                              (mode . ruby-mode)
-  ;;                              (mode . css-mode)
-  ;;                              (mode . objc-mode)
-  ;;                              (mode . sql-mode)
-  ;;                              (mode . python-mode)
-  ;;                              (mode . php-mode)
-  ;;                              (mode . sh-mode)
-  ;;                              (mode . json-mode)
-  ;;                              (mode . scala-mode)
-  ;;                              (mode . go-mode)
-  ;;                              (mode . erlang-mode)))
-
-  ;;                  ("dired" (or (mode . dired-mode)
-  ;;                               (mode . sr-mode)))
-
-  ;;                  ("erc" (mode . erc-mode))
-
-  ;;                  ("planner" (or (name . "^\\*Calendar\\*$")
-  ;;                                 (name . "^diary$")
-  ;;                                 (mode . muse-mode)
-  ;;                                 (mode . org-mode)
-  ;;                                 (mode . org-agenda-mode)))
-
-  ;;                  ("emacs" (or (name . "^\\*scratch\\*$")
-  ;;                               (name . "^\\*Messages\\*$")))
-
-  ;;                  ("gnus" (or (mode . message-mode)
-  ;;                              (mode . bbdb-mode)
-  ;;                              (mode . mail-mode)
-  ;;                              (mode . gnus-group-mode)
-  ;;                              (mode . gnus-summary-mode)
-  ;;                              (mode . gnus-article-mode)
-  ;;                              (name . "^\\.bbdb$")
-  ;;                              (name . "^\\.newsrc-dribble")))))))
-  ;;   (defun ibuffer-mode-hook-setup ()
-  ;;     (unless (eq ibuffer-sorting-mode 'filename/process)
-  ;;       (ibuffer-do-sort-by-filename/process))
-  ;;     (ibuffer-switch-to-saved-filter-groups "default"))
-
-  ;;   (add-hook 'ibuffer-mode-hook 'ibuffer-mode-hook-setup)
-
-  ;;   ;; Modify the default ibuffer-formats
-  ;;   (setq ibuffer-formats
-  ;;         '((mark modified read-only " "
-  ;;                 (name 18 18 :left :elide)
-  ;;                 " "
-  ;;                 (size-h 9 -1 :right)
-  ;;                 " "
-  ;;                 (mode 16 16 :left :elide)
-  ;;                 " "
-  ;;                 filename-and-process)))
-
-  ;;   (setq ibuffer-filter-group-name-face 'font-lock-doc-face))
-
-  (global-set-key (kbd "C-x C-b") 'ibuffer)
+  (use-package ibuffer
+    :defer t
+    :init
+    (setq ibuffer-default-shrink-to-minimum-size t)
+    :bind
+    ("C-x C-b" . ibuffer))
 #+end_src
 
-*** Recent Files
-
-It would be convenient to quickly open the file you have edited in
-your last Emacs session. With recentf-mode, you do not have to input
-the location of the file every time you visit it, but choose from a
-maintained recent file list.
-
-#+begin_src emacs-lisp
-  (recentf-mode 1)
-#+end_src
-
-*** Dired
+** Dired
 
 dired is the facility Emacs uses to manage files. It's the file
 explorer of Emacs. You can perform many file operations in dired.
 
 #+begin_src emacs-lisp
-  (setq dired-kill-when-opening-new-dired-buffer t
-        dired-guess-shell-alist-user '(("\\.pdf\\'" "okular &")))
-  (defun dired-mode-setup ()
-    "Setup dired."
-    ;; global-auto-revert-mode does not work for dired
-    (auto-revert-mode)
-    (dired-hide-details-mode))
-  (add-hook 'dired-mode-hook 'dired-mode-setup)
-  (with-eval-after-load 'dired
-    (require 'dired-x))
+  (use-package dired
+    :init
+    (setq dired-kill-when-opening-new-dired-buffer t
+          dired-guess-shell-alist-user '(("\\.pdf\\'" "okular &")))
+    (defun dired-mode-setup ()
+      "Setup dired."
+      ;; global-auto-revert-mode does not work for dired
+      (auto-revert-mode)
+      (dired-hide-details-mode))
+    :hook
+    (dired-mode . dired-mode-setup))
+
+  (use-package dired-x
+    :after dired)
 #+end_src
 
-*** Repeat Mode
+** Repeat Mode
 
 Activate repeat mode to move among windows and repeat =M-x= commands.
 
 #+begin_src emacs-lisp
-  (repeat-mode)
+  (use-package repeat
+    :config
+    (repeat-mode))
 #+end_src
 
-*** prog-mode
+** display-fill-column-indicator
 
 #+begin_src emacs-lisp
-  (defun prog-mode-setup ()
-    (display-fill-column-indicator-mode t)
-    (setq show-trailing-whitespace t)
-    ;; (electric-pair-mode t) ;; replace with smartparens
-    (hs-minor-mode 1)
-    (hl-line-mode 1))
-  (add-hook 'prog-mode-hook 'prog-mode-setup)
+  (use-package display-fill-column-indicator
+    :defer t
+    :hook
+    (prog-mode . display-fill-column-indicator-mode))
 #+end_src
 
-*** project
+** hideshow
 
 #+begin_src emacs-lisp
-  (setq project-vc-extra-root-markers '(".project"))
+  (use-package hideshow
+    :defer t
+    :diminish hs-minor-mode
+    :hook
+    (prog-mode . hs-minor-mode))
 #+end_src
 
-*** vc-svn
+** hl-line
 
 #+begin_src emacs-lisp
-  (setq vc-svn-annotate-switches "-x --ignore-eol-style")
+  (use-package hl-line
+    :defer t
+    :hook
+    (prog-mode . hl-line-mode))
 #+end_src
 
-*** nXML Mode
+** prog-mode
+
+#+begin_src emacs-lisp
+  (use-package prog-mode
+    :init
+    (defun prog-mode-setup ()
+      (setq show-trailing-whitespace t))
+    :hook
+    (prog-mode . prog-mode-setup))
+#+end_src
+
+** project
+
+#+begin_src emacs-lisp
+  (use-package project
+    :defer t
+    :init
+    (setq project-vc-extra-root-markers '(".project")))
+#+end_src
+
+** vc-svn
+
+#+begin_src emacs-lisp
+  (use-package vc-svn
+    :defer t
+    :config
+    (setq vc-svn-annotate-switches "-x --ignore-eol-style"))
+#+end_src
+
+** nXML Mode
 
 By default, nXML mode does not support hide and show certain blocks
 (sections/nodes), this piece of code add this feature using hs-minor
@@ -607,18 +561,21 @@ mode.
 Credit: https://stackoverflow.com/questions/944614/emacs-does-hideshow-work-with-xml-mode-sgml-mode
 
 #+begin_src emacs-lisp
-  (add-to-list 'hs-special-modes-alist
-               (list 'nxml-mode
-                     "<!--\\|<[^/>]*[^/]>"
-                     "-->\\|</[^/>]*[^/]>"
-                     "<!--"
-                     'nxml-forward-element
-                     nil))
-
-  (add-hook 'nxml-mode-hook 'hs-minor-mode)
+  (use-package nxml-mode
+    :defer t
+    :config
+    (add-to-list 'hs-special-modes-alist
+                 (list 'nxml-mode
+                       "<!--\\|<[^/>]*[^/]>"
+                       "-->\\|</[^/>]*[^/]>"
+                       "<!--"
+                       'nxml-forward-element
+                       nil))
+    :hook
+    (nxml-mode . hs-minor-mode))
 #+end_src
 
-*** Gnus
+** Gnus
 
 Gnus is a complicated piece of software. It can be used to read email
 and RSS feeds, for example.
@@ -633,6 +590,7 @@ which states it changes.
 
 #+begin_src emacs-lisp
   (use-package gnus
+    :defer t
     :bind
     (:map gnus-summary-mode-map
           ("v n" . gnus-summary-next-subject)
@@ -668,31 +626,18 @@ which states it changes.
      send-mail-function 'smtpmail-send-it))
 #+end_src
 
-*** COMMENT Spell Checking
-
-Currently I use Emacs' built-in spell checker, flyspell mode for spell
-checking.
+** ediff
 
 #+begin_src emacs-lisp
-  (use-package flyspell
-    :diminish flyspell-mode
-    :hook
-    ((text-mode . flyspell-mode)
-     (prog-mode . flyspell-prog-mode)
-     (latex-mode . (lambda () (flyspell-mode -1))))
-    :bind
-    ("C-c s b" . flyspell-buffer))
+  (use-package ediff
+    :defer t
+    :init
+    (setq ediff-keep-variants nil
+          ediff-show-clashes-only t
+          ediff-split-window-function 'split-window-horizontally))
 #+end_src
 
-*** ediff
-
-#+begin_src emacs-lisp
-  (setq ediff-keep-variants nil
-        ediff-show-clashes-only t
-        ediff-split-window-function 'split-window-horizontally)
-#+end_src
-
-*** imenu
+** imenu
 
 #+begin_src emacs-lisp
   (use-package imenu
@@ -701,20 +646,27 @@ checking.
     (setq imenu-max-item-length 'Unlimited))
 #+end_src
 
-*** isearch
+** isearch
 
 #+begin_src emacs-lisp
-  (setq isearch-lazy-count t)
+  (use-package isearch
+    :defer t
+    :init
+    (setq isearch-lazy-count t))
 #+end_src
 
-*** dictionary
+** dictionary
 
 #+begin_src emacs-lisp
-  (setq dictionary-server "dict.org")
-  (global-set-key (kbd "C-c d") #'dictionary-lookup-definition)
+  (use-package dictionary
+    :defer t
+    :init
+    (setq dictionary-server "dict.org")
+    :bind
+    ("C-c d" . dictionary-lookup-definition))
 #+end_src
 
-*** hi-lock
+** hi-lock
 
 I am trying to use hi-lock to replace symbol highlighting. To
 highlight a symbol, either use ~hi-lock-face-symbol-at-point~ or
@@ -727,6 +679,7 @@ function ~toggle-hi-lock-symbol-at-point~ comes from [[https://www.jamescherti.c
 
 #+begin_src emacs-lisp
   (use-package hi-lock
+    :defer t
     :diminish hi-lock-mode
     ;; :init
     ;; (defun toggle-hi-lock-symbol-at-point ()
@@ -743,53 +696,34 @@ function ~toggle-hi-lock-symbol-at-point~ comes from [[https://www.jamescherti.c
      ("C-c s r" . hi-lock-unface-buffer)))
 #+end_src
 
-** Not a Package
+** minibuffer
+
+#+begin_src emacs-lisp
+  (use-package minibuffer
+    :bind
+    ("C-<tab>" . completion-at-point))
+#+end_src
+
+** windmove
+
+Learned about this feature from this post, it feels quite good.
+
+#+begin_src emacs-lisp
+  (use-package windmove
+    :config
+    (windmove-default-keybindings))
+#+end_src
+
+** Personal Code
 
 The code I write but not enough for a package.
 
 #+begin_src emacs-lisp
-  (defun my/curly->round (start end)
-    "Replace { with (, and } with ) in region."
-    (interactive "r")
-    (replace-string-in-region "{" "(" start end)
-    (replace-string-in-region "}" ")" start end))
-
   (defun my/config ()
     "Open init.org."
     (interactive)
     (find-file (locate-user-emacs-file "init.org")))
 
-  (defvar my/workout-plan
-    '(("Push" . ("Barbell Bench Press"
-                 "Inclined Barbell Bench Press"
-                 "Dumbbell Bench Press"
-                 "Triceps Pushdown")) ;; Monday
-      ("Pull" . ("Barbell Deadlift"
-                 "One-Arm Dumbbell Row"
-                 "Lat Pull Down"
-                 "Alternating Dumbbell Curl")) ;; Tuesday
-      ("Upper Body" . ("The Press"
-                       "Seated Cable Row"
-                       "Close-Grip Bench Press"
-                       "Dumbbell Rear Lateral Raise")) ;; Wednesday
-      ("Squat" . ("Barbell Squat"
-                  "Lunge"
-                  "Hanging Leg Lift"))))
-
-  (defun my/insert-workout-plan ()
-    (interactive)
-    (let ((plan (if current-prefix-arg
-                    (let ((key (completing-read "Workout plan: " (mapcar 'car my/workout-plan))))
-                      (assoc key my/workout-plan))
-                  (let* ((weekday (string-to-number (format-time-string "%u"))))
-                    (nth (- weekday 1) my/workout-plan)))))
-      (mapc (lambda (exercise)
-              (insert (format "| %s | %s | | | | | |\n"
-                              (format-time-string "%Y/%m/%d")
-                              exercise)))
-            (cdr plan))))
-
-  ;; (global-set-key (kbd "C-c w") 'my/insert-workout-plan)
   (defun my/find-line-matching (file regex)
     "Return the first line in FILE whose text matches REGEX, or nil."
     (with-temp-buffer
@@ -813,6 +747,8 @@ EOL characters. This would make some lines ended with additional
 #+end_src
 
 *** Mottoes
+
+# TODO: Make this a package
 
 I would like the welcome message displayed in the scratch buffer be
 some mottoes selected randomly from a pre-defined list.
@@ -877,6 +813,8 @@ some mottoes selected randomly from a pre-defined list.
 #+end_src
 
 *** Unreal :dependency:
+
+# TODO: make this a package
 
 I am working with Unreal Engine, using Emacs + clangd + lsp-mode as my
 development environment. I find that I frequently execute some
@@ -949,7 +887,9 @@ some macro's line number has changed.
      (my/build-ubt-op-string project opt platform editor "-SkipBuild")))
 #+end_src
 
-*** Build Ignore
+*** COMMENT Build Ignore
+
+# This code seems useless now
 
 This piece of code provides the function ~my/build-ignore~ which
 generates the =.ignore= file for git or fd using a description that
@@ -1043,39 +983,11 @@ exception rules is tedious and error prone.
       ignore))
 #+end_src
 
-** Navigation
-
-Learned about this feature from this post, it feels quite good.
-
-#+begin_src emacs-lisp
-  (windmove-default-keybindings)
-  ;; (global-set-key (kbd "<left>") 'windmove-left)
-  ;; (global-set-key (kbd "<right>") 'windmove-right)
-  ;; (global-set-key (kbd "<up>") 'windmove-up)
-  ;; (global-set-key (kbd "<down>") 'windmove-down)
-#+end_src
-
-*** Faster Mark Popping
-
-I learned about this from this [[https://emacsredux.com/blog/2026/04/07/stealing-from-the-best-emacs-configs/][post]] in Emacs Redux.
-
-#+begin_src emacs-lisp
-  (setq set-mark-command-repeat-pop t)
-#+end_src
-
 ** Key Bindings
 
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c e") 'eval-region)
-  (global-set-key (kbd "C-c b") 'switch-to-buffer)
   (global-set-key (kbd "C-c k") 'kill-buffer)
-  (global-set-key (kbd "C-c S") 'shell-command)
-  (global-set-key (kbd "C-<tab>") 'completion-at-point)
-  (global-set-key (kbd "C-c t S") 'global-text-scale-adjust)
-  (global-set-key (kbd "C-c t s") 'text-scale-adjust)
-  (global-set-key (kbd "C-c v l") 'visual-line-mode)
-  (global-set-key (kbd "C-c v a") 'auto-fill-mode)
-  (global-set-key (kbd "C-c O") 'blink-matching-open)
 #+end_src
 
 * Third-Party Packages
@@ -1165,19 +1077,18 @@ enabled. Diminish is a good package to solve this problem.
     :demand t
     :ensure (:wait t))
 
-  (use-package hideshow
-    :ensure nil
-    :diminish hs-minor-mode)
-
   (use-package face-remap
+    :defer t
     :ensure nil
     :diminish buffer-face-mode)
 
   (use-package eldoc
+    :defer t
     :ensure nil
     :diminish eldoc-mode)
 
   (use-package abbrev
+    :defer t
     :ensure nil
     :diminish abbrev-mode)
 #+end_src
@@ -1196,13 +1107,12 @@ enabled. Diminish is a good package to solve this problem.
 ***** Modus Themes
 
 #+begin_src emacs-lisp
-  (use-package standard-themes :ensure t)
-  (use-package ef-themes :ensure t)
+  ;; (use-package standard-themes :ensure t)
+  ;; (use-package ef-themes :ensure t)
   (use-package modus-themes
     :ensure t
     :defer t
     :init
-    (global-set-key (kbd "C-c t g") 'modus-themes-toggle)
     (setq modus-themes-italic-constructs t
           modus-themes-bold-constructs nil
           modus-themes-mixed-fonts t
@@ -1240,31 +1150,6 @@ enabled. Diminish is a good package to solve this problem.
 #+end_src
 
 **** Ligature
-
-#+begin_src emacs-lisp :tangle no
-  (use-package ligature
-    :ensure t
-    :config
-    (ligature-set-ligatures
-     'prog-mode
-     `("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
-       ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
-       "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
-       "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
-       "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
-       "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
-       "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
-       "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
-       ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
-       "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
-       "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
-       "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
-       "\\\\" "://"
-       ("=" ,(rx (one-or-more "=")))
-       ("-" ,(rx (one-or-more "-")))
-       ("<" ,(rx "<" (one-or-more "-") ">"))))
-    (global-ligature-mode t))
-#+end_src
 
 #+begin_src emacs-lisp
   (dolist (char/ligature-re
@@ -1323,6 +1208,7 @@ https://www.nerdfonts.com/#home
 
   (use-package nerd-icons-dired
     :ensure t
+    :defer t
     :diminish nerd-icons-dired-mode
     :hook
     (dired-mode . nerd-icons-dired-mode))
@@ -1330,46 +1216,15 @@ https://www.nerdfonts.com/#home
   (use-package nerd-icons-corfu
     :ensure t
     :demand t
+    :defer t
     :after corfu
     :init
     (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
   (use-package nerd-icons-ibuffer
     :ensure t
+    :defer t
     :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
-#+end_src
-
-**** COMMENT logos
-
-#+begin_src emacs-lisp
-  (use-package olivetti :defer t
-    :ensure t
-    :config
-    (setq olivetti-body-width 0.618
-          olivetti-minimum-body-width 80
-          olivetti-recall-visual-line-mode-entry-state t))
-  (use-package logos :defer t
-    :ensure t
-    :config
-    (setq logos-outlines-are-pages t)
-    (setq-default logos-hide-mode-line nil
-                  logos-hide-buffer-boundaries nil
-                  logos-hide-fringe t
-                  logos-variable-pitch nil
-                  logos-buffer-read-only nil
-                  logos-scroll-lock t
-                  logos-olivetti t)
-    (with-eval-after-load 'modus-themes
-      (add-hook 'modus-themes-after-load-theme-hook #'logos-update-fringe-in-buffers))
-    (with-eval-after-load 'ef-themes
-      (add-hook 'ef-themes-post-load-hook #'logos-update-fringe-in-buffers))
-    (with-eval-after-load 'standard-themes
-      (add-hook 'standard-themes-post-load-hook #'logos-update-fringe-in-buffers))
-    :bind
-    (("C-c s l" . logos-focus-mode)
-     ("C-c s n" . logos-narrow-dwim)
-     ("C-c s k" . logos-backward-page-dwim)
-     ("C-c s j" . logos-forward-page-dwim)))
 #+end_src
 
 **** spacious-padding
@@ -1413,65 +1268,54 @@ https://www.nerdfonts.com/#home
 
 #+begin_src emacs-lisp
   (use-package foma
-    :ensure (foma :type git :host github :repo "drcxd/foma" :files ("*.el")))
-
-  (setq foma-fonts '(("Cascadia Code" zip "https://github.com/microsoft/cascadia-code/releases/download/v2407.24/CascadiaCode-2407.24.zip")
-                     ("Victor Mono" zip "https://rubjo.github.io/victor-mono/VictorMonoAll.zip")
-                     ("Aporetic" zip "https://github.com/protesilaos/aporetic/archive/refs/heads/main.zip")
-                     ("IBM Plex Sans" zip "https://github.com/IBM/plex/releases/download/%40ibm%2Fplex-sans%401.1.0/ibm-plex-sans.zip")
-                     ("IBM Plex Mono" zip "https://github.com/IBM/plex/releases/download/%40ibm%2Fplex-mono%401.1.0/ibm-plex-mono.zip")
-                     ("IBM Plex Serif" zip "https://github.com/IBM/plex/releases/download/%40ibm%2Fplex-serif%401.1.0/ibm-plex-serif.zip")
-                     ("JetBrains Mono" zip "https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip")
-                     ("Red Hat" zip "https://github.com/RedHatOfficial/RedHatFont/archive/refs/heads/master.zip")
-                     ("Source Code Pro" zip "https://github.com/adobe-fonts/source-code-pro/releases/download/2.042R-u%2F1.062R-i%2F1.026R-vf/TTF-source-code-pro-2.042R-u_1.062R-i.zip")
-                     ("Source Sans" zip "https://github.com/adobe-fonts/source-sans/releases/download/3.052R/TTF-source-sans-3.052R.zip")
-                     ("Intel One Mono" zip "https://github.com/intel/intel-one-mono/releases/download/V1.4.0/ttf.zip")
-                     ("Clear Sans" zip "https://github.com/intel/clear-sans/archive/refs/heads/main.zip")
-                     ("DejaVu" zip "https://github.com/dejavu-fonts/dejavu-fonts/releases/download/version_2_37/dejavu-fonts-ttf-2.37.zip")
-                     ("JuliaMono" zip "https://github.com/cormullion/juliamono/releases/download/v0.059/JuliaMono-ttf.zip")
-                     ("Nerd Icons" zip "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/NerdFontsSymbolsOnly.zip")
-                     ("LXGW WenKai" zip "https://github.com/lxgw/LxgwWenKai/releases/download/v1.510/lxgw-wenkai-v1.510.zip")
-                     ("Noto Sans" google)
-                     ("Noto Sans Mono" google)
-                     ("Noto Serif" google)
-                     ("Myna" zip "https://github.com/sayyadirfanali/Myna/archive/refs/heads/main.zip")
-                     ("Maple Mono" zip "https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-CN-unhinted.zip"))
-        foma-profiles '((:name "Aporetic"
-                               :mono "Aporetic Sans Mono"
-                               :sans "Aporetic Sans"
-                               :serif "Aporetic Serif")
-                        (:name "Cascadia" :mono "Cascadia Code")
-                        (:name "DejaVu"
-                               :mono "DejaVu Sans Mono" :sans "DejaVu Sans" :serif "DejaVu Serif")
-                        (:name "IBM" :mono "IBM Plex Mono" :sans "IBM Plex Sans" :serif "IBM Plex Serif")
-                        (:name "Intel" :mono "Intel One Mono" :sans "Clear Sans")
-                        (:name "JetBrains" :mono "JetBrains Mono")
-                        (:name "Julia" :mono "JuliaMono")
-                        (:name "Noto"
-                               :mono "Noto Sans Mono"
-                               :sans "Noto Sans"
-                               :serif "Noto Serif")
-                        (:name "Red Hat"
-                               :mono "Red Hat Mono"
-                               :sans "Red Hat Text")
-                        (:name "Source"
-                               :mono "Source Code Pro"
-                               :sans "Source Sans3")
-                        (:name "Victor" :mono "Victor Mono")
-                        (:name "Myna" :mono "Myna")
-                        (:name "Maple Mono" :mono "Maple Mono CN" :chinese "Maple Mono CN")))
-#+end_src
-
-**** COMMENT eldoc-box
-
-This package does not prove to be really useful in practice, so I
-comment it out.
-
-#+begin_src emacs-lisp
-  (use-package eldoc-box :defer t
-    :ensure t
-    :bind
-    ("C-c d" . eldoc-box-help-at-point))
+    :ensure (foma :type git :host github :repo "drcxd/foma" :files ("*.el"))
+    :defer t
+    :init
+    (setq foma-fonts '(("Cascadia Code" zip "https://github.com/microsoft/cascadia-code/releases/download/v2407.24/CascadiaCode-2407.24.zip")
+                       ("Victor Mono" zip "https://rubjo.github.io/victor-mono/VictorMonoAll.zip")
+                       ("Aporetic" zip "https://github.com/protesilaos/aporetic/archive/refs/heads/main.zip")
+                       ("IBM Plex Sans" zip "https://github.com/IBM/plex/releases/download/%40ibm%2Fplex-sans%401.1.0/ibm-plex-sans.zip")
+                       ("IBM Plex Mono" zip "https://github.com/IBM/plex/releases/download/%40ibm%2Fplex-mono%401.1.0/ibm-plex-mono.zip")
+                       ("IBM Plex Serif" zip "https://github.com/IBM/plex/releases/download/%40ibm%2Fplex-serif%401.1.0/ibm-plex-serif.zip")
+                       ("JetBrains Mono" zip "https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip")
+                       ("Red Hat" zip "https://github.com/RedHatOfficial/RedHatFont/archive/refs/heads/master.zip")
+                       ("Source Code Pro" zip "https://github.com/adobe-fonts/source-code-pro/releases/download/2.042R-u%2F1.062R-i%2F1.026R-vf/TTF-source-code-pro-2.042R-u_1.062R-i.zip")
+                       ("Source Sans" zip "https://github.com/adobe-fonts/source-sans/releases/download/3.052R/TTF-source-sans-3.052R.zip")
+                       ("Intel One Mono" zip "https://github.com/intel/intel-one-mono/releases/download/V1.4.0/ttf.zip")
+                       ("Clear Sans" zip "https://github.com/intel/clear-sans/archive/refs/heads/main.zip")
+                       ("DejaVu" zip "https://github.com/dejavu-fonts/dejavu-fonts/releases/download/version_2_37/dejavu-fonts-ttf-2.37.zip")
+                       ("JuliaMono" zip "https://github.com/cormullion/juliamono/releases/download/v0.059/JuliaMono-ttf.zip")
+                       ("Nerd Icons" zip "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/NerdFontsSymbolsOnly.zip")
+                       ("LXGW WenKai" zip "https://github.com/lxgw/LxgwWenKai/releases/download/v1.510/lxgw-wenkai-v1.510.zip")
+                       ("Noto Sans" google)
+                       ("Noto Sans Mono" google)
+                       ("Noto Serif" google)
+                       ("Myna" zip "https://github.com/sayyadirfanali/Myna/archive/refs/heads/main.zip")
+                       ("Maple Mono" zip "https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-CN-unhinted.zip"))
+          foma-profiles '((:name "Aporetic"
+                                 :mono "Aporetic Sans Mono"
+                                 :sans "Aporetic Sans"
+                                 :serif "Aporetic Serif")
+                          (:name "Cascadia" :mono "Cascadia Code")
+                          (:name "DejaVu"
+                                 :mono "DejaVu Sans Mono" :sans "DejaVu Sans" :serif "DejaVu Serif")
+                          (:name "IBM" :mono "IBM Plex Mono" :sans "IBM Plex Sans" :serif "IBM Plex Serif")
+                          (:name "Intel" :mono "Intel One Mono" :sans "Clear Sans")
+                          (:name "JetBrains" :mono "JetBrains Mono")
+                          (:name "Julia" :mono "JuliaMono")
+                          (:name "Noto"
+                                 :mono "Noto Sans Mono"
+                                 :sans "Noto Sans"
+                                 :serif "Noto Serif")
+                          (:name "Red Hat"
+                                 :mono "Red Hat Mono"
+                                 :sans "Red Hat Text")
+                          (:name "Source"
+                                 :mono "Source Code Pro"
+                                 :sans "Source Sans3")
+                          (:name "Victor" :mono "Victor Mono")
+                          (:name "Myna" :mono "Myna")
+                          (:name "Maple Mono" :mono "Maple Mono CN" :chinese "Maple Mono CN"))))
 #+end_src
 
 *** Completion
@@ -1491,12 +1335,6 @@ you to browse those information.
     :config
     (setq read-extended-command-predicate #'command-completion-default-include-p
           enable-recursive-minibuffers t))
-
-  ;; (use-package vertico-indexed
-  ;;   :ensure `(:type file :main ,(file-name-concat elpaca-sources-directory "vertico" "extensions" "vertico-quick.el"))
-  ;;   :after vertico
-  ;;   :config
-  ;;   (vertico-indexed-mode))
 #+end_src
 
 **** orderless
@@ -1528,7 +1366,7 @@ you locate your target more quickly.
 
 #+begin_src emacs-lisp
   (use-package marginalia :ensure t
-    :init
+    :config
     (marginalia-mode))
 #+end_src
 
@@ -1750,8 +1588,8 @@ such as lsp-mode, depends on it somehow, so I still install it.
           org-src-window-setup 'current-window)
     (add-to-list 'org-modules 'org-habit t)
     ;; The following code makes org emphasis markup covers more lines
-    (setcar (nthcdr 4 org-emphasis-regexp-components) 5)
-    (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
+    ;; (setcar (nthcdr 4 org-emphasis-regexp-components) 5)
+    ;; (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
     ;; latex preview use dvilualatex and dvisvgm
     ;; (push '(luasvgm
     ;;         :programs ("dvilualatex" "dvisvgm")
@@ -1793,24 +1631,6 @@ words, but Chinese don't. We have to override this behavior.
              (concat
               "\\(" fix-regexp "\\) *\n *\\(" fix-regexp "\\)") "\\1\\2" origin-contents)))
       (ad-set-arg 1 fixed-contents)))
-#+end_src
-
-**** COMMENT Show org-agenda Buffer at Start-up
-
-#+begin_src emacs-lisp
-  (defun my/get-org-agenda-buffer ()
-    (org-agenda-list)
-    (get-buffer "*Org Agenda*"))
-  (setq initial-buffer-choice #'my/get-org-agenda-buffer)
-#+end_src
-
-**** COMMENT capture
-
-#+begin_src emacs-lisp
-  (use-package org
-               :defer t
-               :config
-               (setq org-default-notes-file (concat org-directory "/notes.org")))
 #+end_src
 
 **** Delete Link
@@ -1906,8 +1726,6 @@ insecure, but this is only my personal opinion.
   --
   ,*Chang Xiaoduan*
   ,#+end_signature"))
-
-
 #+end_src
 
 **** orin
@@ -1938,24 +1756,7 @@ using.
     :hook (after-init . benchmark-init/deactivate))
 #+end_src
 
-*** Windows-Specific
-
-**** Alert & Notifications
-
-On Linux, Emacs could use D-BUS to send desktop
-notifications. However, I could not make dbus work on Windows, so I
-found this alert-toast package to implement this feature.
-
-#+begin_src emacs-lisp :tangle (if (eq system-type 'windows-nt) "init.el" "no")
-  (if (eq system-type 'windows-nt)
-      (use-package alert-toast
-        :ensure t
-        :after alert
-        :config
-        (setq alert-default-style 'toast)))
-#+end_src
-
-*** Efficiency
+*** Tools
 
 **** ripgrep
 
@@ -1994,7 +1795,7 @@ so you can write anything in it.
     ("C-c s c" . my/scratch-with-prefix))
 #+end_src
 
-**** Pomodoro and Timers
+**** COMMENT Pomodoro and Timers
 
 Sometimes I use the [[https://en.wikipedia.org/wiki/Pomodoro_Technique][pomodoro technique]] to force myself focus on my
 task. I have tried [[https://github.com/SqrtMinusOne/pomm.el][pomm]] but I do not like its behavior. It
@@ -2044,7 +1845,7 @@ easy to use.
                                   (alert message :title "Pomidor")))))))
 #+end_src
 
-**** Window Management
+*** Window Management
 
 ***** zoom
 
@@ -2093,37 +1894,7 @@ this tutorial.
 
 https://cocode.se/emacs/transient_cont.html
 
-**** COMMENT perspective
-
-#+begin_src emacs-lisp
-  (use-package perspective
-    :ensure t
-    ;; :bind
-    ;; ("C-x C-b" . persp-list-buffers)         ; or use a nicer switcher, see below
-    :custom
-    (persp-mode-prefix-key (kbd "C-c p"))  ; pick your own prefix key here
-    :init
-    (persp-mode)
-    (with-eval-after-load 'consult
-      (consult-customize consult--source-buffer :hidden t :default nil)
-      (add-to-list 'consult-buffer-sources persp-consult-source)))
-#+end_src
 *** Programming
-
-**** COMMENT Code Formatting :dependency:
-
-If the code keeps a consistent and easy-to-read format, it will be
-much easier to read and maintain. However, manually formatting the
-code cannot assure consistency and is also a boring process. We can
-use our time to think about more valuable problems. Thus, using a nice
-code formatting tool is necessary.
-
-#+begin_src emacs-lisp
-  (use-package clang-format :defer t)
-  (use-package inheritenv :defer t)
-  (use-package language-id :defer t)
-  (use-package format-all :defer t)
-#+end_src
 
 **** flycheck
 
@@ -2194,25 +1965,6 @@ need.
     :bind
     (("C-c c" . evilnc-comment-or-uncomment-lines)
      ("C-c C" . evilnc-copy-and-comment-lines)))
-#+end_src
-
-**** COMMENT Symbol Highlighting
-
-When inspecting a piece of code, I need to highlight some of the
-symbols to help me quickly locate the places they are referenced.
-symbol-overlay is the best package I have known for this task.
-
-The built-in package hi-lock can serve this purpose as well.
-
-#+begin_src emacs-lisp
-  (use-package symbol-overlay
-    :defer t
-    :ensure t
-    :bind
-    (("C-c s p" . symbol-overlay-put)
-     ("C-c s r" . symbol-overlay-remove-all))
-    :config
-    (setq symbol-overlay-inhibit-map t))
 #+end_src
 
 **** Language Server Protocols
@@ -2322,6 +2074,7 @@ variable-rename.
 
   (use-package consult-lsp
     :ensure t
+    :defer t
     :after (lsp-mode consult)
     :init
     (setq lsp-ui-doc-max-width 120)
@@ -2331,7 +2084,9 @@ variable-rename.
           ("C-c l s" . consult-lsp-file-symbols)
           ("C-c l i" . consult-lsp-diagnostics)))
 
-  (with-eval-after-load 'lsp-clangd
+  (use-package lsp-clangd
+    :defer t
+    :config
     (setq lsp-clients-clangd-args
           '("--completion-style=detailed"
             "--header-insertion=never"
@@ -2351,6 +2106,7 @@ alternative for =pyright=.
 
 #+begin_src emacs-lisp
   (use-package lsp-pyright
+    :defer t
     :ensure t
     :custom (lsp-pyright-langserver-command "basedpyright"))
 #+end_src
@@ -2429,42 +2185,6 @@ trying to fetch the document information of the function.
 After open a file which the language server takes a long time to
 process, eglot's semantic token mode, even enabled, can not properly
 color the symbols.
-
-***** COMMENT lsp-bridge :dependency:
-
-I try lsp-bridge because it works with the language servers
-asynchronously, which makes the editing experience more
-smooth. However, after testing it, I found it does not integrate with
-Emacs as well as lsp-mode. Also, it lacks some of the features I enjoy
-in lsp-mode.
-
-#+begin_src emacs-lisp
-  ;; Dependencies
-  (use-package markdown-mode :defer t :ensure t)
-  (use-package yasnippet :defer t :ensure t)
-
-  (use-package lsp-bridge :defer t
-    :ensure (lsp-bridge
-             :type git :host github :repo "manateelazycat/lsp-bridge"
-             :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
-             :build (:not compile))
-    :init
-    ;; (global-lsp-bridge-mode)
-    )
-#+end_src
-
-**** COMMENT citre
-
-citre is a package that use tags files to provide IDE-like features
-such as completion and jumping to definition. Generally speaking,
-solutions based on tags are not as accurate as solutions based on
-LSP. However, it is still useful when the project can not be compiled.
-
-#+begin_src emacs-lisp
-  (use-package citre :defer t
-    :init
-    (require 'citre-config))
-#+end_src
 
 **** dump-jump
 
@@ -2705,7 +2425,7 @@ interact nicely with the OS. Emacs built-in eshell mode and term mode
 does not work properly on Windows. This package also comes with a
 powershell mode to help editing powershell script files.
 
-#+begin_src emacs-lisp :tangle (if (eq system-type 'windows-nt) "init.el" "no")
+#+begin_src emacs-lisp
   (use-package powershell :defer t :ensure t)
 #+end_src
 
@@ -2729,43 +2449,10 @@ parenthesizes with other symbols...
 magit is the well-known Emacs interface for git.
 
 #+begin_src emacs-lisp
-  (use-package transient :ensure t)
+  (use-package transient :ensure t :defer t)
   (use-package magit
     :ensure t
-    :defer t
-    ;; :init
-    ;; ;; Required. But note that this _does_ change Magit's default buffer display behavior.
-    ;; (setq magit-display-buffer-function #'display-buffer)
-    ;; (add-to-list 'display-buffer-alist
-    ;;         `((major-mode . magit-status-mode)
-    ;;           (display-buffer-reuse-window
-    ;;            display-buffer-in-direction)
-    ;;           (direction . left)))
-    :bind
-    ("C-c M" . magit))
-#+end_src
-
-*** vterm
-
-Using vterm on Windows is difficult for now. First, it depends on an
-external program [[https://github.com/xhcoding/conpty-proxy][conpty-proxy]]. Second, it requires compile a shared
-library in MSYS UCRT shell. Yes, the library does not compile in a
-MinGW shell. See this [[https://github.com/akermu/emacs-libvterm/pull/777][pull request]] for more detail. Only to make
-things worse, vterm's does not perform well when running certain
-application. My use case is to run Gemini-CLI in vterm, but every time
-the vterm window resizes, Emacs just stops responding. As a result, I
-decide to use a separate terminal program, at least on Windows, for
-now.
-
-#+begin_src emacs-lisp
-  (if (not (eq system-type 'windows-nt))
-      (use-package vterm :defer t
-        :ensure t))
-    ;; (use-package vterm :defer t
-    ;;   ;; :ensure (:type git :host github :repo "xhcoding/emacs-libvterm")
-    ;;   :ensure (:type git :host github :repo "kiennq/emacs-libvterm")
-    ;;   :init
-    ;;   (setq vterm-shell "pwsh.exe")))
+    :defer t)
 #+end_src
 
 *** Agents and Large Language Models
@@ -2784,8 +2471,9 @@ API, so I will stick with ECA for a little while.
 
 #+begin_src emacs-lisp
   (use-package eca
+    :defer t
     :ensure t
-    :config
+    :init
     (setq eca-chat-use-side-window nil))
 #+end_src
 
@@ -2799,6 +2487,7 @@ lines. It is mainly for writing prose rather than code.
 #+begin_src emacs-lisp
   (use-package visual-fill-column
     :ensure t
+    :defer t
     :config
     (add-hook 'visual-line-mode-hook #'visual-fill-column-for-vline)
     (advice-add 'text-scale-adjust :after #'visual-fill-column-adjust)
@@ -2807,6 +2496,7 @@ lines. It is mainly for writing prose rather than code.
           visual-fill-column-width (+ fill-column 8)
           visual-fill-column-fringes-outside-margins nil
           visual-fill-column-adjust-for-text-scale t))
+
   (use-package unfill :defer t :ensure t
     :bind
     ("M-q" . unfill-toggle))
@@ -2877,28 +2567,7 @@ Also, =org-cite-csl-styles-dir= must be set for the csl styles to work.
 
 **** E-Books
 
-***** calibre Interface
-
-****** COMMENT calibredb
-
-#+begin_src emacs-lisp
-  (use-package calibredb
-    :defer t)
-#+end_src
-
-To use this package, several other variables have to be set:
-
-- =calibredb-root-dir=
-- =calibredb-db-dir=
-- =calibredb-program=
-- =calibredb-library-alist=
-
-
-However, the values of these variables depends on the actual location
-of the calibre libraries on the current computer. Thus, it is better
-to put these configurations in the local =custom.el= file.
-
-****** calibre
+***** COMMENT calibre
 
 This is an alternative to calibredb. I prefer this package over
 calibredb. I have added some custom functions to open the directory
@@ -3006,20 +2675,6 @@ packages provides support for writing Typst document in Emacs.
      ("C-c t B" . org-typst-preview-clear-buffer)))
 
   (use-package ox-typst :after org :ensure t)
-#+end_src
-
-**** Mathematics in Emacs
-
-***** COMMENT math-preview
-
-This package only works on Linux out-of-the-box. On Windows, it can
-not properly pass =json= objects arguments to =math-preview=. Since I
-have to use Emacs on Windows, I would try to look for another solution
-that works across platform.
-
-#+begin_src emacs-lisp
-  (use-package math-preview :defer t
-    :ensure t)
 #+end_src
 
 **** Taking Notes
@@ -3205,158 +2860,6 @@ bibliographic notes can be easily created in org-roam context.
     (setq citar-org-roam-capture-template-key "r"))
 #+end_src
 
-****** COMMENT org-roam-ui
-
-#+begin_src emacs-lisp
-  (use-package org-roam-ui :defer t
-    :ensure t
-    :diminish ((org-roam-ui-mode . "") (org-roam-ui-follow-mode . "")))
-#+end_src
-
-***** COMMENT denote
-
-#+begin_src emacs-lisp
-  ;; Remember that the website version of this manual shows the latest
-  ;; developments, which may not be available in the package you are
-  ;; using.  Instead of copying from the web site, refer to the version
-  ;; of the documentation that comes with your package.  Evaluate:
-  ;;
-  ;;     (info "(denote) Sample configuration")
-  (use-package denote
-    :ensure t
-    :hook
-    ( ;; If you use Markdown or plain text files, then you want to make
-     ;; the Denote links clickable (Org renders links as buttons right
-     ;; away)
-     ;; (text-mode . denote-fontify-links-mode-maybe)
-     ;; Apply colours to Denote names in Dired.  This applies to all
-     ;; directories.  Check `denote-dired-directories' for the specific
-     ;; directories you may prefer instead.  Then, instead of
-     ;; `denote-dired-mode', use `denote-dired-mode-in-directories'.
-     (dired-mode . denote-dired-mode))
-    :bind
-    ;; Denote DOES NOT define any key bindings.  This is for the user to
-    ;; decide.  For example:
-    ( :map global-map
-      ("C-c n n" . denote-open-or-create)
-      ;; ("C-c n d" . denote-dired)
-      ;; ("C-c n g" . denote-grep)
-      ;; If you intend to use Denote with a variety of file types, it is
-      ;; easier to bind the link-related commands to the `global-map', as
-      ;; shown here.  Otherwise follow the same pattern for `org-mode-map',
-      ;; `markdown-mode-map', and/or `text-mode-map'.
-      ("C-c n i" . denote-link)
-      ("C-c n I" . denote-add-links)
-      ("C-c n b" . denote-find-backlink)
-      ("C-c n f" . denote-find-link)
-      ;; ("C-c n b" . denote-backlinks)
-      ;; ("C-c n q c" . denote-query-contents-link) ; create link that triggers a grep
-      ;; ("C-c n q f" . denote-query-filenames-link) ; create link that triggers a dired
-      ;; Note that `denote-rename-file' can work from any context, not just
-      ;; Dired bufffers.  That is why we bind it here to the `global-map'.
-      ("C-c n r" . denote-rename-file)
-      ("C-c n R" . denote-rename-file-using-front-matter)
-
-      ;; Key bindings specifically for Dired.
-      :map dired-mode-map
-      ;; ("C-c C-d C-i" . denote-dired-link-marked-notes)
-      ;; ("C-c C-d C-r" . denote-dired-rename-files)
-      ;; ("C-c C-d C-k" . denote-dired-rename-marked-files-with-keywords)
-      ;; ("C-c C-d C-R" . denote-dired-rename-marked-files-using-front-matter)
-      )
-
-    :init
-    ;; Remember to check the doc string of each of those variables.
-    (setq denote-directory (expand-file-name "~/notes/"))
-    (setq denote-save-buffers nil)
-    (setq denote-known-keywords '("emacs"))
-    (setq denote-infer-keywords t)
-    (setq denote-sort-keywords t)
-    (setq denote-prompts '(title keywords))
-    (setq denote-excluded-directories-regexp nil)
-    (setq denote-keywords-to-not-infer-regexp nil)
-    (setq denote-rename-confirmations '(rewrite-front-matter modify-file-name))
-
-    ;; Pick dates, where relevant, with Org's advanced interface:
-    (setq denote-date-prompt-use-org-read-date t)
-
-    :config
-    ;; Automatically rename Denote buffers using the `denote-rename-buffer-format'.
-    (denote-rename-buffer-mode 1))
-
-  (use-package denote-journal
-    :ensure t
-    ;; Bind those to some key for your convenience.
-    :commands ( denote-journal-new-entry
-                denote-journal-new-or-existing-entry
-                denote-journal-link-or-create-entry )
-    :hook (calendar-mode . denote-journal-calendar-mode)
-    :config
-    ;; Use the "journal" subdirectory of the `denote-directory'.  Set this
-    ;; to nil to use the `denote-directory' instead.
-    (setq denote-journal-directory
-          (expand-file-name "journal" denote-directory))
-    ;; Default keyword for new journal entries. It can also be a list of
-    ;; strings.
-    (setq denote-journal-keyword "journal")
-    ;; Read the doc string of `denote-journal-title-format'.
-    (setq denote-journal-title-format 'day-date-month-year))
-
-  (use-package consult-denote
-    :after (consult denote)
-    :ensure t
-    :bind
-    ("C-c n g" . consult-denote-grep)
-    :config
-    (consult-denote-mode 1))
-
-  (use-package citar-denote
-    :ensure t
-    :demand t ;; Ensure minor mode loads
-    :after (citar denote)
-    :init
-    ;; Package defaults
-    (setq citar-denote-file-type 'org)
-    (setq citar-denote-keyword "bib")
-    (setq citar-denote-signature nil)
-    (setq citar-denote-subdir nil)
-    (setq citar-denote-template nil)
-    (setq citar-denote-title-format "title")
-    (setq citar-denote-title-format-andstr "and")
-    (setq citar-denote-title-format-authors 1)
-    (setq citar-denote-use-bib-keywords nil)
-    :config
-    (citar-denote-mode)
-    ;; :preface
-    ;; (bind-key "C-c w n" #'citar-denote-open-note)
-    ;; Bind all available commands
-    ;; :bind (("C-c w d" . citar-denote-dwim)
-    ;;        ("C-c w e" . citar-denote-open-reference-entry)
-    ;;        ("C-c w a" . citar-denote-add-citekey)
-    ;;        ("C-c w k" . citar-denote-remove-citekey)
-    ;;        ("C-c w r" . citar-denote-find-reference)
-    ;;        ("C-c w l" . citar-denote-link-reference)
-    ;;        ("C-c w f" . citar-denote-find-citation)
-    ;;        ("C-c w x" . citar-denote-nocite)
-    ;;        ("C-c w y" . citar-denote-cite-nocite)
-    ;;        ("C-c w z" . citar-denote-nobib))
-    )
-#+end_src
-
-***** COMMENT howm
-
-#+begin_src emacs-lisp
-  (use-package howm
-    :ensure t
-    :init
-    (require 'howm-org)
-    (setq howm-follow-theme t)
-    (with-eval-after-load 'meow
-      (add-hook 'howm-menu-hook (lambda ()
-                                  (if (not meow-motion-mode)
-                                      (meow-motion-mode))))))
-#+end_src
-
 ***** COMMENT vulpea
 
 #+begin_quote
@@ -3423,6 +2926,7 @@ Feature 3 also requires reading the documentation and code of citar.
 
 #+begin_src emacs-lisp
   (use-package pyim :ensure t
+    :defer t
     :init
     (setq default-input-method "pyim")
     :config
@@ -3432,6 +2936,7 @@ Feature 3 also requires reading the documentation and code of citar.
                     `((lambda () (and (not meow-insert-mode)
                                       (not (minibufferp))))))))
   (use-package pyim-wbdict :ensure t
+    :defer t
     :config
     (setq pyim-default-scheme 'wubi)
     (pyim-wbdict-v98-enable))
@@ -3467,6 +2972,7 @@ Finally, we have to put the =.dll= file to the load path of the jinx package.
   (use-package jinx
     :ensure t
     :diminish
+    :defer t
     :init
     (setq jinx-languages "en_US")
     :config
@@ -3551,29 +3057,32 @@ This package supports live previewing org/markdown buffer using your
 web browser or xwidget if Emacs is compiled with support for it.
 
 #+begin_src emacs-lisp
-  (use-package ghub :ensure t)
+  (use-package ghub :ensure t :defer t)
 
   (use-package org-markdown-preview
+    :defer t
     :ensure (:repo "https://github.com/KarimAziev/org-markdown-preview"
                    :files ("*.el" "*.html"))
     :commands (org-markdown-preview-mode))
 #+end_src
 
-*** Editing
+*** Entertainment
 
-**** COMMENT which-key
+**** i-ching
 
-With so many key bindings, it is impossible to memorize all of
-them. which-key is a package that displays all viable commands and
-their key bindings when you are in the middle of a sequence of key
-binding.
+This package simulates the divination process described by I-Ching. It
+is interesting to experiment sometimes. I also intend to expand this
+package so that it contains the original Chinese text for the
+hexagrams.
 
 #+begin_src emacs-lisp
-  (use-package which-key
-   :diminish
-   :config
-   (which-key-mode))
+  (use-package i-ching :defer t
+    :ensure t
+    :init
+    (setq i-ching-randomness-source 'atmospheric))
 #+end_src
+
+*** Editing
 
 **** avy
 
@@ -3597,19 +3106,6 @@ window then start moving cursor around.
      ("C-c a c" . avy-goto-char-2)))
 #+end_src
 
-**** COMMENT flash
-
-#+begin_src emacs-lisp
-  (use-package flash
-    :ensure t
-    :diminish flash-isearch-mode
-    :commands (flash-jump flash-jump-continue
-               flash-treesitter)
-    :bind ("C-c j" . flash-jump)
-    :custom
-    (flash-multi-window t))
-#+end_src
-
 **** occult
 
 occult allows collapsing arbitrary region into one single line of
@@ -3617,6 +3113,7 @@ text, which is a nice complementary package to hideshow.
 
 #+begin_src emacs-lisp
   (use-package occult
+    :defer t
     :diminish occult--mode
     :ensure (:repo "https://github.com/drcxd/occult.el"
                    :branch "pfixes"))
@@ -3795,37 +3292,6 @@ to fit this change. There are two additional functions
 =meow--keypad-format-keys= and =meow--keypad-get-keymap-for-describe=, they all
 have similar structures to that of =meow-keypad-self-insert=, deal with
 them so that Meow generate the correct hints.
-
-*** COMMENT Multimedia -- ready-player :dependency:
-
-ready-player is a package that allows you to open multimedia files in
-Emacs and play them just as you open any ordinary text file. Though
-emms is the default package for multimedia on Emacs, it does not work
-on Windows. See this [[https://www.eduardorobles.com/posts/streaming-music-in-emacs/][post]] for another one who struggled to make it
-work on Windows. I personally can not make emms work on Windows for my
-case -- playing local multimedia files. Currently, I do not use Emacs
-to play albums, so ready-player is exactly what I need.
-
-#+begin_src emacs-lisp
-  (use-package ready-player
-    :ensure t
-    :init
-    (ready-player-mode +1))
-#+end_src
-
-*** i-ching
-
-This package simulates the divination process described by I-Ching. It
-is interesting to experiment sometimes. I also intend to expand this
-package so that it contains the original Chinese text for the
-hexagrams.
-
-#+begin_src emacs-lisp
-  (use-package i-ching :defer t
-    :ensure t
-    :init
-    (setq i-ching-randomness-source 'atmospheric))
-#+end_src
 
 *** Finalizing
 

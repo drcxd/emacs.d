@@ -2932,7 +2932,7 @@ Feature 3 also requires reading the documentation and code of citar.
                     `((lambda () (and (not meow-insert-mode)
                                       (not (minibufferp))))))))
   (use-package pyim-wbdict :ensure t
-    :defer t
+    :after pyim
     :config
     (setq pyim-default-scheme 'wubi)
     (pyim-wbdict-v98-enable))

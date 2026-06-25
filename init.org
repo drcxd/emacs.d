@@ -343,43 +343,45 @@ the splash screen manually.
     :init
     (setq switch-to-buffer-in-dedicated-window 'pop
           switch-to-buffer-obey-display-actions t
-          ;; left top right bottom
-          window-sides-slots '(1 0 0 0))
+          window-sides-slots '(1 0 0 1))
     :bind
     ("C-c b" . switch-to-buffer)
     :config
-    (add-to-list 'display-buffer-alist
-                 '("\\*Async Shell Command\\*.*"
-                   (display-buffer-reuse-window
-                    display-buffer-at-bottom
-                    display-buffer-pop-up-frame)
-                   (window-height . 0.2)))
-
-    (add-to-list 'display-buffer-alist
-                 '("^\\*.*eshell\\*$" display-buffer-in-direction
-                   (direction . bottom)
-                   (window . root)
-                   (window-height . 0.3)))
-
-    (add-to-list 'display-buffer-alist
-                 '((or (major-mode . Info-mode)
-                       (major-mode . help-mode)
-                       (major-mode . messages-buffer-mode))
-                   (display-buffer-reuse-window
-                    display-buffer-in-side-window)
-                   (side . left)
-                   (window . root)
-                   (window-width . 80)))
-
-    (add-to-list 'display-buffer-alist
-                 '((or (major-mode . dired-mode)
-                       (major-mode . process-menu-mode)
-                       "*IBuffer*")
-                   (display-buffer-reuse-window
-                    display-buffer-in-side-window)
-                   (side . left)
-                   (window . root)
-                   (window-width . 0.381))))
+    (setq display-buffer-alist
+          '(((or "\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|Messages\\|Bookmark List\\|Occur\\|eldoc\\)\\*"
+                 (major-mode . bookmark-bmenu-mode))
+             (display-buffer-in-side-window)
+             (window-height . 0.25)
+             (side . bottom)
+             (slot . 0))
+            ("\\*\\(grep\\|xref\\|find\\)\\*"
+             (display-buffer-in-side-window)
+             (window-height . 0.25)
+             (side . bottom)
+             (slot . 0))
+            ("\\*Async Shell Command\\*.*"
+             (display-buffer-in-side-window)
+             (window-height . 0.25)
+             (side . bottom)
+             (slot . 0))
+            ("^\\*.*eshell\\*$"
+             (display-buffer-in-side-window)
+             (side . bottom)
+             (window-height . 0.25)
+             (slot . 0))
+            ((or (major-mode . Info-mode)
+                 (major-mode . help-mode))
+             (display-buffer-in-side-window)
+             (window-width . 80)
+             (side . left)
+             (slot . 0))
+            ((or (major-mode . dired-mode)
+                 (major-mode . process-menu-mode)
+                 "*IBuffer*")
+             (display-buffer-in-side-window)
+             (window-width . 0.381)
+             (side . left)
+             (slot . 0)))))
 
   ;; Proportional Window Resizing (Purcell, Prot)
   (setq window-combination-resize t)

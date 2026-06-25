@@ -2485,9 +2485,11 @@ lines. It is mainly for writing prose rather than code.
     :ensure t
     :defer t
     :config
-    (add-hook 'visual-line-mode-hook #'visual-fill-column-for-vline)
     (advice-add 'text-scale-adjust :after #'visual-fill-column-adjust)
+    :hook
+    (visual-line-mode . visual-fill-column-for-vline)
     :init
+    (add-hook 'visual-line-mode-hook #'visual-fill-column-for-vline)
     (setq visual-fill-column-center-text t
           visual-fill-column-width (+ fill-column 8)
           visual-fill-column-fringes-outside-margins nil

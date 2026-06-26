@@ -2471,6 +2471,8 @@ API, so I will stick with ECA for a little while.
   (use-package eca
     :defer t
     :ensure t
+    :hook
+    (eca-chat-mode . turn-off-auto-fill)
     :init
     (setq eca-chat-use-side-window nil))
 #+end_src

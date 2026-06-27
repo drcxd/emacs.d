@@ -18,6 +18,21 @@ resource to learn about Emacs.
   ;;; -*- lexical-binding: t -*-
 #+end_src
 
+* Custom File Location
+
+It is good to place the custom file in =.emacs.d= directory. This way,
+we have all the files related to Emacs in one single directory. Some
+users do not like the idea of a custom file since Emacs' Custom writes
+to it. However, I consider the custom file as a location that you can
+add some machine-dependent settings. For example, you can specify the
+location of a binary file. I find it helpful since I am using Emacs on
+different computers and different OSes. Thus, keep a volatile and
+local configuration file helps solve some specific issues.
+
+#+begin_src emacs-lisp
+  (setq custom-file (locate-user-emacs-file "custom.el"))
+#+end_src
+
 * Emacs Native Configurations
 
 This part contains configurations about all Emacs native options and
@@ -31,7 +46,6 @@ packages.
   		       (getenv "PATH")))
   (push "/data/data/com.termux/files/usr/bin" exec-path)
 #+end_src
-
 
 ** COMMENT Set =find= on Windows :dependency:
 
@@ -142,21 +156,6 @@ distraction.
 #+begin_src emacs-lisp
   (setq user-full-name "Chang Xiaoduan"
         user-mail-address "drcxd@sina.com")
-#+end_src
-
-** Custom File Location
-
-It is good to place the custom file in =.emacs.d= directory. This way,
-we have all the files related to Emacs in one single directory. Some
-users do not like the idea of a custom file since Emacs' Custom writes
-to it. However, I consider the custom file as a location that you can
-add some machine-dependent settings. For example, you can specify the
-location of a binary file. I find it helpful since I am using Emacs on
-different computers and different OSes. Thus, keep a volatile and
-local configuration file helps solve some specific issues.
-
-#+begin_src emacs-lisp
-  (setq custom-file (locate-user-emacs-file "custom.el"))
 #+end_src
 
 ** Auto Backup

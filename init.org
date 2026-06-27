@@ -341,8 +341,8 @@ the splash screen manually.
   (use-package window
     :init
     (setq switch-to-buffer-in-dedicated-window 'pop
-          switch-to-buffer-obey-display-actions t
-          window-sides-slots '(1 0 0 1))
+          switch-to-buffer-obey-display-actions t)
+          ;; window-sides-slots '(1 0 0 1))
     :bind
     ("C-c b" . switch-to-buffer)
     :config

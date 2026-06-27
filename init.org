@@ -2889,8 +2889,37 @@ can not use it to replace org roam fully now.
                                        "~/org-roam/private"
                                        "~/org-roam/daily")
           vulpea-default-notes-directory "~/org-roam")
+    (defun vulpea-rename-buffer (&optional buffer)
+      "Try to rename the current buffer it is a org-mode buffer visiting a note
+  managed by vulpea. Rename it with its title and tags."
+      (if (and (eq major-mode 'org-mode)
+               (buffer-file-name))
+          (save-excursion
+            (let* ((id-values (org-property-values "ID"))
+                   (id (if id-values
+                           (car id-values)))
+                   (note (if id
+                             (vulpea-db-get-by-id id))))
+              (if note
+                  (let* ((title (vulpea-note-title note))
+                         (tags (vulpea-note-tags note))
+                         (buffer-name (format "%s%s"
+                                              title
+                                              (apply #'concat (seq-map (lambda (tag) (format " #%s" tag)) tags)))))
+                    (rename-buffer buffer-name t)))))))
+    (define-minor-mode vulpea-rename-buffer-mode
+      "Minor mode that renames org mode buffer if it is a note managed by
+  vulpea."
+      :global t
+      (if vulpea-rename-buffer-mode
+          (progn
+            (add-hook 'find-file-hook #'vulpea-rename-buffer)
+            (add-hook 'after-save-hook #'vulpea-rename-buffer))
+        (remove-hook 'find-file-hook #'vulpea-rename-buffer)
+        (remove-hook 'after-save-hook #'vulpea-rename-buffer)))
     :config
     (vulpea-db-autosync-mode +1)
+    (vulpea-rename-buffer-mode)
     (setq vulpea-create-default-template
           '(:file-name "${timestamp}.org"))
 

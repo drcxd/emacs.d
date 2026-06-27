@@ -2685,7 +2685,7 @@ packages helps you organize your notes. The most popular one is
 org-roam. A lighter-weight choice is denote. These two packages are
 often used to practice a note-taking methodology called [[https://zettelkasten.de/introduction/][Zettelkasten]].
 
-***** org-roam
+***** COMMENT org-roam
 
 #+begin_src emacs-lisp
   (use-package org-roam
@@ -2861,7 +2861,7 @@ bibliographic notes can be easily created in org-roam context.
     (setq citar-org-roam-capture-template-key "r"))
 #+end_src
 
-***** COMMENT vulpea
+***** vulpea
 
 #+begin_quote
 Vulpea is a database layer for your org-mode notes.
@@ -2883,11 +2883,47 @@ can not use it to replace org roam fully now.
 
 #+begin_src emacs-lisp
   (use-package vulpea :ensure t
+    :defer t
     :init
-    (setq vulpea-db-sync-directories '("~/org-roam")
+    (setq vulpea-db-sync-directories '("~/org-roam"
+                                       "~/org-roam/private"
+                                       "~/org-roam/daily")
           vulpea-default-notes-directory "~/org-roam")
     :config
-    (vulpea-db-autosync-mode +1))
+    (vulpea-db-autosync-mode +1)
+    (setq vulpea-create-default-template
+          '(:file-name "${timestamp}.org"))
+
+    (defun my/vulpea-create-private (title)
+      (interactive "s")
+      (vulpea-create title
+                     (format "private/%s.org" (format-time-string "%Y%m%d%H%M%S")))))
+
+  (use-package vulpea-ui
+    :defer t
+    :ensure t)
+
+  (use-package vulpea-journal
+    :ensure t
+    :defer t
+    :after (vulpea vulpea-ui)
+    :config
+    (vulpea-journal-setup)
+    (setq vulpea-journal-default-template
+          (vulpea-journal-template-daily
+           :file-name "daily/%Y-%m-%d.org"
+           :title "%Y-%m-%d %A")))
+
+  (use-package citar-vulpea
+    :ensure t
+    :defer t
+    :diminish citar-vulpea-mode
+    :after vulpea citar
+    :custom
+    (citar-vulpea-keyword "bib")
+    (citar-vulpea-references-property "ROAM_REFS")
+    :config
+    (citar-vulpea-mode 1))
 #+end_src
 
 To use vulpea, I must implement the functions provided by org-roam by
@@ -2901,7 +2937,7 @@ effort. To list some of the features I need to implement:
 
 I come up with some code to implement feature 1:
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (setq org-capture-templates
         `(("n" "Create a new note file."
            plain

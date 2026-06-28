@@ -353,7 +353,8 @@ the splash screen manually.
              (window-height . 0.25)
              (side . bottom)
              (slot . 0))
-            ("\\*\\(grep\\|xref\\|find\\)\\*"
+            ((or "\\*\\(grep\\|xref\\|find\\)\\*"
+                 (major-mode . grep-mode))
              (display-buffer-in-side-window)
              (window-height . 0.25)
              (side . bottom)
@@ -362,12 +363,12 @@ the splash screen manually.
              (display-buffer-in-side-window)
              (window-height . 0.25)
              (side . bottom)
-             (slot . 0))
+             (slot . 1))
             ("^\\*.*eshell\\*$"
              (display-buffer-in-side-window)
              (side . bottom)
              (window-height . 0.25)
-             (slot . 0))
+             (slot . 1))
             ((or (major-mode . Info-mode)
                  (major-mode . help-mode))
              (display-buffer-in-side-window)
@@ -380,7 +381,7 @@ the splash screen manually.
              (display-buffer-in-side-window)
              (window-width . 0.381)
              (side . left)
-             (slot . 0)))))
+             (slot . 1)))))
 
   ;; Proportional Window Resizing (Purcell, Prot)
   (setq window-combination-resize t)
@@ -1440,7 +1441,14 @@ convenient.
   (use-package embark
     :ensure t
     :defer t
-    :bind ("<f6>" . embark-act))
+    :bind ("<f6>" . embark-act)
+    :config
+    (add-to-list 'display-buffer-alist
+                 '((major-mode . embark-collect-mode)
+                   (display-buffer-in-side-window)
+                   (window-height . 0.25)
+                   (side . bottom)
+                   (slot . 0))))
   (use-package embark-consult :defer t :ensure t)
 #+end_src
 

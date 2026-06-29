@@ -2932,9 +2932,9 @@ can not use it to replace org roam fully now.
           '(:file-name "${timestamp}.org"))
 
     (defun my/vulpea-create-private (title)
-      (interactive "s")
-      (vulpea-create title
-                     (format "private/%s.org" (format-time-string "%Y%m%d%H%M%S")))))
+      (interactive "sTitle: ")
+      (vulpea-visit (vulpea-create title
+                                   (format "private/%s.org" (format-time-string "%Y%m%d%H%M%S"))))))
 
   (use-package vulpea-ui
     :defer t

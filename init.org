@@ -2891,12 +2891,12 @@ can not use it to replace org roam fully now.
 
 #+begin_src emacs-lisp
   (use-package vulpea :ensure t
-    :defer t
     :init
     (setq vulpea-db-sync-directories '("~/org-roam"
                                        "~/org-roam/private"
                                        "~/org-roam/daily")
-          vulpea-default-notes-directory "~/org-roam")
+          vulpea-default-notes-directory "~/org-roam"
+          vulpea-buffer-alias-property "ROAM_ALIASES")
     (defun vulpea-rename-buffer (&optional buffer)
       "Try to rename the current buffer it is a org-mode buffer visiting a note
   managed by vulpea. Rename it with its title and tags."
@@ -2940,8 +2940,8 @@ can not use it to replace org roam fully now.
                                    (format "private/%s.org" (format-time-string "%Y%m%d%H%M%S"))))))
 
   (use-package vulpea-ui
-    :defer t
     :ensure t
+    :after vulpea
     :init
     (setq vulpea-ui-sidebar-size 80
           vulpea-ui-sidebar-position 'left)
@@ -2950,7 +2950,6 @@ can not use it to replace org roam fully now.
 
   (use-package vulpea-journal
     :ensure t
-    :defer t
     :after (vulpea vulpea-ui)
     :bind
     (("C-c v j" . vulpea-ui-journal)
@@ -2964,14 +2963,21 @@ can not use it to replace org roam fully now.
 
   (use-package citar-vulpea
     :ensure t
-    :defer t
     :diminish citar-vulpea-mode
-    :after vulpea citar
+    :after (vulpea citar)
     :custom
     (citar-vulpea-keyword "bib")
     (citar-vulpea-references-property "ROAM_REFS")
     :config
     (citar-vulpea-mode 1))
+
+  (use-package consult-vulpea
+    :ensure t
+    :after (consult vulpea))
+
+  (use-package embark-vulpea
+    :ensure (:repo "https://github.com/fabcontigiani/embark-vulpea")
+    :after (embark vulpea))
 #+end_src
 
 To use vulpea, I must implement the functions provided by org-roam by

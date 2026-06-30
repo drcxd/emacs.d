@@ -2925,6 +2925,9 @@ can not use it to replace org roam fully now.
             (add-hook 'after-save-hook #'vulpea-rename-buffer))
         (remove-hook 'find-file-hook #'vulpea-rename-buffer)
         (remove-hook 'after-save-hook #'vulpea-rename-buffer)))
+    :bind
+    (("C-c v f" . vulpea-find)
+     ("C-c v i" . vulpea-insert))
     :config
     (vulpea-db-autosync-mode +1)
     (vulpea-rename-buffer-mode)
@@ -2938,12 +2941,20 @@ can not use it to replace org roam fully now.
 
   (use-package vulpea-ui
     :defer t
-    :ensure t)
+    :ensure t
+    :init
+    (setq vulpea-ui-sidebar-size 80
+          vulpea-ui-sidebar-position 'left)
+    :bind
+    ("C-c v s" . vulpea-ui-sidebar-toggle))
 
   (use-package vulpea-journal
     :ensure t
     :defer t
     :after (vulpea vulpea-ui)
+    :bind
+    (("C-c v j" . vulpea-ui-journal)
+     ("C-c v J" . vulpea-ui-journal-date))
     :config
     (vulpea-journal-setup)
     (setq vulpea-journal-default-template

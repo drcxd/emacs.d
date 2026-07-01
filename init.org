@@ -2891,6 +2891,7 @@ can not use it to replace org roam fully now.
 
 #+begin_src emacs-lisp
   (use-package vulpea :ensure t
+    :demand t
     :init
     (setq vulpea-db-sync-directories '("~/org-roam"
                                        "~/org-roam/private"
@@ -2942,6 +2943,7 @@ can not use it to replace org roam fully now.
   (use-package vulpea-ui
     :ensure t
     :after vulpea
+    :demand t
     :init
     (setq vulpea-ui-sidebar-size 80
           vulpea-ui-sidebar-position 'left)
@@ -2950,10 +2952,11 @@ can not use it to replace org roam fully now.
 
   (use-package vulpea-journal
     :ensure t
+    :demand t
     :after (vulpea vulpea-ui)
     :bind
-    (("C-c v j" . vulpea-ui-journal)
-     ("C-c v J" . vulpea-ui-journal-date))
+    (("C-c v j" . vulpea-journal)
+     ("C-c v J" . vulpea-journal-date))
     :config
     (vulpea-journal-setup)
     (setq vulpea-journal-default-template

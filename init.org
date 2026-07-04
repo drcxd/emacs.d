@@ -2940,6 +2940,8 @@ can not use it to replace org roam fully now.
       (vulpea-visit (vulpea-create title
                                    (format "private/%s.org" (format-time-string "%Y%m%d%H%M%S"))))))
 
+  (elpaca-wait) ;; wait because vulpea-ui depends on vulpea
+
   (use-package vulpea-ui
     :ensure t
     :after vulpea
@@ -2949,6 +2951,8 @@ can not use it to replace org roam fully now.
           vulpea-ui-sidebar-position 'left)
     :bind
     ("C-c v s" . vulpea-ui-sidebar-toggle))
+
+  (elpaca-wait) ;; wait because vulpea-journal depends on vulpea and vulpea-ui
 
   (use-package vulpea-journal
     :ensure t

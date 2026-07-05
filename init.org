@@ -1319,6 +1319,12 @@ https://www.nerdfonts.com/#home
                           (:name "Victor" :mono "Victor Mono")
                           (:name "Myna" :mono "Myna")
                           (:name "Monaspace" :mono "Monaspace Neon Frozen")
+                          (:name "Input"
+                                 :mono "InputMono"
+                                 :sans "InputSans"
+                                 :serif "InputSerif")
+                          (:name "Commit"
+                                 :mono "Commit Mono")
                           (:name "Maple Mono" :mono "Maple Mono CN" :chinese "Maple Mono CN"))))
 #+end_src
 

@@ -1293,7 +1293,8 @@ https://www.nerdfonts.com/#home
                        ("Noto Sans Mono" google)
                        ("Noto Serif" google)
                        ("Myna" zip "https://github.com/sayyadirfanali/Myna/archive/refs/heads/main.zip")
-                       ("Maple Mono" zip "https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-CN-unhinted.zip"))
+                       ("Maple Mono" zip "https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-CN-unhinted.zip")
+                       ("Monaspace" zip "https://github.com/githubnext/monaspace/releases/download/v1.400/monaspace-frozen-v1.400.zip"))
           foma-profiles '((:name "Aporetic"
                                  :mono "Aporetic Sans Mono"
                                  :sans "Aporetic Sans"
@@ -1317,6 +1318,7 @@ https://www.nerdfonts.com/#home
                                  :sans "Source Sans3")
                           (:name "Victor" :mono "Victor Mono")
                           (:name "Myna" :mono "Myna")
+                          (:name "Monaspace" :mono "Monaspace Neon Frozen")
                           (:name "Maple Mono" :mono "Maple Mono CN" :chinese "Maple Mono CN"))))
 #+end_src
 

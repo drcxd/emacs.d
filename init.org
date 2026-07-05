@@ -2980,9 +2980,9 @@ can not use it to replace org roam fully now.
     :config
     (citar-vulpea-mode 1))
 
-  (use-package consult-vulpea
-    :ensure t
-    :after (consult vulpea))
+  ;; (use-package consult-vulpea
+  ;;   :ensure t
+  ;;   :after (consult vulpea))
 
   (use-package embark-vulpea
     :ensure (:repo "https://github.com/fabcontigiani/embark-vulpea")

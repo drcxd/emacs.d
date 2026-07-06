@@ -748,6 +748,35 @@ EOL characters. This would make some lines ended with additional
     (aset buffer-display-table ?\^M []))
 #+end_src
 
+A experimental font solution based on Monaspace font family:
+
+#+begin_src emacs-lisp
+  (defun my/set-face-font (face-font-list)
+    "Set font family for each face in the last.
+  FACE-FONT-LIST is a list of cons cells. The CAR of a cons cell is the
+  face, the CDR of a cons cell is the font name."
+    (dolist (pair face-font-list)
+      (set-face-attribute (car pair) nil
+                          :family (cdr pair))))
+
+  (defun my/apply-monaspace-per-face-font ()
+    "Setup several faces with Monaspace fonts."
+    (interactive)
+    (my/set-face-font
+     '(;;; A sans font as the base font
+       (default . "Monaspace Neon Frozen")
+       (fixed-pitch . "Monaspace Neon Frozen")
+       ;;; Handwritten font for strings and comments
+       (font-lock-comment-face . "Monaspace Radon Frozen")
+       (font-lock-string-face . "Monaspace Radon Frozen")
+       ;;; Serif font for functions
+       (font-lock-function-name-face . "Monaspace Xenon Frozen")
+       ;;; Gothic font for types
+       (font-lock-type-face . "Monaspace Krypton Frozen")
+       ;;; Sans font for keywords
+       (font-lock-type-face . "Monaspace Argon Frozen"))))
+#+end_src
+
 *** Mottoes
 
 # TODO: Make this a package
@@ -1318,7 +1347,11 @@ https://www.nerdfonts.com/#home
                                  :sans "Source Sans3")
                           (:name "Victor" :mono "Victor Mono")
                           (:name "Myna" :mono "Myna")
-                          (:name "Monaspace" :mono "Monaspace Neon Frozen")
+                          (:name "Monaspace Argon" :mono "Monaspace Argon Frozen")
+                          (:name "Monaspace Krypton" :mono "Monaspace Krypton Frozen")
+                          (:name "Monaspace Neon" :mono "Monaspace Neon Frozen")
+                          (:name "Monaspace Radon" :mono "Monaspace Radon Frozen")
+                          (:name "Monaspace Xenon" :mono "Monaspace Xenon Frozen")
                           (:name "Input"
                                  :mono "InputMono"
                                  :sans "InputSans"

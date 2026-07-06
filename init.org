@@ -1310,7 +1310,12 @@ https://www.nerdfonts.com/#home
     :ensure (foma :type git :host github :repo "drcxd/foma" :files ("*.el"))
     :defer t
     :init
-    (setq foma-fonts '(("Cascadia Code" zip "https://github.com/microsoft/cascadia-code/releases/download/v2407.24/CascadiaCode-2407.24.zip")
+    (setq foma-default-height 140
+          foma-default-weight 'regular
+          foma-default-mono "IBM Plex"
+          foma-default-variable "IBM Plex Serif"
+          foma-default-chinese "LXGW WenKai"
+          foma-fonts '(("Cascadia Code" zip "https://github.com/microsoft/cascadia-code/releases/download/v2407.24/CascadiaCode-2407.24.zip")
                        ("Victor Mono" zip "https://rubjo.github.io/victor-mono/VictorMonoAll.zip")
                        ("Aporetic" zip "https://github.com/protesilaos/aporetic/archive/refs/heads/main.zip")
                        ("IBM Plex Sans" zip "https://github.com/IBM/plex/releases/download/%40ibm%2Fplex-sans%401.1.0/ibm-plex-sans.zip")
@@ -1332,38 +1337,48 @@ https://www.nerdfonts.com/#home
                        ("Myna" zip "https://github.com/sayyadirfanali/Myna/archive/refs/heads/main.zip")
                        ("Maple Mono" zip "https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-CN-unhinted.zip")
                        ("Monaspace" zip "https://github.com/githubnext/monaspace/releases/download/v1.400/monaspace-frozen-v1.400.zip"))
-          foma-profiles '((:name "Aporetic"
+          foma-profiles `((:name "Aporetic"
                                  :mono "Aporetic Sans Mono"
-                                 :sans "Aporetic Sans"
-                                 :serif "Aporetic Serif")
+                                 :variable"Aporetic Serif")
                           (:name "Cascadia" :mono "Cascadia Code")
                           (:name "DejaVu"
-                                 :mono "DejaVu Sans Mono" :sans "DejaVu Sans" :serif "DejaVu Serif")
-                          (:name "IBM" :mono "IBM Plex Mono" :sans "IBM Plex Sans" :serif "IBM Plex Serif")
-                          (:name "Intel" :mono "Intel One Mono" :sans "Clear Sans")
+                                 :mono "DejaVu Sans Mono" :variable "DejaVu Serif")
+                          (:name "IBM" :mono "IBM Plex Mono" :variable "IBM Plex Serif")
+                          (:name "Intel" :mono "Intel One Mono" :variable "Clear Sans")
                           (:name "JetBrains" :mono "JetBrains Mono")
                           (:name "Julia" :mono "JuliaMono")
                           (:name "Noto"
                                  :mono "Noto Sans Mono"
-                                 :sans "Noto Sans"
-                                 :serif "Noto Serif")
+                                 :variable "Noto Serif")
                           (:name "Red Hat"
                                  :mono "Red Hat Mono"
-                                 :sans "Red Hat Text")
+                                 :variable "Red Hat Text")
                           (:name "Source"
                                  :mono "Source Code Pro"
-                                 :sans "Source Sans3")
+                                 :variable "Source Sans3")
                           (:name "Victor" :mono "Victor Mono")
                           (:name "Myna" :mono "Myna")
-                          (:name "Monaspace Argon" :mono "Monaspace Argon Frozen")
-                          (:name "Monaspace Krypton" :mono "Monaspace Krypton Frozen")
-                          (:name "Monaspace Neon" :mono "Monaspace Neon Frozen")
-                          (:name "Monaspace Radon" :mono "Monaspace Radon Frozen")
-                          (:name "Monaspace Xenon" :mono "Monaspace Xenon Frozen")
+                          (:name "Monaspace"
+                                 :mono "Monaspace Neon Frozen"
+                                 :face-specs
+                                 ((,(font-spec :family "Monaspace Neon Frozen")
+                                   default
+                                   fixed-pitch)
+                                  (,(font-spec :family "Monaspace Radon Frozen")
+                                   font-lock-doc-face
+                                   font-lock-comment-face
+                                   font-lock-string-face)
+                                  (,(font-spec :family "Monaspace Argon Frozen")
+                                   font-lock-function-name-face)
+                                  (,(font-spec :family "Monaspace Krypton Frozen")
+                                   font-lock-type-face
+                                   font-lock-constant-face
+                                   font-lock-preprocessor-face)
+                                  (,(font-spec :family "Monaspace Xenon Frozen")
+                                   font-lock-keyword-face)))
                           (:name "Input"
                                  :mono "InputMono"
-                                 :sans "InputSans"
-                                 :serif "InputSerif")
+                                 :variable "InputSerif")
                           (:name "Commit"
                                  :mono "Commit Mono")
                           (:name "Maple Mono" :mono "Maple Mono CN" :chinese "Maple Mono CN"))))

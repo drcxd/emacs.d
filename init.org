@@ -1234,7 +1234,9 @@ Add some fancy icons. Require nerd fonts:
 https://www.nerdfonts.com/#home
 
 #+begin_src emacs-lisp
-  (use-package nerd-icons :ensure t :demand t)
+  (use-package nerd-icons :ensure t :demand t
+    :config
+    (set-fontset-font t '(#xE000 . #xF8FF) nerd-icons-font-family))
 
   (use-package nerd-icons-completion
     :ensure t

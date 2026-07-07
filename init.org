@@ -2087,6 +2087,12 @@ variable-rename.
     :ensure (lsp-mode :host github :repo "drcxd/lsp-mode")
     :defer t
     :init
+    (setq lsp-headerline-breadcrumb-enable nil
+          lsp-semantic-tokens-apply-modifiers nil
+          lsp-semantic-tokens-enable t
+          lsp-enable-on-type-formatting nil
+          lsp-enable-snippet nil
+          read-process-output-max (* 1024 1024)) ;; to increase lsp performance
     (defun my/orderless-dispatch-flex-first (_pattern index _total)
       (and (eq index 0) 'orderless-flex))
     (defun corfu-lsp-setup ()
@@ -2102,12 +2108,7 @@ variable-rename.
         (with-eval-after-load 'cape
           (setq lsp-completion-provider :none)
           (add-hook 'lsp-completion-mode-hook #'corfu-lsp-setup))))
-    :config
-    (setq lsp-headerline-breadcrumb-enable nil
-          lsp-semantic-tokens-apply-modifiers nil
-          lsp-semantic-tokens-enable t
-          lsp-enable-on-type-formatting nil
-          read-process-output-max (* 1024 1024)) ;; to increase lsp performance
+    ;; :config
     ;; Require emmylua_ls https://github.com/EmmyLuaLs/emmylua-analyzer-rust
     ;; (with-eval-after-load 'lsp-mode
     ;;   (lsp-register-client

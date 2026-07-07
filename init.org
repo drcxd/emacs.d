@@ -748,41 +748,6 @@ EOL characters. This would make some lines ended with additional
     (aset buffer-display-table ?\^M []))
 #+end_src
 
-A experimental font solution based on Monaspace font family:
-
-#+begin_src emacs-lisp
-  (defun my/set-face-font (font-face-list)
-    "Set font family for multiple faces in the list.
-  FONT-FACE-LIST is a list of lists. The first element of each list is the
-  font name, and the rest are the faces that use this font."
-    (dolist (font-faces font-face-list)
-      (let ((font-name (car font-faces))
-            (faces (cdr font-faces)))
-        (dolist (face faces)
-          (set-face-attribute face nil
-                              :family font-name)))))
-
-  (defun my/apply-monaspace-per-face-font ()
-    "Setup several faces with Monaspace fonts."
-    (interactive)
-    (my/set-face-font
-     '(("Monaspace Neon Frozen" ;; Basic sans font
-        default
-        fixed-pitch)
-       ("Monaspace Radon Frozen" ;; Handwritten font
-        font-lock-doc-face
-        font-lock-comment-face
-        font-lock-string-face)
-       ("Monaspace Argon Frozen" ;; Another sans font
-        font-lock-function-name-face)
-       ("Monaspace Krypton Frozen" ;; Gothic font
-        font-lock-type-face
-        font-lock-constant-face
-        font-lock-preprocessor-face)
-       ;;; Serif font
-       ("Monaspace Xenon Frozen" font-lock-keyword-face))))
-#+end_src
-
 *** Mottoes
 
 # TODO: Make this a package

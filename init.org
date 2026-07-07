@@ -2927,7 +2927,8 @@ can not use it to replace org roam fully now.
                                        "~/org-roam/private"
                                        "~/org-roam/daily")
           vulpea-default-notes-directory "~/org-roam"
-          vulpea-buffer-alias-property "ROAM_ALIASES")
+          vulpea-buffer-alias-property "ROAM_ALIASES"
+          vulpea-db-async-extraction 'full)
     (defun vulpea-rename-buffer (&optional buffer)
       "Try to rename the current buffer it is a org-mode buffer visiting a note
   managed by vulpea. Rename it with its title and tags."

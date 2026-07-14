@@ -2979,7 +2979,7 @@ can not use it to replace org roam fully now.
     :after vulpea
     :demand t
     :init
-    (setq vulpea-ui-sidebar-size 0.25
+    (setq vulpea-ui-sidebar-size 0.4
           vulpea-ui-sidebar-position 'left)
     :bind
     ("C-c v s" . vulpea-ui-sidebar-toggle))

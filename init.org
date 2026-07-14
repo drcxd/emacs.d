@@ -1095,7 +1095,7 @@ enabled. Diminish is a good package to solve this problem.
     :diminish abbrev-mode)
 #+end_src
 
-**** Unicode Support
+**** Unicode Support :dependency:
 
 #+begin_src emacs-lisp :noweb yes
   (use-package unicode-fonts
@@ -1832,6 +1832,23 @@ so you can write anything in it.
     ("C-c s c" . my/scratch-with-prefix))
 #+end_src
 
+**** Transient
+
+A tutorial about using transient. I tried to use transient to develop
+a menu for my day-to-day workflow, but its manual is not intuitive for
+me, so the idea has been infinitely delayed. Maybe someday I can use
+this tutorial.
+
+https://cocode.se/emacs/transient_cont.html
+
+**** ghostel
+
+#+begin_src emacs-lisp
+  (use-package ghostel
+    :ensure t
+    :defer t)
+#+end_src
+
 **** COMMENT Pomodoro and Timers
 
 Sometimes I use the [[https://en.wikipedia.org/wiki/Pomodoro_Technique][pomodoro technique]] to force myself focus on my
@@ -1920,15 +1937,6 @@ one single command.
      ("C-c w f" . switch-window-then-find-file)
      ([remap other-window] . switch-window)))
 #+end_src
-
-**** Transient
-
-A tutorial about using transient. I tried to use transient to develop
-a menu for my day-to-day workflow, but its manual is not intuitive for
-me, so the idea has been infinitely delayed. Maybe someday I can use
-this tutorial.
-
-https://cocode.se/emacs/transient_cont.html
 
 *** Programming
 

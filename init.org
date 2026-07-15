@@ -1278,7 +1278,7 @@ https://www.nerdfonts.com/#home
     (setq foma-default-height 140
           foma-default-weight 'regular
           foma-default-mono "IBM Plex"
-          foma-default-variable "IBM Plex Serif"
+          foma-default-variable 'by-date
           foma-default-chinese "LXGW WenKai"
           foma-fonts '(("Cascadia Code" zip "https://github.com/microsoft/cascadia-code/releases/download/v2407.24/CascadiaCode-2407.24.zip")
                        ("Victor Mono" zip "https://rubjo.github.io/victor-mono/VictorMonoAll.zip")

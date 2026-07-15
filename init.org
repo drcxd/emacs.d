@@ -1279,7 +1279,7 @@ https://www.nerdfonts.com/#home
           foma-default-weight 'regular
           foma-default-mono "IBM Plex"
           foma-default-variable "IBM Plex Serif"
-          foma-default-chinese "LXGW WenKai"
+          foma-default-chinese "霞鹜文楷"
           foma-fonts '(("Cascadia Code" zip "https://github.com/microsoft/cascadia-code/releases/download/v2407.24/CascadiaCode-2407.24.zip")
                        ("Victor Mono" zip "https://rubjo.github.io/victor-mono/VictorMonoAll.zip")
                        ("Aporetic" zip "https://github.com/protesilaos/aporetic/archive/refs/heads/main.zip")
@@ -1295,7 +1295,7 @@ https://www.nerdfonts.com/#home
                        ("DejaVu" zip "https://github.com/dejavu-fonts/dejavu-fonts/releases/download/version_2_37/dejavu-fonts-ttf-2.37.zip")
                        ("JuliaMono" zip "https://github.com/cormullion/juliamono/releases/download/v0.059/JuliaMono-ttf.zip")
                        ("Nerd Icons" zip "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/NerdFontsSymbolsOnly.zip")
-                       ("LXGW WenKai" zip "https://github.com/lxgw/LxgwWenKai/releases/download/v1.510/lxgw-wenkai-v1.510.zip")
+                       ("霞鹜文楷" zip "https://github.com/lxgw/LxgwWenKai/releases/download/v1.510/lxgw-wenkai-v1.510.zip")
                        ("Noto Sans" google)
                        ("Noto Sans Mono" google)
                        ("Noto Serif" google)
@@ -1320,7 +1320,7 @@ https://www.nerdfonts.com/#home
                                  :variable "Red Hat Text")
                           (:name "Source"
                                  :mono "Source Code Pro"
-                                 :variable "Source Sans3")
+                                 :variable "Source Sans 3")
                           (:name "Victor" :mono "Victor Mono")
                           (:name "Myna" :mono "Myna")
                           (:name "Monaspace"

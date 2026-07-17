@@ -1351,7 +1351,7 @@ https://www.nerdfonts.com/#home
                           (:name "Maple Mono" :mono "Maple Mono CN" :chinese "Maple Mono CN"))))
 #+end_src
 
-**** sleek-modeline
+**** COMMENT sleek-modeline
 
 #+begin_src emacs-lisp
   (use-package sleek-modeline

@@ -1114,12 +1114,14 @@ enabled. Diminish is a good package to solve this problem.
   (use-package modus-themes
     :ensure t
     :defer t
+    :preface
+    (when (featurep 'modus-themes)
+      (unload-feature 'modus-themes))
     :init
     (setq modus-themes-italic-constructs t
           modus-themes-bold-constructs nil
           modus-themes-mixed-fonts t
           modus-themes-variable-pitch-ui t
-          modus-themes-mode-line '(borderless)
           modus-themes-headings '((0 . (variable-pitch 1.61803))
                                   (1 . (variable-pitch 1.38196))
                                   (2 . (variable-pitch 1.23607))

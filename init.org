@@ -306,7 +306,7 @@ Emacs 28 supports syntax highlighting for documentations in comments.
     (scroll-bar-mode -1))
 #+end_src
 
-** COMMENT Mode Line
+** Mode Line
 
 #+begin_src emacs-lisp
   (setq display-time-24hr-format t)
@@ -1359,11 +1359,19 @@ https://www.nerdfonts.com/#home
     (defun my-clock-segment ()
       "Return the current time, or nil to display nothing."
       (format-time-string "%H:%M"))
+    (defun my-pos-segment ()
+      "Return the current cursor position."
+      (format "[%d:%d]" (line-number-at-pos) (current-column)))
     :config
     (sleek-modeline-register-segment 'clock
                                      :fn 'my-clock-segment
                                      :side 'right
                                      :priority 5
+                                     :separator t)
+    (sleek-modeline-register-segment 'position
+                                     :fn 'my-pos-segment
+                                     :side 'left
+                                     :priority 10
                                      :separator t)
     (sleek-modeline-mode 1))
 #+end_src

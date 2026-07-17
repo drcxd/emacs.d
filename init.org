@@ -2738,7 +2738,7 @@ Windows and put the =.dll= file into the load path of the package.
     (add-to-list 'meow-mode-state-list '(reader-outline-mode . motion)))
 #+end_src
 
-**** COMMENT Typst :dependency:
+**** Typst :dependency:
 
 Typst is a new markup language for typesetting document. The following
 packages provides support for writing Typst document in Emacs.
@@ -2753,15 +2753,7 @@ packages provides support for writing Typst document in Emacs.
   ;; typst-preview provides live preview for Typst documents
   (use-package typst-preview :defer t
     :after websocket ;; typst-preview require websocket
-    :ensure (:type git :host github :repo "drcxd/typst-preview.el"))
-
-  (use-package org-typst-preview :defer t
-    :after org
-    :ensure (:type git :host github :repo "drcxd/org-typst-preview.el")
-    :bind
-    (("C-c t y" . org-typst-preview)
-     ("C-c t b" . org-typst-preview-render-buffer)
-     ("C-c t B" . org-typst-preview-clear-buffer)))
+    :ensure t)
 
   (use-package ox-typst :after org :ensure t)
 #+end_src

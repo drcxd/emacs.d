@@ -1343,9 +1343,13 @@ https://www.nerdfonts.com/#home
                                    font-lock-preprocessor-face)
                                   ((:family "Monaspace Xenon Frozen")
                                    font-lock-keyword-face)))
-                          (:name "Input"
-                                 :mono "InputMono"
-                                 :variable "InputSerif")
+                          ,(if (eq system-type 'windows-nt)
+                               '(:name "Input"
+                                       :mono "InputMono"
+                                       :variable "InputSerif")
+                             '(:name "Input"
+                                     :mono "Input Mono"
+                                     :variable "Input Serif"))
                           (:name "Commit"
                                  :mono "Commit Mono")
                           (:name "Maple Mono" :mono "Maple Mono CN" :chinese "Maple Mono CN"))))

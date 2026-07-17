@@ -306,7 +306,7 @@ Emacs 28 supports syntax highlighting for documentations in comments.
     (scroll-bar-mode -1))
 #+end_src
 
-** Mode Line
+** COMMENT Mode Line
 
 #+begin_src emacs-lisp
   (setq display-time-24hr-format t)
@@ -1347,6 +1347,25 @@ https://www.nerdfonts.com/#home
                           (:name "Commit"
                                  :mono "Commit Mono")
                           (:name "Maple Mono" :mono "Maple Mono CN" :chinese "Maple Mono CN"))))
+#+end_src
+
+**** sleek-modeline
+
+#+begin_src emacs-lisp
+  (use-package sleek-modeline
+    :ensure t
+    :init
+    (setq sleek-modeline-show-modal-state t)
+    (defun my-clock-segment ()
+      "Return the current time, or nil to display nothing."
+      (format-time-string "%H:%M"))
+    :config
+    (sleek-modeline-register-segment 'clock
+                                     :fn 'my-clock-segment
+                                     :side 'right
+                                     :priority 5
+                                     :separator t)
+    (sleek-modeline-mode 1))
 #+end_src
 
 *** Completion

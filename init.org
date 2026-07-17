@@ -1362,16 +1362,24 @@ https://www.nerdfonts.com/#home
     (defun my-pos-segment ()
       "Return the current cursor position."
       (format "[%d:%d]" (line-number-at-pos) (current-column)))
+    (defun my-coding-system-segment ()
+      "Return the current buffer file coding system."
+      (format "%s" buffer-file-coding-system))
     :config
     (sleek-modeline-register-segment 'clock
                                      :fn 'my-clock-segment
                                      :side 'right
                                      :priority 5
                                      :separator t)
+    (sleek-modeline-register-segment 'coding-system
+                                     :fn 'my-coding-system-segment
+                                     :side 'right
+                                     :priority 4
+                                     :separator t)
     (sleek-modeline-register-segment 'position
                                      :fn 'my-pos-segment
-                                     :side 'left
-                                     :priority 10
+                                     :side 'right
+                                     :priority 3
                                      :separator t)
     (sleek-modeline-mode 1))
 #+end_src

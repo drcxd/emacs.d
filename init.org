@@ -1351,7 +1351,7 @@ https://www.nerdfonts.com/#home
                                      :mono "Input Mono"
                                      :variable "Input Serif"))
                           (:name "Commit"
-                                 :mono "Commit Mono")
+                                 :mono "CommitMono")
                           (:name "Maple Mono" :mono "Maple Mono CN" :chinese "Maple Mono CN"))))
 #+end_src
 

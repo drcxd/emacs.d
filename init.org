@@ -1940,6 +1940,14 @@ easy to use.
                                   (alert message :title "Pomidor")))))))
 #+end_src
 
+**** context-clues
+
+#+begin_src emacs-lisp
+  (use-package context-clues
+    :ensure t
+    :defer t)
+#+end_src
+
 *** Window Management
 
 ***** zoom
@@ -2527,6 +2535,14 @@ parenthesizes with other symbols...
     (prog-mode text-mode)
     :config
     (require 'smartparens-config))
+#+end_src
+
+**** region-pin
+
+#+begin_src emacs-lisp
+  (use-package region-pin
+    :ensure t
+    :vc (:url "https://github.com/vmargb/region-pin"))
 #+end_src
 
 *** magit :dependency:

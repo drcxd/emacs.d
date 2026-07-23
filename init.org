@@ -1240,10 +1240,6 @@ https://www.nerdfonts.com/#home
 
   (use-package spacious-padding
     :ensure t
-    :init
-    (if (daemonp)
-        (add-hook 'server-after-make-frame-hook #'spacious-padding-mode)
-      (spacious-padding-mode))
     :config
     (setq spacious-padding-widths
           '( :internal-border-width 16
@@ -1252,7 +1248,10 @@ https://www.nerdfonts.com/#home
              :fringe-width 8)
           spacious-padding-subtle-mode-line
           '( :mode-line-active error
-             :mode-line-inactive shadow)))
+             :mode-line-inactive shadow))
+    (if (daemonp)
+        (add-hook 'server-after-make-frame-hook #'spacious-padding-mode)
+      (spacious-padding-mode)))
 #+end_src
 
 **** lin

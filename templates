@@ -84,10 +84,22 @@ c++-mode
        "};" n>)
 
 ;;; Unreal Engine Templates
-(UC "UCLASS(" p ")" q)
+(UC "UCLASS(" p ")" n>
+    "class " (p "Name&Inheritance") n>
+    "{" n>
+    "GENERATED_BODY()" n>
+    "public:" n>
+    q n>
+    "private:" n>
+    "};" n>)
+(US "USTRUCT(" p ")" n>
+    "struct " (p "Name") n>
+    "{" n>
+    "GENERATED_BODY()" n>
+    q n>
+    "};" n>)
 (UP "UPROPERTY(" p ")" q)
 (UF "UFUNCTION(" p ")" q)
-(US "USTRUCT(" p ")" q)
 (UE "UENUM(" p ")" q)
 (UI "UINTERFACE(" p ")" q)
 (GE "GENERATED_BODY()")
@@ -106,6 +118,14 @@ c++-mode
 (ulogt "UE_LOG(LogTemp, Display, TEXT(\"DEBUG CXD " p "\")" q ");")
 (ulog "UE_LOG(" (p "category") ", " (p "verbosity") ", TEXT(\"" p "\")" p ");" q)
 (umsg "GEngine->AddOnScreenDebugMessage(INDEX_NONE, 4.0F, FColor::Cyan, FString::Printf(TEXT(\"" p "\")" q "));")
+(ucmdl "UCLASS()" n>
+       "class U" (p "Name") "Commandlet : public UCommandlet" n>
+       "{" n>
+       "GENERATED_BODY()" n>
+       n>
+       "public:" n>
+       "virtual int32 Main(const FString& Params) override;" n>
+       "};" n>)
 
 (cc "FAutoConsoleCommand " (p "var") "(" n
     "TEXT(\"" (p "name") "\")," n

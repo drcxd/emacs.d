@@ -1249,9 +1249,7 @@ https://www.nerdfonts.com/#home
           spacious-padding-subtle-mode-line
           '( :mode-line-active error
              :mode-line-inactive shadow))
-    (if (daemonp)
-        (add-hook 'server-after-make-frame-hook #'spacious-padding-mode)
-      (spacious-padding-mode)))
+    (spacious-padding-mode))
 #+end_src
 
 **** lin

@@ -214,7 +214,7 @@ language. Credit to this SO [[https://stackoverflow.com/questions/28913294/emacs
   (setq completion-ignore-case t)
 #+end_src
 
-** Emacs As Server
+** COMMENT Emacs As Server
 
 #+begin_src emacs-lisp
   (use-package server
@@ -1194,7 +1194,7 @@ enabled. Diminish is a good package to solve this problem.
                             `([,ligature-re 0 font-shape-gstring]))))
 #+end_src
 
-**** nerd-icons :dependency:
+**** COMMENT nerd-icons :dependency:
 
 Add some fancy icons. Require nerd fonts:
 
@@ -1634,7 +1634,7 @@ such as lsp-mode, depends on it somehow, so I still install it.
   ;;   ("C-c Y" . yas-reload-all))
 #+end_src
 
-*** org-mode
+*** COMMENT org-mode
 
 #+begin_src emacs-lisp
   (use-package org :defer t
@@ -1805,7 +1805,7 @@ insecure, but this is only my personal opinion.
   ,#+end_signature"))
 #+end_src
 
-**** orin
+**** COMMENT orin
 
 #+begin_src emacs-lisp
   (use-package orin :defer t
@@ -1854,7 +1854,7 @@ interactive text file editing tool.
   (use-package wgrep :defer t :ensure t)
 #+end_src
 
-**** scratch
+**** COMMENT scratch
 
 This program allows user to create a scratch buffer of a certain mode,
 so you can write anything in it.
@@ -1881,7 +1881,7 @@ this tutorial.
 
 https://cocode.se/emacs/transient_cont.html
 
-**** ghostel
+**** COMMENT ghostel
 
 #+begin_src emacs-lisp
   (use-package ghostel
@@ -1939,7 +1939,7 @@ easy to use.
                                   (alert message :title "Pomidor")))))))
 #+end_src
 
-**** context-clues
+**** COMMENT context-clues
 
 #+begin_src emacs-lisp
   (use-package context-clues
@@ -1947,7 +1947,7 @@ easy to use.
     :defer t)
 #+end_src
 
-*** Window Management
+*** COMMENT Window Management
 
 ***** zoom
 
@@ -1986,7 +1986,7 @@ one single command.
      ([remap other-window] . switch-window)))
 #+end_src
 
-*** Programming
+*** COMMENT Programming
 
 **** flycheck
 
@@ -2555,7 +2555,7 @@ magit is the well-known Emacs interface for git.
     :defer t)
 #+end_src
 
-*** Agents and Large Language Models
+*** COMMENT Agents and Large Language Models
 
 **** ECA :dependency:
 
@@ -2579,7 +2579,7 @@ API, so I will stick with ECA for a little while.
     (setq eca-chat-use-side-window nil))
 #+end_src
 
-*** Reading & Writing
+*** COMMENT Reading & Writing
 
 **** Filling and Wrapping
 
@@ -3291,7 +3291,7 @@ window then start moving cursor around.
      ("C-c a c" . avy-goto-char-2)))
 #+end_src
 
-**** occult
+**** COMMENT occult
 
 occult allows collapsing arbitrary region into one single line of
 text, which is a nice complementary package to hideshow.
@@ -3304,7 +3304,7 @@ text, which is a nice complementary package to hideshow.
                    :branch "pfixes"))
 #+end_src
 
-**** meow
+**** COMMENT meow
 
 meow is a modal editing package. It looks like evil, but I think it
 suits Emacs more than evil. meow provides supports for many Emacs
@@ -3477,6 +3477,14 @@ to fit this change. There are two additional functions
 =meow--keypad-format-keys= and =meow--keypad-get-keymap-for-describe=, they all
 have similar structures to that of =meow-keypad-self-insert=, deal with
 them so that Meow generate the correct hints.
+
+*** 5/3/1
+
+#+begin_src emacs-lisp
+  (use-package 5/3/1
+    :ensure t
+    :vc (:url https://github.com/drcxd/531))
+#+end_src
 
 *** Finalizing
 

@@ -3483,7 +3483,7 @@ them so that Meow generate the correct hints.
 #+begin_src emacs-lisp
   (use-package 5/3/1
     :ensure t
-    :vc (:url https://github.com/drcxd/531))
+    :vc (:url "https://github.com/drcxd/531"))
 #+end_src
 
 *** Finalizing

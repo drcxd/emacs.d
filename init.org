@@ -3481,9 +3481,9 @@ them so that Meow generate the correct hints.
 *** 5/3/1
 
 #+begin_src emacs-lisp
-  (use-package 5/3/1
+  (use-package five-three-one
     :ensure t
-    :vc (:url "https://github.com/drcxd/531"))
+    :vc (:url "https://github.com/drcxd/five-three-one"))
 #+end_src
 
 *** Finalizing

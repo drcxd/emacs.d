@@ -734,6 +734,18 @@ The code I write but not enough for a package.
       (when (re-search-forward regex nil t)
         (buffer-substring-no-properties (line-beginning-position)
                                         (line-end-position)))))
+
+  (defun my/unfill-writing-mode ()
+    "Turn on `visual-line-mode' and turn off `auto-fill-mode'."
+    (interactive)
+    (visual-line-mode 1)
+    (auto-fill-mode -1))
+
+  (defun my/fill-writing-mode ()
+    "Turn off `visual-line-mode' and turn on `auto-fill-mode'."
+    (interactive)
+    (visual-line-mode -1)
+    (auto-fill-mode 1))
 #+end_src
 
 When working on Windows, sometimes I encounter files containing mixed

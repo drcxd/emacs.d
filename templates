@@ -78,14 +78,20 @@ c-mode c++-mode
 
 c++-mode
 
-(class "class " (p "ClassName&InheritanceList") n
+(class "class " (p "Name : Inheritance") n
+       "{" n>
+       "public:" n>
+       "private:" n>
+       q n
+       "};" n>)
+(struct "struct " (p "Name : Inheritance") n
        "{" n>
        q n
        "};" n>)
 
 ;;; Unreal Engine Templates
 (UC "UCLASS(" p ")" n>
-    "class " (p "Name&Inheritance") n>
+    "class " (p "Name : Inheritance") n>
     "{" n>
     "GENERATED_BODY()" n>
     "public:" n>
@@ -93,7 +99,7 @@ c++-mode
     "private:" n>
     "};" n>)
 (US "USTRUCT(" p ")" n>
-    "struct " (p "Name") n>
+    "struct " (p "Name : Inheritance") n>
     "{" n>
     "GENERATED_BODY()" n>
     q n>
@@ -118,21 +124,40 @@ c++-mode
 (ulogt "UE_LOG(LogTemp, Display, TEXT(\"DEBUG CXD " p "\")" q ");")
 (ulog "UE_LOG(" (p "category") ", " (p "verbosity") ", TEXT(\"" p "\")" p ");" q)
 (umsg "GEngine->AddOnScreenDebugMessage(INDEX_NONE, 4.0F, FColor::Cyan, FString::Printf(TEXT(\"" p "\")" q "));")
-(ucmdl "UCLASS()" n>
-       "class U" (p "Name") "Commandlet : public UCommandlet" n>
-       "{" n>
-       "GENERATED_BODY()" n>
-       n>
-       "public:" n>
-       "virtual int32 Main(const FString& Params) override;" n>
-       "};" n>)
+(ucmdl "UCLASS()" n >
+       "class U" (p "Name") "Commandlet : public UCommandlet" n >
+       "{" n >
+       "GENERATED_BODY()" n >
+       n >
+       "public:" n >
+       "virtual int32 Main(const FString& Params) override;" n >
+       "};" n >
+       q)
 
-(cc "FAutoConsoleCommand " (p "var") "(" n
-    "TEXT(\"" (p "name") "\")," n
-    "TEXT(\"" (p "help") "\")," n
-    "FConsoleCommandWithArgsDelegate::CreateLambda([](const TArray<FString>& Args){})," n
-    (p "ECVF_Cheat") n
-    ");" q )
+(cc "FAutoConsoleCommand " (p "var") "(" n>
+    "TEXT(\"" (p "name") "\")," n>
+    "TEXT(\"" (p "help") "\")," n>
+    "FConsoleCommandWithArgsDelegate::CreateLambda([](const TArray<FString>& Args){})," n>
+    (p "ECVF_Cheat") n>
+    ");" n>
+    q)
+
+(keyfuncs "struct " (p "Name") "Funcs : public BaseKeyFuncs<" (p "ElementType") ", " (p "KeyType") ">" n>
+          "{" n>
+          "static FORCEINLINE KeyInitType GetSetKey(ElementInitType Element)" n>
+          "{" n>
+          "return Element;" n>
+          "}" n>
+          "static FORCEINLINE bool Matches(KeyInitType A, KeyInitType B)" n>
+          "{" n>
+          "return A == B;" n>
+          "}" n>
+          "static FORCEINLINE uint32 GetKeyHash(KeyInitType Key)" n>
+          "{" n>
+          (p "return GetTypeHash(Key);") n>
+          "}" n>
+          "};" n>
+          q)
 
 csharp-mode
 

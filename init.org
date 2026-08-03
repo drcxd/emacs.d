@@ -1650,6 +1650,9 @@ such as lsp-mode, depends on it somehow, so I still install it.
 
 #+begin_src emacs-lisp
   (use-package org :defer t
+    :preface
+    (when (featurep 'org)
+      (unload-feature 'org))
     :ensure '(org :type git
                   :repo "https://code.tecosaur.net/tec/org-mode.git/"
                   :branch "dev")
@@ -1674,7 +1677,8 @@ such as lsp-mode, depends on it somehow, so I still install it.
           org-babel-C++-compiler "clang++"
           ;; org-edit-special will replace the current window with the
           ;; special window
-          org-src-window-setup 'current-window)
+          org-src-window-setup 'current-window
+          org-num-skip-unnumbered t)
     (add-to-list 'org-modules 'org-habit t)
     ;; The following code makes org emphasis markup covers more lines
     ;; (setcar (nthcdr 4 org-emphasis-regexp-components) 5)

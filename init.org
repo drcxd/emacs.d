@@ -1653,9 +1653,8 @@ such as lsp-mode, depends on it somehow, so I still install it.
     :preface
     (when (featurep 'org)
       (unload-feature 'org))
-    :ensure '(org :type git
-                  :repo "https://code.tecosaur.net/tec/org-mode.git/"
-                  :branch "dev")
+    :vc (:url "https://code.tecosaur.net/tec/org-mode.git/"
+              :branch "dev")
     :init
     (defvar my/org-babel-languages (list '(C . t)
                                          '(racket . t)

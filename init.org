@@ -735,17 +735,19 @@ The code I write but not enough for a package.
         (buffer-substring-no-properties (line-beginning-position)
                                         (line-end-position)))))
 
-  (defun my/unfill-writing-mode ()
-    "Turn on `visual-line-mode' and turn off `auto-fill-mode'."
-    (interactive)
-    (visual-line-mode 1)
-    (auto-fill-mode -1))
+  (define-minor-mode my/visual-unfill-writing-mode
+    "Toggle visual unfill writing mode.
 
-  (defun my/fill-writing-mode ()
-    "Turn off `visual-line-mode' and turn on `auto-fill-mode'."
-    (interactive)
-    (visual-line-mode -1)
-    (auto-fill-mode 1))
+  When enable the mode, it enables `visual-line-mode' and disable
+  `auto-fill-mode'. When disable the mode, it disables `visual-line-mode'
+  and enables `auto-fill-mode'."
+    :lighter " VU"
+    (if my/visual-unfill-writing-mode
+        (progn
+          (visual-line-mode 1)
+          (auto-fill-mode -1))
+      (visual-line-mode -1)
+      (auto-fill-mode 1)))
 #+end_src
 
 When working on Windows, sometimes I encounter files containing mixed

@@ -716,6 +716,14 @@ Learned about this feature from this post, it feels quite good.
     (windmove-default-keybindings))
 #+end_src
 
+** bookmark
+
+#+begin_src emacs-lisp
+  (use-package bookmark
+    :init
+    (setq bookmark-save-flag 1))
+#+end_src
+
 ** Personal Code
 
 The code I write but not enough for a package.

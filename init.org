@@ -3022,13 +3022,18 @@ can not use it to replace org roam fully now.
                            (car id-values)))
                    (note (if id
                              (vulpea-db-get-by-id id))))
-              (if note
-                  (let* ((title (vulpea-note-title note))
-                         (tags (vulpea-note-tags note))
-                         (buffer-name (format "%s%s"
-                                              title
-                                              (apply #'concat (seq-map (lambda (tag) (format " #%s" tag)) tags)))))
-                    (rename-buffer buffer-name t)))))))
+              (when note
+                (let* ((title (org-get-title))
+                       (tags (org-get-tags))
+                       (buffer-name
+                        (format "%s%s"
+                                title
+                                (apply
+                                 #'concat
+                                 (seq-map (lambda (tag)
+                                            (format " #%s" tag))
+                                          tags)))))
+                  (rename-buffer buffer-name t)))))))
     (define-minor-mode vulpea-rename-buffer-mode
       "Minor mode that renames org mode buffer if it is a note managed by
   vulpea."

@@ -1684,7 +1684,8 @@ such as lsp-mode, depends on it somehow, so I still install it.
                            (seq-map (lambda (tag)
                                       (format " #%s" tag))
                                     tags)))))
-            (rename-buffer buffer-name t)))))
+            (when title
+              (rename-buffer buffer-name t))))))
     (define-minor-mode org-rename-buffer-mode
       "Minor mode that renames org mode buffer if it has a title."
       :global t

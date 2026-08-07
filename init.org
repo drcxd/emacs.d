@@ -1670,6 +1670,30 @@ such as lsp-mode, depends on it somehow, so I still install it.
                                          '(racket . t)
                                          '(emacs-lisp . t)
                                          '(dot . t)))
+    (defun org-rename-buffer (&optional buffer)
+      "Try rename the current buffer if it is a org-mode buffer with a title."
+      (when (eq major-mode 'org-mode)
+        (save-excursion
+          (let* ((title (org-get-title))
+                 (tags (org-get-tags))
+                 (buffer-name
+                  (format "%s%s"
+                          title
+                          (apply
+                           #'concat
+                           (seq-map (lambda (tag)
+                                      (format " #%s" tag))
+                                    tags)))))
+            (rename-buffer buffer-name t)))))
+    (define-minor-mode org-rename-buffer-mode
+      "Minor mode that renames org mode buffer if it has a title."
+      :global t
+      (if org-rename-buffer-mode
+          (progn
+            (add-hook 'find-file-hook #'org-rename-buffer)
+            (add-hook 'after-save-hook #'org-rename-buffer))
+        (remove-hook 'find-file-hook #'org-rename-buffer)
+        (remove-hook 'after-save-hook #'org-rename-buffer)))
     :hook
     ((emacs-startup . (lambda ()
                         (org-babel-do-load-languages 'org-babel-load-languages my/org-babel-languages)))
@@ -1689,6 +1713,7 @@ such as lsp-mode, depends on it somehow, so I still install it.
           org-src-window-setup 'current-window
           org-num-skip-unnumbered t)
     (add-to-list 'org-modules 'org-habit t)
+    (org-rename-buffer-mode)
     ;; The following code makes org emphasis markup covers more lines
     ;; (setcar (nthcdr 4 org-emphasis-regexp-components) 5)
     ;; (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
@@ -3011,52 +3036,20 @@ can not use it to replace org roam fully now.
           vulpea-default-notes-directory "~/org-roam"
           vulpea-buffer-alias-property "ROAM_ALIASES"
           vulpea-db-async-extraction 'full)
-    (defun vulpea-rename-buffer (&optional buffer)
-      "Try to rename the current buffer it is a org-mode buffer visiting a note
-  managed by vulpea. Rename it with its title and tags."
-      (if (and (eq major-mode 'org-mode)
-               (buffer-file-name))
-          (save-excursion
-            (let* ((id-values (org-property-values "ID"))
-                   (id (if id-values
-                           (car id-values)))
-                   (note (if id
-                             (vulpea-db-get-by-id id))))
-              (when note
-                (let* ((title (org-get-title))
-                       (tags (org-get-tags))
-                       (buffer-name
-                        (format "%s%s"
-                                title
-                                (apply
-                                 #'concat
-                                 (seq-map (lambda (tag)
-                                            (format " #%s" tag))
-                                          tags)))))
-                  (rename-buffer buffer-name t)))))))
-    (define-minor-mode vulpea-rename-buffer-mode
-      "Minor mode that renames org mode buffer if it is a note managed by
-  vulpea."
-      :global t
-      (if vulpea-rename-buffer-mode
-          (progn
-            (add-hook 'find-file-hook #'vulpea-rename-buffer)
-            (add-hook 'after-save-hook #'vulpea-rename-buffer))
-        (remove-hook 'find-file-hook #'vulpea-rename-buffer)
-        (remove-hook 'after-save-hook #'vulpea-rename-buffer)))
     :bind
     (("C-c v f" . vulpea-find)
      ("C-c v i" . vulpea-insert))
     :config
     (vulpea-db-autosync-mode +1)
-    (vulpea-rename-buffer-mode)
     (setq vulpea-create-default-template
           '(:file-name "${timestamp}.org"))
 
     (defun my/vulpea-create-private (title)
       (interactive "sTitle: ")
-      (vulpea-visit (vulpea-create title
-                                   (format "private/%s.org" (format-time-string "%Y%m%d%H%M%S"))))))
+      (vulpea-visit
+       (vulpea-create
+        title
+        (format "private/%s.org" (format-time-string "%Y%m%d%H%M%S"))))))
 
   (elpaca-wait) ;; wait because vulpea-ui depends on vulpea
 

@@ -1115,6 +1115,10 @@ enabled. Diminish is a good package to solve this problem.
     :defer t
     :ensure nil
     :diminish abbrev-mode)
+
+  (use-package simple
+    :ensure nil
+    :diminish visual-line-mode)
 #+end_src
 
 **** Unicode Support :dependency:

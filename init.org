@@ -3040,7 +3040,8 @@ can not use it to replace org roam fully now.
                                        "~/org-roam/daily")
           vulpea-default-notes-directory "~/org-roam"
           vulpea-buffer-alias-property "ROAM_ALIASES"
-          vulpea-db-async-extraction 'full)
+          vulpea-db-async-extraction 'full
+          vulpea-select-match-ids nil)
     :bind
     (("C-c v f" . vulpea-find)
      ("C-c v i" . vulpea-insert))

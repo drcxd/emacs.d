@@ -354,7 +354,8 @@ the splash screen manually.
              (side . bottom)
              (slot . 0))
             ((or "\\*\\(grep\\|xref\\|find\\)\\*"
-                 (major-mode . grep-mode))
+                 (major-mode . grep-mode)
+                 (major-mode . occur-mode))
              (display-buffer-in-side-window)
              (window-height . 0.25)
              (side . bottom)

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: title
+# key: title
+# --
+#align(center, text(17pt)[*${title}*])

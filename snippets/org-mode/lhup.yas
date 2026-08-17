@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: lhup
+# key: lhup
+# --
+#+latex_header: \\usepackage{${pacakge name}}$0

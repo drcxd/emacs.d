@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: powerset
+# key: powerset
+# --
+\\mathcal{P}($1)$0

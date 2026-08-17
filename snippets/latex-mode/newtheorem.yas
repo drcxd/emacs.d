@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: newtheorm
+# key: nt
+# --
+\\newtheorem${*}{${set}}{${name}}$0

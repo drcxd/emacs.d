@@ -1628,6 +1628,10 @@ its simple enough to learn and work with. Third, it is maintained
 actively. However, since yasnippet is well-known, some other packages,
 such as lsp-mode, depends on it somehow, so I still install it.
 
+Temple has a severe flaw: It does not support consecutive fields. I
+can not accept this. Yasnippet handle this properly, so I decide to
+switch back to yasnippet.
+
 #+begin_src emacs-lisp
   (use-package tempel :defer t
     :ensure t
@@ -1651,14 +1655,9 @@ such as lsp-mode, depends on it somehow, so I still install it.
     ((prog-mode . tempel-setup-capf)
      (text-mode . tempel-setup-capf)))
 
-  ;; (use-package yasnippet
-  ;;   :ensure t
-  ;;   :diminish yas-minor-mode
-  ;;   :defer t
-  ;;   :hook
-  ;;   (prog-mode . yas-minor-mode)
-  ;;   :bind
-  ;;   ("C-c Y" . yas-reload-all))
+  (use-package yasnippet
+    :ensure t
+    :diminish yas-global-mode)
 #+end_src
 
 *** org-mode

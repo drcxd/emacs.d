@@ -1657,7 +1657,9 @@ switch back to yasnippet.
 
   (use-package yasnippet
     :ensure t
-    :diminish yas-global-mode)
+    :diminish yas-minor-mode
+    :config
+    (yas-global-mode))
 #+end_src
 
 *** org-mode

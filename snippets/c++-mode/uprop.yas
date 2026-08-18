@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: uprop
+# key: uprop
+# --
+UPROPERTY(${})$0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: ulog
+# key: ulog
+# --
+UE_LOG(${Category}, ${Verbosity}, TEXT("${}")${});$0

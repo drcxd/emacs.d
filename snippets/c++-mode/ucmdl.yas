@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: ucmdl
+# key: ucmdl
+# --
+UCLASS()
+class U{Name}Commandlet : public UCommandlet
+{
+  GENERATED_BODY()
+  public:
+  virtual int32 Main(FString const& Params) override;
+};

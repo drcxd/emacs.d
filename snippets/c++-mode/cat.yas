@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: cat
+# key: cat
+# --
+Category = "${}" $0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: ulogt
+# key: ulogt
+# --
+UE_LOG(LogTemp, Display, TEXT("DEBUG CXD ${}")${});$0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: ufun
+# key: ufun
+# --
+UFUNCTION(${})$0

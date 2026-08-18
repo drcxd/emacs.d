@@ -2,8 +2,9 @@
 # name: class
 # key: class
 # --
-class ${1:name}${2: : public base}
+${class} ${name}${ : public base}
 {
-public:
+${public:}
   $0
+${private:}
 };

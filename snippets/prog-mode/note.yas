@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: note
+# key: note
+# --
+`(if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start)` ${NOTE}:

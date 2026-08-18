@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: summary
+# key: s
+# --
+/// <summar>
+/// $0
+/// </summary>

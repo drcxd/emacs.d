@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: uenum
+# key: uenum
+# --
+UENUM(${})
+enum class ${EMyEnum} : ${Size}
+{
+$0
+};

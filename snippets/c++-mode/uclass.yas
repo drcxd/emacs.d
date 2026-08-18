@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: uclass
+# key: uclass
+# --
+UCLASS(${})
+class ${name : inheritance}
+{
+  GENERATED_BODY()
+  public:
+  $0
+  private:
+};

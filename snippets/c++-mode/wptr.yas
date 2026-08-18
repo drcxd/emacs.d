@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: wptr
+# key: wptr
+# --
+TWeakObjectPtr<${type}>$0

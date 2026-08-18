@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: ec
+# key: ec
+# --
+EditCondition = "${}"$0

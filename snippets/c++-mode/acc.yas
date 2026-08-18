@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: acc
+# key: acc
+# --
+FAutoConsoleCommand ${VarName}(
+TEXT("${CommandName}"),
+TEXT("${HelpText}"),
+FConsoleCommandWithArgsDelegate::CreateLambda([] (TArray<FString> const& Args) {
+$0
+}),
+ECVF_${Default}
+);

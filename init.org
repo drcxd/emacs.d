@@ -3284,7 +3284,7 @@ web browser or xwidget if Emacs is compiled with support for it.
     :commands (org-markdown-preview-mode))
 #+end_src
 
-*** Entertainment
+*** Fun
 
 **** i-ching
 
@@ -3298,6 +3298,14 @@ hexagrams.
     :ensure t
     :init
     (setq i-ching-randomness-source 'atmospheric))
+#+end_src
+
+**** COMMENT card games
+
+#+begin_src emacs-lisp
+  (use-package card-games
+    :ensure t
+    :defer t)
 #+end_src
 
 *** Editing

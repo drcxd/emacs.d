@@ -1680,6 +1680,7 @@ switch back to yasnippet.
       "Try rename the current buffer if it is a org-mode buffer with a title."
       (when (eq major-mode 'org-mode)
         (save-excursion
+          (org-set-regexps-and-options t) ;; update `org-file-tags'
           (let* ((title (org-get-title))
                  (tags (org-get-tags))
                  (buffer-name

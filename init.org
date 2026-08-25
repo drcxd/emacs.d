@@ -1416,6 +1416,20 @@ https://www.nerdfonts.com/#home
     (sleek-modeline-mode 1))
 #+end_src
 
+**** COMMENT minibuffer-frame
+
+This package place the minibuffer completion interface to the center
+of the screen, emulating the behavior of some modern editors.
+
+The package does not work in WSL for now.
+
+#+begin_src emacs-lisp
+  (use-package minibuffer-frame
+    :ensure t
+    :if (display-graphic-p)
+    :hook window-setup)
+#+end_src
+
 *** Completion
 
 **** vertico
@@ -3307,6 +3321,18 @@ hexagrams.
   (use-package card-games
     :ensure t
     :defer t)
+#+end_src
+
+**** COMMENT Doom
+
+This package requires a canvas patch to work. See the GitHub page for
+more details.
+
+#+begin_src emacs-lisp
+  (use-package doom-on-emacs
+    :vc (:url "https://github.com/minad/doom-on-emacs.git")
+    :defer t
+    :ensure t)
 #+end_src
 
 *** Editing

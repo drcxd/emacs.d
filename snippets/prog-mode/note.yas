@@ -2,4 +2,4 @@
 # name: note
 # key: note
 # --
-`(if (derived-mode-p 'emacs-lisp-mode) ";;" comment-start)` ${$$(yas-choose-value '("NOTE" "TODO" "FIXME" "BUG" "HACK" "DEPRECATED"))}:$0
+`(if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start)`${$$(yas-choose-value '("NOTE" "TODO" "FIXME" "BUG" "HACK" "DEPRECATED"))}:$0

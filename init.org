@@ -2638,25 +2638,40 @@ API, so I will stick with ECA for a little while.
 
 *** Reading & Writing
 
+**** olivetti
+
+I use olivetti to center text in a buffer. I used to use
+visual-fill-column mode to do this, but that package become broken in
+Emacs 31.1.
+
+#+begin_src emacs-lisp
+  (use-package olivetti
+    :ensure t
+    :defer t
+    :hook
+    (olivetti-mode-on . (lambda () (my/visual-unfill-writing-mode +1)))
+    (olivetti-mode-off . (lambda () (my/visual-unfill-writing-mode -1))))
+#+end_src
+
 **** Filling and Wrapping
 
 I use ~visual-line-fill-column-mode~ to center text consists of long
 lines. It is mainly for writing prose rather than code.
 
 #+begin_src emacs-lisp
-  (use-package visual-fill-column
-    :ensure t
-    :defer t
-    :config
-    (advice-add 'text-scale-adjust :after #'visual-fill-column-adjust)
-    :hook
-    (visual-line-mode . visual-fill-column-for-vline)
-    :init
-    (add-hook 'visual-line-mode-hook #'visual-fill-column-for-vline)
-    (setq visual-fill-column-center-text t
-          visual-fill-column-width (+ fill-column 8)
-          visual-fill-column-fringes-outside-margins nil
-          visual-fill-column-adjust-for-text-scale t))
+  ;; (use-package visual-fill-column
+  ;;   :ensure t
+  ;;   :defer t
+  ;;   :config
+  ;;   (advice-add 'text-scale-adjust :after #'visual-fill-column-adjust)
+  ;;   :hook
+  ;;   (visual-line-mode . visual-fill-column-for-vline)
+  ;;   :init
+  ;;   (add-hook 'visual-line-mode-hook #'visual-fill-column-for-vline)
+  ;;   (setq visual-fill-column-center-text t
+  ;;         visual-fill-column-width (+ fill-column 8)
+  ;;         visual-fill-column-fringes-outside-margins nil
+  ;;         visual-fill-column-adjust-for-text-scale t))
 
   (use-package unfill :defer t :ensure t
     :bind

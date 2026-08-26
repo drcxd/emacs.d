@@ -2069,7 +2069,12 @@ hint for possible code warning or error. Currently, I only use it as
 a facility for lsp.
 
 #+begin_src emacs-lisp
-  (use-package flycheck :defer t :diminish flycheck-mode :ensure t)
+  (use-package flycheck
+    ;; :defer t
+    :diminish flycheck-mode
+    :ensure t
+    :config
+    (global-flycheck-eglot-mode 1))
 #+end_src
 
 **** hl-todo

@@ -2208,6 +2208,7 @@ variable-rename.
 #+begin_src emacs-lisp
   (use-package lsp-mode
     :ensure (lsp-mode :host github :repo "drcxd/lsp-mode")
+    :diminish (lsp-mode . "LSP")
     :defer t
     :init
     (setq lsp-headerline-breadcrumb-enable nil
@@ -2254,6 +2255,10 @@ variable-rename.
           ("C-c l a" . lsp-execute-code-action)
           ("C-c l n" . lsp-rename)
           ("C-c l t" . lsp-semantic-tokens-mode)))
+
+  (use-package lsp-lens
+    :defer t
+    :diminish lsp-lens-mode)
 
   (use-package lsp-ui
     :ensure (:repo "https://github.com/drcxd/lsp-ui" :branch "personal-fixes")

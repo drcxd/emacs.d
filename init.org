@@ -725,12 +725,12 @@ Learned about this feature from this post, it feels quite good.
     (setq bookmark-save-flag 1))
 #+end_src
 
-** tree-sitter
+** treesit
 
 #+begin_src emacs-lisp
   (use-package treesit
     :init
-    (setopt treesit-enabled-modes t))
+    (setopt treesit-enabled-modes '(lua-ts-mode csharp-ts-mode)))
 #+end_src
 
 ** Personal Code

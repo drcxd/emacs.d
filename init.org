@@ -2101,6 +2101,17 @@ This packages add visual hint on the fringe to indicate which part of
 the file is added/deleted/modified against the latest version in the
 version control system.
 
+Note that git-gutter does not work well with eglot. If eglot is
+enabled, then whenever the cursor is moved, the visual indicator
+produced by git-gutter is hidden.
+
+git-gutter-fringe seems able to work with eglot. It also provides
+different visual results.
+
+Also enable git-gutter-mode in any buffer that has a version control
+backend, instead of buffers whose major mode is derived from
+prog-mode.
+
 #+begin_src emacs-lisp
   (use-package git-gutter
     :ensure t
@@ -2109,13 +2120,46 @@ version control system.
     :config
     (setq git-gutter:handled-backends '(git svn))
     :hook
-    (prog-mode . git-gutter-mode)
+    (find-file . (lambda ()
+                   (when (vc-backend buffer-file-name)
+                     (git-gutter-mode))))
     :bind
     (("C-c v v" . git-gutter)
      ("C-c v d" . git-gutter:popup-hunk)
      ("C-c v n" . git-gutter:next-hunk)
      ("C-c v p" . git-gutter:previous-hunk)
      ("C-c v r" . git-gutter:revert-hunk)))
+
+  (use-package git-gutter-fringe
+    :ensure t
+    :after git-gutter
+    :config
+    (fringe-helper-define 'git-gutter-fr:added '(center repeated)
+                          "XXX....."
+                          "XXX....."
+                          "XXX....."
+                          "XXX.....")
+    (fringe-helper-define 'git-gutter-fr:modified '(center repeated)
+                          "XXX....."
+                          "XXX....."
+                          "XXX....."
+                          "XXX.....")
+    (fringe-helper-define 'git-gutter-fr:deleted 'bottom
+                          "X......."
+                          "XX......"
+                          "XXX....."
+                          "XXXX...."
+                          "XXXXX..."
+                          "XXXXXX.."
+                          "XXXXXXX."
+                          "XXXXXXXX"
+                          "XXXXXXX."
+                          "XXXXXX.."
+                          "XXXXX..."
+                          "XXXX...."
+                          "XXX....."
+                          "XX......"
+                          "X......."))
 #+end_src
 
 **** evil-nerd-commenter

@@ -2134,37 +2134,6 @@ prog-mode.
      ("C-c v n" . git-gutter:next-hunk)
      ("C-c v p" . git-gutter:previous-hunk)
      ("C-c v r" . git-gutter:revert-hunk)))
-
-  (use-package git-gutter-fringe
-    :ensure t
-    :after git-gutter
-    :config
-    (fringe-helper-define 'git-gutter-fr:added '(center repeated)
-                          "XXX....."
-                          "XXX....."
-                          "XXX....."
-                          "XXX.....")
-    (fringe-helper-define 'git-gutter-fr:modified '(center repeated)
-                          "XXX....."
-                          "XXX....."
-                          "XXX....."
-                          "XXX.....")
-    (fringe-helper-define 'git-gutter-fr:deleted 'bottom
-                          "X......."
-                          "XX......"
-                          "XXX....."
-                          "XXXX...."
-                          "XXXXX..."
-                          "XXXXXX.."
-                          "XXXXXXX."
-                          "XXXXXXXX"
-                          "XXXXXXX."
-                          "XXXXXX.."
-                          "XXXXX..."
-                          "XXXX...."
-                          "XXX....."
-                          "XX......"
-                          "X......."))
 #+end_src
 
 **** evil-nerd-commenter

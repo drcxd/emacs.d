@@ -2108,7 +2108,16 @@ literals.
     (prog-mode . hl-todo-mode))
 #+end_src
 
-**** git-gutter :dependency:
+**** diff-hl
+
+#+begin_src emacs-lisp
+  (use-package diff-hl
+    :ensure t
+    :config
+    (global-diff-hl-mode))
+#+end_src
+
+**** COMMENT git-gutter :dependency:
 
 This packages add visual hint on the fringe to indicate which part of
 the file is added/deleted/modified against the latest version in the

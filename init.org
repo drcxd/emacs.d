@@ -3177,7 +3177,7 @@ located at =msys64/mingw64/include/enchant-2=. Thus, we have to
 manually compile the dll using the following command in MinGW64 shell:
 
 #+begin_example
-  gcc -I. -O2 -Wall -Wextra -fPIC -shared -o jinx-mod.dll jinx-mod.c -I/mingw64/lib/enchant-2 -L/usr/local/lib -lenchant-2
+  gcc -I. -O2 -Wall -Wextra -fPIC -shared -o jinx-mod.dll jinx-mod.c -I/mingw64/include/enchant-2 -L/usr/local/lib -lenchant-2
 #+end_example
 
 Finally, we have to put the =.dll= file to the load path of the jinx package.

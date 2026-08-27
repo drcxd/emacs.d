@@ -390,7 +390,8 @@ the splash screen manually.
              (display-buffer-in-side-window)
              (window-width . 0.381)
              (side . left)
-             (slot . 1)))))
+             (slot . 1)))
+          scroll-error-top-bottom t))
 
   ;; Proportional Window Resizing (Purcell, Prot)
   (setq window-combination-resize t)
@@ -739,6 +740,38 @@ Learned about this feature from this post, it feels quite good.
   (use-package treesit
     :init
     (setopt treesit-enabled-modes '(lua-ts-mode csharp-ts-mode)))
+#+end_src
+
+** Scroll
+
+I read about these configurations in this [[https://www.jamescherti.com/emacs-scrolling-better-performance-usability/][article]].
+
+#+begin_src emacs-lisp
+  (setq hscroll-margin 2
+        hscroll-step 1
+
+        ;; NOTE: This makes the point location stay the same after you
+        ;; execute scroll up or scroll down, but I find this behavior
+        ;; not practical.
+
+        ;; scroll-preserve-screen-position t
+        redisplay-skip-fontification-on-input t
+        fast-but-imprecise-scrolling t)
+
+  ;; NOTE: This enables a line-by-line scroll behavior, but I find I am
+  ;; now more used to the default behavior
+
+  ;; (setq-default scroll-up-aggressively 0.01
+  ;;               scroll-down-aggressively 0.01)
+#+end_src
+
+** comint
+
+#+begin_src emacs-lisp
+  (use-package comint
+    :init
+    (setq-default comint-scroll-to-bottom-on-input t
+                  comint-scroll-to-bottom-on-output nil))
 #+end_src
 
 ** Personal Code

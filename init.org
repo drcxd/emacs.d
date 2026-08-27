@@ -321,6 +321,14 @@ Emacs 28 supports syntax highlighting for documentations in comments.
   ;; a buffer, I lose all the information provided by the mode
   ;; line. This is not acceptable so I switch back to the bottom mode
   ;; line setting.
+
+  ;; Collapse minor mode lighters, introduced in Emacs 31
+  (setq mode-line-collapse-minor-modes '(not meow-mode
+                                             meow-motion-mode
+                                             meow-normal-mode
+                                             meow-keypad-mode
+                                             meow-insert-mode
+                                             meow-beacon-mode))
 #+end_src
 
 ** Splash Screen
@@ -1097,7 +1105,7 @@ Using elpaca requires disabling the built-in package manager.
 
 *** Appearance
 
-**** Diminish
+**** COMMENT Diminish
 
 I am using the built-in mode line, and it displays a symbol for all
 the activated minor modes. This could makes the mode line messy,

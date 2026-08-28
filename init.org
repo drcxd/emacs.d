@@ -390,8 +390,16 @@ the splash screen manually.
              (display-buffer-in-side-window)
              (window-width . 0.381)
              (side . left)
-             (slot . 1)))
-          scroll-error-top-bottom t))
+             (slot . 1)))))
+  ;; NOTE: There is an option `scroll-error-top-botoom', if set to
+  ;; non-nil, scrolling past the beginning or end of the buffer will
+  ;; first place the cursor at the beginning or end before yielding a
+  ;; message. However, this interferes with elfeed-show-mode. When
+  ;; pressing SPACE when reaching the end of the buffer in
+  ;; elfeed-show-mode, it would first place the cursor to the end of the
+  ;; buffer. You have to press SPACE again to switch to next feed. This
+  ;; is annoying and redundant. Also,enabling this option does not
+  ;; provide any actual benefits.
 
   ;; Proportional Window Resizing (Purcell, Prot)
   (setq window-combination-resize t)

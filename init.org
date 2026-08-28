@@ -2699,7 +2699,8 @@ Emacs 31.1.
     :defer t
     :hook
     (olivetti-mode-on . (lambda () (my/visual-unfill-writing-mode +1)))
-    (olivetti-mode-off . (lambda () (my/visual-unfill-writing-mode -1))))
+    (olivetti-mode-off . (lambda () (my/visual-unfill-writing-mode -1)))
+    (elfeed-show-mode . olivetti-mode))
 #+end_src
 
 **** Filling and Wrapping
@@ -2749,9 +2750,7 @@ the same work, but elfeed seems more dedicated and easy to use.
           elfeed-tree-filter "@2weeks")
     :config
     (add-hook 'elfeed-new-entry-hook (elfeed-make-tagger :before "2 weeks ago"
-                                                         :remove 'unread))
-    :hook
-    (elfeed-show-mode . visual-line-mode))
+                                                         :remove 'unread)))
 #+end_src
 
 **** Citation

@@ -681,9 +681,7 @@ which states it changes.
   (use-package dictionary
     :defer t
     :init
-    (setq dictionary-server "dict.org")
-    :bind
-    ("C-c d" . dictionary-lookup-definition))
+    (setq dictionary-server "dict.org"))
 #+end_src
 
 ** hi-lock
@@ -780,6 +778,14 @@ I read about these configurations in this [[https://www.jamescherti.com/emacs-sc
     :init
     (setq-default comint-scroll-to-bottom-on-input t
                   comint-scroll-to-bottom-on-output nil))
+#+end_src
+
+** eldoc
+
+#+begin_src emacs-lisp
+  (use-package eldoc
+    :bind
+    ("C-c d" . eldoc))
 #+end_src
 
 ** Personal Code
@@ -2648,6 +2654,16 @@ parenthesizes with other symbols...
   (use-package region-pin
     :ensure t
     :vc (:url "https://github.com/vmargb/region-pin"))
+#+end_src
+
+**** eldoc-box
+
+#+begin_src emacs-lisp
+  (use-package eldoc-box
+    :ensure t
+    :defer t
+    :bind
+    ([remap eldoc] . eldoc-box-help-at-point))
 #+end_src
 
 *** magit :dependency:

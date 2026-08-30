@@ -2007,15 +2007,6 @@ so you can write anything in it.
     ("C-c s c" . my/scratch-with-prefix))
 #+end_src
 
-**** Transient
-
-A tutorial about using transient. I tried to use transient to develop
-a menu for my day-to-day workflow, but its manual is not intuitive for
-me, so the idea has been infinitely delayed. Maybe someday I can use
-this tutorial.
-
-https://cocode.se/emacs/transient_cont.html
-
 **** ghostel
 
 #+begin_src emacs-lisp
@@ -2082,6 +2073,19 @@ easy to use.
     :defer t
     :vc (:url "https://github.com/drcxd/context-clues"
               :branch "upgrade-to-emacs-31"))
+#+end_src
+
+**** easysession
+
+#+begin_src emacs-lisp
+  (use-package easysession
+    :ensure t
+    :demand t
+    :config
+    (setq easysession-switch-to-save-session t
+          easysession-setup-load-session nil
+          easysession-save-interval (* 10 60))
+    (easysession-setup))
 #+end_src
 
 *** Window Management

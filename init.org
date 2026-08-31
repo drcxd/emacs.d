@@ -788,6 +788,17 @@ I read about these configurations in this [[https://www.jamescherti.com/emacs-sc
     ("C-c d" . eldoc))
 #+end_src
 
+** eglot
+
+#+begin_src emacs-lisp
+  (use-package eglot
+    :defer t
+    :hook
+    (eglot-managed-mode-hook . (lambda ()
+                                 (when (eglot-managed-p)
+                                   (eglot-inlay-hints-mode -1)))))
+#+end_src
+
 ** Personal Code
 
 The code I write but not enough for a package.

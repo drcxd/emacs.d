@@ -2717,10 +2717,7 @@ Emacs 31.1.
   (use-package olivetti
     :ensure t
     :defer t
-    :hook
-    (olivetti-mode-on . (lambda () (my/visual-unfill-writing-mode +1)))
-    (olivetti-mode-off . (lambda () (my/visual-unfill-writing-mode -1)))
-    (elfeed-show-mode . olivetti-mode))
+    :hook (elfeed-show-mode . olivetti-mode))
 #+end_src
 
 **** Filling and Wrapping

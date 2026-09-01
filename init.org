@@ -804,6 +804,28 @@ Part of the configurations are copied from James Cherti's [[https://www.jamesche
     :config
     (add-to-list 'eglot-ignored-server-capabilities :documentOnTypeFormattingProvider)
     (add-to-list 'eglot-ignored-server-capabilities :inlayHintProvider)
+    (defun my/add-face-text-property-advice (oldfunc &rest args)
+      (if (> (length args) 3)
+          (apply oldfunc args)
+        (apply oldfunc (append args '(t)))))
+    (defun my/eglot--semtok-font-lock-advice (oldfunc &rest args)
+      (advice-add #'add-face-text-property :around
+                  #'my/add-face-text-property-advice)
+      (apply oldfunc args)
+      (advice-remove #'add-face-text-property #'my/add-face-text-property-advice))
+
+    ;; NOTE: This advice make eglot append its faces to the list, which
+    ;; makes it compatible with hl-todo. However, this also improperly
+    ;; setup some faces in the comment. For example, using
+    ;; lua-language-server, the face of "@param type name comment"
+    ;; becomes incorrect. Note that even without these advices, the
+    ;; faces are also incorrect. lsp handles this properly, need to
+    ;; figure out how it does.
+
+    ;; (advice-add #'eglot--semtok-font-lock-1 :around
+    ;;             #'my/eglot--semtok-font-lock-advice)
+    ;; (advice-add #'eglot--semtok-font-lock-2 :around
+    ;;             #'my/eglot--semtok-font-lock-advice)
     :hook
     (eglot-managed-mode . (lambda ()
                             (when (eglot-managed-p)

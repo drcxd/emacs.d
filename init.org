@@ -801,6 +801,7 @@ Part of the configurations are copied from James Cherti's [[https://www.jamesche
           eglot-events-buffer-config '(:size 0 :format short)
           eglot-report-progress nil
           eglot-code-action-indications nil)
+    :config
     (add-to-list 'eglot-ignored-server-capabilities :documentOnTypeFormattingProvider)
     (add-to-list 'eglot-ignored-server-capabilities :inlayHintProvider)
     :hook

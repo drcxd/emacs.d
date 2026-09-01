@@ -2726,6 +2726,13 @@ API, so I will stick with ECA for a little while.
     (setq eca-chat-use-side-window nil))
 #+end_src
 
+**** Other Packages
+
+- [[https://github.com/isamert/ellm.el][ellm]] is an /agent/ for Emacs, written in Emacs Lisp. It has no
+  further dependencies. I would not try it now since it is in a really
+  nascent stage.
+- [[https://github.com/jamie-cui/magent][Magent]] another Emacs Lisp agent package.
+
 *** Reading & Writing
 
 **** olivetti

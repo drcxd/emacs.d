@@ -790,9 +790,19 @@ I read about these configurations in this [[https://www.jamescherti.com/emacs-sc
 
 ** eglot
 
+Part of the configurations are copied from James Cherti's [[https://www.jamescherti.com/emacs-eglot-performance/][post]].
+
 #+begin_src emacs-lisp
   (use-package eglot
     :defer t
+    :init
+    (setq eglot-autoshutdown t
+          eglot-sync-connet nil
+          eglot-events-buffer-config '(:size 0 :format short)
+          eglot-report-progress nil
+          eglot-code-action-indications nil)
+    (add-to-list 'eglot-ignored-server-capabilities :documentOnTypeFormattingProvider)
+    (add-to-list 'eglot-ignored-server-capabilities :inlayHintProvider)
     :hook
     (eglot-managed-mode . (lambda ()
                             (when (eglot-managed-p)

@@ -2176,8 +2176,12 @@ a facility for lsp.
     ;; :defer t
     :diminish flycheck-mode
     :ensure t
-    :config
-    (global-flycheck-eglot-mode 1))
+    ;; NOTE: flycheck by default display errors through eldoc, but it
+    ;; sometimes open a dedicated eldoc buffer, which feels
+    ;; awkward. Thus I decide to no longer use it with eglot for now.
+
+    ;; :config (global-flycheck-eglot-mode 1)
+    )
 #+end_src
 
 **** hl-todo

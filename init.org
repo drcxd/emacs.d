@@ -793,6 +793,14 @@ I read about these configurations in this [[https://www.jamescherti.com/emacs-sc
 Part of the configurations are copied from James Cherti's [[https://www.jamescherti.com/emacs-eglot-performance/][post]].
 
 #+begin_src emacs-lisp
+  (setq my/clangd-arguments
+        '("--completion-style=detailed"
+          "--header-insertion=never"
+          "--function-arg-placeholders=0"
+          "--background-index"
+          "--background-index-priority=low"
+          "--pch-storage=memory"))
+
   (use-package eglot
     :defer t
     :init
@@ -804,6 +812,7 @@ Part of the configurations are copied from James Cherti's [[https://www.jamesche
     :config
     (add-to-list 'eglot-ignored-server-capabilities :documentOnTypeFormattingProvider)
     (add-to-list 'eglot-ignored-server-capabilities :inlayHintProvider)
+    (add-to-list 'eglot-server-programs `((c-mode c-ts-mode c++-mode c++-ts-mode objc-mode) . ,(cons "clangd" my/clangd-arguments)))
     :hook
     ;; This hook moves `eglot--semtok-font-lock' to the front of the
     ;; `font-lock-keywords' list, especially prior to the font lock
@@ -2383,13 +2392,7 @@ variable-rename.
   (use-package lsp-clangd
     :defer t
     :config
-    (setq lsp-clients-clangd-args
-          '("--completion-style=detailed"
-            "--header-insertion=never"
-            "--function-arg-placeholders=0"
-            "--background-index"
-            "--background-index-priority=low"
-            "--pch-storage=memory")))
+    (setq lsp-clients-clangd-args my/clangd-arguments))
 
   (add-to-list 'safe-local-eval-forms '(lsp))
 #+end_src

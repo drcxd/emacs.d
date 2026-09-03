@@ -2144,7 +2144,12 @@ easy to use.
     (setq easysession-switch-to-save-session t
           easysession-setup-load-session nil
           easysession-save-interval (* 10 60))
-    (easysession-setup))
+    (easysession-setup)
+    :bind
+    (("C-c s s" . easysession-save)
+     ("C-c s l" . easysession-load)
+     ("C-c s d" . easysession-delete)
+     ("C-c s u" . easysession-unload)))
 #+end_src
 
 *** Window Management

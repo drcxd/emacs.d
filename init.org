@@ -800,6 +800,7 @@ Part of the configurations are copied from James Cherti's [[https://www.jamesche
           "--background-index"
           "--background-index-priority=low"
           "--pch-storage=memory"))
+  (setq my/no-lsp-indent-modes '(lua-mode lua-ts-mode))
 
   (use-package eglot
     :defer t
@@ -809,10 +810,18 @@ Part of the configurations are copied from James Cherti's [[https://www.jamesche
           eglot-events-buffer-config '(:size 0 :format short)
           eglot-report-progress nil
           eglot-code-action-indications nil)
+    (defun my/eglot-indent-region-advice (oldfun &rest args)
+      (if (and (eglot-managed-p)
+               (eglot-server-capable :documentRangeFormattingProvider)
+               (> (length args) 2)
+               (not (member major-mode my/no-lsp-indent-modes)))
+          (eglot-format (nth 0 args) (nth 1 args))
+        (apply oldfun args)))
     :config
     (add-to-list 'eglot-ignored-server-capabilities :documentOnTypeFormattingProvider)
     (add-to-list 'eglot-ignored-server-capabilities :inlayHintProvider)
     (add-to-list 'eglot-server-programs `((c-mode c-ts-mode c++-mode c++-ts-mode objc-mode) . ,(cons "clangd" my/clangd-arguments)))
+    (advice-add 'indent-region :around #'my/eglot-indent-region-advice)
     :hook
     ;; This hook moves `eglot--semtok-font-lock' to the front of the
     ;; `font-lock-keywords' list, especially prior to the font lock
@@ -821,7 +830,17 @@ Part of the configurations are copied from James Cherti's [[https://www.jamesche
     (eglot-semantic-tokens-mode . (lambda ()
                                     (font-lock-remove-keywords nil '((eglot--semtok-font-lock)))
                                     (font-lock-add-keywords nil '((eglot--semtok-font-lock)))
-                                    (font-lock-flush))))
+                                    (font-lock-flush)))
+    :bind
+    (("C-c e a" . eglot-code-actions)
+     ("C-c e f" . eglot-format)
+     ("C-c e n" . eglot-rename)
+     ("C-c e S" . eglot-shutdown)
+     ("C-c e R" . eglot-reconnect)
+     ("C-c e d" . eglot-find-declaration)
+     ("C-c e i" . eglot-find-implementation)
+     ("C-c e c" . eglot-show-call-hierarchy)
+     ("C-c e t" . eglot-show-type-hierarchy)))
 #+end_src
 
 ** Personal Code
@@ -1110,7 +1129,7 @@ exception rules is tedious and error prone.
 ** Key Bindings
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-c e") 'eval-region)
+  (global-set-key (kbd "C-c E") 'eval-region)
   (global-set-key (kbd "C-c k") 'kill-buffer)
 #+end_src
 
@@ -2425,7 +2444,10 @@ completion problem, so I have to use eglot for a while.
 #+begin_src emacs-lisp
   (use-package consult-eglot
     :ensure t
-    :defer t)
+    :defer t
+    :after (eglot consult)
+    :bind
+    ("C-c e s" . consult-eglot-symbols))
 #+end_src
 
 ****** Cons of eglot

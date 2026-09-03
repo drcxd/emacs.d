@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: note
-# key: note
+# name: todo
+# key: todo
 # --
 `(let ((str (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start)))
   (if (s-suffix? " " str)

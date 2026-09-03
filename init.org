@@ -817,11 +817,15 @@ Part of the configurations are copied from James Cherti's [[https://www.jamesche
                (not (member major-mode my/no-lsp-indent-modes)))
           (eglot-format (nth 0 args) (nth 1 args))
         (apply oldfun args)))
+    (defun my/eglot--signal-textDocument/didClose-advice (oldfun &rest args)
+      (unless (buffer-base-buffer)
+        (apply oldfun args)))
     :config
     (add-to-list 'eglot-ignored-server-capabilities :documentOnTypeFormattingProvider)
     (add-to-list 'eglot-ignored-server-capabilities :inlayHintProvider)
     (add-to-list 'eglot-server-programs `((c-mode c-ts-mode c++-mode c++-ts-mode objc-mode) . ,(cons "clangd" my/clangd-arguments)))
     (advice-add 'indent-region :around #'my/eglot-indent-region-advice)
+    (advice-add 'eglot--signal-textDocument/didClose :around #'my/eglot--signal-textDocument/didClose-advice)
     :hook
     ;; This hook moves `eglot--semtok-font-lock' to the front of the
     ;; `font-lock-keywords' list, especially prior to the font lock

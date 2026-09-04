@@ -745,7 +745,7 @@ Learned about this feature from this post, it feels quite good.
 #+begin_src emacs-lisp
   (use-package treesit
     :init
-    (setopt treesit-enabled-modes '(lua-ts-mode csharp-ts-mode)))
+    (setopt treesit-enabled-modes '(csharp-ts-mode)))
 #+end_src
 
 ** Scroll

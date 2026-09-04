@@ -1999,17 +1999,10 @@ insecure, but this is only my personal opinion.
   ,#+end_signature"))
 #+end_src
 
-**** orin
+**** COMMENT org-draw
 
-#+begin_src emacs-lisp
-  (use-package orin :defer t
-    :ensure (orin
-             :type git :host github :repo "drcxd/orin"
-             :files ("*.el"))
-    :init
-    (setq orin-dir "~/org-roam"
-          orin-operating-mode 'modern))
-#+end_src
+An interesting package that allows you to hand-draw images in org
+mode. May be useful later.
 
 *** COMMENT Benchmark
 

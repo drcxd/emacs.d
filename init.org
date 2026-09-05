@@ -1617,13 +1617,22 @@ etc..
     :init
     (setq xref-show-xrefs-function #'consult-xref
           xref-show-definitions-function #'consult-xref)
+    (defvar-local my/consult-ripgrep-asks-dir nil
+      "If non-nil, consult-ripgrep will ask for the directory to grep in.")
+    (put 'my/consult-ripgrep-asks-dir 'safe-local-variable (lambda (_) t))
     (defun consult-ripgrep-with-prefix ()
       (interactive)
       (let ((current-prefix-arg '(4)))
         (call-interactively 'consult-ripgrep)))
+    (defun my/consult-ripgrep-advice (oldfun &rest args)
+      (if my/consult-ripgrep-asks-dir
+          (apply oldfun '(dummy)) ;; This makes consult-ripgrep asks for directories
+        (apply oldfun args)))
     :config
     (setq consult-fontify-max-size 262144) ;; 262144 = 2 ^ 18
     (setq consult-preview-excluded-files '(".*epub"))
+
+    (advice-add 'consult-ripgrep :around #'my/consult-ripgrep-advice)
 
     ;; this handles problems when consult results contains
     ;; Chinese characters
@@ -1642,8 +1651,7 @@ etc..
     :bind
     (([remap switch-to-buffer] . consult-buffer)
      ("C-c i" . consult-line)
-     ("C-c r" . consult-ripgrep-with-prefix)
-     ("C-c R" . consult-ripgrep)
+     ("C-c r" . consult-ripgrep)
      ("C-c I" . consult-imenu)
      ("C-c f" . consult-fd)
      ("C-c H" . consult-org-heading)

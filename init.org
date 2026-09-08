@@ -1258,14 +1258,14 @@ enabled. Diminish is a good package to solve this problem.
 ***** Modus Themes
 
 #+begin_src emacs-lisp
-  ;; (use-package standard-themes :ensure t)
-  ;; (use-package ef-themes :ensure t)
+  (use-package doric-themes
+    :ensure t)
+
   (use-package modus-themes
     :ensure t
-    :defer t
-    :preface
-    (when (featurep 'modus-themes)
-      (unload-feature 'modus-themes))
+    ;; :preface
+    ;; (when (featurep 'modus-themes)
+    ;;   (unload-feature 'modus-themes))
     :init
     (setq modus-themes-italic-constructs t
           modus-themes-bold-constructs nil
@@ -1291,6 +1291,9 @@ enabled. Diminish is a good package to solve this problem.
                                                     :foreground ,border
                                                     :background ,bg-main))))))))
     (modus-themes-include-derivatives-mode))
+
+  (use-package standard-themes :ensure t :after modus-themes)
+  (use-package ef-themes :ensure t :after modus-themes)
 
   (defun my/select-modus-theme-using-os-theme ()
     "Select a proper modus theme depends on the os theme."

@@ -654,7 +654,8 @@ which states it changes.
     :init
     (setq ediff-keep-variants nil
           ediff-show-clashes-only t
-          ediff-split-window-function 'split-window-horizontally))
+          ediff-split-window-function 'split-window-horizontally
+          ediff-window-setup-function #'ediff-setup-windows-plain))
 #+end_src
 
 ** imenu

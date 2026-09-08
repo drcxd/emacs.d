@@ -2736,6 +2736,8 @@ parenthesizes with other symbols...
   (use-package eldoc-box
     :ensure t
     :defer t
+    :init
+    (setq eldoc-box-clear-with-C-g t)
     :bind
     ([remap eldoc] . eldoc-box-help-at-point))
 #+end_src

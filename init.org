@@ -2739,7 +2739,8 @@ parenthesizes with other symbols...
     :init
     (setq eldoc-box-clear-with-C-g t)
     :bind
-    ([remap eldoc] . eldoc-box-help-at-point))
+    (([remap eldoc] . eldoc-box-help-at-point)
+     ("C-c D" . eldoc-box-quit-frame)))
 #+end_src
 
 *** magit :dependency:

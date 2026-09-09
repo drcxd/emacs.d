@@ -880,6 +880,26 @@ The code I write but not enough for a package.
           (auto-fill-mode -1))
       (visual-line-mode -1)
       (auto-fill-mode 1)))
+
+  (defun my/os-dark-theme-p ()
+    "Returns non-if the OS is using a dark theme.
+
+  If we can not determine OS theme, then return nil."
+    (cond
+     ((eq system-type 'windows-nt)
+      (when-let* ((exe (or (executable-find "powershell.exe")
+                           (executable-find "pwsh.exe"))))
+        (with-temp-buffer
+          (shell-command (format "%s -NoProfile -Command Get-ItemPropertyValue -Path HKCU:Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize -Name AppsUseLightTheme"
+                                 exe)
+                         (current-buffer))
+          (eq 0 (string-match "0\n" (buffer-string))))))
+     ((eq system-type 'gnu/linux)
+      (let ((theme-config-file "~/.config/kdeglobals"))
+        (when (file-exists-p theme-conifg-file)
+          (let ((os-theme (my/find-line-matching theme-config-file "LookAndFeelPackage")))
+            (string-match "dark" os-theme)))))
+     (t nil)))
 #+end_src
 
 When working on Windows, sometimes I encounter files containing mixed
@@ -1299,18 +1319,13 @@ enabled. Diminish is a good package to solve this problem.
   (defun my/select-modus-theme-using-os-theme (&optional random-p)
     "Select a proper modus theme depends on the os theme."
     (interactive)
-    (let* ((theme-config-file "~/.config/kdeglobals")
-           (use-dark-theme-p (and-let*
-                                 ((_ (file-exists-p theme-config-file))
-                                  ((os-theme (my/find-line-matching  "LookAndFeelPackage"))))
-                               (string-match "dark" os-theme))))
-      (if use-dark-theme-p
-          (if random-p
-              (modus-themes-load-random-dark)
-            (modus-themes-load-theme 'modus-vivendi))
+    (if (my/os-dark-theme-p)
         (if random-p
+            (modus-themes-load-random-dark)
+          (modus-themes-load-theme 'modus-vivendi))
+      (if random-p
             (modus-themes-load-random-light)
-          (modus-themes-load-theme 'modus-operandi)))))
+          (modus-themes-load-theme 'modus-operandi))))
 #+end_src
 
 **** Ligature

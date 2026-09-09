@@ -1299,13 +1299,16 @@ enabled. Diminish is a good package to solve this problem.
   (defun my/select-modus-theme-using-os-theme (&optional random-p)
     "Select a proper modus theme depends on the os theme."
     (interactive)
-    (let ((os-theme (my/find-line-matching "~/.config/kdeglobals" "LookAndFeelPackage")))
-      (if (and os-theme
-               (string-match "dark" os-theme))
+    (let* ((theme-config-file "~/.config/kdeglobals")
+           (use-dark-theme-p (and-let*
+                                 ((_ (file-exists-p theme-config-file))
+                                  ((os-theme (my/find-line-matching  "LookAndFeelPackage"))))
+                               (string-match "dark" os-theme))))
+      (if use-dark-theme-p
           (if random-p
               (modus-themes-load-random-dark)
             (modus-themes-load-theme 'modus-vivendi))
-        (if randomp-p
+        (if random-p
             (modus-themes-load-random-light)
           (modus-themes-load-theme 'modus-operandi)))))
 #+end_src

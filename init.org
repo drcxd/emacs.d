@@ -896,7 +896,7 @@ The code I write but not enough for a package.
           (eq 0 (string-match "0\n" (buffer-string))))))
      ((eq system-type 'gnu/linux)
       (let ((theme-config-file "~/.config/kdeglobals"))
-        (when (file-exists-p theme-conifg-file)
+        (when (file-exists-p theme-config-file)
           (let ((os-theme (my/find-line-matching theme-config-file "LookAndFeelPackage")))
             (string-match "dark" os-theme)))))
      (t nil)))

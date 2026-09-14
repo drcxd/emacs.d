@@ -3251,7 +3251,9 @@ can not use it to replace org roam fully now.
     :after (vulpea vulpea-ui)
     :bind
     (("C-c v j" . vulpea-journal)
-     ("C-c v J" . vulpea-journal-date))
+     ("C-c v J" . vulpea-journal-date)
+     ("C-c v n" . vulpea-journal-next)
+     ("C-c v p" . vulpea-journal-previous))
     :config
     (vulpea-journal-setup)
     (setq vulpea-journal-default-template

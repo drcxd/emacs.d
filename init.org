@@ -2269,7 +2269,12 @@ literals.
     :ensure t
     :config
     (global-diff-hl-mode)
-    (diff-hl-margin-mode)
+    :hook
+    (prog-mode . diff-hl-margin-local-mode))
+
+  (use-package diff-hl-margin
+    :after diff-hl
+    :config
     (when-let* ((record (assoc 'change diff-hl-margin-symbols-alist)))
       (setcdr record "=")))
 #+end_src

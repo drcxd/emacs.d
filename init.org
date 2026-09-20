@@ -2775,7 +2775,7 @@ parenthesizes with other symbols...
 #+begin_src emacs-lisp
   (use-package eldoc-box
     :ensure t
-    :defer t
+    :demand t
     :init
     (setq eldoc-box-clear-with-C-g t)
     (defun my/eldoc-box-toggle ()

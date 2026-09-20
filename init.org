@@ -3008,7 +3008,10 @@ packages provides support for writing Typst document in Emacs.
 #+begin_src emacs-lisp
   ;; tree sitter mode Typst
   (use-package typst-ts-mode :defer t
-    :ensure (:type git :host codeberg :repo "meow_king/typst-ts-mode")
+    ;; :ensure (:type git :host codeberg :repo "meow_king/typst-ts-mode")
+    :ensure t
+    :vc (:url "https://codeberg.org/YTG123/typst-ts-mode.git"
+              :branch "fix-autoload")
     :init
     (add-to-list 'org-src-lang-modes '("typst" . typst-ts)))
 

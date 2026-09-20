@@ -2778,9 +2778,15 @@ parenthesizes with other symbols...
     :defer t
     :init
     (setq eldoc-box-clear-with-C-g t)
+    (defun my/eldoc-box-toggle ()
+      "Convenient wrapper to show, focus, and unfocus eldoc box frame."
+      (interactive)
+      (cond ((and (eldoc-box--frame-visible-p)
+                  (eq (selected-frame) eldoc-box--frame))
+             (eldoc-box-unfocus-frame))
+            (t (eldoc-box-help-at-point))))
     :bind
-    (([remap eldoc] . eldoc-box-help-at-point)
-     ("C-c D" . eldoc-box-quit-frame)))
+    (([remap eldoc] . my/eldoc-box-toggle)))
 #+end_src
 
 *** magit :dependency:

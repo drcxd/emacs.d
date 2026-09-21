@@ -512,19 +512,7 @@ Activate repeat mode to move among windows and repeat =M-x= commands.
 #+begin_src emacs-lisp
   (use-package repeat
     :config
-    (repeat-mode)
-    (defvar-keymap my-line-repeat-map
-      :repeat t
-      "n" #'next-line
-      "p" #'previous-line)
-    (defvar-keymap my-word-repeat-map
-      :repeat t
-      "f" #'forward-word
-      "b" #'backward-word)
-    (defvar-keymap my-char-repeat-map
-      :repeat t
-      "f" #'forward-char
-      "b" #'backward-char))
+    (repeat-mode))
   ;; (setq repeat-keep-prefix t)
 #+end_src
 

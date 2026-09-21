@@ -1211,6 +1211,8 @@ exception rules is tedious and error prone.
   (defun my/tortoise-svn-commit-vc-marked-files ()
     "Invoke TortoiseProc to commit marked files in vc-dir."
     (interactive)
+    (unless (file-executable-p "TortoiseProc")
+      (user-error "TortoiseProc is not in PATH!"))
     (when-let* ((files (vc-dir-marked-files)))
       (let ((command "TortoiseProc.exe /command:commit /path:"))
         (async-shell-command
@@ -1220,8 +1222,11 @@ exception rules is tedious and error prone.
   (defun my/tortoise-svn-commit (&optional dir)
     "Invoke TortoiseProc to commit files in the current directory."
     (interactive)
-    (unless dir
-      (setq dir (read-directory-name "Commit in: ")))
+    (unless (file-executable-p "TortoiseProc")
+      (user-error "TortoiseProc is not in PATH!"))
+    (setq dir (if (and current-prefix-arg (null dir))
+                  (read-directory-name "Commit in: ")
+                "."))
     (async-shell-command
      (format "TortoiseProc.exe /command:commit /path:\"%s\"" dir)))
 #+end_src

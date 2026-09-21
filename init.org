@@ -1216,6 +1216,14 @@ exception rules is tedious and error prone.
         (async-shell-command
          (concat command
                  (format "\"%s\"" (mapconcat #'identity files "*")))))))
+
+  (defun my/tortoise-svn-commit (&optional dir)
+    "Invoke TortoiseProc to commit files in the current directory."
+    (interactive)
+    (unless dir
+      (setq dir (read-directory-name "Commit in: ")))
+    (async-shell-command
+     (format "TortoiseProc.exe /command:commit /path:\"%s\"" dir)))
 #+end_src
 
 ** Key Bindings

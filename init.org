@@ -1152,7 +1152,7 @@ exception rules is tedious and error prone.
       ignore))
 #+end_src
 
-*** Switching SVN Branches
+*** SVN & Tortoise
 
 #+begin_src emacs-lisp
   (defvar my/svn-branch-matching-regexp
@@ -1206,6 +1206,16 @@ exception rules is tedious and error prone.
     (require 'ibuffer)
     (dolist (buffer (ibuffer-get-marked-buffers))
       (my/svn-switch-branch target buffer)))
+
+  ;; Advise `vc-checkin' so that this function is called instead
+  (defun my/tortoise-svn-commit-vc-marked-files ()
+    "Invoke TortoiseProc to commit marked files in vc-dir."
+    (interactive)
+    (when-let* ((files (vc-dir-marked-files)))
+      (let ((command "TortoiseProc.exe /command:commit /path:"))
+        (async-shell-command
+         (concat command
+                 (format "\"%s\"" (mapconcat #'identity files "*")))))))
 #+end_src
 
 ** Key Bindings

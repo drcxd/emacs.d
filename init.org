@@ -2185,7 +2185,22 @@ so you can write anything in it.
 #+begin_src emacs-lisp
   (use-package ghostel
     :ensure t
-    :defer t)
+    :defer t
+    :init
+    (setq ghostel-initial-input-mode 'line)
+    :config
+    (add-to-list 'display-buffer-alist
+                 '((major-mode . ghostel-mode)
+                   (display-buffer-in-side-window)
+                   (window-height . 0.25)
+                   (side . bottom)
+                   (slot . 0)))
+    :bind
+    (:map project-prefix-map
+          ("m" . ghostel-project)))
+  (with-eval-after-load 'project
+    (add-to-list 'project-switch-commands
+                 '(ghostel-project "Ghostel" "t")))
 #+end_src
 
 **** COMMENT Pomodoro and Timers

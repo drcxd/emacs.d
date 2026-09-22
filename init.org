@@ -2190,7 +2190,7 @@ so you can write anything in it.
                    (slot . 1)))
     :bind
     (:map project-prefix-map
-          ("m" . ghostel-project)))
+          ("t" . ghostel-project)))
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands
                  '(ghostel-project "Ghostel" "t")))
@@ -2883,9 +2883,17 @@ magit is the well-known Emacs interface for git.
             (side . top)
             (dedicated . t)
             (inhibit-same-window . t))))
+
   (use-package magit
     :ensure t
-    :defer t)
+    :defer t
+    :bind
+    (:map project-prefix-map
+          ("m" . magit-project-status)))
+
+  (with-eval-after-load 'project
+    (add-to-list 'project-switch-commands
+                 '(magit-project-status "Magit" "m")))
 #+end_src
 
 *** Agents and Large Language Models

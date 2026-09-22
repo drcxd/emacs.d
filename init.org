@@ -2868,7 +2868,13 @@ parenthesizes with other symbols...
 magit is the well-known Emacs interface for git.
 
 #+begin_src emacs-lisp
-  (use-package transient :ensure t :defer t)
+  (use-package transient :ensure t :defer t
+    :config
+    (setq transient-display-buffer-action
+          '(display-buffer-in-side-window
+            (side . top)
+            (dedicated . t)
+            (inhibit-same-window . t))))
   (use-package magit
     :ensure t
     :defer t)

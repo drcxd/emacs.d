@@ -1757,7 +1757,7 @@ etc..
           (setq consult-find-args (concat find-program " . "))))
     (with-eval-after-load 'project
       (add-to-list 'project-switch-commands
-                   '(consult-project-buffer "Consult buffer" "b"))
+                   '(consult-project-buffer "Consult buffer" "u"))
       (add-to-list 'project-switch-commands
                    '(consult-fd "Consult fd" "i")))
     :bind
@@ -1767,7 +1767,9 @@ etc..
      ("C-c I" . consult-imenu)
      ("C-c f" . consult-fd)
      ("C-c H" . consult-org-heading)
-     ("C-c p" . consult-project-buffer)))
+     ("C-c p" . consult-project-buffer)
+     :map project-prefix-map
+     ("u" . consult-project-buffer)))
 
   (if (eq system-type 'windows-nt)
       (use-package consult-everything

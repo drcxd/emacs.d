@@ -842,6 +842,12 @@ Part of the configurations are copied from James Cherti's [[https://www.jamesche
      ("C-c e t" . eglot-show-type-hierarchy)))
 #+end_src
 
+** Environment Variables
+
+#+begin_src emacs-lisp
+  (setenv "XMAKE_COLORTERM" "nocolor")
+#+end_src
+
 ** Personal Code
 
 The code I write but not enough for a package.

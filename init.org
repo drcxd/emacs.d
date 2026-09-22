@@ -2370,6 +2370,7 @@ literals.
     :ensure t
     :config
     (global-diff-hl-mode)
+    (diff-hl-flydiff-mode)
     :hook
     (prog-mode . diff-hl-margin-local-mode))
 
@@ -2378,6 +2379,11 @@ literals.
     :config
     (when-let* ((record (assoc 'change diff-hl-margin-symbols-alist)))
       (setcdr record "=")))
+
+  (use-package diff-hl-flydiff
+    :after diff-hl
+    :config
+    (setq diff-hl-flydiff-delay 1))
 #+end_src
 
 **** COMMENT git-gutter :dependency:

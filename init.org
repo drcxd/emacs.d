@@ -355,25 +355,18 @@ the splash screen manually.
     ("C-c b" . switch-to-buffer)
     :config
     (setq display-buffer-alist
-          '(((or "\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|Messages\\|Bookmark List\\|Occur\\|eldoc\\)\\*"
+          '(((or "\\*\\(grep\\|xref\\|find\\)\\*"
+                 "\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|Messages\\|Bookmark List\\|Occur\\|eldoc\\)\\*"
+                 (major-mode . grep-mode)
+                 (major-mode . occur-mode)
+                 (major-mode . compilation-mode)
                  (major-mode . bookmark-bmenu-mode))
              (display-buffer-in-side-window)
              (window-height . 0.25)
              (side . bottom)
              (slot . 0))
-            ((or "\\*\\(grep\\|xref\\|find\\)\\*"
-                 (major-mode . grep-mode)
-                 (major-mode . occur-mode))
-             (display-buffer-in-side-window)
-             (window-height . 0.25)
-             (side . bottom)
-             (slot . 0))
-            ("\\*Async Shell Command\\*.*"
-             (display-buffer-in-side-window)
-             (window-height . 0.25)
-             (side . bottom)
-             (slot . 1))
-            ("^\\*.*eshell\\*$"
+            ((or "^\\*.*eshell\\*$"
+                 "\\*Async Shell Command\\*.*")
              (display-buffer-in-side-window)
              (side . bottom)
              (window-height . 0.25)
@@ -2194,7 +2187,7 @@ so you can write anything in it.
                    (display-buffer-in-side-window)
                    (window-height . 0.25)
                    (side . bottom)
-                   (slot . 0)))
+                   (slot . 1)))
     :bind
     (:map project-prefix-map
           ("m" . ghostel-project)))

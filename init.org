@@ -1160,44 +1160,53 @@ exception rules is tedious and error prone.
         "/")
     "Regular expression to match for branch name.")
 
+  (defun my/svn-switch-branch-file (target file)
+    "Switch branch to TARGET for FILE."
+    (interactive "sBranch: \nfFile: ")
+    (if (file-exists-p file)
+        (with-temp-buffer
+          (shell-command (format "svn info %s | grep \"Relative URL\"" file) (current-buffer))
+          (let* ((output (string-trim (buffer-string)))
+                 (relative-url (substring
+                                output
+                                (string-match-p "\\^" output)))
+                 (at-trunk (string-match-p "\\^/trunk" relative-url))
+                 source
+                 target-relative-url)
+            (if at-trunk
+                (setq source "trunk")
+              (unless (string-match my/svn-branch-matching-regexp
+                                    relative-url)
+                (user-error "Matching for branch name failed for %s"
+                            relative-url))
+              (setq source (match-string 1 relative-url)))
+            (if (equal source target)
+                (user-error "Switching for buffer %s from %s to %s. Ignored!" (buffer-name buffer) source target)
+              (setq target-relative-url (if at-trunk
+                                            (replace-regexp-in-string
+                                             "\\^/trunk"
+                                             (format "^/branches/%s" target)
+                                             relative-url)
+                                          (replace-regexp-in-string
+                                           my/svn-branch-matching-regexp
+                                           (if (equal target "trunk")
+                                               (format "^/trunk/")
+                                             (format "^/branches/%s/" target))
+                                           relative-url)))
+              (shell-command (format "svn switch \"%s\" \"%s\""
+                                     target-relative-url
+                                     file)))))
+      (user-error "File not exist: %s" file)))
+
   (defun my/svn-switch-branch (target &optional buffer)
     "Switch branch to TARGET for the BUFFER file.
 
   If BUFFER is nil, then default to the current buffer."
     (interactive "sBranch: ")
-    (let ((file (expand-file-name (buffer-file-name buffer))))
-      (with-temp-buffer
-        (shell-command (format "svn info %s | grep \"Relative URL\"" file) (current-buffer))
-        (let* ((output (string-trim (buffer-string)))
-               (relative-url (substring
-                              output
-                              (string-match-p "\\^" output)))
-               (at-trunk (string-match-p "\\^/trunk" relative-url))
-               source
-               target-relative-url)
-          (if at-trunk
-              (setq source "trunk")
-            (unless (string-match my/svn-branch-matching-regexp
-                                  relative-url)
-              (user-error "Matching for branch name failed for %s"
-                          relative-url))
-            (setq source (match-string 1 relative-url)))
-          (if (equal source target)
-              (user-error "Switching for buffer %s from %s to %s. Ignored!" (buffer-name buffer) source target)
-            (setq target-relative-url (if at-trunk
-                                          (replace-regexp-in-string
-                                           "\\^/trunk"
-                                           (format "^/branches/%s" target)
-                                           relative-url)
-                                        (replace-regexp-in-string
-                                         zc/branch-matching-regexp
-                                         (if (equal target "trunk")
-                                             (format "^/trunk/")
-                                           (format "^/branches/%s/" target))
-                                         relative-url)))
-            (shell-command (format "svn switch \"%s\" \"%s\""
-                                   target-relative-url
-                                   file)))))))
+    (if-let* ((file-name (buffer-file-name buffer))
+              (file (expand-file-name file-name)))
+        (my/svn-switch-branch-file file)
+      (user-error "Can not locate file for buffer %s" buffer)))
 
   (defun my/svn-switch-branch-ibuffer (target)
     "Switch branch to TARGET for marked buffers."
@@ -1205,6 +1214,12 @@ exception rules is tedious and error prone.
     (require 'ibuffer)
     (dolist (buffer (ibuffer-get-marked-buffers))
       (my/svn-switch-branch target buffer)))
+
+  (defun my/svn-switch-branch-vc-marked-files (target)
+    "Switch branch to TARGET for marked files in vc-dir."
+    (interactive "sBranch: ")
+    (dolist (file (vc-dir-marked-files))
+      (my/svn-switch-branch-file target file)))
 
   ;; Advise `vc-checkin' so that this function is called instead
   (defun my/tortoise-svn-commit-vc-marked-files ()

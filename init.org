@@ -2209,7 +2209,7 @@ so you can write anything in it.
                  '((major-mode . ghostel-mode)
                    (display-buffer-in-side-window)
                    (window-height . 0.25)
-                   (side . bottom)
+                   (side . top)
                    (slot . 1)))
     :bind
     (:map project-prefix-map

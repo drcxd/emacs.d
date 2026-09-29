@@ -363,12 +363,12 @@ the splash screen manually.
                  (major-mode . bookmark-bmenu-mode))
              (display-buffer-in-side-window)
              (window-height . 0.25)
-             (side . bottom)
+             (side . top)
              (slot . 0))
             ((or "^\\*.*eshell\\*$"
                  "\\*Async Shell Command\\*.*")
              (display-buffer-in-side-window)
-             (side . bottom)
+             (side . top)
              (window-height . 0.25)
              (slot . 1))
             ((or (major-mode . Info-mode)
@@ -2909,7 +2909,7 @@ magit is the well-known Emacs interface for git.
     :config
     (setq transient-display-buffer-action
           '(display-buffer-in-side-window
-            (side . right)
+            (side . bottom)
             (dedicated . t)
             (inhibit-same-window . t))))
 

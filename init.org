@@ -2202,8 +2202,6 @@ so you can write anything in it.
   (use-package ghostel
     :ensure t
     :defer t
-    :init
-    (setq ghostel-initial-input-mode 'line)
     :config
     (add-to-list 'display-buffer-alist
                  '((major-mode . ghostel-mode)

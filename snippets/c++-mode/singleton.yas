@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: singleton
+# key: sg
+# --
+class ${1:name}
+{
+public:
+$1($1&&) = delete;
+$1($1 const&) = delete;
+auto operator=($1 const&) = delete;
+auto operator=($1&&) = delete;
+private:
+$1() = default;
+};

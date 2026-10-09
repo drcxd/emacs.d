@@ -2907,7 +2907,7 @@ magit is the well-known Emacs interface for git.
     :config
     (setq transient-display-buffer-action
           '(display-buffer-in-side-window
-            (side . bottom)
+            (side . left)
             (dedicated . t)
             (inhibit-same-window . t))))
 

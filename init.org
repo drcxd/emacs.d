@@ -1205,7 +1205,7 @@ exception rules is tedious and error prone.
     (interactive "sBranch: ")
     (if-let* ((file-name (buffer-file-name buffer))
               (file (expand-file-name file-name)))
-        (my/svn-switch-branch-file file)
+        (my/svn-switch-branch-file target file)
       (user-error "Can not locate file for buffer %s" buffer)))
 
   (defun my/svn-switch-branch-ibuffer (target)

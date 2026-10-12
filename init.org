@@ -218,11 +218,12 @@ language. Credit to this SO [[https://stackoverflow.com/questions/28913294/emacs
 
 #+begin_src emacs-lisp
   (use-package server
+    :demand t
     :init
     (setq server-client-instructions nil)
     :config
     (unless (server-running-p)
-    (server-start)))
+      (server-start)))
 #+end_src
 
 ** Filling and Wrapping

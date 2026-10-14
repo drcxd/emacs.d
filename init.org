@@ -882,6 +882,19 @@ The code I write but not enough for a package.
       (visual-line-mode -1)
       (auto-fill-mode 1)))
 
+  (defun my/enable-writing-mode-p ()
+    "Return non-nil if the current buffer should use `my/writing-mode'."
+    (cond ((derived-mode-p 'org-mode)
+           (not (string-match-p "begin_src|BEGIN_SRC|begin_example|BEGIN_EXAMPLE"
+                                (buffer-string))))
+          ((derived-mode-p 'markdown-mode)
+           (not (string-match-p "```" (buffer-string))))
+          (t nil)))
+
+  (add-hook 'text-mode-hook (lambda ()
+                              (when (my/enable-writing-mode-p)
+                                (my/writing-mode))))
+
   (defun my/os-dark-theme-p ()
     "Returns non-if the OS is using a dark theme.
 

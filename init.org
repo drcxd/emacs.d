@@ -868,14 +868,14 @@ The code I write but not enough for a package.
         (buffer-substring-no-properties (line-beginning-position)
                                         (line-end-position)))))
 
-  (define-minor-mode my/visual-unfill-writing-mode
-    "Toggle visual unfill writing mode.
+  (define-minor-mode my/writing-mode
+    "Toggle writing mode.
 
   When enable the mode, it enables `visual-line-mode' and disable
   `auto-fill-mode'. When disable the mode, it disables `visual-line-mode'
   and enables `auto-fill-mode'."
     :lighter " VU"
-    (if my/visual-unfill-writing-mode
+    (if my/writing-mode
         (progn
           (visual-line-mode 1)
           (auto-fill-mode -1))

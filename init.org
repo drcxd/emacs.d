@@ -885,7 +885,10 @@ The code I write but not enough for a package.
   (defun my/enable-writing-mode-p ()
     "Return non-nil if the current buffer should use `my/writing-mode'."
     (cond ((derived-mode-p 'org-mode)
-           (not (string-match-p "begin_src|BEGIN_SRC|begin_example|BEGIN_EXAMPLE"
+           (not (string-match-p (rx (or "begin_src"
+                                        "BEGIN_SRC"
+                                        "begin_example"
+                                        "BEGIN_EXAMPLE"))
                                 (buffer-string))))
           ((derived-mode-p 'markdown-mode)
            (not (string-match-p "```" (buffer-string))))

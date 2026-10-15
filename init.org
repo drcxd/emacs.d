@@ -420,8 +420,7 @@ Enable proportional font and auto filling in text mode.
   (use-package text-mode
     :defer t
     :hook
-    ((text-mode . variable-pitch-mode)
-     (text-mode . auto-fill-mode)))
+    ((text-mode . variable-pitch-mode)))
 #+end_src
 
 ** HTML Rendering
@@ -895,8 +894,9 @@ The code I write but not enough for a package.
           (t nil)))
 
   (add-hook 'text-mode-hook (lambda ()
-                              (when (my/enable-writing-mode-p)
-                                (my/writing-mode))))
+                              (if (my/enable-writing-mode-p)
+                                  (my/writing-mode)
+                                (auto-fill-mode 1))))
 
   (defun my/os-dark-theme-p ()
     "Returns non-if the OS is using a dark theme.

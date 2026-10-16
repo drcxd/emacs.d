@@ -3010,7 +3010,9 @@ lines. It is mainly for writing prose rather than code.
     (setq visual-fill-column-center-text t
           visual-fill-column-width (+ fill-column 8)
           visual-fill-column-fringes-outside-margins nil
-          visual-fill-column-adjust-for-text-scale t))
+          visual-fill-column-adjust-for-text-scale t)
+    :bind
+    ("C-c v c" . #'visual-fill-column-toggle-center-text))
 
   (use-package unfill :defer t :ensure t
     :bind

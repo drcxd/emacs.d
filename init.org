@@ -917,6 +917,24 @@ The code I write but not enough for a package.
           (when-let* ((os-theme (my/find-line-matching theme-config-file "LookAndFeelPackage")))
             (string-match "dark" os-theme)))))
      (t nil)))
+
+  ;;; I use this function to examine my note files one by one.
+  (defun visit-next-file ()
+    "Visit the next file in the directory, if any."
+    (interactive)
+    (if buffer-file-name
+        (let* ((dir (file-name-directory buffer-file-name))
+               (name (file-name-nondirectory buffer-file-name))
+               (files (directory-files dir))
+               (this-cell (member name files)))
+          (if-let* ((next-cell (cdr this-cell))
+                    (next-file-name (file-name-concat dir (car next-cell))))
+              (if (file-directory-p next-file-name)
+                  (message "The next file is a directory!")
+                (save-buffer)
+                (find-alternate-file next-file-name))
+            (message "This is the last file!")))
+      (messsage "Not visiting a file!")))
 #+end_src
 
 When working on Windows, sometimes I encounter files containing mixed

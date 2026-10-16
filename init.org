@@ -3036,7 +3036,8 @@ the same work, but elfeed seems more dedicated and easy to use.
                          ("https://hnrss.org/bestcomments" HN)
                          ("https://sachachua.com/blog/category/emacs-news/feed/" emacs)
                          ("https://protesilaos.com/codelog.xml" blog emacs)
-                         ("https://nonzerosum.games/rss.xml" blog video-game))
+                         ("https://nonzerosum.games/rss.xml" blog video-game)
+                         ("https://pivot-to-ai.com/feed/" blog))
           elfeed-search-filter "@2weeks +unread"
           elfeed-tree-filter "@2weeks")
     :config

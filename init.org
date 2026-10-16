@@ -3004,7 +3004,8 @@ lines. It is mainly for writing prose rather than code.
     (advice-add 'text-scale-adjust :after #'visual-fill-column-adjust)
     :hook
     (visual-line-mode . (lambda ()
-                          (when (derived-mode-p 'text-mode)
+                          (when (or (derived-mode-p 'text-mode)
+                                    (derived-mode-p 'elfeed-show-mode))
                             (visual-fill-column-for-vline))))
     :init
     (setq visual-fill-column-center-text t

@@ -1974,11 +1974,10 @@ switch back to yasnippet.
 
 #+begin_src emacs-lisp
   (use-package org :defer t
+    :ensure t
     :preface
     (when (featurep 'org)
       (unload-feature 'org))
-    :vc (:url "https://code.tecosaur.net/tec/org-mode.git/"
-              :branch "dev")
     :init
     (defvar my/org-babel-languages (list '(C . t)
                                          '(racket . t)

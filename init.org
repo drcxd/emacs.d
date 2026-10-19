@@ -1457,6 +1457,13 @@ enabled. Diminish is a good package to solve this problem.
           (modus-themes-load-theme 'modus-operandi))))
 #+end_src
 
+***** Foxglove Themes
+
+#+begin_src emacs-lisp
+  (use-package foxglove-themes
+    :vc (:url "https://gitlab.com/vegasharmon/foxglove-themes" :rev :newest))
+#+end_src
+
 **** Ligature
 
 #+begin_src emacs-lisp

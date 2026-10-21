@@ -1981,7 +1981,7 @@ switch back to yasnippet.
 
 #+begin_src emacs-lisp
   (use-package org :defer t
-    :ensure t
+    :ensure '(org)
     :preface
     (when (featurep 'org)
       (unload-feature 'org))

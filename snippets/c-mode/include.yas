@@ -2,4 +2,4 @@
 # name: include
 # key: i
 # --
-#include ${1:header}
+#include $0

@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: uprop
+# name: uproperty
 # key: uprop
 # --
 UPROPERTY(${})$0

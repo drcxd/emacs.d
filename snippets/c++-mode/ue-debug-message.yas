@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: umsg
+# name: ue-debug-message
 # key: umsg
 # --
 GEngine->AddOnScreenDebugMessage(${INDEX_NONE}, ${4.0F}, ${FColor::Cyan}, FString::Printf(TEXT("${}")${}));$0

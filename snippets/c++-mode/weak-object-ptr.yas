@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: wptr
-# key: wptr
+# name: weak-object-ptr
+# key: woptr
 # --
 TWeakObjectPtr<${type}>$0

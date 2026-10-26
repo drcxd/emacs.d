@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: bro
+# name: blueprint-read-only
 # key: bro
 # --
 BlueprintReadOnly

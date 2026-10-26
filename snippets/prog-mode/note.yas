@@ -1,8 +1,9 @@
 # -*- mode: snippet -*-
-# name: todo
-# key: todo
+# name: note
+# key: nt
 # --
+
 `(let ((str (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start)))
   (if (s-suffix? " " str)
     str
-  (s-append " " str)))`${$$(yas-choose-value '("NOTE" "TODO" "FIXME" "BUG" "HACK" "DEPRECATED"))}:$0
+  (s-append " " str)))`NOTE: $0

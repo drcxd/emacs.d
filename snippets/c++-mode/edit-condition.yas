@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: ec
+# name: edit-condition
 # key: ec
 # --
 EditCondition = "${}"$0

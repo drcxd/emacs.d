@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: ucmdl
+# name: commandlet
 # key: ucmdl
 # --
 UCLASS()

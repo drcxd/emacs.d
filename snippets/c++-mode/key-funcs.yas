@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: keyfuncs
+# name: key-funcs
 # key: kf
 # --
 struct ${Name}Funcs : public BaseKeyFuncs<${1:ElementType}, ${2:KeyType}>

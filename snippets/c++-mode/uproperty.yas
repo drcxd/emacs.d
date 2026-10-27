@@ -2,4 +2,4 @@
 # name: uproperty
 # key: uprop
 # --
-UPROPERTY(${})$0
+UPROPERTY($0)

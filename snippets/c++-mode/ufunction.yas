@@ -2,4 +2,4 @@
 # name: ufunction
 # key: ufun
 # --
-UFUNCTION(${})$0
+UFUNCTION($0)

@@ -1256,6 +1256,11 @@ exception rules is tedious and error prone.
     (dolist (file (vc-dir-marked-files))
       (my/svn-switch-branch-file target file)))
 
+  (defun my/copy-vc-marked-file-names ()
+    "Concatenate and copy the file names of marked files in *vc-dir* buffer."
+    (interactive)
+    (kill-new (mapconcat 'identity (vc-dir-marked-files) " ")))
+
   ;; Advise `vc-checkin' so that this function is called instead
   (defun my/tortoise-svn-commit-vc-marked-files ()
     "Invoke TortoiseProc to commit marked files in vc-dir."

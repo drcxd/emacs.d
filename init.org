@@ -1195,6 +1195,15 @@ exception rules is tedious and error prone.
         "/")
     "Regular expression to match for branch name.")
 
+  (defun my/svn-current-branch (dir)
+    "Return the current branch of a SVN repository in DIR."
+    (with-temp-buffer
+      (let ((command (format "svn info \"%s\" | grep \"^URL\"" dir)))
+        (shell-command command (current-buffer))
+        (let ((output (string-trim (buffer-string))))
+            (string-match "/branches/\\(.*\\)" output)
+            (match-string 1 output)))))
+
   (defun my/svn-switch-branch-file (target file)
     "Switch branch to TARGET for FILE."
     (interactive "sBranch: \nfFile: ")

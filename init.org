@@ -842,6 +842,59 @@ Part of the configurations are copied from James Cherti's [[https://www.jamesche
      ("C-c e t" . eglot-show-type-hierarchy)))
 #+end_src
 
+** org-mode
+
+#+begin_src emacs-lisp
+  (setq org-capture-templates
+        '(("t" "Taks" entry
+           (file+headline "~/agenda.org" "Tasks")
+           "* TODO %u %?")))
+
+  ;; This is inspired by this stack exchange answer
+  ;; https://emacs.stackexchange.com/a/10714.
+  (defun my-org-remove-link ()
+    "Remove an org link"
+    (interactive)
+    (if (org-in-regexp org-link-bracket-re 1)
+        (save-excursion
+          (let ((remove (list (match-beginning 0) (match-end 0))))
+            (apply 'delete-region remove)))))
+
+  ;; This function comes from this stack exchange answer
+  ;; https://emacs.stackexchange.com/a/10714.
+  (defun my-org-replace-link-by-link-description ()
+    "Replace an org link by its description or if empty its address"
+    (interactive)
+    (if (org-in-regexp org-link-bracket-re 1)
+        (save-excursion
+          (let ((remove (list (match-beginning 0) (match-end 0)))
+                (description
+                 (if (match-end 2)
+                     (org-match-string-no-properties 2)
+                   (org-match-string-no-properties 1))))
+            (apply 'delete-region remove)
+            (insert description)))))
+#+end_src
+
+Due to the difference between English and Chinese, there are some
+extra spaces in exported Chinese paragraph when exporting to
+HTML. These spaces are necessary since English uses spaces to separate
+words, but Chinese don't. We have to override this behavior.
+
+#+begin_src emacs-lisp
+  (defadvice org-html-paragraph (before org-html-paragraph-advice
+                                        (paragraph contents info) activate)
+    "Join consecutive Chinese lines into a single long line without
+     unwanted space when exporting org-mode to html."
+    (let* ((origin-contents (ad-get-arg 1))
+           (fix-regexp "[[:multibyte:]]")
+           (fixed-contents
+            (replace-regexp-in-string
+             (concat
+              "\\(" fix-regexp "\\) *\n *\\(" fix-regexp "\\)") "\\1\\2" origin-contents)))
+      (ad-set-arg 1 fixed-contents)))
+#+end_src
+
 ** Environment Variables
 
 #+begin_src emacs-lisp
@@ -2052,97 +2105,12 @@ switch back to yasnippet.
           org-latex-preview-mode-update-delay 0.25)
     (add-to-list 'org-modules 'org-habit t)
     (org-rename-buffer-mode))
-#+end_src
 
-**** Exporting Chinese Paragraph to HTML
-
-Due to the difference between English and Chinese, there are some
-extra spaces in exported Chinese paragraph when exporting to
-HTML. These spaces are necessary since English uses spaces to separate
-words, but Chinese don't. We have to override this behavior.
-
-#+begin_src emacs-lisp
-  (defadvice org-html-paragraph (before org-html-paragraph-advice
-                                        (paragraph contents info) activate)
-    "Join consecutive Chinese lines into a single long line without
-     unwanted space when exporting org-mode to html."
-    (let* ((origin-contents (ad-get-arg 1))
-           (fix-regexp "[[:multibyte:]]")
-           (fixed-contents
-            (replace-regexp-in-string
-             (concat
-              "\\(" fix-regexp "\\) *\n *\\(" fix-regexp "\\)") "\\1\\2" origin-contents)))
-      (ad-set-arg 1 fixed-contents)))
-#+end_src
-
-**** Delete Link
-
-This is inspired by this [[https://emacs.stackexchange.com/a/10714][stackexchange answer]].
-
-#+begin_src emacs-lisp
-  (defun my-org-remove-link ()
-    "Remove an org link"
-    (interactive)
-    (if (org-in-regexp org-link-bracket-re 1)
-        (save-excursion
-          (let ((remove (list (match-beginning 0) (match-end 0))))
-            (apply 'delete-region remove)))))
-#+end_src
-
-**** Replace Link
-
-This function comes from this [[https://emacs.stackexchange.com/a/10714][stackexchange answer]].
-
-#+begin_src emacs-lisp
-  (defun my-org-replace-link-by-link-description ()
-    "Replace an org link by its description or if empty its address"
-    (interactive)
-    (if (org-in-regexp org-link-bracket-re 1)
-        (save-excursion
-          (let ((remove (list (match-beginning 0) (match-end 0)))
-                (description
-                 (if (match-end 2)
-                     (org-match-string-no-properties 2)
-                   (org-match-string-no-properties 1))))
-            (apply 'delete-region remove)
-            (insert description)))))
-#+end_src
-
-**** org-mode Export: htmlize
-
-htmlize is necessary to export code blocks to HTML.
-
-#+begin_src emacs-lisp
+  ;; This is necessary to export code block to HTML.
   (use-package htmlize :ensure t :defer t)
 #+end_src
 
-**** COMMENT org-mode Appearance: org-modern
-
-org-modern is a package that beautify org-mode. It changes the
-appearance of header line, table, time stamp and other things.
-
-After using it for a long time, I decide to disable this package. This
-starts with the difficulty of distinguishing headers of different
-levels, especially when the level number increases. I started a
-discussion thread in the package's GitHub repository about this
-issue. Then, when reading the README of the package again, I found
-that the package is incompatible with lots of other functions, such as
-~org-indent-mode~, ~org-num-mode~ and ~visual-wrap-prefix-mode~. I do
-not use ~org-indent-mode~ anyway, but I sometimes use ~org-num-mode~
-and ~visual-wrap-prefix-mode~. Considering ~org-modern~ only provides
-aesthetics changes, I prefer actual functionality. Also, it renders
-some characters using layers, which hides the actual characters. Not
-being able to see what are actually there makes me feel a bit
-insecure, but this is only my personal opinion.
-
-#+begin_src emacs-lisp
-  (use-package org-modern
-    :ensure t
-    :defer t
-    :hook (org-mode . global-org-modern-mode))
-#+end_src
-
-**** org-mode & E-Mail: org-msg
+**** COMMENT org-mode & E-Mail: org-msg
 
 #+begin_src emacs-lisp
   (use-package org-msg
@@ -2169,11 +2137,6 @@ insecure, but this is only my personal opinion.
   ,*Chang Xiaoduan*
   ,#+end_signature"))
 #+end_src
-
-**** COMMENT org-draw
-
-An interesting package that allows you to hand-draw images in org
-mode. May be useful later.
 
 *** COMMENT Benchmark
 

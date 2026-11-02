@@ -845,10 +845,36 @@ Part of the configurations are copied from James Cherti's [[https://www.jamesche
 ** org-mode
 
 #+begin_src emacs-lisp
-  (setq org-capture-templates
-        '(("t" "Taks" entry
-           (file+headline "~/agenda.org" "Tasks")
-           "* TODO %u %?")))
+  (defvar my-org-babel-languages (list '(C . t)
+                                       '(racket . t)
+                                       '(emacs-lisp . t)
+                                       '(dot . t)))
+  (add-hook 'emacs-startup-hook
+            (lambda ()
+              (org-babel-do-load-languages 'org-babel-load-languages
+                                           my-org-babel-languages)))
+
+  (add-hook 'org-mode-hook #'org-latex-preview-mode)
+
+  (with-eval-after-load 'org
+    (setq org-ellipsis "…"
+          org-auto-align-tags nil
+          org-tags-column 0
+          org-catch-invisible-edits 'show-and-error
+          org-special-ctrl-a/e t
+          org-hide-emphasis-markers nil
+          org-pretty-entities nil
+          org-babel-C-compiler "clang"
+          org-babel-C++-compiler "clang++"
+          ;; org-edit-special will replace the current window with the
+          ;; special window
+          org-src-window-setup 'current-window
+          org-num-skip-unnumbered t
+          org-latex-preview-mode-display-live t
+          org-latex-preview-mode-update-delay 0.25
+          org-capture-templates '(("t" "Taks" entry
+                                   (file+headline "~/agenda.org" "Tasks")
+                                   "* TODO %u %?"))))
 
   ;; This is inspired by this stack exchange answer
   ;; https://emacs.stackexchange.com/a/10714.
@@ -893,6 +919,44 @@ words, but Chinese don't. We have to override this behavior.
              (concat
               "\\(" fix-regexp "\\) *\n *\\(" fix-regexp "\\)") "\\1\\2" origin-contents)))
       (ad-set-arg 1 fixed-contents)))
+#+end_src
+
+*** org-rename-buffer-mode
+
+A customized minor mode that rename org-mode buffers using its
+=#+TITLE:=.
+
+#+begin_src emacs-lisp
+  (defun org-rename-buffer (&optional buffer)
+      "Try rename the current buffer if it is a org-mode buffer with a title."
+      (when (eq major-mode 'org-mode)
+        (save-excursion
+          (org-set-regexps-and-options t) ;; update `org-file-tags'
+          (let* ((title (org-get-title))
+                 (tags (org-get-tags))
+                 (buffer-name
+                  (format "%s%s"
+                          title
+                          (apply
+                           #'concat
+                           (seq-map (lambda (tag)
+                                      (format " #%s" tag))
+                                    tags)))))
+            (when title
+              (rename-buffer buffer-name t))))))
+
+  (define-minor-mode org-rename-buffer-mode
+      "Minor mode that renames org mode buffer if it has a title."
+      :global t
+      (if org-rename-buffer-mode
+          (progn
+            (add-hook 'find-file-hook #'org-rename-buffer)
+            (add-hook 'after-save-hook #'org-rename-buffer))
+        (remove-hook 'find-file-hook #'org-rename-buffer)
+        (remove-hook 'after-save-hook #'org-rename-buffer)))
+
+  (with-eval-after-load 'org
+    (org-rename-buffer-mode))
 #+end_src
 
 ** Environment Variables
@@ -2047,64 +2111,12 @@ switch back to yasnippet.
 *** org-mode
 
 #+begin_src emacs-lisp
+  ;; Use latest org-mode from git repository
   (use-package org :defer t
     :ensure '(org)
     :preface
     (when (featurep 'org)
-      (unload-feature 'org))
-    :init
-    (defvar my-org-babel-languages (list '(C . t)
-                                         '(racket . t)
-                                         '(emacs-lisp . t)
-                                         '(dot . t)))
-    (defun org-rename-buffer (&optional buffer)
-      "Try rename the current buffer if it is a org-mode buffer with a title."
-      (when (eq major-mode 'org-mode)
-        (save-excursion
-          (org-set-regexps-and-options t) ;; update `org-file-tags'
-          (let* ((title (org-get-title))
-                 (tags (org-get-tags))
-                 (buffer-name
-                  (format "%s%s"
-                          title
-                          (apply
-                           #'concat
-                           (seq-map (lambda (tag)
-                                      (format " #%s" tag))
-                                    tags)))))
-            (when title
-              (rename-buffer buffer-name t))))))
-    (define-minor-mode org-rename-buffer-mode
-      "Minor mode that renames org mode buffer if it has a title."
-      :global t
-      (if org-rename-buffer-mode
-          (progn
-            (add-hook 'find-file-hook #'org-rename-buffer)
-            (add-hook 'after-save-hook #'org-rename-buffer))
-        (remove-hook 'find-file-hook #'org-rename-buffer)
-        (remove-hook 'after-save-hook #'org-rename-buffer)))
-    :hook
-    ((emacs-startup . (lambda ()
-                        (org-babel-do-load-languages 'org-babel-load-languages my-org-babel-languages)))
-     (org-mode . org-latex-preview-mode))
-    :config
-    (setq org-ellipsis "…"
-          org-auto-align-tags nil
-          org-tags-column 0
-          org-catch-invisible-edits 'show-and-error
-          org-special-ctrl-a/e t
-          org-hide-emphasis-markers nil
-          org-pretty-entities nil
-          org-babel-C-compiler "clang"
-          org-babel-C++-compiler "clang++"
-          ;; org-edit-special will replace the current window with the
-          ;; special window
-          org-src-window-setup 'current-window
-          org-num-skip-unnumbered t
-          org-latex-preview-mode-display-live t
-          org-latex-preview-mode-update-delay 0.25)
-    (add-to-list 'org-modules 'org-habit t)
-    (org-rename-buffer-mode))
+      (unload-feature 'org)))
 
   ;; This is necessary to export code block to HTML.
   (use-package htmlize :ensure t :defer t)
@@ -2805,7 +2817,8 @@ Racket backend each time you evaluate a code block.
   (use-package graphviz-dot-mode :defer t
     :ensure t
     :init
-    (add-to-list 'org-src-lang-modes '("dot" . graphviz-dot)))
+    (with-eval-after-load 'org-src
+      (add-to-list 'org-src-lang-modes '("dot" . graphviz-dot))))
 #+end_src
 
 ***** Racket
@@ -3141,7 +3154,8 @@ packages provides support for writing Typst document in Emacs.
     :ensure t
     :vc (:url "https://codeberg.org/meow_king/typst-ts-mode.git")
     :init
-    (add-to-list 'org-src-lang-modes '("typst" . typst-ts)))
+    (with-eval-after-load 'org-src
+      (add-to-list 'org-src-lang-modes '("typst" . typst-ts))))
 
   ;; typst-preview provides live preview for Typst documents
   (use-package typst-preview :defer t

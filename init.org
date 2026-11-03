@@ -1600,7 +1600,7 @@ enabled. Diminish is a good package to solve this problem.
           (modus-themes-load-theme (if (consp theme) (cdr theme) 'modus-vivendi)))
       (if (eq theme 'random)
           (modus-themes-load-random-light)
-        (modus-themes-load-theme (if (consp theme (car theme)) 'modus-operandi)))))
+        (modus-themes-load-theme (if (consp theme) (car theme) 'modus-operandi)))))
 #+end_src
 
 ***** Foxglove Themes

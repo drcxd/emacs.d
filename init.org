@@ -959,6 +959,15 @@ A customized minor mode that rename org-mode buffers using its
     (org-rename-buffer-mode))
 #+end_src
 
+** isearch
+
+#+begin_src emacs-lisp
+  (use-package isearch
+    :init
+    (setq isearch-allow-motion t))
+#+end_src
+
+
 ** Environment Variables
 
 #+begin_src emacs-lisp

@@ -1321,14 +1321,22 @@ exception rules is tedious and error prone.
         "/")
     "Regular expression to match for branch name.")
 
-  (defun my-svn-current-branch (dir)
-    "Return the current branch of a SVN repository in DIR."
+  (defun my-extract-svn-branch-from-url (url)
+    "Return the branch part in URL."
+    (if (string-match-p "\\^/trunk" url)
+        "trunk"
+      (string-match my-svn-branch-matching-regexp url)
+      (match-string 1 url)))
+
+  (defun my-svn-current-branch (path)
+    "Return the current branch of the SVN repository of PATH.
+
+  PATH can be either a directory or a file."
     (with-temp-buffer
-      (let ((command (format "svn info \"%s\" | grep \"^URL\"" dir)))
+      (let ((command (format "svn info \"%s\" | grep \"Relative URL\"" path)))
         (shell-command command (current-buffer))
-        (let ((output (string-trim (buffer-string))))
-            (string-match "/branches/\\(.*\\)" output)
-            (match-string 1 output)))))
+        (let ((url (string-trim (buffer-string))))
+          (my-extract-svn-branch-from-url url)))))
 
   (defun my-svn-switch-branch-file (target file)
     "Switch branch to TARGET for FILE."
@@ -1337,19 +1345,12 @@ exception rules is tedious and error prone.
         (with-temp-buffer
           (shell-command (format "svn info %s | grep \"Relative URL\"" file) (current-buffer))
           (let* ((output (string-trim (buffer-string)))
-                 (relative-url (substring
-                                output
-                                (string-match-p "\\^" output)))
-                 (at-trunk (string-match-p "\\^/trunk" relative-url))
-                 source
+                 (relative-url (substring output (string-match-p "\\^" output)))
+                 (source (my-extract-svn-branch-from-url relative-url))
+                 (at-trunk (eq source "trunk"))
                  target-relative-url)
-            (if at-trunk
-                (setq source "trunk")
-              (unless (string-match my-svn-branch-matching-regexp
-                                    relative-url)
-                (message "Matching for branch name failed for %s"
-                         relative-url))
-              (setq source (match-string 1 relative-url)))
+            (unless source
+              (message "Matching for branch name failed for %s" relative-url))
             (if (equal source target)
                 (message "Switching file %s from %s to %s. Ignored!" file source target)
               (setq target-relative-url (if at-trunk

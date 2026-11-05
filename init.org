@@ -1588,19 +1588,25 @@ enabled. Diminish is a good package to solve this problem.
   (defun my-select-modus-theme-using-os-theme (&optional theme)
     "Select a light/dark modus theme depends on the OS theme.
 
-  If THEME is the symbol `random', then select a random them with
-  `modus-themes-load-random-light' or `modus-themes-load-random-dark'.  If
-  it is a cons cell, then the car is the light theme to load, and the cdr
-  is the dark theme to load.  If it is nil, then load modus-operandi for
-  light theme, modus-vivendi for dark theme."
+  THEME is is a cons cell, then the car is the light theme to load, and
+  the cdr is the dark theme to load.  Other than a theme name, each can be
+  the symbol `random' or the symbol `default'.  If it is the symbol
+  `random' then use `modus-themes-load-random-light' or
+  `modus-themes-load-random-dark' to load a random theme.  If it is the
+  symbol `default', then `modus-operandi' is selected for the light theme,
+  and `modus-vivendi' is selected for the dark theme. If THEME is omitted,
+  then select `modus-operandi' or `modus-vivendi' according to the OS
+  theme."
     (interactive)
-    (if (my-os-dark-theme-p)
-        (if (eq theme 'random)
-            (modus-themes-load-random-dark)
-          (modus-themes-load-theme (if (consp theme) (cdr theme) 'modus-vivendi)))
-      (if (eq theme 'random)
+    (let ((light-theme (if theme (car theme) 'modus-operandi))
+          (dark-theme (if theme (cdr theme) 'modus-vivendi)))
+      (if (my-os-dark-theme-p)
+          (if (eq dark-theme 'random)
+              (modus-themes-load-random-dark)
+            (modus-themes-load-theme dark-theme))
+      (if (eq light-theme 'random)
           (modus-themes-load-random-light)
-        (modus-themes-load-theme (if (consp theme) (car theme) 'modus-operandi)))))
+        (modus-themes-load-theme light-theme)))))
 #+end_src
 
 ***** Foxglove Themes

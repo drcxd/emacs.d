@@ -1812,55 +1812,6 @@ https://www.nerdfonts.com/#home
                           (:name "Maple Mono" :mono "Maple Mono CN" :chinese "Maple Mono CN"))))
 #+end_src
 
-**** COMMENT sleek-modeline
-
-#+begin_src emacs-lisp
-  (use-package sleek-modeline
-    :ensure t
-    :init
-    (setq sleek-modeline-show-modal-state t)
-    (defun my-clock-segment ()
-      "Return the current time, or nil to display nothing."
-      (format-time-string "%H:%M"))
-    (defun my-pos-segment ()
-      "Return the current cursor position."
-      (format "[%d:%d]" (line-number-at-pos) (current-column)))
-    (defun my-coding-system-segment ()
-      "Return the current buffer file coding system."
-      (format "%s" buffer-file-coding-system))
-    :config
-    (sleek-modeline-register-segment 'clock
-                                     :fn 'my-clock-segment
-                                     :side 'right
-                                     :priority 5
-                                     :separator t)
-    (sleek-modeline-register-segment 'coding-system
-                                     :fn 'my-coding-system-segment
-                                     :side 'right
-                                     :priority 4
-                                     :separator t)
-    (sleek-modeline-register-segment 'position
-                                     :fn 'my-pos-segment
-                                     :side 'right
-                                     :priority 3
-                                     :separator t)
-    (sleek-modeline-mode 1))
-#+end_src
-
-**** COMMENT minibuffer-frame
-
-This package place the minibuffer completion interface to the center
-of the screen, emulating the behavior of some modern editors.
-
-The package does not work in WSL for now.
-
-#+begin_src emacs-lisp
-  (use-package minibuffer-frame
-    :ensure t
-    :if (display-graphic-p)
-    :hook window-setup)
-#+end_src
-
 *** Completion
 
 **** vertico

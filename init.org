@@ -3793,7 +3793,7 @@ add some additional configuration specific to meow.
     (advice-add 'meow--mode-guess-state :filter-return #'my-meow-guess-state)
     (meow-setup)
     (meow-global-mode 1)
-    (global-set-key (kbd "<f5>") 'meow-keypad)
+    ;; (global-set-key (kbd "<f5>") 'meow-keypad)
     :hook
     (meow-insert-exit . (lambda ()
                           (if (and meow-normal-mode (not buffer-read-only))

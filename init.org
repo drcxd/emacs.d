@@ -1317,9 +1317,7 @@ exception rules is tedious and error prone.
 
 #+begin_src emacs-lisp
   (defvar my-svn-branch-matching-regexp
-    (rx "^/branches/"
-        (group (+? (or (syntax _) (syntax w))))
-        "/")
+    "\\^/branches/\\([^/]+\\)"
     "Regular expression to match for branch name.")
 
   (defun my-extract-svn-branch-from-url (url)

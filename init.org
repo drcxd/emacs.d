@@ -1918,9 +1918,9 @@ etc..
     (([remap switch-to-buffer] . consult-buffer)
      ("C-c i" . consult-line)
      ("C-c r" . consult-ripgrep)
-     ("C-c I" . consult-imenu)
+     ("C-c m" . consult-imenu)
      ("C-c f" . consult-fd)
-     ("C-c H" . consult-org-heading)
+     ("C-c h" . consult-org-heading)
      ("C-c p" . consult-project-buffer)
      :map project-prefix-map
      ("u" . consult-project-buffer)))
@@ -1949,7 +1949,7 @@ convenient.
   (use-package embark
     :ensure t
     :defer t
-    :bind ("<f6>" . embark-act)
+    :bind ("<f5>" . embark-act)
     :config
     (add-to-list 'display-buffer-alist
                  '((major-mode . embark-collect-mode)

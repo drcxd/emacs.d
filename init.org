@@ -1420,6 +1420,84 @@ exception rules is tedious and error prone.
      (format "TortoiseProc /command:commit /path:\"%s\"" dir)))
 #+end_src
 
+*** Noita
+
+Code that manipulate Noita save files.
+
+#+begin_src emacs-lisp
+  (defvar noita-save-dir "~/AppData/LocalLow/Nolla_Games_Noita/"
+    "The directory contains the save files.
+  This is a platform dependent value.  The default value is for Windows,
+  and assume your Emacs home directory is the same as your Windows user
+  home directory.")
+
+  (defvar noita-default-save-name "save00"
+    "The default name of the directory where the save files reside in.")
+
+  (defun noita-report-parallel-world-num (ng-p)
+    "Report the number of parallel world the player resides in.
+
+  Positive numbers for the east parallel world.  Negative numbers for the
+  west parallel world.  With a prefix argument, report the parallel world
+  number for NG+ world."
+    (interactive "P")
+    (let ((save-file (file-name-concat noita-save-dir noita-default-save-name "player.xml")))
+      (unless (file-exists-p save-file)
+        (user-error "Can not find save file: %s!" save-file))
+      (let* ((root (xml-parse-file save-file))
+             (first-node (car root))
+             (transform (seq-find (lambda (node)
+                                    (when (listp node)
+                                      (eq (xml-node-name node) '_Transform)))
+                                  (xml-node-children first-node)))
+             (xpos (xml-get-attribute-or-nil transform 'position.x)))
+        (message "%s" (/ (string-to-number xpos) (if ng-p 32768.0 35840.0))))))
+
+  (defun noita-save (named-p)
+    "Create backup of the current save file.
+
+  The backup file is non-compressed archive created using 7z names as
+  `noita-default-save-name'.zip stored in `noita-save-dir'.  With a prefix argument, ask for
+  a name and store the backup file using that name."
+    (interactive "P")
+    (let ((name (if named-p (read-string "Name: ") noita-default-save-name)))
+      (unless (executable-find "7z")
+        (user-error "7z is not visible in PATH!"))
+      (let ((file-name (expand-file-name
+                        (file-name-concat
+                         noita-save-dir
+                         (format "%s.7z" name)))))
+        (when (file-exists-p file-name)
+          (delete-file file-name))
+        (async-shell-command (format "7z a \"%s\" \"%s\""
+                                     file-name
+                                     (expand-file-name
+                                      (file-name-concat
+                                       noita-save-dir
+                                       noita-default-save-name)))))))
+
+  (defun noita-load (file)
+    "Restore save files from a .7z FILE."
+    (interactive
+     (list (completing-read "File: " (directory-files noita-save-dir t "\.7z"))))
+    (unless (executable-find "7z")
+      (user-error "7z is not visible in PATH!"))
+    (let ((current-save (expand-file-name
+                         (file-name-concat noita-save-dir
+                                           noita-default-save-name))))
+      (when (file-exists-p current-save)
+        (delete-directory current-save t))
+      (with-temp-buffer
+        (cd noita-save-dir)
+        (async-shell-command (format "7z x %s" file)))))
+
+  (defun noita-delete (file)
+    "Delete an archived save FILE."
+    (interactive
+     (list (completing-read "File: " (directory-files noita-save-dir t "\.7z"))))
+    (delete-file file))
+#+end_src
+
 ** Key Bindings
 
 #+begin_src emacs-lisp

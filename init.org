@@ -1469,7 +1469,7 @@ Code that manipulate Noita save files.
                          (format "%s.7z" name)))))
         (when (file-exists-p file-name)
           (delete-file file-name))
-        (async-shell-command (format "7z a \"%s\" \"%s\""
+        (async-shell-command (format "7z a -mx0 \"%s\" \"%s\""
                                      file-name
                                      (expand-file-name
                                       (file-name-concat

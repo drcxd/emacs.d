@@ -1843,7 +1843,8 @@ https://www.nerdfonts.com/#home
                        ("Noto Serif" google)
                        ("Myna" zip "https://github.com/sayyadirfanali/Myna/archive/refs/heads/main.zip")
                        ("Maple Mono" zip "https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-CN-unhinted.zip")
-                       ("Monaspace" zip "https://github.com/githubnext/monaspace/releases/download/v1.400/monaspace-frozen-v1.400.zip"))
+                       ("Monaspace" zip "https://github.com/githubnext/monaspace/releases/download/v1.400/monaspace-frozen-v1.400.zip")
+                       ("Sarasa" zip "https://github.com/be5invis/Sarasa-Gothic/releases/download/v1.0.43/Sarasa-SuperTTC-1.0.43.7z"))
           foma-profiles `((:name "Aporetic"
                                  :mono "Aporetic Sans Mono"
                                  :variable"Aporetic Serif")
@@ -1892,7 +1893,10 @@ https://www.nerdfonts.com/#home
                                      :variable "Input Serif"))
                           (:name "Commit"
                                  :mono "CommitMono")
-                          (:name "Maple Mono" :mono "Maple Mono CN" :chinese "Maple Mono CN"))))
+                          (:name "Maple Mono" :mono "Maple Mono CN" :chinese "Maple Mono CN")
+                          (:name "Sarasa" :mono "Sarasa Mono CL"
+                                 :variable "Sarasa Gothic CL"
+                                 :chinese "Sarasa Mono CL"))))
 #+end_src
 
 *** Completion

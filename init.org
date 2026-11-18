@@ -397,7 +397,13 @@ the splash screen manually.
   ;; provide any actual benefits.
 
   ;; Proportional Window Resizing (Purcell, Prot)
-  (setq window-combination-resize t)
+
+  ;; NOTE: If you have two side windows, one on left and one on right,
+  ;; and a normal window in between them. Close one of the side window
+  ;; will cause the normal window being resized in an unintended
+  ;; way. Try it, you'll know what I mean.
+
+  ;; (setq window-combination-resize t)
 
   (use-package winner
     :config
@@ -2269,8 +2275,8 @@ so you can write anything in it.
     (add-to-list 'display-buffer-alist
                  '((major-mode . ghostel-mode)
                    (display-buffer-in-side-window)
-                   (window-height . 0.25)
-                   (side . top)
+                   (window-height . 0.5)
+                   (side . right)
                    (slot . 1)))
     :bind
     (:map project-prefix-map

@@ -2049,7 +2049,7 @@ convenient.
                  '((major-mode . embark-collect-mode)
                    (display-buffer-in-side-window)
                    (window-height . 0.25)
-                   (side . bottom)
+                   (side . top)
                    (slot . 0))))
   (use-package embark-consult :defer t :ensure t)
 #+end_src

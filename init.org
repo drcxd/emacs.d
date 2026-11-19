@@ -2275,7 +2275,7 @@ so you can write anything in it.
     (add-to-list 'display-buffer-alist
                  '((major-mode . ghostel-mode)
                    (display-buffer-in-side-window)
-                   (window-height . 0.5)
+                   (window-width . 0.5)
                    (side . right)
                    (slot . 1)))
     :bind
@@ -3858,7 +3858,8 @@ add some additional configuration specific to meow.
        '("{" . backward-paragraph)
        '("}" . forward-paragraph)
        '("/" . hs-toggle-hiding)
-       '("\\" . occult-toggle))
+       '("\\" . occult-toggle)
+       '("SPC" . nil))
       ;; disable SPC in motion mode since it might be used
       (define-key meow-motion-state-keymap (kbd "SPC") nil))
     (defun my-meow-use-f5-exclusively ()

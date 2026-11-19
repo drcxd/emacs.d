@@ -3861,7 +3861,9 @@ add some additional configuration specific to meow.
        '("\\" . occult-toggle)
        '("SPC" . nil))
       ;; disable SPC in motion mode since it might be used
-      (define-key meow-motion-state-keymap (kbd "SPC") nil))
+      (meow-motion-define-key
+       '("SPC" . nil)
+       '("<escape>" . nil)))
     (defun my-meow-use-f5-exclusively ()
       "Make SPC no longer enable KEYPAD and serve as literal prefix."
       (define-key meow-normal-state-keymap (kbd "SPC") nil)
